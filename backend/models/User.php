@@ -4,10 +4,11 @@ namespace backend\models;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
+use common\models\BaseModel;
+//use AdminRoleUser;
 use yii\web\IdentityInterface;
 
-class User extends ActiveRecord implements IdentityInterface {
+class User extends BaseModel implements IdentityInterface {
 	const STATUS_DELETED = 0;
 	const STATUS_ACTIVE = 10;
 	const AUTH_KEY = '123456';
@@ -220,4 +221,28 @@ class User extends ActiveRecord implements IdentityInterface {
 		return true;
 	}
 
+	public static function loadStatusOptions()
+	{
+		return [
+				self::STATUS_ACTIVE => Yii::t('app', 'Normal'),
+				self::STATUS_DELETED => Yii::t('app', 'Disabled'),
+		];
+	}
+
+	public function getStatusFormat()
+	{
+		$arr = self::loadStatusOptions();
+
+		if (isset($this->status)) {
+			return $arr[$this->status];
+		}
+
+		return $this->status;
+	}
+
+	//关联角色[本系统目前仅支持一个用户对应一个角色]
+/*	public function getUserRole()
+	{
+		return $this->hasOne(AdminRoleUser::className(), ['uid' => 'id']);
+	}*/
 }

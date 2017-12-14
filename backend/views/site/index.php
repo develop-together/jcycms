@@ -31,23 +31,29 @@ $this->title = yii::t('app', 'Backend Manage System');
                     <li class="nav-header">
                         <div class="dropdown profile-element">
                             <span><img alt="image" class="img-circle" src="<?=Yii::$app->getUser()->getIdentity()->avatar ? Yii::$app->getUser()->getIdentity()->avatar : 'static/img/profile_small.jpg'?>" /></span>
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">超级管理员</strong></span>
-                                <span class="text-muted text-xs block"><?=Yii::$app->getUser()->getIdentity()->username;?><b class="caret"></b></span>
-                                </span>
+                             <a data-toggle="dropdown" class="dropdown-toggle" href="#" data-target="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="clear">
+                                        <span class="block m-t-xs">
+                                            <strong class="font-bold">超级管理员</strong>
+                                        </span>
+                                        <span class="text-muted text-xs block">
+                                            <?=\yii::$app->getUser()->getIdentity()->username?>
+                                            <b class="caret"></b>
+                                        </span>
+                                    </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a class="J_menuItem" href="javascript:;">修改头像</a>
+                                <li><a class="J_menuItem"
+                                       href="javascript:;"><?=yii::t('app', 'Profile')?></a>
                                 </li>
-                                <li><a class="J_menuItem" href="javascript:;">个人资料</a>
+                                <li><a class="J_menuItem"
+                                       href="javascript:;"><?=yii::t('app', 'Articles')?></a>
                                 </li>
-                                <li><a class="J_menuItem" href="javascript:;">联系我们</a>
-                                </li>
-                                <li><a class="J_menuItem" href="javascript:;">信箱</a>
+                                <li><a target="_blank"
+                                       href="javascript:;"><?=yii::t('app', 'Frontend')?></a>
                                 </li>
                                 <li class="divider"></li>
-                                <li><a href="<?=Url::toRoute(['site/logout'])?>">安全退出</a>
+                                <li><a href="<?=Url::toRoute(['site/logout'])?>"><?=yii::t('app', 'Logout')?></a>
                                 </li>
                             </ul>
                         </div>
@@ -56,30 +62,31 @@ $this->title = yii::t('app', 'Backend Manage System');
                     </li>
                     <li>
                         <a href="#">
-                            <i class="fa fa-home"></i>
-                            <span class="nav-label">主页</span>
+                            <i class="fa fa-users"></i>
+                            <span class="nav-label">用户</span>
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a class="J_menuItem" href="javascript:;" data-index="0">主页示例一</a>
+                                <a class="J_menuItem" href="javascript:;" >前台用户</a>
                             </li>
                             <li>
-                                <a class="J_menuItem" href="javascript:;">主页示例二</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="javascript:;">主页示例三</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="javascript:;">主页示例四</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;" target="_blank">主页示例五</a>
+                            <a class="J_menuItem" href="">后台用户<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level collapse">
+                                <li>
+                                    <a class="J_menuItem" href="<?=url::toRoute(['admin-user/index'])?>" >管理员</a>
+                                </li>
+                                <li>
+                                    <a class="J_menuItem" href="<?=url::toRoute(['admin-roles/index'])?>">角色</a>
+                                </li>
+                            </ul>
                             </li>
                         </ul>
 
                     </li>
-
+                    <li>
+                        <a class="J_menuItem" href="<?=Url::toRoute(['gii/default'])?>" ><i class="fa fa-cutlery"></i> <span class="nav-label">GII</span></a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -167,11 +174,20 @@ $this->title = yii::t('app', 'Backend Manage System');
                             </ul>
                         </li>
                         <li class="hidden-xs">
-                            <a href="index_v1.html" class="J_menuItem" data-index="0"><i class="fa fa-cart-arrow-down"></i> 购买</a>
+                            <a href="<?=yii::$app->params['site']['url']?>" target='_blank'><i
+                                        class="fa fa-internet-explorer"></i> <?=yii::t('app', 'Frontend')?></a>
+                        </li>
+                        <li class="hidden-xs">
+                            <a href="javascript:void(0)" onclick="reloadIframe()"><i
+                                        class="fa fa-refresh"></i> <?=yii::t('app', 'Refresh')?></a>
+                        </li>
+                        <li class="hidden-xs">
+                            <a href="http://cms.feehi.com/help" class="J_menuItem" data-index="0"><i
+                                        class="fa fa-cart-arrow-down"></i> <?=yii::t('app', 'Support')?></a>
                         </li>
                         <li class="dropdown hidden-xs">
                             <a class="right-sidebar-toggle" aria-expanded="false">
-                                <i class="fa fa-tasks"></i> 主题
+                                <i class="fa fa-tasks"></i> <?=yii::t('app', 'Theme')?>
                             </a>
                         </li>
                     </ul>
@@ -219,5 +235,12 @@ $this->title = yii::t('app', 'Backend Manage System');
     </div>
     	<?php $this->endBody();?>
     </body>
+    <script>
+        function reloadIframe() {
+            var current_iframe = $("iframe:visible");
+            current_iframe[0].contentWindow.location.reload();
+            return false;
+        }
+    </script>
 </html>
 <?php $this->endPage();?>

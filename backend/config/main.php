@@ -22,7 +22,7 @@ return [
 			'identityClass' => 'backend\models\User',
 			'enableAutoLogin' => true,
 			'identityCookie' => ['name' => '_backend_identity'],
-		],
+		],	
 		'session' => [
 			// this is the name of the session cookie used for login on the backend
 			'name' => 'advanced-backend',

@@ -63,4 +63,26 @@ class AdminRoles extends \common\models\BaseModel
             'remark' => Yii::t('app', 'Remark'),
         ];
     }
+
+    public function beforeDelete()
+    {
+        if ($this->id == 1) {
+            throw new BadRequestHttpException(yii::t('app', 'Not allowed to delete {attribute}', ['attribute' => yii::t('app', 'super administrator roles')]));
+        }
+
+        return true;
+    }
+
+    public static function loadRolesOptions()
+    {
+        $roleModels = self::find()->all();
+        $roles = [];
+        if ($roleModels) {
+            foreach ($roleModels as $roleModel) {
+                $roles[$roleModel->id] = $roleModel->role_name;
+            }
+        }
+
+        return $roles;
+    }
 }

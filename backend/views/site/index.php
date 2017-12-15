@@ -193,6 +193,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                     </ul>
                 </nav>
             </div>
+            <!--Tab面板开始-->
             <div class="row content-tabs">
                 <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
                 </button>
@@ -201,29 +202,30 @@ $this->title = yii::t('app', 'Backend Manage System');
                         <a href="javascript:;" class="active J_menuTab" data-id="index_v1.html">首页</a>
                     </div>
                 </nav>
-                <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
+                <button class="roll-nav roll-right J_tabRight" style="right:60px;"><i class="fa fa-forward"></i>
                 </button>
-                <div class="btn-group roll-nav roll-right">
-                    <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span>
-
-                    </button>
-                    <ul role="menu" class="dropdown-menu dropdown-menu-right">
-                        <li class="J_tabShowActive"><a>定位当前选项卡</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li class="J_tabCloseAll"><a>关闭全部选项卡</a>
-                        </li>
-                        <li class="J_tabCloseOther"><a>关闭其他选项卡</a>
-                        </li>
-                    </ul>
-                </div>
                 <a href="<?=Url::toRoute(['site/logout'])?>" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+                <!--                 <div class="btn-group roll-nav roll-right">
+                <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span>
+
+                </button>
+                <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                <li class="J_tabShowActive"><a>定位当前选项卡</a>
+                </li>
+                <li class="divider"></li>
+                <li class="J_tabCloseAll"><a>关闭全部选项卡</a>
+                </li>
+                <li class="J_tabCloseOther"><a>关闭其他选项卡</a>
+                </li>
+                </ul>
+                </div> -->                
             </div>
+            <!--Tab面板结束-->
             <div class="row J_mainContent" id="content-main">
                 <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="javascript:;" frameborder="0" data-id="index_v1.html" seamless></iframe>
             </div>
             <div class="footer">
-                <div class="pull-right">&copy; 2014-2015 <a href="http://www.zi-han.net/" target="_blank">zihan's blog</a>
+                <div class="pull-right">&copy; 2016-<?=date('Y')?> <a href="https://www.cnblogs.com/YangJieCheng/" target="_blank">yangboom's blog</a>
                 </div>
             </div>
         </div>
@@ -235,12 +237,25 @@ $this->title = yii::t('app', 'Backend Manage System');
     </div>
     	<?php $this->endBody();?>
     </body>
+    <style type="text/css">
+        .jcymenu{
+            position: absolute;
+            z-index: 9999;
+            top: 91px;
+            left: 281px;
+        }
+        .jcymenuli{
+            background: rgb(255, 255, 255);
+            width: 150px;
+            border: 1px #eeeeee ;
+        }
+    </style>
     <script>
         function reloadIframe() {
             var current_iframe = $("iframe:visible");
             current_iframe[0].contentWindow.location.reload();
             return false;
-        }
+        }         
     </script>
 </html>
 <?php $this->endPage();?>

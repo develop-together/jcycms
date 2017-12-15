@@ -21,7 +21,7 @@ yii.confirm = function(message, ok, cancel) {
                     "dataType": "json",
                     "type": $(this).attr('data-method') ? $(this).attr('data-method') : "get",
                     "success": function (data) {
-                        if (data.code == 0) {
+                        if (data.code == 200) {
                             swal(tips.success + '!', tips.operatingSuccess + '.', "success");
                             location.reload();
                         } else {
@@ -56,6 +56,21 @@ function viewLayer(type, url, obj, cssoption)
         shadeClose: true, //点击遮罩关闭层
         area : [cssoption.width , cssoption.height],
         content: url
+    });
+}
+
+function close_tab() {
+    $(".J_menuTab", parent.document).each(function (index) {
+        if ($(this).hasClass("active")) {
+            if ($(this).prev("a.J_menuTab").length > 0) {
+                $(this).prev("a.J_menuTab").eq(0).addClass("active")
+            }
+            $(this).remove();
+            if (parent.$(".J_iframe").eq(index).prev("iframe.J_iframe").length > 0) {
+                parent.$(".J_iframe").eq(index).prev("iframe.J_iframe").eq(0).show()
+            }
+            parent.$(".J_iframe").eq(index).remove()
+        }
     });
 }
 
@@ -131,9 +146,8 @@ $(document).ready(function(){
         }
 
     })*/
-
     $('a.refresh').click(function(){
         location.reload();
         return false;
-    });
+    });    
 })

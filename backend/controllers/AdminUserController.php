@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use backend\models\User;
 use backend\models\UserSearch;
+use backend\models\AdminRoleUser;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -64,12 +65,14 @@ class AdminUserController extends Controller
     public function actionCreate()
     {
         $model = new User();
-
+        $model->setScenario('create');
+        $rolesModel = new AdminRoleUser();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'rolesModel' => $rolesModel,
             ]);
         }
     }

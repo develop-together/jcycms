@@ -17,6 +17,7 @@ class IndexAsset extends \yii\web\AssetBundle {
 	];
 
 	public $js = [
+		'static/js/jcy.js',
 		"static/js/jquery.min.js?v=2.1.4",
 		"static/js/bootstrap.min.js?v=3.3.6",
 		"static/js/plugins/metisMenu/jquery.metisMenu.js",

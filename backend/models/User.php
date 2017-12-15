@@ -240,6 +240,7 @@ class User extends BaseModel implements IdentityInterface {
 		return $this->status;
 	}
 
+
 	//关联角色[本系统目前仅支持一个用户对应一个角色]
 /*	public function getUserRole()
 	{

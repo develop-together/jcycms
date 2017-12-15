@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use backend\models\AdminRoles;
+use backend\models\User;
 
 $this->title = "Admin";
 ?>
@@ -18,13 +20,25 @@ $this->title = "Admin";
                                 'inputOptions' => ['class' => 'form-control'],
                                 'errorOptions' => ['class' => 'help-block m-b-none'],                              
                             ],
-                            'options' => ['class' => 'form-horizontal']
+                            'options' => [
+                                'class' => 'form-horizontal',
+                                'enctype' => 'multipart/form-data',
+                            ]
                         ]);
                         ?>
-
-			    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
-
-			    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'username')->textInput(['maxlength' => 64]) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'email')->textInput(['maxlength' => 64]) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'password')->passwordInput(['maxlength' => 512]) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'status')->radioList( User::loadStatusOptions() ) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($rolesModel, 'role_id', [
+                    'labelOptions' => [
+                        'label' => yii::t('app', 'Roles'),
+                    ]
+                ])->radioList(AdminRoles::loadRolesOptions()) ?>
 
 			    <div class="form-group">
 			    	<div class="col-sm-4 col-sm-offset-2">

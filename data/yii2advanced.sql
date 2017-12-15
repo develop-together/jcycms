@@ -107,3 +107,13 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
+CREATE TABLE `yii2advanced`.`byt_admin_role_user` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT(11) UNSIGNED NOT NULL DEFAULT 0,
+  `role_id` INT(11) UNSIGNED NOT NULL DEFAULT 0,
+  `created_at` INT(11) UNSIGNED NOT NULL DEFAULT 0,
+  `updated_at` INT(11) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;

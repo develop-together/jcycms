@@ -1,0 +1,57 @@
+.upload-kit-input
+{
+	height: 150px;
+	width: 150px;
+	position: relative;
+	color: #999999;
+	border: 2px dashed #999999;
+	border-radius: 7px;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	background-size: cover;
+	background-position: center center;
+	background-origin: border-box;
+	list-style: none;
+	background-image: url('upload_logo.jpg');
+}
+.upload-kit-input input[type=file]
+{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	display: block;
+	opacity: 0;
+	cursor: pointer;
+	z-index: 2;
+}
+.alert-msginfo
+{
+	position: fixed;
+	width: 478px;
+	background-color: white;
+	border-radius: 5px;
+	text-align: center;
+	left: 50%;
+	top: 50%;
+	overflow: hidden;
+	z-index: 999999;
+	margin-left: -296px;
+	margin-top: -64px;
+	display: none;
+
+}
+.sweet-overlay {
+	 -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+	background-color: rgba(0, 0, 0, 0.4);
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 10000;
+	opacity: 1.09;
+	width: 100%;
+	height: 100%;
+	display: none;
+}		

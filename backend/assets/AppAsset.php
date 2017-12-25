@@ -24,7 +24,7 @@ class AppAsset extends \yii\web\AssetBundle {
 		//'js/plugins/layer/laydate/skins/default/laydate.css'
 		'static/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
 		'static/css/plugins/toastr/toastr.min.css',
-
+		'static/css/my.style.css',
 	];
 
 	public $js = [

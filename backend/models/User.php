@@ -41,7 +41,6 @@ class User extends BaseModel implements IdentityInterface {
 			[['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
 			[['username', 'email', 'password', 'repassword'], 'required', 'on' => ['create']],
 			//[['username', 'email'], 'required', 'on' => ['update', 'self-update']],
-			//[['username'], 'unique', 'on' => 'create'],
 		];
 	}
 

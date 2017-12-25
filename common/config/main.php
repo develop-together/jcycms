@@ -13,6 +13,9 @@ return [
             'gii' => [
                     'class' => 'common\modules\gii\Module',
             ],
+            'attachment' => [
+                    'class' => 'common\modules\attachment\Module',
+            ],
     ],    
 	'components' => [
 		'cache' => [

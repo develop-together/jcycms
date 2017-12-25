@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\models\AdminRoles;
 use backend\models\User;
-
+use common\widgets\fileUploadInput\FileUploadInputWidget;
 $this->title = "Admin";
 ?>
 <div class="row">
@@ -27,13 +27,25 @@ $this->title = "Admin";
                         ]);
                         ?>
                 <?= $form->field($model, 'username')->textInput(['maxlength' => 64]) ?>
+
                 <div class="hr-line-dashed"></div>
+
+                <?= $form->field($model, 'avatar')->widget(FileUploadInputWidget::className(),[
+                    'type' => 'image'
+                ]); ?>
+
                 <?= $form->field($model, 'email')->textInput(['maxlength' => 64]) ?>
+
                 <div class="hr-line-dashed"></div>
+
                 <?= $form->field($model, 'password')->passwordInput(['maxlength' => 512]) ?>
+
                 <div class="hr-line-dashed"></div>
+
                 <?= $form->field($model, 'status')->radioList( User::loadStatusOptions() ) ?>
+
                 <div class="hr-line-dashed"></div>
+                
                 <?= $form->field($rolesModel, 'role_id', [
                     'labelOptions' => [
                         'label' => yii::t('app', 'Roles'),

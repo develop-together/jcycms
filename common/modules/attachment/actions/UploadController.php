@@ -20,7 +20,32 @@ class UploadController extends Controller
     public function actions()
     {
         return [
-            'redactor-files-get' => [
+            'image-upload' => [
+                'class' => UploadAction::className(),
+                'path' => date('Ymd'),
+            ],
+
+            'file-upload' => [
+                'class' => UploadAction::className(),
+                'path' => date('Ymd'),
+                'uploadOnlyImage' => false
+            ],
+            'images-upload' => [
+                'class' => UploadAction::className(),
+                'path' => date('Ymd'),
+                'multiple' => true,
+            ],
+            'backend-files-upload' => [
+                'class' => UploadAction::className(),
+                'path' => date('Ymd'),
+                'multiple' => true,
+                'uploadOnlyImage' => false,
+                'itemCallback' => function ($result) {
+                    $result['updateUrl'] = Url::to(['/attachment/update', 'id' => $result['id']]);
+                    return $result;
+                }
+            ],            
+/*            'redactor-files-get' => [
                 'class' => GetAction::className(),
                 'type' => 'files',
             ],
@@ -52,35 +77,11 @@ class UploadController extends Controller
                     ];
                 }
             ],
-            'image-upload' => [
-                'class' => UploadAction::className(),
-                'path' => date('Ymd'),
-            ],
             'avatar-upload' => [
                 'class' => UploadAction::className(),
                 'path' => 'avatar/' . Yii::$app->user->id,
                 'validatorOptions' => ['minWidth' => 100, 'minHeight' => 100, 'maxWidth' => 200, 'maxHeight' => 200, 'underWidth' => '图片宽高不要小于100x100', 'underHeight' => '图片宽高不要小于100x100', 'overWidth' => '图片宽高不要大于100x100', 'overHeight' => '图片宽高不要大于100x100']
-            ],
-            'file-upload' => [
-                'class' => UploadAction::className(),
-                'path' => date('Ymd'),
-                'uploadOnlyImage' => false
-            ],
-            'images-upload' => [
-                'class' => UploadAction::className(),
-                'path' => date('Ymd'),
-                'multiple' => true,
-            ],
-            'backend-files-upload' => [
-                'class' => UploadAction::className(),
-                'path' => date('Ymd'),
-                'multiple' => true,
-                'uploadOnlyImage' => false,
-                'itemCallback' => function ($result) {
-                    $result['updateUrl'] = Url::to(['/attachment/update', 'id' => $result['id']]);
-                    return $result;
-                }
-            ],
+            ],            
             'md-image-upload' => [
                 'class' => UploadAction::className(),
                 'path' => date('Ymd'),
@@ -155,7 +156,7 @@ class UploadController extends Controller
                         'error' => $result['files'][0]['error']
                     ];
                 }
-            ]
+            ]*/
         ];
     }
 

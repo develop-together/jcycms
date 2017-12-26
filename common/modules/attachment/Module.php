@@ -18,9 +18,4 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         parent::init();
     }
-    	
-    public function bootstrap($app)
-    {
-        $app->controllerMap['upload'] = UploadController::className();
-    }
 }

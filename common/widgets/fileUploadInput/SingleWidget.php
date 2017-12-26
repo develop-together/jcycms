@@ -8,8 +8,6 @@
 	{
 		public $multiple = false;
 
-		public $maxFileSize = 0;
-
 		public $maxNumberOfFiles = 1;
 
 		public function registerClientScript()

@@ -16,6 +16,11 @@ return [
             'attachment' => [
                     'class' => 'common\modules\attachment\Module',
             ],
+    ],
+    'controllerMap' => [
+            'upload' => [
+                'class' => 'common\modules\attachment\actions\UploadController',
+            ],
     ],    
 	'components' => [
 		'cache' => [
@@ -45,6 +50,17 @@ return [
                 'charset' => 'UTF-8',
                 'from' => ['admin@feehi.com' => 'Feehi CMS robot ']
             ],
-        ],        			
+        ],
+        'i18n' => [
+            'translations' => [ //多语言包设置
+                '*' => [
+                    'class' => yii\i18n\PhpMessageSource::className(),
+                    'basePath' => '@common/messages',
+                    'fileMap' => [
+                        'common' => 'common.php',
+                    ],
+                ],
+            ],
+        ],                			
 	],
 ];

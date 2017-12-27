@@ -81,6 +81,7 @@
 	            'id' => $this->options['id'],
 	            'name'=> $this->name, //主要用于上传后返回的项目name
 	            'url' => Url::to($this->url),
+	            'deleteUrl' => Url::toRoute($this->deleteUrl),
 	            'multiple' => $this->multiple,
 	            'maxNumberOfFiles' => $this->maxNumberOfFiles,
 	            'maxFileSize' => $this->maxFileSize,

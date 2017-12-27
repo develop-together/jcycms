@@ -141,3 +141,12 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci
 COMMENT = '附件表';
+
+ALTER TABLE `yii2advanced`.`byt_attachment` 
+CHANGE COLUMN `user_id` `user_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' ,
+DROP INDEX `user_id_UNIQUE` ;
+
+ALTER TABLE `yii2advanced`.`byt_attachment` 
+CHANGE COLUMN `table_id` `table_id` INT(11) UNSIGNED NULL DEFAULT '0' COMMENT '关联表id' ,
+DROP INDEX `table_id_UNIQUE` ;
+

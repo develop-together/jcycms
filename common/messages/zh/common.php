@@ -37,11 +37,16 @@ return [
 	'Please fill out the following fields to signup' => '填写以下信息',
 	'Please choose your new password' => '请输入您的新密码',
 	'New password was saved.' => '密码修改成功',
+	'Filename' => '文件',
 	'Filesize' => '文件大小',
+	'Filetype' => '文件类型',
+	'Extension' => '后缀',
+	'Filepath' => '文件路径',
+	'Downci' => '下载次数',
 	'Mime' => 'MIME类型',
 	'Preview' => '预览',
 	'Count' => '次数',
-	'This file is in use,cannot be deleted' => '有地方还在使用，不能被删除',
 	'Follow the link below to reset your password' => '点击以下链接重置密码',
 	'rememberMe' => '记住密码',
+	'Table ID' => '关联表ID'
 ];

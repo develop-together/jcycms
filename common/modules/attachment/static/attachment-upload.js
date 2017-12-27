@@ -1,6 +1,7 @@
+var deleteAjaxUrl = '';
 function ajaxUpload(obj, res, options)
 {
-	//console.log(options);
+	deleteAjaxUrl = options.deleteUrl;
 	var maxNumberOfFiles = options.maxNumberOfFiles;
 	if (obj.files.length > maxNumberOfFiles) {
 		layer.alert('最多上传' + maxNumberOfFiles + '个文件', {icon : 0});
@@ -10,19 +11,18 @@ function ajaxUpload(obj, res, options)
 	var flag = true;
 	for (var p in obj.files) {
 		var fileObj = obj.files[p];
-		if(fileObj == undefined) {
+		if(fileObj == undefined || fileObj == '' || fileObj == null || fileObj.length == 0 || typeof(fileObj) == 'function') {
 			continue;
 		}
 
 		if (fileObj instanceof Object) {
-			flag = _fileUpload(fileObj, options);
+			flag = _fileUpload(fileObj, options, res);
 			if (!flag) {
 				layer.alert(fileObj.name + '上传失败', {icon : 0});
 				continue;
 			}			
 		}
 	}
-
 	return flag;
 }
 
@@ -39,7 +39,7 @@ function in_array(needle, haystack)
 	return false;
 }
 
-function _fileUpload(file,options) 
+function _fileUpload(file,options, res) 
 {
 	var ajaxUrl = options.url;
 	var fileInputId = options.id;
@@ -82,20 +82,34 @@ function _fileUpload(file,options)
 			 url : ajaxUrl,
 			 dataType : 'json',
 			 success : function (data) {
-
+			 	if (!data) {
+			 		flag = false;
+			 	} else {
+					var resObj = document.getElementById(res);
+					var newObj = document.createElement('div');
+					$(newObj).addClass('upload-kit-item done');		
+					newObj.style.cssFloat = 'left';
+		 			var newImg = new Image();
+		 			newImg.style.width = '150px';
+		 			newImg.style.height = '150px';	
+		 			$(newObj).append('<span class=\'fa fa-trash remove\' data-id =\' ' + data.id + '\' onclick=\'removeFile(this)\' data-temp =\' '+ fileInputId+ '\'></span>');							 		
+			 		if (!/image\/\w+/.test(data.filetype)) {//如果不是图片格式
+			 			newImg.src = '/static/img/file.png';
+			 		} else {						 			
+			 			newImg.src = data.filepath;
+			 			newObj.appendChild(newImg);
+			 		}
+			 		$("#" + fileInputId).val(data.filepath);
+			 		resObj.parentNode.insertBefore(newObj, resObj);	
+			 	}
 			 },
 			 error : function(XMLHttpRequest, textStatus, errorThrown) {
+			 	 flag = false;
 				 layer.alert(XMLHttpRequest.status + '<br>' + XMLHttpRequest.readyState + '<br>' + textStatus, {icon: 0});		 	
 			 }
 		});
 	}
-	return;
-	var resObj = document.getElementById(res);
-	var newObj = document.createElement('div');
-	newObj.style.cssFloat = 'left';
-	newObj.style.paddingRight = '10px';
-	newObj.innerHTML = '<img src=\'' + this.result + '\' width=\'150\' height=\'150\'/>';
-	resObj.parentNode.insertBefore(newObj,resObj);	
+
 	return flag;	
 }
 
@@ -103,6 +117,24 @@ function _trim(string)
 {
     return string.replace(/^\s+|\s+$/gm,'');
 }
+
+var removeFile = (function(obj){
+		var fileId = $(obj).data('id') ? $(obj).data('id') : $(obj).attr('data-id');
+		var fileInputId = $(obj).data('temp') ? $(obj).data('temp') : $(obj).attr('data-temp');
+		var filepath = $('#' + fileInputId).val();
+		jQuery.ajax({
+			type : 'POST',
+			data : {'fileId' : fileId, 'filepath' : filepath},
+			url : deleteAjaxUrl,
+			dataType : 'json',
+			success : function(data) {
+
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				
+			}
+		});
+})();
 
 // var loadImageFile = (function () {
 // 	if (window.FileReader) {

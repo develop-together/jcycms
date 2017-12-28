@@ -54,6 +54,8 @@
 	            }
 	        }
 
+	        $this->acceptFileTypes = '';
+
 	        if ($this->hasModel()) {
 	            $this->name = $this->name ? : Html::getInputName($this->model, $this->attribute);
 	            $this->attribute = Html::getAttributeName($this->attribute);

@@ -33,11 +33,11 @@ class User extends BaseModel implements IdentityInterface {
 	 */
 	public function rules() {
 		return [
-			[['username', 'auth_key', 'password', 'repassword', 'password_hash'], 'string'],
+			[['username', 'auth_key', 'avatar', 'password', 'repassword', 'password_hash'], 'string'],
 			['email', 'email'],
 			['email', 'unique'],
 			[['repassword'], 'compare', 'compareAttribute' => 'password'],
-			[['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
+			//[['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
 			[['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
 			[['username', 'email', 'password', 'repassword'], 'required', 'on' => ['create']],
 			//[['username', 'email'], 'required', 'on' => ['update', 'self-update']],
@@ -237,6 +237,15 @@ class User extends BaseModel implements IdentityInterface {
 		}
 
 		return $this->status;
+	}
+
+	public function getAvatarFormat()
+	{
+		if ($this->avatar) {
+			return Yii::$app->request->baseUrl . Yii::$app->params['uploadSaveFilePath'] . '/' . $this->avatar;
+		}
+
+		return Yii::$app->request->baseUrl . 'static/img/noface.png';
 	}
 
 

@@ -41,6 +41,7 @@ function in_array(needle, haystack)
 
 function _fileUpload(file,options, res) 
 {
+	console.log(file);
 	var ajaxUrl = options.url;
 	var fileInputId = options.id;
 	var fileInputName = options.name;
@@ -92,15 +93,16 @@ function _fileUpload(file,options, res)
 		 			var newImg = new Image();
 		 			newImg.style.width = '150px';
 		 			newImg.style.height = '150px';	
-		 			$(newObj).append('<span class=\'fa fa-trash remove\' data-id =\' ' + data.id + '\' onclick=\'removeFile(this)\' data-temp =\' '+ fileInputId+ '\'></span>');							 		
+		 			$(newObj).append('<span class=\'fa fa-trash remove\' data-id =\' ' + data.id + '\' onclick=\'removeFile(this)\' data-temp =\' '+ fileInputId+ '\' data-resid  = \' '+ res +' \'></span>');							 		
 			 		if (!/image\/\w+/.test(data.filetype)) {//如果不是图片格式
 			 			newImg.src = '/static/img/file.png';
 			 		} else {						 			
 			 			newImg.src = data.filepath;
 			 			newObj.appendChild(newImg);
 			 		}
-			 		$("#" + fileInputId).val(data.filepath);
+			 		$("#" + fileInputId).val(data.filepath.replace('\/uploads\/', ''));
 			 		resObj.parentNode.insertBefore(newObj, resObj);	
+			 		resObj.style.display = 'none';
 			 	}
 			 },
 			 error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -119,22 +121,27 @@ function _trim(string)
 }
 
 var removeFile = (function(obj){
-		var fileId = $(obj).data('id') ? $(obj).data('id') : $(obj).attr('data-id');
+		var fileId = parseInt($(obj).data('id') ? $(obj).data('id') : $(obj).attr('data-id'));
 		var fileInputId = $(obj).data('temp') ? $(obj).data('temp') : $(obj).attr('data-temp');
-		var filepath = $('#' + fileInputId).val();
+		var resid = $(obj).data('resid') ? $(obj).data('resid') : $(obj).attr('data-resid');
+		var filepath = $('#' + _trim(fileInputId)).val();
 		jQuery.ajax({
 			type : 'POST',
 			data : {'fileId' : fileId, 'filepath' : filepath},
 			url : deleteAjaxUrl,
 			dataType : 'json',
 			success : function(data) {
-
+				if (data.code == 200) {
+					$(obj).parent().remove();
+					$('#' + _trim(fileInputId)).val('');
+					$('#' + _trim(resid)).show();
+				}
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				
 			}
 		});
-})();
+});
 
 // var loadImageFile = (function () {
 // 	if (window.FileReader) {

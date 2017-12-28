@@ -15,7 +15,13 @@ $this->title = "Admin";
                     'attributes' => [
                         'username',
                         'email:email',
-                        'avatar',
+                        [
+                            'attribute' => 'avatar',
+                            'format' => 'raw',
+                            'value' => function($model) {
+                                return Html::img($model->getAvatarFormat(), ['width' => 100, 'height' => 100]);
+                            }
+                        ],
                         'status',
                         'created_at',
                         'updated_at',

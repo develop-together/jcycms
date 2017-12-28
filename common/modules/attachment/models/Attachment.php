@@ -87,6 +87,7 @@ class Attachment extends \common\models\BaseModel
         if(!is_dir($this->uploadPath)) {
             mkdir($this->uploadPath, 0777, true);
         }        
+        var_dump($uploadData);exit;
         $extArr = explode('/', trim($uploadData['fileType']));
         $extension = end($extArr);
         $fileNewName = md5(time());

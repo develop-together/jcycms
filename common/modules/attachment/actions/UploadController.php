@@ -12,6 +12,10 @@ namespace common\modules\attachment\actions;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\Response;
+use common\modules\attachment\models\Attachment;
+use yii\web\NotFoundHttpException;
+
 
 class UploadController extends Controller
 {
@@ -160,8 +164,35 @@ class UploadController extends Controller
         ];
     }
 
-    public function actionDelete($id)
+    public function actionDelete()
     {
         //TODO AttachmentIndex里没有该attachment_id就可以把attachment删了
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $post = Yii::$app->request->post();
+            $model = $this->findModel($post['fileId']);
+            $filePath = Yii::getAlias('@backend') . '/web/' . $post['filepath'];
+            $transaction = Yii::$app->db->beginTransaction();
+            try{
+                if ($model->delete() && @unlink($filePath)) {
+                    return ['code' => 200 , 'message' => '删除成功!'];
+                } else{
+                    throw new \yii\web\BadRequestHttpException('操作失败！');
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                return ['code' => 300 , 'message' => $e->getMessage()];
+            }
+        }
+    }
+
+    protected function findModel($id)
+    {
+        $model = Attachment::findOne($id);
+        if ($model) {
+            return $model;
+        } else {
+             throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 }

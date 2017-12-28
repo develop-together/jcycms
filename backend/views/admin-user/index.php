@@ -32,6 +32,16 @@ $assignment = function ($url, $model) {
                                 'class' => '\yii\grid\CheckboxColumn',
                             ],
                             [
+                                'attribute' => 'avatar',
+                                'format' => 'raw',
+                                'value' => function($model) {
+                                    return Html::img($model->getAvatarFormat(), ['width' => '100' , 'height' => '100']);
+                                },
+                                'options' => ['width' => '100' , 'height' => '100'],
+                                'filter' => '',
+                                'enableSorting' => false,
+                            ],                            
+                            [
                                 'attribute' => 'username',
                                 'filter' => '',
                             ],

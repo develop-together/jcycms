@@ -248,6 +248,17 @@ class User extends BaseModel implements IdentityInterface {
 		return Yii::$app->request->baseUrl . 'static/img/noface.png';
 	}
 
+	public function beforeSave($insert)
+	{
+		if (!$insert) {
+			$this->password = $this->password ? $this->password : self::AUTH_KEY;
+		}
+		
+		$this->generateAuthKey();
+		$this->setPassword($this->password);
+		return parent::beforeSave($insert);
+
+	}
 
 	//关联角色[本系统目前仅支持一个用户对应一个角色]
 /*	public function getUserRole()

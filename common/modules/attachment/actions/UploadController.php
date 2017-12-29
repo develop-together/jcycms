@@ -171,7 +171,8 @@ class UploadController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             $post = Yii::$app->request->post();
             $model = $this->findModel($post['fileId']);
-            $filePath = Yii::getAlias('@backend') . '/web/' . $post['filepath'];
+            $filePath = Yii::getAlias('@backend') . '/web/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $post['filepath'];
+            $filePath = str_replace('', "\\", $filePath);
             $transaction = Yii::$app->db->beginTransaction();
             try{
                 if ($model->delete() && @unlink($filePath)) {

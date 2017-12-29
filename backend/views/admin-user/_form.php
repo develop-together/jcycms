@@ -13,6 +13,7 @@ $this->title = "Admin";
         	<?= $this->render('/widgets/_ibox-title') ?>
         	<div class="ibox-content">
                 <?php $form = ActiveForm::begin([
+                            'id' => 'user-form',
                             'fieldConfig' => [
                                 'template' =>"{label}\n<div class=\"col-sm-10\">{input}\n{error}</div>\n{hint}",
                                 'labelOptions' => ['class' => 'col-sm-2 control-label'],

@@ -22,7 +22,14 @@ $this->title = "Admin";
                                 return Html::img($model->getAvatarFormat(), ['width' => 100, 'height' => 100]);
                             }
                         ],
-                        'status',
+                        [
+                                'attribute' => 'status',
+                                'filter' => '',//User::loadStatusOptions()
+                                'value' => function ($model) {
+                                    return $model->statusFormat;
+                                },
+                                'enableSorting' => true,
+                        ],
                         'created_at',
                         'updated_at',
                     ],

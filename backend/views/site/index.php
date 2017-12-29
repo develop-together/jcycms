@@ -30,7 +30,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="<?=Yii::$app->getUser()->getIdentity()->avatar ? Yii::$app->getUser()->getIdentity()->avatar : 'static/img/profile_small.jpg'?>" /></span>
+                            <span><img alt="image" class="img-circle" src="<?=Yii::$app->getUser()->getIdentity()->avatar ?  Yii::$app->request->baseUrl.'/' .Yii::$app->params['uploadSaveFilePath'] . '/' .Yii::$app->getUser()->getIdentity()->avatar : 'static/img/profile_small.jpg'?>" width="64" height="64"/></span>
                              <a data-toggle="dropdown" class="dropdown-toggle" href="#" data-target="#" role="button" aria-haspopup="true" aria-expanded="false">
                                     <span class="clear">
                                         <span class="block m-t-xs">

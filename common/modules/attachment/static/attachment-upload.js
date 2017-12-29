@@ -1,6 +1,42 @@
 var deleteAjaxUrl = '';
-function ajaxUpload(obj, res, options)
+$(document).ready(function(){
+	var $fileInput = $('.upload-kit-input').find("input[type='file']:eq(0)");
+	if ($fileInput.length) {
+		var options = $fileInput.data('options') ? $fileInput.data('options') : $fileInput.attr('data-options');
+		deleteAjaxUrl = options.deleteUrl;
+		var files = options.files;
+		if (files.length) {
+			for (var p in files) {
+				var file = files[p];
+				var res = $('.upload-kit-input').attr('id');
+				var fileInputId = options.id;
+/*				var resObj = document.getElementById(res);
+				var newObj = document.createElement('div');
+				$(newObj).addClass('upload-kit-item done');		
+				newObj.style.cssFloat = 'left';
+				var newImg = new Image();
+				newImg.style.width = '150px';
+				newImg.style.height = '150px';	
+				$(newObj).append('<span class=\'fa fa-trash remove\' data-id =\' ' + file.id + '\' onclick=\'removeFile(this)\' data-temp =\' '+ fileInputId+ '\' data-resid  = \' '+ res +' \'></span>');							 		
+				if (!/image\/\w+/.test(file.filetype)) {//如果不是图片格式
+					newImg.src = '/static/img/file.png';
+				} else {						 			
+					newImg.src = file.path;
+				}
+				
+				newObj.appendChild(newImg);
+				$("#" + fileInputId).val(file.path.replace('\/uploads\/', ''));
+				resObj.parentNode.insertBefore(newObj, resObj);	
+				resObj.style.display = 'none';*/
+				_createImg(res, file, fileInputId);				
+			}
+		}
+	}
+})
+
+function ajaxUpload(obj, res)
 {
+	var options = $(obj).data('options') ? $(obj).data('options') : $(obj).attr('data-options');
 	deleteAjaxUrl = options.deleteUrl;
 	var maxNumberOfFiles = options.maxNumberOfFiles;
 	if (obj.files.length > maxNumberOfFiles) {
@@ -41,7 +77,8 @@ function in_array(needle, haystack)
 
 function _fileUpload(file,options, res) 
 {
-	console.log(file);
+	var form = document.getElementById('user-form');
+	var fd = new FormData(form);
 	var ajaxUrl = options.url;
 	var fileInputId = options.id;
 	var fileInputName = options.name;
@@ -50,11 +87,14 @@ function _fileUpload(file,options, res)
 	var acceptFileTypes = options.acceptFileTypes;
 	var acceptFileTypeArr = acceptFileTypes.split(',');
 	var flag = true;
+	fd.append(fileInputId, file);
+
 	if (!file) {
 		layer.alert('请选择文件', {icon: 0});
 		return false;
 	}
-	if (acceptFileTypes != '' || acceptFileTypes != undefined || acceptFileTypes != null) {
+	acceptFileTypes = _trim(acceptFileTypes);
+	if (acceptFileTypes != '' && acceptFileTypes != undefined && acceptFileTypes != null ) {
 		if (acceptFileTypes == 'image/*') {
 			if (!/image\/\w+/.test(file.type)) {
 				layer.alert('请选择图片', {icon: 0});
@@ -65,54 +105,92 @@ function _fileUpload(file,options, res)
 				return false;
 		}
 	}
+
+	jQuery.ajax({
+		type : 'POST',
+		data : fd,
+		url : ajaxUrl,
+		dataType : 'json',
+		processData: false,  
+		contentType:false,   
+		xhr: function() {  // custom xhr  
+			myXhr = $.ajaxSettings.xhr();  
+			if(myXhr.upload){ // check if upload property exists  
+				myXhr.upload.addEventListener('progress',function(evt){  
+					evt = window.event || evt;
+					var percentComplete = Math.round(evt.loaded*100 / evt.total);  
+					console.log(percentComplete);  
+				}, false); // for handling the progress of the upload  
+			}  
+			return myXhr;  
+		},  		 
+		success : function (data) {
+			if (!data) {
+				flag = false;
+			} else {
+/*				var resObj = document.getElementById(res);
+				var newObj = document.createElement('div');
+				$(newObj).addClass('upload-kit-item done');		
+				newObj.style.cssFloat = 'left';
+				var newImg = new Image();
+				newImg.style.width = '150px';
+				newImg.style.height = '150px';	
+				$(newObj).append('<span class=\'fa fa-trash remove\' data-id =\' ' + data.id + '\' onclick=\'removeFile(this)\' data-temp =\' '+ fileInputId+ '\' data-resid  = \' '+ res +' \'></span>');							 		
+				if (!/image\/\w+/.test(data.filetype)) {//如果不是图片格式
+					newImg.src = '/static/img/file.png';
+				} else {						 			
+					newImg.src = data.filepath;
+				}
+				
+				newObj.appendChild(newImg);
+				$("#" + fileInputId).val(data.filepath.replace('\/uploads\/', ''));
+				resObj.parentNode.insertBefore(newObj, resObj);	
+				resObj.style.display = 'none';*/
+				_createImg(res, data, fileInputId);
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			flag = false;
+			layer.alert(XMLHttpRequest.status + '<br>' + XMLHttpRequest.readyState + '<br>' + textStatus, {icon: 0});		 	
+		}
+	});	
 	//var fileSize = Math.ceil(file.size / (1024 * 1024));
-	var reader = new FileReader();//将文件以Data URL 形式读入页面
-	reader.readAsDataURL(file);
-	reader.onload = function(e) {
-		var data = {
-					fileName : file.name, 
-					fileType : file.type, 
-					fileSize : file.size, 
-					acceptFileTypes : acceptFileTypes,
-					onlyImage : onlyImage,
-					base64Data : this.result
-			};
-		jQuery.ajax({
-			 type : 'POST',
-			 data : {fileparams : data},
-			 url : ajaxUrl,
-			 dataType : 'json',
-			 success : function (data) {
-			 	if (!data) {
-			 		flag = false;
-			 	} else {
-					var resObj = document.getElementById(res);
-					var newObj = document.createElement('div');
-					$(newObj).addClass('upload-kit-item done');		
-					newObj.style.cssFloat = 'left';
-		 			var newImg = new Image();
-		 			newImg.style.width = '150px';
-		 			newImg.style.height = '150px';	
-		 			$(newObj).append('<span class=\'fa fa-trash remove\' data-id =\' ' + data.id + '\' onclick=\'removeFile(this)\' data-temp =\' '+ fileInputId+ '\' data-resid  = \' '+ res +' \'></span>');							 		
-			 		if (!/image\/\w+/.test(data.filetype)) {//如果不是图片格式
-			 			newImg.src = '/static/img/file.png';
-			 		} else {						 			
-			 			newImg.src = data.filepath;
-			 			newObj.appendChild(newImg);
-			 		}
-			 		$("#" + fileInputId).val(data.filepath.replace('\/uploads\/', ''));
-			 		resObj.parentNode.insertBefore(newObj, resObj);	
-			 		resObj.style.display = 'none';
-			 	}
-			 },
-			 error : function(XMLHttpRequest, textStatus, errorThrown) {
-			 	 flag = false;
-				 layer.alert(XMLHttpRequest.status + '<br>' + XMLHttpRequest.readyState + '<br>' + textStatus, {icon: 0});		 	
-			 }
-		});
-	}
+	// var reader = new FileReader();//将文件以Data URL 形式读入页面
+	// reader.readAsDataURL(file);
+	// reader.onload = function(e) {
+	// 	var data = {
+	// 				fileName : file.name, 
+	// 				fileType : file.type, 
+	// 				fileSize : file.size, 
+	// 				acceptFileTypes : acceptFileTypes,
+	// 				onlyImage : onlyImage,
+	// 				base64Data : this.result
+	// 		};
+	// }
 
 	return flag;	
+}
+
+function _createImg(res,data,fileInputId) {
+	var resObj = document.getElementById(res);
+	var newObj = document.createElement('div');
+	$(newObj).addClass('upload-kit-item done');		
+	newObj.style.cssFloat = 'left';
+	var newImg = new Image();
+	newImg.style.width = '150px';
+	newImg.style.height = '150px';	
+	$(newObj).append('<span class=\'fa fa-trash remove\' data-id =\' ' + data.id + '\' onclick=\'removeFile(this)\' data-temp =\' '+ fileInputId+ '\' data-resid  = \' '+ res +' \'></span>');							 		
+	var filepath = data.path ? data.path : data.filepath;
+	if (!/image\/\w+/.test(data.filetype)) {//如果不是图片格式
+		newImg.src = '/static/img/file.png';
+	} else {						 			
+		newImg.src = filepath;
+	}
+	
+	newObj.appendChild(newImg);
+	$("#" + fileInputId).val(filepath.replace('\/uploads\/', ''));
+	resObj.parentNode.insertBefore(newObj, resObj);	
+	resObj.style.display = 'none';	
 }
 
 function _trim(string) 
@@ -125,21 +203,28 @@ var removeFile = (function(obj){
 		var fileInputId = $(obj).data('temp') ? $(obj).data('temp') : $(obj).attr('data-temp');
 		var resid = $(obj).data('resid') ? $(obj).data('resid') : $(obj).attr('data-resid');
 		var filepath = $('#' + _trim(fileInputId)).val();
-		jQuery.ajax({
-			type : 'POST',
-			data : {'fileId' : fileId, 'filepath' : filepath},
-			url : deleteAjaxUrl,
-			dataType : 'json',
-			success : function(data) {
-				if (data.code == 200) {
-					$(obj).parent().remove();
-					$('#' + _trim(fileInputId)).val('');
-					$('#' + _trim(resid)).show();
+		layer.confirm('删除不可恢复，确定要删除吗?',{
+		    bth:['确定','取消']
+		},function(index){
+			jQuery.ajax({
+				type : 'POST',
+				data : {'fileId' : fileId, 'filepath' : filepath},
+				url : deleteAjaxUrl,
+				dataType : 'json',
+				success : function(data) {
+					if (data.code == 200) {
+						$(obj).parent().remove();
+						$('#' + _trim(fileInputId)).val('');
+						$('#' + _trim(resid)).show();
+					}
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					
 				}
-			},
-			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				
-			}
+			});
+		    layer.close(index);
+		},function(){
+		    layer.close(index);;
 		});
 });
 

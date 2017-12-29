@@ -1,12 +1,14 @@
 <?php  
 	namespace common\widgets\fileUploadInput;
 
+	use Yii;
 	use yii\base\Arrayable;
 	use yii\helpers\ArrayHelper;
 	use yii\helpers\Html;
 	use yii\helpers\Json;
 	use yii\helpers\Url;
 	use yii\widgets\InputWidget;
+	use common\modules\attachment\models\Attachment;
 	use common\modules\attachment\assets\AttachmentUploadAsset;
 	
 	class MultipleWidget extends InputWidget
@@ -54,8 +56,6 @@
 	            }
 	        }
 
-	        $this->acceptFileTypes = '';
-
 	        if ($this->hasModel()) {
 	            $this->name = $this->name ? : Html::getInputName($this->model, $this->attribute);
 	            $this->attribute = Html::getAttributeName($this->attribute);
@@ -88,24 +88,37 @@
 	            'maxNumberOfFiles' => $this->maxNumberOfFiles,
 	            'maxFileSize' => $this->maxFileSize,
 	            'acceptFileTypes' => $this->acceptFileTypes,
-	            'files' => $this->value?:[]
+	            'files' => $this->value?:[],
 	        ]);
 		}
 
 		protected function formatAttachment($attachment)
 		{
+			$arr = [];
+			$attachmentModel = null;
 			if (!empty($attachment) && is_string($attachment)) {
-				return [
+				$attachmentModel = Attachment::find()
+					->select(['id', 'filetype'])
+					->where(['filepath' => $attachment])
+					->orderBy(['id' => SORT_DESC])
+					->One();
+				$attachment = Yii::$app->request->baseUrl . '/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $attachment;
+				$arr = [
 					'url' => $attachment,
 					'path' => $attachment,
 				];
-			} elseif (is_array($attachment)) {
-				return $attachment;
-			} elseif ($attachment instanceof Arrayable) {
-				return $attachment->toArray();
+			} else if (is_array($attachment)) {
+            	return $attachment;
+	        } else if ($attachment instanceof Arrayable){
+	        	return $attachment->toArray();
+	        }
+            
+			if ($attachmentModel) {
+				$arr['id'] = $attachmentModel->id;
+				$arr['filetype'] = $attachmentModel->filetype;
 			}
-
-			return [];
+			
+			return $arr;
 		}
 
 		public function run()
@@ -120,7 +133,8 @@
 				'id' => $this->fileInputName,
 				'multiple' => $this->multiple,
 				'accept' => $this->acceptFileTypes,
-				'onchange' => "ajaxUpload(this,'" . $this->parentDivId. "', {$options})",
+				'onchange' => "ajaxUpload(this,'" . $this->parentDivId. "')",
+				'data-options' => $options,
 			]);
 			$content .= Html::endTag('div');
 

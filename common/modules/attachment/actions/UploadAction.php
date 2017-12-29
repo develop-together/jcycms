@@ -6,6 +6,7 @@ use yii\base\Action;
 use yii\base\Exception;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
+use yii\web\UploadedFile;
 use common\modules\attachment\models\Attachment;
 
 class UploadAction extends Action
@@ -20,7 +21,9 @@ class UploadAction extends Action
 
 	public $deleteUrl = ['/upload/delete'];
 
-	public $uploadPostParam = 'fileparams';
+	public $uploadQueryParam = 'fileparam';
+
+	public $uploadParam = '';
 
 	public $uploadData = [];
 
@@ -32,22 +35,36 @@ class UploadAction extends Action
 
 	public function init()
 	{
-		$post = Yii::$app->request->post();
-		if (key_exists($this->uploadPostParam, $post)) {			
-			$this->uploadData = $post[$this->uploadPostParam];
+/*		$post = Yii::$app->request->post();
+		if (key_exists($this->uploadQueryParam, $post)) {			
+			$this->uploadData = $post[$this->uploadQueryParam];
 			$this->allowUploadFileType = $this->uploadData['acceptFileTypes'];
 		}
 
         if ($this->uploadOnlyImage !== true) {
             $this->_validator = 'file';
-        }		
+        }*/
+        if (Yii::$app->request->get($this->uploadQueryParam)) {
+        	$this->uploadParam = Yii::$app->request->get($this->uploadQueryParam);
+        }
+		
+		if ($this->uploadOnlyImage !== true) {
+		    $this->_validator = 'file';
+		}		
 	}
 	
 	public function run()
 	{
 		Yii::$app->response->format = Response::FORMAT_JSON;
 		if (Yii::$app->request->isAjax) {
-			$res = $this->uploadOne();
+			// $res = $this->uploadOne();
+			// return $res;
+			$files = UploadedFile::getInstanceByName($this->uploadParam);
+			if(!$this->multiple) {
+				$res = $this->uploadOne($files);
+			} else {
+				$res = $this->uploadMore($files);
+			}
 
 			return $res;
 		} elseif (Yii::$app->request->isPost) {
@@ -55,26 +72,55 @@ class UploadAction extends Action
 		}
 	}
 
-	private function uploadOne()
+	private function uploadOne(UploadedFile $file)
 	{
 		try{
-			$attachmentModel = new Attachment();
-			if ($attachmentModel->uploadFormPost($this->path, $this->uploadData)) {
+			 $attachmentModel = new Attachment();
+			 $result = $attachmentModel->uploadFormPost($this->path, $file);
+			 if ($result) {
 				return [
 					'id' => $attachmentModel->id, 
 					'filename' => $attachmentModel->filename, 
 					'extension' => $attachmentModel->extension, 
 					'filepath' => Yii::$app->request->baseUrl . '/'. Yii::$app->params['uploadSaveFilePath'] . '/' . $attachmentModel->filepath,
 					'filetype' => $attachmentModel->filetype,
-				];
+				];			 	
 			} else {
 				return [];
 			}
-
-		} catch (Exception $e) {
+		} catch(Exception $e) {
 			$result = ['error' => $e->getMessage()];
 		}
 
 		return $result;
+		// try{
+		// 	$attachmentModel = new Attachment();
+		// 	if ($attachmentModel->uploadFormPost($this->path, $this->uploadData)) {
+		// 		return [
+		// 			'id' => $attachmentModel->id, 
+		// 			'filename' => $attachmentModel->filename, 
+		// 			'extension' => $attachmentModel->extension, 
+		// 			'filepath' => Yii::$app->request->baseUrl . '/'. Yii::$app->params['uploadSaveFilePath'] . '/' . $attachmentModel->filepath,
+		// 			'filetype' => $attachmentModel->filetype,
+		// 		];
+		// 	} else {
+		// 		return [];
+		// 	}
+
+		// } catch (Exception $e) {
+		// 	$result = ['error' => $e->getMessage()];
+		// }
+
+		// return $result;
+	}
+
+	private function uploadMore(array $files)
+	{
+		$res = [];
+		foreach ($fieles as $file) {
+			$res[] = $this->uploadOne($file);
+		}
+
+		return $res;
 	}	
 }

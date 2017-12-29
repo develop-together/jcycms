@@ -68,6 +68,7 @@ class AdminUserController extends Controller
         $model->setScenario('create');
         $rolesModel = new AdminRoleUser();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -86,14 +87,36 @@ class AdminUserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        $model->setScenario('update');
+        $rolesModel = AdminRoleUser::findOne(['user_id' => $id]);
+        if (!$rolesModel) {
+            $rolesModel = new AdminRoleUser();
+            $rolesModel->user_id = $id;
         }
+
+        if (Yii::$app->request->post()) {
+            if ($model->load(Yii::$app->request->post()) 
+                &&$model->validate() 
+                && $rolesModel->load(Yii::$app->request->post()) 
+                && $model->save()  
+                && $rolesModel->validate() 
+                && $rolesModel->save()) {
+                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                return $this->redirect(['index']);
+            } else {
+                $errors = $model->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+                Yii::$app->getSession()->setFlash('error', $err);  
+            }
+        } 
+
+        return $this->render('update', [
+            'model' => $model,
+            'rolesModel' => $rolesModel,
+        ]);
     }
 
     /**

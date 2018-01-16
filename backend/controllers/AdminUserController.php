@@ -9,6 +9,7 @@ use backend\models\AdminRoleUser;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\actions\DeleteAction;
 
 /**
  * AdminUserController implements the CRUD actions for User model.
@@ -26,6 +27,16 @@ class AdminUserController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                 ],
+            ],
+        ];
+    }
+
+    public function actions()
+    {
+        return [
+            'delete' => [
+                'class' => DeleteAction::className(),
+                'modelClass' => User::className(),
             ],
         ];
     }
@@ -96,7 +107,7 @@ class AdminUserController extends Controller
 
         if (Yii::$app->request->post()) {
             if ($model->load(Yii::$app->request->post()) 
-                &&$model->validate() 
+                && $model->validate() 
                 && $rolesModel->load(Yii::$app->request->post()) 
                 && $model->save()  
                 && $rolesModel->validate() 
@@ -120,19 +131,6 @@ class AdminUserController extends Controller
     }
 
     /**
-     * Deletes an existing User model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
@@ -146,5 +144,17 @@ class AdminUserController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionAssignment($id)
+    {   
+        $userModel = $this->findModel($id);
+        $rolesModel = AdminRoleUser::findOne(['user_id' => $id]);
+        if (!$rolesModel) {
+            $rolesModel = new AdminRoleUser();
+            $rolesModel->user_id = $id;
+        }
+
+        return $this->render('assignment', ['userModel' => $userModel, ]);        
     }
 }

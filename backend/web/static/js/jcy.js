@@ -1,6 +1,8 @@
 yii.confirm = function(message, ok, cancel) {
     var url = $(this).attr('href');
     var if_pjax = $(this).attr('data-pjax') ? $(this).attr('data-pjax') : 0;
+    var type = $(this).attr('data-method') ? $(this).attr('data-method') : "get";
+    $(this).attr('href', 'javascript:;');
     swal({
         title: message,
         text: tips.realyToDo,
@@ -19,7 +21,7 @@ yii.confirm = function(message, ok, cancel) {
                 $.ajax({
                     "url": url,
                     "dataType": "json",
-                    "type": $(this).attr('data-method') ? $(this).attr('data-method') : "get",
+                    "type": type,
                     "success": function (data) {
                         if (data.code == 200) {
                             swal(tips.success + '!', tips.operatingSuccess + '.', "success");

@@ -5,6 +5,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use common\models\BaseModel;
+use yii\web\ForbiddenHttpException;
 //use AdminRoleUser;
 use yii\web\IdentityInterface;
 
@@ -259,7 +260,12 @@ class User extends BaseModel implements IdentityInterface {
 		return parent::beforeSave($insert);
 
 	}
-
+	public function beforeDelete() {
+		if ($this->id == 3) {
+			throw new ForbiddenHttpException(yii::t('app', "Not allowed to delete {attribute}", ['attribute' => yii::t('app', 'default super administrator admin')]));
+		}
+		return true;
+	}
 	//关联角色[本系统目前仅支持一个用户对应一个角色]
 /*	public function getUserRole()
 	{

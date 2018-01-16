@@ -8,12 +8,12 @@ use yii\helpers\Url;
 
 $this->title = 'Admin';
 $assignment = function ($url, $model) {
-    return Html::a('<i class="fa fa-tablet"></i> ' . yii::t('app', 'Assign Roles'), Url::to([
-        'assign',
-        'uid' => $model['id']
-    ]), [
+    return Html::a('<i class="fa fa-tablet"></i> ' . yii::t('app', 'Assign Roles'), 'javacript:;', [
         'title' => 'assignment',
-        'class' => 'btn btn-white btn-sm'
+        'class' => 'btn btn-white btn-sm',
+        'onclick' => 'assignRole(this)',
+        'data-url' => $url,
+        'data-id' => $model['id'],
     ]);
 };
 ?>
@@ -75,3 +75,19 @@ $assignment = function ($url, $model) {
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function assignRole(obj)
+    {
+        var id = $(obj).data('id') ? $(obj).data('id') : $(obj).attr('data-id');
+        var url = $(obj).data('url') ? $(obj).data('url') : $(obj).attr('data-url');
+        layer.open({
+          type: 2,
+          title: '角色分配',
+          shadeClose: true,
+          shade: 0.8,
+          area: ['600px', '90%'],
+          maxmin:true,
+          content: url //iframe的url
+        });         
+    }
+</script>

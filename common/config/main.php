@@ -17,6 +17,7 @@ return [
                     'class' => 'common\modules\attachment\Module',
             ],
     ],
+    // Yii2框架为我们自定义好的  controllers,Models,views,标准的MVC结构框架，但是有些时候我们写接口希望结构更加清晰而不希望与其他控制器放在一起，想自定义文件夹作为API的控制器类
     'controllerMap' => [
             'upload' => [
                 'class' => 'common\modules\attachment\actions\UploadController',

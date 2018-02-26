@@ -49,11 +49,11 @@ class User extends BaseModel implements IdentityInterface {
 	 * @inheritdoc
 	 */
 	public function scenarios() {
-		return [
+		return array_merge(parent::scenarios, [
 			'default' => ['username', 'email'],
 			'create' => ['username', 'email', 'password', 'avatar', 'status'],
 			'update' => ['username', 'email', 'password', 'avatar', 'status'],
-		];
+		]);
 	}
 
 	/**

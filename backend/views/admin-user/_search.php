@@ -13,7 +13,7 @@ Yii::$container->set(\yii\widgets\ActiveField::className(), ['template' => "{lab
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
-        'method' => 'get',
+        'method' => 'post',
         'options' => ['class' => 'form-inline'],
     ]); ?>
     <?= $form->field($model, 'username') ?>

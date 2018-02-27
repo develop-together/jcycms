@@ -19,6 +19,7 @@ echo "<?php\n";
 namespace <?= $generator->ns ?>;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
@@ -35,6 +36,7 @@ use Yii;
  */
 class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
+
     /**
      * @inheritdoc
      */
@@ -42,16 +44,6 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
     {
         return '<?= $generator->generateTableName($tableName) ?>';
     }
-<?php if ($generator->db !== 'db'): ?>
-
-    /**
-     * @return \yii\db\Connection the database connection used by this AR class.
-     */
-    public static function getDb()
-    {
-        return Yii::$app->get('<?= $generator->db ?>');
-    }
-<?php endif; ?>
 
     /**
      * @inheritdoc
@@ -66,11 +58,11 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
      */
     public function attributeLabels()
     {
-        return [
+        return ArrayHelper::merge(parent::attributeLabels(), [
 <?php foreach ($labels as $name => $label): ?>
             <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
 <?php endforeach; ?>
-        ];
+        ]);
     }
 <?php foreach ($relations as $name => $relation): ?>
 

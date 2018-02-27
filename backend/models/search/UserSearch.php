@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models;
+namespace backend\models\search;
 
 use Yii;
 use yii\base\Model;

@@ -1,0 +1,13 @@
+#2018-02-27
+
+CREATE TABLE `byt_admin_log` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `user_id` INT(11) NOT NULL DEFAULT 0 COMMENT '操作人',
+  `route` VARCHAR(255) NULL DEFAULT NULL COMMENT '路由',
+  `description` TEXT NULL COMMENT '描述',
+  `created_at` INT(11) NOT NULL DEFAULT 0 COMMENT '添加时间',
+  `updated_at` INT(11) NOT NULL DEFAULT 0 COMMENT '修改时间',
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COMMENT = '操作日志';

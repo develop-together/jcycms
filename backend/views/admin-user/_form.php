@@ -6,6 +6,7 @@ use backend\models\AdminRoles;
 use backend\models\User;
 use common\widgets\fileUploadInput\FileUploadInputWidget;
 $this->title = "Admin";
+
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -27,6 +28,7 @@ $this->title = "Admin";
                             ]
                         ]);
                         ?>
+
                 <?= $form->field($model, 'username')->textInput(['maxlength' => 64]) ?>
 
                 <div class="hr-line-dashed"></div>

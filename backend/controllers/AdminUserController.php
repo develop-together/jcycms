@@ -4,32 +4,17 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\User;
-use backend\models\UserSearch;
+use backend\models\search\UserSearch;
 use backend\models\AdminRoleUser;
-use yii\web\Controller;
+use common\components\BackendController;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use backend\actions\DeleteAction;
 
 /**
  * AdminUserController implements the CRUD actions for User model.
  */
-class AdminUserController extends Controller
+class AdminUserController extends BackendController
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
     public function actions()
     {
@@ -40,7 +25,7 @@ class AdminUserController extends Controller
             ],
         ];
     }
-
+    
     /**
      * Lists all User models.
      * @return mixed

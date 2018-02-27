@@ -87,6 +87,9 @@ $this->title = yii::t('app', 'Backend Manage System');
                     <li>
                         <a class="J_menuItem" href="<?=Url::toRoute(['gii/default'])?>" ><i class="fa fa-cutlery"></i> <span class="nav-label">GII</span></a>
                     </li>
+                    <li>
+                        <a class="J_menuItem" href="<?=Url::toRoute(['admin-log/index'])?>" ><i class="fa fa fa-history"></i> <span class="nav-label">日志</span></a>
+                    </li>
                 </ul>
             </div>
         </nav>

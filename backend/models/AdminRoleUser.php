@@ -13,7 +13,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $created_at
  * @property string $updated_at
  */
-class AdminRoleUser extends \common\models\BaseModel
+class AdminRoleUser extends \common\components\BaseModel
 {
     /**
      * @inheritdoc

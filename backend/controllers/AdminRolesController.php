@@ -5,27 +5,12 @@ namespace backend\controllers;
 use Yii;
 use backend\models\AdminRoles;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
+use common\components\BackendController;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use backend\actions\DeleteAction;
 
-class AdminRolesController extends Controller
+class AdminRolesController extends BackendController
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['GET', 'POST'],
-                ],
-            ],
-        ];
-    }
 
     public function actions()
     {
@@ -36,7 +21,7 @@ class AdminRolesController extends Controller
             ],
         ];
     }
-
+    
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([

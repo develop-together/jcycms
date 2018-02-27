@@ -24,7 +24,7 @@ use yii\helpers\FileHelper;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Attachment extends \common\models\BaseModel
+class Attachment extends \common\components\BaseModel
 {
     /**
      * @inheritdoc

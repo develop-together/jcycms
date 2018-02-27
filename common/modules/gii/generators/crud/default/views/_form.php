@@ -1,5 +1,8 @@
 <?php
 
+use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
+
 /* @var $this yii\web\View */
 /* @var $generator yii\gii\generators\crud\Generator */
 
@@ -14,26 +17,44 @@ echo "<?php\n";
 ?>
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use yii\widgets\ActiveForm AS BAF;
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="box box-success">
-    <div class="box-body">
-    <?= "<?php " ?>$form = ActiveForm::begin(); ?>
-
-<?php foreach ($generator->getColumnNames() as $attribute) {
-    if (in_array($attribute, $safeAttributes)) {
-        echo "    <?= " . $generator->generateActiveField($attribute) . " ?>\n\n";
-    }
-} ?>
-    <div class="form-group">
-        <?= "<?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('Create') ?> : <?= $generator->generateString('Update') ?>, ['class' => 'btn btn-success btn-flat']) ?>
-    </div>
-
-    <?= "<?php " ?>ActiveForm::end(); ?>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <?= '<?='; ?> $this->render('/widgets/_ibox-title') ?>
+            <div class="ibox-content">
+                <?= "<?php " ?>$form = BAF::begin([
+                            'fieldConfig' => [
+                                'template' =>"{label}\n<div class=\"col-sm-10\">{input}\n{error}</div>\n{hint}",
+                                'labelOptions' => ['class' => 'col-sm-2 control-label'],
+                                'options' => ['class' => 'form-group'],    
+                                'inputOptions' => ['class' => 'form-control'],
+                                'errorOptions' => ['class' => 'help-block m-b-none'],                            
+                            ],
+                            'options' => ['class' => 'form-horizontal'],
+                ]); ?>    
+                <?php foreach ($generator->getColumnNames() as $attribute) {
+                    if (in_array($attribute, $safeAttributes) && !in_array($attribute, ['created_at', 'updated_at'])) {
+                ?>
+                    <?= "<?= " . $generator->generateActiveField($attribute)."; ?>\n"; ?>
+                <?php } } ?>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <?= '<?='; ?> Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                        
+                        <?= '<?='; ?> Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']);?>                        
+                    </div>
+                </div>
+                <?= "<?php " ?> BAF::end(); ?>            
+            </div>
+        </div>
     </div>
 </div>
+

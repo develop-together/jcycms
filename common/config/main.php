@@ -1,17 +1,38 @@
 <?php
-return [
+$config = [
     'name' => 'Jcy CMS',
     'version' => '0.0.1',
-	'aliases' => [
-		'@bower' => '@vendor/bower-asset',
-		'@npm' => '@vendor/npm-asset',
-	],
-	'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
-	'language' => 'zh-CN', //默认语言
-	'timeZone' => 'Asia/Shanghai', //默认时区
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm' => '@vendor/npm-asset',
+    ],
+    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'language' => 'zh-CN', //默认语言
+    'timeZone' => 'Asia/Shanghai', //默认时区
     'modules' => [
             'gii' => [
                     'class' => 'common\modules\gii\Module',
+                    'allowedIPs' => ['127.0.0.1', '::1'],
+                    'generators' => [
+                        'crud' => [
+                            'class' => 'yii\gii\generators\crud\Generator',
+                            'templates' => [
+                                'myCrud' => '@common/modules/gii/generators/crud/default',
+                            ],
+                        ],
+                        'model' => [
+                            'class' => 'yii\gii\generators\model\Generator',
+                            'templates' => [
+                                'myModel' => '@common/modules/gii/generators/model/default',
+                            ],
+                        ],
+                        'form' => [
+                            'class' => 'yii\gii\generators\form\Generator',
+                            'templates' => [
+                                'myForm' => '@common/modules/gii/generators/form/default',
+                            ],
+                        ],
+                    ],
             ],
             'attachment' => [
                     'class' => 'common\modules\attachment\Module',
@@ -23,10 +44,10 @@ return [
                 'class' => 'common\modules\attachment\actions\UploadController',
             ],
     ],    
-	'components' => [
-		'cache' => [
-			'class' => 'yii\caching\FileCache',
-		],
+    'components' => [
+        'cache' => [
+            'class' => 'yii\caching\FileCache',
+        ],
         'formatter' => [
             'dateFormat' => 'php:Y-m-d H:i',
             'datetimeFormat' => 'php:Y-m-d H:i:s',
@@ -62,6 +83,8 @@ return [
                     ],
                 ],
             ],
-        ],                			
-	],
+        ],                          
+    ],
 ];
+
+return $config;

@@ -16,7 +16,7 @@ use yii\web\BadRequestHttpException;
  * @property string $created_at
  * @property integer $updated_at
  */
-class AdminRoles extends \common\models\BaseModel
+class AdminRoles extends \common\components\BaseModel
 {
     /**
      * @inheritdoc

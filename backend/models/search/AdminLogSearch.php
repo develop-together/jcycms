@@ -1,39 +1,16 @@
 <?php
-/**
- * This is the template for generating CRUD search class of the specified model.
- */
 
-use yii\helpers\StringHelper;
-
-
-/* @var $this yii\web\View */
-/* @var $generator yii\gii\generators\crud\Generator */
-
-$modelClass = StringHelper::basename($generator->modelClass);
-$searchModelClass = StringHelper::basename($generator->searchModelClass);
-if ($modelClass === $searchModelClass) {
-    $modelAlias = $modelClass . 'Model';
-}
-$rules = $generator->generateSearchRules();
-$labels = $generator->generateSearchLabels();
-$searchAttributes = $generator->getSearchAttributes();
-$searchConditions = $generator->generateSearchConditions();
-
-echo "<?php\n";
-?>
-
-namespace <?= StringHelper::dirname(ltrim($generator->searchModelClass, '\\')) ?>;
+namespace backend\models\search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use <?= ltrim($generator->modelClass, '\\') . (isset($modelAlias) ? " as $modelAlias" : "") ?>;
+use backend\models\AdminLog;
 
 /**
- * <?= $searchModelClass ?> represents the model behind the search form about `<?= $generator->modelClass ?>`.
+ * AdminLogSearch represents the model behind the search form about `backend\models\AdminLog`.
  */
-class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $modelClass ?>
-
+class AdminLogSearch extends AdminLog
 {
     /**
      * @inheritdoc
@@ -41,7 +18,8 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
     public function rules()
     {
         return [
-            <?= implode(",\n            ", $rules) ?>,
+            [['id', 'user_id', 'created_at', 'updated_at'], 'integer'],
+            [['route', 'description'], 'safe'],
         ];
     }
 
@@ -63,7 +41,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
      */
     public function search($params)
     {
-        $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find();
+        $query = AdminLog::find();
 
         // add conditions that should always apply here
 
@@ -99,9 +77,6 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
                     $field => $sort,
                 ],
             ],
-            'pagination' => [
-                'pageSize' => 10,
-            ]
         ]);
 
         if (!$this->validate()) {
@@ -111,7 +86,15 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
         }
 
         // grid filtering conditions
-        <?= implode("\n        ", $searchConditions) ?>
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'user_id' => $this->user_id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ]);
+
+        $query->andFilterWhere(['like', 'route', $this->route])
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

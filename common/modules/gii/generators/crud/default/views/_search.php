@@ -10,40 +10,36 @@ echo "<?php\n";
 ?>
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\widgets\ActiveForm AS BAF;
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->searchModelClass, '\\') ?> */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<div class="box box-success">
-    <div class="box-header">
-        <h2 class="box-title"><?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>搜索</h2>
-        <div class="box-tools"><button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" data-original-title="" title=""><i class="fa fa-minus"></i></button></div>
-    </div>
-    <div class="box-body">
 
-        <?= "<?php " ?>$form = ActiveForm::begin([
+<div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-search">
+
+    <?= "<?php " ?>$form = BAF::begin([
         'action' => ['index'],
-        'method' => 'get',
-        ]); ?>
+        'method' => 'post',
+        'options' => ['class' => 'form-inline'],
+    ]); ?>
 
-        <?php
-        $count = 0;
-        foreach ($generator->getColumnNames() as $attribute) {
-            if (++$count < 6) {
-                echo "    <?= " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
-            } else {
-                echo "    <?php // echo " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
-            }
-        }
-        ?>
-        <div class="form-group">
-            <?= "<?= " ?>Html::submitButton(<?= $generator->generateString('Search') ?>, ['class' => 'btn btn-success btn-flat']) ?>
-            <?= "<?= " ?>Html::resetButton(<?= $generator->generateString('Reset') ?>, ['class' => 'btn btn-default btn-flat']) ?>
-        </div>
-
-        <?= "<?php " ?>ActiveForm::end(); ?>
-
+<?php
+$count = 0;
+foreach ($generator->getColumnNames() as $attribute) {
+    if (++$count < 6) {
+        echo "    <?= " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
+    } else {
+        echo "    <?php // echo " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
+    }
+}
+?>
+    <div class="form-group">
+        <?= "<?= " ?>Html::submitButton('<?= Yii::t('app', 'Search') ?>', ['class' => 'btn btn-primary']) ?>
+        <?= "<?= " ?>Html::resetButton('<?= Yii::t('app', 'Reset') ?>', ['class' => 'btn btn-default']) ?>
     </div>
+
+    <?= "<?php " ?>BAF::end(); ?>
+
 </div>

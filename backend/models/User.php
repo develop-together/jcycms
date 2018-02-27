@@ -4,12 +4,13 @@ namespace backend\models;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
-use common\models\BaseModel;
+use common\components\BaseModel;
 use yii\web\ForbiddenHttpException;
 //use AdminRoleUser;
 use yii\web\IdentityInterface;
 
-class User extends BaseModel implements IdentityInterface {
+class User extends BaseModel implements IdentityInterface 
+{
 	const STATUS_DELETED = 0;
 	const STATUS_ACTIVE = 10;
 	const AUTH_KEY = '123456';
@@ -25,14 +26,16 @@ class User extends BaseModel implements IdentityInterface {
 	 *
 	 * @return string
 	 */
-	public static function tableName() {
+	public static function tableName() 
+	{
 		return '{{%admin_user}}';
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function rules() {
+	public function rules() 
+	{
 		return [
 			[['username', 'auth_key', 'avatar', 'password', 'repassword', 'password_hash'], 'string'],
 			['email', 'email'],
@@ -45,11 +48,10 @@ class User extends BaseModel implements IdentityInterface {
 		];
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	public function scenarios() {
-		return array_merge(parent::scenarios, [
+	public function scenarios()
+	{
+		$parentScenarios = parent::scenarios();
+		return array_merge($parentScenarios, [
 			'default' => ['username', 'email'],
 			'create' => ['username', 'email', 'password', 'avatar', 'status'],
 			'update' => ['username', 'email', 'password', 'avatar', 'status'],
@@ -59,7 +61,8 @@ class User extends BaseModel implements IdentityInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function attributeLabels() {
+	public function attributeLabels() 
+	{
 		return [
 			'username' => yii::t('app', 'Username'),
 			'email' => yii::t('app', 'Email'),
@@ -73,16 +76,8 @@ class User extends BaseModel implements IdentityInterface {
 		];
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	public function behaviors() {
-		return [
-			TimestampBehavior::className(),
-		];
-	}
-
-	public static function getStatuses() {
+	public static function getStatuses() 
+	{
 		return [
 			self::STATUS_ACTIVE => yii::t('app', 'Normal'),
 			self::STATUS_DELETED => yii::t('app', 'Disabled'),
@@ -92,14 +87,16 @@ class User extends BaseModel implements IdentityInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public static function findIdentity($id) {
+	public static function findIdentity($id) 
+	{
 		return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public static function findIdentityByAccessToken($token, $type = null) {
+	public static function findIdentityByAccessToken($token, $type = null) 
+	{
 		throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
 	}
 
@@ -109,7 +106,8 @@ class User extends BaseModel implements IdentityInterface {
 	 * @param string $username
 	 * @return static|null
 	 */
-	public static function findByUsername($username) {
+	public static function findByUsername($username) 
+	{
 		return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
 	}
 
@@ -119,7 +117,8 @@ class User extends BaseModel implements IdentityInterface {
 	 * @param string $token password reset token
 	 * @return static|null
 	 */
-	public static function findByPasswordResetToken($token) {
+	public static function findByPasswordResetToken($token) 
+	{
 		if (!static::isPasswordResetTokenValid($token)) {
 			return null;
 		}
@@ -136,7 +135,8 @@ class User extends BaseModel implements IdentityInterface {
 	 * @param string $token password reset token
 	 * @return boolean
 	 */
-	public static function isPasswordResetTokenValid($token) {
+	public static function isPasswordResetTokenValid($token) 
+	{
 		if (empty($token)) {
 			return false;
 		}
@@ -149,21 +149,24 @@ class User extends BaseModel implements IdentityInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function getId() {
+	public function getId() 
+	{
 		return $this->getPrimaryKey();
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function getAuthKey() {
+	public function getAuthKey() 
+	{
 		return $this->auth_key;
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function validateAuthKey($authKey) {
+	public function validateAuthKey($authKey) 
+	{
 		return $this->getAuthKey() === $authKey;
 	}
 
@@ -173,7 +176,8 @@ class User extends BaseModel implements IdentityInterface {
 	 * @param string $password password to validate
 	 * @return boolean if password provided is valid for current user
 	 */
-	public function validatePassword($password) {
+	public function validatePassword($password) 
+	{
 		return Yii::$app->security->validatePassword($password, $this->password_hash);
 	}
 
@@ -182,32 +186,37 @@ class User extends BaseModel implements IdentityInterface {
 	 *
 	 * @param string $password
 	 */
-	public function setPassword($password) {
+	public function setPassword($password) 
+	{
 		$this->password_hash = Yii::$app->security->generatePasswordHash($password);
 	}
 
 	/**
 	 * Generates "remember me" authentication key
 	 */
-	public function generateAuthKey() {
+	public function generateAuthKey() 
+	{
 		$this->auth_key = Yii::$app->security->generateRandomString();
 	}
 
 	/**
 	 * Generates new password reset token
 	 */
-	public function generatePasswordResetToken() {
+	public function generatePasswordResetToken() 
+	{
 		$this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
 	}
 
 	/**
 	 * Removes password reset token
 	 */
-	public function removePasswordResetToken() {
+	public function removePasswordResetToken() 
+	{
 		$this->password_reset_token = null;
 	}
 
-	public function signUp() {
+	public function signUp() 
+	{
 		if (!$this->validate()) {
 			return false;
 		}

@@ -12,6 +12,7 @@ use Yii;
 use Closure;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use backend\models\AdminRoles;
 
 /**
  * @inheritdoc
@@ -68,22 +69,22 @@ class ActionColumn extends \yii\grid\ActionColumn
         }
         if (! isset($this->buttons['update'])) {
             $this->buttons['update'] = function ($url, $model, $key, $index, $gridView) {
-                return Html::a('<i class="fa fa-pencil"></i> ' . Yii::t('app', 'Update'), $url, [
+                return Yii::$app->controller->id == 'admin-user' && @$model->userRole->role_id != AdminRoles::SUPER_ROLE_ID ? Html::a('<i class="fa fa-pencil"></i> ' . Yii::t('app', 'Update'), $url, [
                     'title' => Yii::t('app', 'Update'),
                     'data-pjax' => '0',
                     'class' => 'btn btn-white btn-sm',
-                ]);
+                ]) : '';
             };
         }
         if (! isset($this->buttons['delete'])) {
             $this->buttons['delete'] = function ($url, $model, $key, $index, $gridView) {
-                return Html::a('<i class="glyphicon glyphicon-trash" aria-hidden="true"></i> ' . Yii::t('app', 'Delete'), $url, [
+                return Yii::$app->controller->id == 'admin-user' && @$model->userRole->role_id != AdminRoles::SUPER_ROLE_ID ? Html::a('<i class="glyphicon glyphicon-trash" aria-hidden="true"></i> ' . Yii::t('app', 'Delete'), $url, [
                     'title' => Yii::t('app', 'Delete'),
                     'data-confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
                     'data-method' => 'post',
                     'data-pjax' => '0',
                     'class' => 'btn btn-white btn-sm',
-                ]);
+                ]) : '';
             };
         }
     }

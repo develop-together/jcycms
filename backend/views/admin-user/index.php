@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use backend\grid\GridView;
 use backend\models\User;
+use backend\models\AdminRoles;
 use backend\grid\ActionColumn;
 use yii\helpers\Url;
 
@@ -16,6 +17,7 @@ $assignment = function ($url, $model) {
         'data-id' => $model['id'],
     ]);
 };
+
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -90,4 +92,5 @@ $assignment = function ($url, $model) {
           content: url //iframe的url
         });         
     }
+
 </script>

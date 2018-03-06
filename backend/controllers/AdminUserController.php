@@ -6,6 +6,7 @@ use Yii;
 use backend\models\User;
 use backend\models\search\UserSearch;
 use backend\models\AdminRoleUser;
+use backend\models\AdminRoles;
 use common\components\BackendController;
 use yii\web\NotFoundHttpException;
 use backend\actions\DeleteAction;
@@ -133,13 +134,8 @@ class AdminUserController extends BackendController
 
     public function actionAssignment($id)
     {   
-        $userModel = $this->findModel($id);
-        $rolesModel = AdminRoleUser::findOne(['user_id' => $id]);
-        if (!$rolesModel) {
-            $rolesModel = new AdminRoleUser();
-            $rolesModel->user_id = $id;
-        }
-
-        return $this->render('assignment', ['userModel' => $userModel, ]);        
+        $model = $this->findModel($id);
+        $roleLists = AdminRoles::loadRolesOptions();
+        return $this->render('assignment', ['model' => $model, 'roleLists' => $roleLists]);        
     }
 }

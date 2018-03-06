@@ -18,6 +18,8 @@ use yii\web\BadRequestHttpException;
  */
 class AdminRoles extends \common\components\BaseModel
 {
+    const SUPER_ROLE_ID = 1;
+    
     /**
      * @inheritdoc
      */

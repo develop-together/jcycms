@@ -23,14 +23,7 @@ class AdminRoleUser extends \common\components\BaseModel
         return '{{%admin_role_user}}';
     }
 
-    public function behaviors()
-    {
-        if ($this->hasAttribute('created_at') && $this->hasAttribute('updated_at')) {
-            $behaviors[] = TimestampBehavior::className();
-        }
 
-        return $behaviors;
-    }
     /**
      * @inheritdoc
      */

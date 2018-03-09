@@ -3,6 +3,7 @@
 use backend\assets\IndexAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use backend\models\Menu;
 
 IndexAsset::register($this);
 $this->title = yii::t('app', 'Backend Manage System');
@@ -60,10 +61,38 @@ $this->title = yii::t('app', 'Backend Manage System');
                         <div class="logo-element">H+
                         </div>
                     </li>
+                    <!--动态菜单配置开始-->
+                        <?php 
+                         echo Menu::getBackendMenus();
+                            // if ($this->beginCache('backend_menu', [
+                            //     'variations' => [
+                            //         Yii::$app->language,
+                            //     ],                                
+                            // ])){
+                            //     echo Menu::getBackendMenus();
+                            //     $this->endCache();
+                            // }
+                         ?>
+                    <!--动态菜单配置结束-->
+<!--                     <li>
+                        <a href="#">
+                            <i class="fa fa-th-list"></i>
+                            <span class="nav-label">菜单</span> 
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a class="J_menuItem" href="javascript:;" >前台菜单</a>
+                            </li>
+                            <li>
+                            <a class="J_menuItem" href="<?= url::toRoute(['menu/index']) ?>">后台菜单</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li>
                         <a href="#">
                             <i class="fa fa-users"></i>
-                            <span class="nav-label">用户</span>
+                            <span class="nav-label">用户</span> 
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
@@ -89,7 +118,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                     </li>
                     <li>
                         <a class="J_menuItem" href="<?=Url::toRoute(['admin-log/index'])?>" ><i class="fa fa fa-history"></i> <span class="nav-label">日志</span></a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </nav>

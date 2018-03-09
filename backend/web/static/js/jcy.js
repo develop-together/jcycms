@@ -1,3 +1,39 @@
+(function(){
+    var jcms = function () {
+        this.ajax = function(type, url, data, dataType, async) {
+            data.push({'_csrf_backend' : $("meta[name='csrf-token']").attr('content')});
+            jQuery.ajax({
+                type: type,
+                url: url,
+                data: data,
+                async: async,
+                dataType: dataType,
+                success: function(data) {
+                   console.log(data);
+                },
+                error: function(qXHR, textStatus, errorThrown) {
+                     swal(tips.error + ': ' + jqXHR.responseJSON.message, tips.operatingFailed + '.', "error");
+                }
+            });
+        }
+
+        this.callback = function(message, state) {
+            state = !state || 'ok';
+            var config = [
+                ['ok', [200, '操作成功']],
+                ['error', [300, '操作失败']],
+                ['timeout', [301, '操作超时']],
+            ];
+            var statusCode = config[state][0];
+            message = !message || config[state][1];
+            layer.alert('statusCode:' + statusCode + 'message:' + message);
+        }
+    }
+
+    var jcmsobj = new jcms()
+    window.jcms = jcmsobj;
+})(window)
+
 yii.confirm = function(message, ok, cancel) {
     var url = $(this).attr('href');
     var if_pjax = $(this).attr('data-pjax') ? $(this).attr('data-pjax') : 0;

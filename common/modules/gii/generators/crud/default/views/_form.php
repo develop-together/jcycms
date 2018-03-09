@@ -43,7 +43,7 @@ use yii\widgets\ActiveForm AS BAF;
                 <?php foreach ($generator->getColumnNames() as $attribute) {
                     if (in_array($attribute, $safeAttributes) && !in_array($attribute, ['created_at', 'updated_at'])) {
                 ?>
-                    <?= "<?= " . $generator->generateActiveField($attribute)."; ?>\n"; ?>
+                    <?= "<?= " . $generator->generateActiveField($attribute)."; ?>\n\n"; ?>
                 <?php } } ?>
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">

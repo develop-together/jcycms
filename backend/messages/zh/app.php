@@ -133,7 +133,7 @@ return [
 	/*Comment*/
 
 	/*friend link*/
-	'Target' => '新窗口打开',
+	'Target' => '窗口打开方式',
 	/*friend link*/
 
 	/*menu*/

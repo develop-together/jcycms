@@ -63,62 +63,25 @@ $this->title = yii::t('app', 'Backend Manage System');
                     </li>
                     <!--动态菜单配置开始-->
                         <?php 
-                         echo Menu::getBackendMenus();
-                            // if ($this->beginCache('backend_menu', [
-                            //     'variations' => [
-                            //         Yii::$app->language,
-                            //     ],                                
-                            // ])){
-                            //     echo Menu::getBackendMenus();
-                            //     $this->endCache();
-                            // }
+                            // 设置缓存依赖（重新缓存取决于它是否被修改过）
+                            $cacheDependencyObject = yii::createObject([
+                                'class' => 'common\components\FileDependencyHelper',
+                                'fileName' => 'backend_menu.log',
+                            ]);
+                            $dependency = [
+                                'class' => 'yii\caching\FileDependency',
+                                'fileName' => $cacheDependencyObject->createFile(),
+                            ];
+                            if ($this->beginCache('backend_menu', [
+                                'variations' => [
+                                    Yii::$app->language,
+                                ],                                
+                            ])){
+                                echo Menu::getBackendMenus();
+                                $this->endCache();
+                            }
                          ?>
                     <!--动态菜单配置结束-->
-<!--                     <li>
-                        <a href="#">
-                            <i class="fa fa-th-list"></i>
-                            <span class="nav-label">菜单</span> 
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="javascript:;" >前台菜单</a>
-                            </li>
-                            <li>
-                            <a class="J_menuItem" href="<?= url::toRoute(['menu/index']) ?>">后台菜单</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-users"></i>
-                            <span class="nav-label">用户</span> 
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="javascript:;" >前台用户</a>
-                            </li>
-                            <li>
-                            <a class="J_menuItem" href="">后台用户<span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level collapse">
-                                <li>
-                                    <a class="J_menuItem" href="<?=url::toRoute(['admin-user/index'])?>" >管理员</a>
-                                </li>
-                                <li>
-                                    <a class="J_menuItem" href="<?=url::toRoute(['admin-roles/index'])?>">角色</a>
-                                </li>
-                            </ul>
-                            </li>
-                        </ul>
-
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="<?=Url::toRoute(['gii/default'])?>" ><i class="fa fa-cutlery"></i> <span class="nav-label">GII</span></a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="<?=Url::toRoute(['admin-log/index'])?>" ><i class="fa fa fa-history"></i> <span class="nav-label">日志</span></a>
-                    </li> -->
                 </ul>
             </div>
         </nav>

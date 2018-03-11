@@ -1149,7 +1149,7 @@ class Utils {
             // 创建基于主键的数组引用
             $refer = array();
             foreach ($list as $key => $data) {
-                $refer[$data[$pk]] =& $list[$key];
+                $refer[$data[$pk]] = & $list[$key];
             }
 
             foreach ($list as $key => $data) {

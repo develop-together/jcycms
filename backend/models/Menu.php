@@ -64,59 +64,67 @@ class Menu extends \common\models\Menu
 	public static function getBackendMenus()
 	{
 		$data = self::find()
-			->where(['type' => self::MENU_TYPE_BACKEND])
+			->where(['is_display' => self::DISPLAY_SHOW, 'type' => self::MENU_TYPE_BACKEND])
 			->orderBy(['id' => SORT_ASC, 'sort' => SORT_DESC])
 			->asArray()
 			->all();
-/*        <li>
-            <a href="#">
-                <i class="fa fa-users"></i>
-                <span class="nav-label">用户</span> 
-                <span class="fa arrow"></span>
-            </a>
-            <ul class="nav nav-second-level">
-                <li>
-                    <a class="J_menuItem" href="javascript:;" >前台用户</a>
-                </li>
-                <li>
-                <a class="J_menuItem" href="">后台用户<span class="fa arrow"></span></a>
-                <ul class="nav nav-third-level collapse">
-                    <li>
-                        <a class="J_menuItem" href="<?=url::toRoute(['admin-user/index'])?>" >管理员</a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="<?=url::toRoute(['admin-roles/index'])?>">角色</a>
-                    </li>
-                </ul>
-                </li>
-            </ul>
 
-        </li>*/
-       return self::_recurrenceCreateMenu(Utils::tree_bulid($data, 'id', 'parent_id'));
+       return self::recurrenceCreateMenu(Utils::tree_bulid($data, 'id', 'parent_id'));
 	}
 
-	private static function _recurrenceCreateMenu($tree, &$listr='')
+	private static function recurrenceCreateMenu($tree)
 	{
+		$listr = '';
 		foreach ($tree as $list) {
-			$url = Url::toRoute([$list['url']]);
-			$listr .= '<li><a href=" '. $url .' "><i class="fa ' . $list['icon'] . '"></i><span class="nav-label">' . $list['name'] . '</span>';
-			$childrenStr = '';
-			if (isset($list['children'])) {
-				$listr = str_replace($url, 'javascript:;', $listr);
-				$listr .= '<span class="fa arrow"></span>';
-				// self::_recurrenceCreateMenu($list['children']);
-				$childrenStr .= '<ul class="nav nav-second-level">';
-				foreach ($list['children'] as $value) {
-					$childrenStr .= '<li><a class="J_menuItem" href="">' . $value['name']. '</a></li>';
-				}
-
-				$childrenStr .= '</ul>';
+			if ($list['parent_id'] > 0) {
+				continue;
 			}
 
-			$listr .= '</a></li>';
+			$url = self::generateUrl($list['url'], $list['is_absolute_url']);
+			$listr .= '<li><a href=" '. $url . ' "><i class="fa ' . $list['icon'] . '"></i><span class="nav-label">' . $list['name'] . '</span>';
+			if(isset($list['children'])) {
+				 $listr = str_replace($url, 'javascript:;', $listr);
+				 $listr .= '<span class="fa arrow"></span>';
+				 $childrenStr = self::recurrenceCreateSubMenu($list['children']);
+			}
+
+			$listr .= '</a>' . $childrenStr . '</li>';
 		}
 
 		return $listr;
 	}
 
+	private static function recurrenceCreateSubMenu($tree, $deep=2)
+	{
+		$childrenStr = '';
+		$levelArray = ['2' => 'second', '3' => 'third', '4' => 'fourth', '5' =>'fifth'];
+		$level = $levelArray[$deep];
+		$collapse = $deep > 2 ? 'collapse' : '';
+		$childrenStr .= '<ul class="nav nav-' . $level . '-level ' . $collapse . '">';
+		foreach ($tree as $value) {
+			$url = self::generateUrl($value['url'], $value['is_absolute_url']);
+			$childrenStr .= '<li><a class="J_menuItem" href="' . $url . '" data-index="' . $deep . '">' . $value['name'];
+			if(isset($value['children'])) {
+				$childrenStr = str_replace($url, 'javascript:;', $childrenStr);
+				$childrenStr .= '<span class="fa arrow"></span>';
+				$childrenStr .= '</a>' . self::recurrenceCreateSubMenu($value['children'], $deep+1) . '</li>';
+			} else {
+				$childrenStr .= '</a></li>';
+			}
+			
+		}
+		return $childrenStr .= '</ul>';
+	}
+
+	private static function generateUrl($url, $is_absolute_url=0)
+	{
+		if($url == '')
+		{
+			return '';
+		} elseif($is_absolute_url == 1) {
+			return $url;
+		} else {
+			return Url::toRoute([$url]);
+		}
+	}
 }

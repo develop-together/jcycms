@@ -1,7 +1,7 @@
 <?php
 
 use backend\assets\AppAsset;
-use yii\Captcha\Captcha;
+use yii\aptcha\Captcha;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -42,6 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </head>
     <body class="gray-bg">
         <?php $this->beginBody();?>
+        <?= $this->render('../widgets/_flash') ?>
         <div class="middle-box text-center loginscreen  animated fadeInDown">
             <div>
                 <div>
@@ -57,10 +58,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="form-group field-loginform-password required">
                         <div style='position:relative'>
                             <input type="text" id="loginform-captcha" name="LoginForm[verifyCode]" style="width:300px;height:34px;position:relative;top:2px">
-                           <!--验证码输出，调用Captcha类下的widget方法，需传入必要的配置信息，name属性必须要传入，captchaAction属性指定是哪个控制器下的哪个方法，site/captcha就是上文我们在SiteController的actions中定义的验证码
+                           <!--验证码输出，调用Captcha类下的widget方法，需传入必要的配置信息，name属性必须要传入，captchaAction属性指定是哪个控制器下的哪个方法，site/captcha我们在SiteController的actions中定义的验证码
                            方法（其实在SiteCOntroller中的actions定义的，可以不添加该项，因为默认是SiteController，如果是在其他控制器中定义的，则必须添加该项）。imageOptions可以制定一些html标签属性属性，template指定模板，
                            这里只输出img标签，故只用了{image}-->
                            <?=Captcha::widget(['name' => 'captcha-img', 'captchaAction' => 'site/captcha', 'imageOptions' => ['id' => 'captcha-img', 'title' => '换一个', 'style' => 'cursor:pointer;position: absolute;top: 2px; right: 1px;'], 'template' => '{image}']);?>
+                           
+                           <div class="help-block"></div>
                         </div>
                     </div>
                     <?=$form->field($model, 'rememberMe', ['template' => "<div style='position:relative'>{input}</div>"])->checkbox()?>

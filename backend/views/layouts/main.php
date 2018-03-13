@@ -1,5 +1,6 @@
 <?php
 use backend\assets\AppAsset;
+use backend\grid\ActionColumn;
 use yii\helpers\Html;
 
 AppAsset::register($this);
@@ -14,6 +15,7 @@ AppAsset::register($this);
         <?=Html::csrfMetaTags()?>
         <title><?=Html::encode($this->title)?></title>
         <?php $this->head()?>
+        <?= $this->render("../widgets/_language-js") ?>
     </head>
     <body class="gray-bg">
     <style>
@@ -23,7 +25,10 @@ AppAsset::register($this);
     </style>
     <body class="gray-bg">
         <?php $this->beginBody();?>
-        <?=$content?>
+        <div class="wrapper wrapper-content">
+            <?= $this->render('../widgets/_flash') ?>
+            <?=$content?>
+        </div>
         <?php $this->endBody();?>
     </body>
     </html>

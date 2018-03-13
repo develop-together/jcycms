@@ -86,13 +86,23 @@ class SiteController extends Controller {
 		}
 
 		$model = new LoginForm();
-		if ($model->load(Yii::$app->request->post()) && $model->login()) {
-			return $this->goBack();
-		} else {
-			return $this->render('login', [
-				'model' => $model,
-			]);
+		if (Yii::$app->request->getIsPost()) {
+			if ($model->load(Yii::$app->request->post()) && $model->login()) {
+				return $this->goBack();
+			} else {
+				$errors = $model->getErrors();
+				$err = [];
+				foreach ($errors as $error) {
+					$err[] = $error[0];
+				}
+
+				Yii::$app->session->setFlash('error', implode('<br>', $err));
+			}
 		}
+
+		return $this->render('login', [
+			'model' => $model,
+		]);		
 	}
 
 	/**

@@ -24,11 +24,11 @@ class AppAsset extends \yii\web\AssetBundle {
 		//'js/plugins/layer/laydate/skins/default/laydate.css'
 		'static/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
 		'static/css/plugins/toastr/toastr.min.css',
-
+		'static/css/my.style.css',
 	];
 
 	public $js = [
-		//'static/js/feehi.js',
+		'static/js/jcy.js',
 		'static/js/plugins/sweetalert/sweetalert.min.js',
 		'static/js/plugins/layer/laydate/laydate.js',
 		'static/js/plugins/layer/layer.min.js',
@@ -38,9 +38,8 @@ class AppAsset extends \yii\web\AssetBundle {
 
 	public $depends = [
 		'yii\web\YiiAsset',
-		'yii\bootstrap\BootstrapAsset',
-		'yii\bootstrap\BootstrapPluginAsset',
-		//'jiecheng\assets\YiiAsset',
+		//'yii\bootstrap\BootstrapAsset',
+		//'yii\bootstrap\BootstrapPluginAsset',
 		//'jiecheng\assets\BootstrapAsset',
 	];
 }

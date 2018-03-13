@@ -15,6 +15,8 @@ return [
 	'View' => '查看',
 	'Update' => '编辑',
 	'Delete' => '删除',
+	'BatchDelete' => '批量删除',
+	'Delete Success' => '删除成功',
 	'Create' => '创建',
 	'Save' => '保存',
 	'Reset' => '重置',
@@ -131,7 +133,7 @@ return [
 	/*Comment*/
 
 	/*friend link*/
-	'Target' => '新窗口打开',
+	'Target' => '窗口打开方式',
 	/*friend link*/
 
 	/*menu*/

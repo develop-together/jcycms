@@ -3,6 +3,7 @@
 use backend\assets\IndexAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use backend\models\Menu;
 
 IndexAsset::register($this);
 $this->title = yii::t('app', 'Backend Manage System');
@@ -30,56 +31,57 @@ $this->title = yii::t('app', 'Backend Manage System');
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="<?=Yii::$app->getUser()->getIdentity()->avatar ? Yii::$app->getUser()->getIdentity()->avatar : 'static/img/profile_small.jpg'?>" /></span>
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">超级管理员</strong></span>
-                                <span class="text-muted text-xs block"><?=Yii::$app->getUser()->getIdentity()->username;?><b class="caret"></b></span>
-                                </span>
+                            <span><img alt="image" class="img-circle" src="<?=Yii::$app->getUser()->getIdentity()->avatar ?  Yii::$app->request->baseUrl.'/' .Yii::$app->params['uploadSaveFilePath'] . '/' .Yii::$app->getUser()->getIdentity()->avatar : 'static/img/profile_small.jpg'?>" width="64" height="64"/></span>
+                             <a data-toggle="dropdown" class="dropdown-toggle" href="#" data-target="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="clear">
+                                        <span class="block m-t-xs">
+                                            <strong class="font-bold">超级管理员</strong>
+                                        </span>
+                                        <span class="text-muted text-xs block">
+                                            <?=\yii::$app->getUser()->getIdentity()->username?>
+                                            <b class="caret"></b>
+                                        </span>
+                                    </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a class="J_menuItem" href="javascript:;">修改头像</a>
+                                <li><a class="J_menuItem"
+                                       href="javascript:;"><?=yii::t('app', 'Profile')?></a>
                                 </li>
-                                <li><a class="J_menuItem" href="javascript:;">个人资料</a>
+                                <li><a class="J_menuItem"
+                                       href="javascript:;"><?=yii::t('app', 'Articles')?></a>
                                 </li>
-                                <li><a class="J_menuItem" href="javascript:;">联系我们</a>
-                                </li>
-                                <li><a class="J_menuItem" href="javascript:;">信箱</a>
+                                <li><a target="_blank"
+                                       href="javascript:;"><?=yii::t('app', 'Frontend')?></a>
                                 </li>
                                 <li class="divider"></li>
-                                <li><a href="<?=Url::toRoute(['site/logout'])?>">安全退出</a>
+                                <li><a href="<?=Url::toRoute(['site/logout'])?>"><?=yii::t('app', 'Logout')?></a>
                                 </li>
                             </ul>
                         </div>
                         <div class="logo-element">H+
                         </div>
                     </li>
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-home"></i>
-                            <span class="nav-label">主页</span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="javascript:;" data-index="0">主页示例一</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="javascript:;">主页示例二</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="javascript:;">主页示例三</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="javascript:;">主页示例四</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;" target="_blank">主页示例五</a>
-                            </li>
-                        </ul>
-
-                    </li>
-
+                    <!--动态菜单配置开始-->
+                        <?php 
+                            // 设置缓存依赖（重新缓存取决于它是否被修改过）
+                            $cacheDependencyObject = yii::createObject([
+                                'class' => 'common\components\FileDependencyHelper',
+                                'fileName' => 'backend_menu.log',
+                            ]);
+                            $dependency = [
+                                'class' => 'yii\caching\FileDependency',
+                                'fileName' => $cacheDependencyObject->createFile(),
+                            ];
+                            if ($this->beginCache('backend_menu', [
+                                'variations' => [
+                                    Yii::$app->language,
+                                ],                                
+                            ])){
+                                echo Menu::getBackendMenus();
+                                $this->endCache();
+                            }
+                         ?>
+                    <!--动态菜单配置结束-->
                 </ul>
             </div>
         </nav>
@@ -167,16 +169,26 @@ $this->title = yii::t('app', 'Backend Manage System');
                             </ul>
                         </li>
                         <li class="hidden-xs">
-                            <a href="index_v1.html" class="J_menuItem" data-index="0"><i class="fa fa-cart-arrow-down"></i> 购买</a>
+                            <a href="<?=yii::$app->params['site']['url']?>" target='_blank'><i
+                                        class="fa fa-internet-explorer"></i> <?=yii::t('app', 'Frontend')?></a>
+                        </li>
+                        <li class="hidden-xs">
+                            <a href="javascript:void(0)" onclick="reloadIframe()"><i
+                                        class="fa fa-refresh"></i> <?=yii::t('app', 'Refresh')?></a>
+                        </li>
+                        <li class="hidden-xs">
+                            <a href="http://cms.feehi.com/help" class="J_menuItem" data-index="0"><i
+                                        class="fa fa-cart-arrow-down"></i> <?=yii::t('app', 'Support')?></a>
                         </li>
                         <li class="dropdown hidden-xs">
                             <a class="right-sidebar-toggle" aria-expanded="false">
-                                <i class="fa fa-tasks"></i> 主题
+                                <i class="fa fa-tasks"></i> <?=yii::t('app', 'Theme')?>
                             </a>
                         </li>
                     </ul>
                 </nav>
             </div>
+            <!--Tab面板开始-->
             <div class="row content-tabs">
                 <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
                 </button>
@@ -185,29 +197,30 @@ $this->title = yii::t('app', 'Backend Manage System');
                         <a href="javascript:;" class="active J_menuTab" data-id="index_v1.html">首页</a>
                     </div>
                 </nav>
-                <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
+                <button class="roll-nav roll-right J_tabRight" style="right:60px;"><i class="fa fa-forward"></i>
                 </button>
-                <div class="btn-group roll-nav roll-right">
-                    <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span>
-
-                    </button>
-                    <ul role="menu" class="dropdown-menu dropdown-menu-right">
-                        <li class="J_tabShowActive"><a>定位当前选项卡</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li class="J_tabCloseAll"><a>关闭全部选项卡</a>
-                        </li>
-                        <li class="J_tabCloseOther"><a>关闭其他选项卡</a>
-                        </li>
-                    </ul>
-                </div>
                 <a href="<?=Url::toRoute(['site/logout'])?>" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+                <!--                 <div class="btn-group roll-nav roll-right">
+                <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span>
+
+                </button>
+                <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                <li class="J_tabShowActive"><a>定位当前选项卡</a>
+                </li>
+                <li class="divider"></li>
+                <li class="J_tabCloseAll"><a>关闭全部选项卡</a>
+                </li>
+                <li class="J_tabCloseOther"><a>关闭其他选项卡</a>
+                </li>
+                </ul>
+                </div> -->                
             </div>
+            <!--Tab面板结束-->
             <div class="row J_mainContent" id="content-main">
                 <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="javascript:;" frameborder="0" data-id="index_v1.html" seamless></iframe>
             </div>
             <div class="footer">
-                <div class="pull-right">&copy; 2014-2015 <a href="http://www.zi-han.net/" target="_blank">zihan's blog</a>
+                <div class="pull-right">&copy; 2016-<?=date('Y')?> <a href="https://www.cnblogs.com/YangJieCheng/" target="_blank">yangboom's blog</a>
                 </div>
             </div>
         </div>
@@ -219,5 +232,25 @@ $this->title = yii::t('app', 'Backend Manage System');
     </div>
     	<?php $this->endBody();?>
     </body>
+    <style type="text/css">
+        .jcymenu{
+            position: absolute;
+            z-index: 9999;
+            top: 91px;
+            left: 281px;
+        }
+        .jcymenuli{
+            background: rgb(255, 255, 255);
+            width: 150px;
+            border: 1px #eeeeee ;
+        }
+    </style>
+    <script>
+        function reloadIframe() {
+            var current_iframe = $("iframe:visible");
+            current_iframe[0].contentWindow.location.reload();
+            return false;
+        }         
+    </script>
 </html>
 <?php $this->endPage();?>

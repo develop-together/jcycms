@@ -1,7 +1,7 @@
 <?php
 
 use backend\assets\AppAsset;
-use yii\Captcha\Captcha;
+use yii\aptcha\Captcha;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 

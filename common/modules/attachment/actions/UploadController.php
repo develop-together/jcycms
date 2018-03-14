@@ -175,7 +175,7 @@ class UploadController extends Controller
             $filePath = str_replace('', "\\", $filePath);
             $transaction = Yii::$app->db->beginTransaction();
             try{
-                if ($model->delete() && @unlink($filePath)) {
+                if ((file_exists($filePath) && $model->delete() && @unlink($filePath)) || $model->delete()) {
                     return ['code' => 200 , 'message' => '删除成功!'];
                 } else{
                     throw new \yii\web\BadRequestHttpException('操作失败！');

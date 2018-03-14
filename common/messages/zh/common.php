@@ -48,5 +48,9 @@ return [
 	'Count' => '次数',
 	'Follow the link below to reset your password' => '点击以下链接重置密码',
 	'rememberMe' => '记住密码',
-	'Table ID' => '关联表ID'
+	'Table ID' => '关联表ID',
+	'Intro' => '简介',
+	'News' => '文章',
+	'Gallery' => '心情物语',
+	'Contact' => '联系我们',
 ];

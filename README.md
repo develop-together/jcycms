@@ -3,6 +3,12 @@
     <br>
     目前在制作中，预计18年上半年会出来第一版，都是抽空写的
 </p>
+<p align="center">
+    安装方法：
+    composer install -vvv
+    <br>
+    php ./init --env=Development #初始化yii2框架
+</p>
 
 DIRECTORY STRUCTURE
 -------------------

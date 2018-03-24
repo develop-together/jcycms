@@ -63,6 +63,7 @@ class AdminUserController extends BackendController
     {
         $model = new User();
         $model->setScenario('create');
+        $model->status = User::STATUS_ACTIVE;
         $rolesModel = new AdminRoleUser();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));

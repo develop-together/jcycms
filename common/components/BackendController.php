@@ -3,6 +3,7 @@
 namespace common\components;
 
 use Yii;
+use backned\actions\SortAction;
 
 /**
 * @author atuxe <atuxe@atuxe.com>
@@ -30,7 +31,8 @@ class BackendController extends BaseController
 		}
 
 		if (Yii::$app->user->isGuest) {
-			return false;
+			exit('<script>window.top.location.href="' . \yii\helpers\Url::toRoute(['site/login']) . '"</script>');
+			// return false;
 		}
 
 		return true;

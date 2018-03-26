@@ -27,7 +27,7 @@ AppAsset::register($this);
         <?php $this->beginBody();?>
         <div class="wrapper wrapper-content">
             <?= $this->render('../widgets/_flash') ?>
-            <?=$content?>
+            <?= $content ?>
         </div>
         <?php $this->endBody();?>
     </body>

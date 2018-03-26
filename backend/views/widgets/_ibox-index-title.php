@@ -11,8 +11,7 @@ use yii\helpers\Html;
         </a>
         <a href="<?=Url::toRoute(['create'])?>" class="btn  btn-sm btn-success" title="<?= Yii::t('app', 'Create');?>" data-pjax="0">
             <i class="fa fa-plus"></i> <?= Yii::t('app', 'Create');?>
-        </a>
-        <a href="<?= Url::to(['sort']) ?>" title="<?= yii::t('app', 'Sort') ?>" data-pjax="0" class="btn btn-white btn-sm sort"><i class="fa  fa-sort-numeric-desc"></i> <?= yii::t('app', 'Sort') ?></a>   
+        </a>   
         <a href="<?=Url::toRoute(['delete'])?>" data-confirm="<?= yii::t('app', 'Realy to delete?')?>" class="btn btn-danger btn-sm multi-operate" title="<?= Yii::t('app', 'BatchDelete');?>" data-pjax="0">
             <i class="fa fa-trash-o" ></i> <?= Yii::t('app', 'BatchDelete');?>
         </a>        

@@ -24,6 +24,7 @@ use backend\grid\ActionColumn;
 								[
                                     'attribute' => 'name',
                                     'format' => 'html',
+                                    'enableSorting' => false,
                                     'value' => function($model) {
                                         return $model->nameFormat;
                                     }
@@ -31,25 +32,37 @@ use backend\grid\ActionColumn;
 								[
                                     'attribute' => 'icon',
                                     'format' => 'html',
+                                    'enableSorting' => false,
                                     'value' => function ($model) {
-                                        return "<i class=\"fa {$model->icon}\"></i>";
+                                        return $model->iconFormat;
                                     }
                                 ],
-								'url:url',
+                                [
+                                    'attribute' =>'url',
+                                    'value' => function($model) {
+                                        return $model->urlFormat;
+                                    },
+                                    'enableSorting' => false,
+                                ],
 								'sort',
                                 [
                                     'attribute' => 'method',
+                                    'enableSorting' => false,
                                     'value' => function($model) {
                                         return $model->methodFormat;
                                     }
                                 ],
                                 [
                                     'attribute' => 'is_display',
+                                    'enableSorting' => false,
                                     'value' => function($model) {
                                         return $model->displayFormat;
                                     }
                                 ],
-								'target',
+								[
+                                    'attribute' => 'target',
+                                    'enableSorting' => false,
+                                ],
 								'created_at:date',
 								'updated_at:date',
                                 [

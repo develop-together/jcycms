@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "{{%menu}}".
@@ -149,6 +150,16 @@ class Menu extends \common\components\BaseModel
     public function getNameFormat()
     {
         return $this->parent_id ? '　├' . $this->name : $this->name;
+    }
+
+    public function getIconFormat()
+    {
+        return "<i class=\"fa {$this->icon}\"></i>";
+    }
+
+    public function getUrlFormat()
+    {
+        return $this->url ? Url::toRoute([$this->url]) : '';
     }
 
     /**

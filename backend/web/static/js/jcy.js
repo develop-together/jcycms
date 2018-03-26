@@ -1,15 +1,19 @@
 (function(){
     var jcms = function () {
-        this.ajax = function(type, url, data, dataType, async) {
-            data.push({'_csrf_backend' : $("meta[name='csrf-token']").attr('content')});
+        this.ajax = function(type, url, data, dataType, callback, async) {
+            data._csrf_backend = $("meta[name='csrf-token']").attr('content');
             jQuery.ajax({
                 type: type,
                 url: url,
                 data: data,
                 async: async,
                 dataType: dataType,
-                success: function(data) {
-                   console.log(data);
+                success: function(response) {
+                   console.log('Response Data is: ', response);
+                   // console.log(typeof(callback));return;
+                   if (callback && typeof(callback) == 'function') {
+                        callback(response);
+                   }
                 },
                 error: function(qXHR, textStatus, errorThrown) {
                      swal(tips.error + ': ' + jqXHR.responseJSON.message, tips.operatingFailed + '.', "error");
@@ -17,16 +21,38 @@
             });
         }
 
-        this.callback = function(message, state) {
-            state = !state || 'ok';
+        this.callback = function(message, state, closeLayer) {
+            state = !this._null(state) || 'ok';
+            closeLayer = !this._null(closeLayer) || false;
             var config = [
-                ['ok', [200, '操作成功']],
-                ['error', [300, '操作失败']],
-                ['timeout', [301, '操作超时']],
+                {state: 'ok', statusCode: 200, message: '操作成功'},
+                {state: 'error', statusCode: 300, message: '操作失败'},
+                {state: 'timeout', statusCode: 301, message: '操作超时'},
             ];
-            var statusCode = config[state][0];
-            message = !message || config[state][1];
-            layer.alert('statusCode:' + statusCode + 'message:' + message);
+            var statusCode = 200;
+            for (var p in config) {
+                if (state != config[p].state) {
+                        continue;
+                }
+
+                statusCode = config[p].statusCode;
+                message = this._null(message) || config[p].message;
+            }  
+            var icon = statusCode == 200 ? 1 : 2;
+            console.log('正确返回后是否关闭layer', closeLayer && statusCode == 200);
+            layer.alert(message, {icon: icon}, function(){
+                closeLayer && statusCode == 200 && setTimeout(function () {
+                    parent.layer.closeAll();
+                }, 1500);
+            });
+        },
+
+        this._null = function(value) {
+            if(value == null || value == 'undefined' || typeof(value) == 'undefined') {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

@@ -65,9 +65,27 @@ class AdminUserController extends BackendController
         $model->setScenario('create');
         $model->status = User::STATUS_ACTIVE;
         $rolesModel = new AdminRoleUser();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
-            return $this->redirect(['index']);
+        $post = Yii::$app->request->post();
+        if (Yii::$app->request->isPost) {
+            if ($model->load($post) && $model->validate()  && $model->save()) {
+                $rolesModel->user_id = $model->id;
+                if ($rolesModel->load($post) && $rolesModel->validate() && $rolesModel->save()) {
+                    Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                    return $this->redirect(['index']);
+                }
+            } else {
+                $errors = $model->getErrors();
+                $rolesErrors = $rolesModel->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+
+                foreach ($rolesErrors as $rv) {
+                    $err .= $rv[0] . '<br>';
+                }      
+                Yii::$app->getSession()->setFlash('error', $err);  
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -103,10 +121,15 @@ class AdminUserController extends BackendController
                 return $this->redirect(['index']);
             } else {
                 $errors = $model->getErrors();
+                $rolesErrors = $rolesModel->getErrors();
                 $err = '';
                 foreach ($errors as $v) {
                     $err .= $v[0] . '<br>';
                 }
+
+                foreach ($rolesErrors as $rv) {
+                    $err .= $rv[0] . '<br>';
+                }      
                 Yii::$app->getSession()->setFlash('error', $err);  
             }
         } 
@@ -135,6 +158,23 @@ class AdminUserController extends BackendController
 
     public function actionAssignment($id)
     {   
+    	if(Yii::$app->request->isAjax) {
+    		Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    		$post = Yii::$app->request->post();
+    		$adminRoleUserModel = AdminRoleUser::findOne(['user_id' => $id]);
+    		if (!$adminRoleUserModel) {
+    			return ['statusCode' => 300, 'message' => '操作失败(找不到model)'];
+    		}
+
+    		$adminRoleUserModel->role_id = $post['role_id'];
+    		// var_dump($adminRoleUserModel->updateAttributes(['role_id' => $post['role_id']]));
+    		if ($adminRoleUserModel->save(false)) {
+    			return ['statusCode' => 200, 'message' => '操作成功'];
+    		}
+    		
+    		return ['statusCode' => 300, 'message' => '操作失败'];
+    	}
+
         $model = $this->findModel($id);
         $roleLists = AdminRoles::loadRolesOptions();
         return $this->render('assignment', ['model' => $model, 'roleLists' => $roleLists]);        

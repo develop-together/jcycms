@@ -2,6 +2,8 @@
 
 use backend\models\AdminRoles;
 use yii\helpers\Html;
+use yii\helpers\Url;
+
 $this->title = "分配角色";
 ?>
 <div class="row">
@@ -11,7 +13,7 @@ $this->title = "分配角色";
                 <div class="form-group">
                     <?php if ($roleLists): ?>
                         <?php foreach ($roleLists as $key => $role): ?>
-                            <input type="radio" name="assignment[role][]" value="<?= $key ?>"  <?= $key == @$model->userRole->role_id ? 'checked' : '' ?>/><?= $role ?>
+                            <label><input type="radio" name="assignmentRoles" value="<?= $key ?>"  <?= $key == @$model->userRole->role_id ? 'checked' : '' ?>/><?= $role ?></label>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
@@ -26,11 +28,17 @@ $this->title = "分配角色";
 </div>
 <?php 
     $uniqid = Yii::$app->controller->_uniqid;
+    $url = Url::toRoute(['assignment', 'id' => $model->id]);
     $jsStr = <<<JS
         $("#assigned_$uniqid").on('click', function(event) {
                 var event = window.event || event;
-                jcms.callback('操作成功');
-        }
+                var role_id = $("input[name='assignmentRoles']:checked").val();
+                jcms.ajax('POST', "$url", {role_id: role_id}, 'JSON', function(response) {
+                    // console.log('我是回调函数哦', response);
+                    jcms.callback(response.message, response.statusCode, true);
+                });
+        });
 JS;
+
 $this->registerJs($jsStr);
 ?>

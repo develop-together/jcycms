@@ -13,19 +13,31 @@ use yii\widgets\DetailView;
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
-                        'id',
-                        'type',
-                        'parent_id',
                         'name',
-                        'url:url',
-                        'icon',
-                        'sort',
+                        [
+                            'attribute' => 'url',
+                            'value' => $model->urlFormat,
+                        ],
+                        [
+                            'attribute' => 'icon',
+                            'format' => 'html',
+                            'value' => $model->iconFormat,
+                        ],
                         'target',
-                        'is_absolute_url:url',
-                        'is_display',
-                        'method',
-                        'created_at',
-                        'updated_at',
+                        [
+                            'attribute' =>  'is_absolute_url',
+                            'value' => $model->absoluteUrlFormat,
+                        ],
+                        [
+                            'attribute' => 'is_display',
+                            'value' => $model->displayFormat,
+                        ],
+                        [
+                            'attribute' => 'method',
+                            'value' => $model->methodFormat,
+                        ],
+                        'created_at:datetime',
+                        'updated_at:datetime',
                     ],
 ]) ?>  
             </div>

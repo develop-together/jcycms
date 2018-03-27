@@ -101,6 +101,11 @@ class AdminRolesController extends BackendController
     public function actionAssign($id)
     {
         $model = $this->findModel($id);
+        if (Yii::$app->request->isPost) {
+            $postData = Yii::$app->request->post();
+            var_dump($postData);
+            exit;
+        }
         
         return $this->render('assign', ['model' => $model]);
     }

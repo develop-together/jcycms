@@ -47,4 +47,19 @@ CHANGE COLUMN `method` `method` SMALLINT(6) UNSIGNED NULL DEFAULT '1' COMMENT 'è
 ALTER TABLE `byt_menu` 
 DROP COLUMN `byt_menucol`;
 
+#2018-03-28
+CREATE TABLE IF NOT EXISTS `admin_role_permission` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) unsigned NOT NULL,
+  `menu_id` int(11) unsigned NOT NULL,
+  `created_at` int(11) unsigned NOT NULL,
+  `updated_at` int(11) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `fk_menu_id` (`menu_id`),
+  KEY `fk_role_id` (`role_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `byt_menu`
+DEFAULT CHARACTER SET=utf8;
+
 

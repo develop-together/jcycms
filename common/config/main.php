@@ -10,30 +10,6 @@ $config = [
     'language' => 'zh-CN', //默认语言
     'timeZone' => 'Asia/Shanghai', //默认时区
     'modules' => [
-            'gii' => [
-                    'class' => 'common\modules\gii\Module',
-                    'allowedIPs' => ['127.0.0.1', '::1'],
-                    'generators' => [
-                        'crud' => [
-                            'class' => 'yii\gii\generators\crud\Generator',
-                            'templates' => [
-                                'myCrud' => '@common/modules/gii/generators/crud/default',
-                            ],
-                        ],
-                        'model' => [
-                            'class' => 'yii\gii\generators\model\Generator',
-                            'templates' => [
-                                'myModel' => '@common/modules/gii/generators/model/default',
-                            ],
-                        ],
-                        'form' => [
-                            'class' => 'yii\gii\generators\form\Generator',
-                            'templates' => [
-                                'myForm' => '@common/modules/gii/generators/form/default',
-                            ],
-                        ],
-                    ],
-            ],
             'attachment' => [
                     'class' => 'common\modules\attachment\Module',
             ],
@@ -45,6 +21,16 @@ $config = [
             ],
     ],    
     'components' => [
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+                '<controller:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '<module:\w+>/<controller:\w+>/<action:\w+>/<id:\d+>' => '<module>/<controller>/<action>',
+            ],
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

@@ -82,6 +82,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                             }
                          ?>
                     <!--动态菜单配置结束-->
+                <li><a href="gii/default" class="J_menuItem"><i class="fa fa-bolt"></i><span class="nav-label">GII</span></a></li>
                 </ul>
             </div>
         </nav>

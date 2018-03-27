@@ -76,12 +76,13 @@ class Menu extends \common\models\Menu
 	{
 		$listr = '';
 		foreach ($tree as $list) {
+			$childrenStr = '';
 			if ($list['parent_id'] > 0) {
 				continue;
 			}
 
 			$url = self::generateUrl($list['url'], $list['is_absolute_url']);
-			$listr .= '<li><a href=" '. $url . ' "><i class="fa ' . $list['icon'] . '"></i><span class="nav-label">' . $list['name'] . '</span>';
+			$listr .= '<li><a href=" '. $url . ' " class="J_menuItem"><i class="fa ' . $list['icon'] . '"></i><span class="nav-label">' . $list['name'] . '</span>';
 			if(isset($list['children'])) {
 				 $listr = str_replace($url, 'javascript:;', $listr);
 				 $listr .= '<span class="fa arrow"></span>';

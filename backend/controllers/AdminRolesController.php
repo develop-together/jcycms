@@ -4,8 +4,10 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\AdminRoles;
+use backend\models\Menu;
 use yii\data\ActiveDataProvider;
 use common\components\BackendController;
+use common\components\Utils;
 use yii\web\NotFoundHttpException;
 use backend\actions\DeleteAction;
 
@@ -94,6 +96,29 @@ class AdminRolesController extends BackendController
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+
+    public function actionAssign($id)
+    {
+        $model = $this->findModel($id);
+        
+        return $this->render('assign', ['model' => $model]);
+    }
+
+    public function actionAjaxMenuNodes()
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $menuData =  Utils::tree_bulid(Menu::find()
+                        ->select(['id', 'parent_id', 'name', 'url'])
+                        ->where(['type' => Menu::MENU_TYPE_BACKEND])
+                        ->orderBy(['created_at' => SORT_ASC, 'sort' => SORT_ASC])                       
+                        ->asArray()
+                        ->all(), 'id', 'parent_id');
+            $menuData = Menu::getMenuZtree($menuData);
+
+            return $menuData;
+        }
     }
 
     protected function findModel($id)

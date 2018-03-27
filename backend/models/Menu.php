@@ -127,4 +127,20 @@ class Menu extends \common\models\Menu
 			return Url::toRoute([$url]);
 		}
 	}
+
+	public static function getMenuZtree(&$tree = [], $url = '')
+	{
+        foreach ($tree as $key => $value) {
+            $value['data-url'] = isset($value['url']) && !empty($value['url']) ? $value['url'] : $url;
+            $value['url'] = 'javascript:;';
+            $value['open'] = true;
+            if (isset($value['children'])) {
+                self::getMenuZtree($value['children']);
+            }  
+
+            $tree[$key] = $value;        
+        }
+
+        return $tree;
+	}
 }

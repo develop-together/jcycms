@@ -28,8 +28,8 @@ class BaseModel extends \yii\db\ActiveRecord {
 	public function attributeLabels()
 	{
 		return [
-			'create_at' => '创建时间',
-			'update_at' => '修改时间',
+			'created_at' => '创建时间',
+			'updated_at' => '修改时间',
 		];
 	}
 

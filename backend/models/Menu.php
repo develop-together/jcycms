@@ -136,7 +136,7 @@ class Menu extends \common\models\Menu
         foreach ($tree as $key => $value) {
             $value['data-url'] = isset($value['url']) && !empty($value['url']) ? $value['url'] : $url;
             $value['url'] = 'javascript:;';
-            $value['open'] = true;
+            $value['open'] = false;
             if ($mode == 'roles' && $role_id == AdminRoles::SUPER_ROLE_ID) {
             	$value['chkDisabled'] = true;
             	$value['checked'] = true;

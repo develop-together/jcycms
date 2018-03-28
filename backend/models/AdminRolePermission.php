@@ -32,7 +32,7 @@ class AdminRolePermission extends \common\components\BaseModel
     public function rules()
     {
         return [
-            [['role_id', 'menu_id', 'created_at'], 'required'],
+            [['role_id', 'menu_id'], 'required'],
             [['role_id', 'opt_id', 'menu_id', 'created_at', 'updated_at'], 'integer'],
         ];
     }
@@ -53,5 +53,16 @@ class AdminRolePermission extends \common\components\BaseModel
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ]);
+    }
+
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        $this->isNewRecord && $this->opt_id = Yii::$app->user->id;
+
+        return true;
     }
 }

@@ -32,7 +32,7 @@ $this->title = Yii::t('app', 'Assign Permission');
 				</div>     
 				<div class="clearfix hr-line-dashed"></div>
 				<?php if ($model->id != AdminRoles::SUPER_ROLE_ID): ?>
-                <div class="form-group">
+                <div class="form-group hide" id="permissBtn_<?= Yii::$app->controller->_uniqid ?>">
                     <div class="col-sm-4 col-sm-offset-2  text-right">
                         <?= Html::SubmitButton(Yii::t('app', 'Assign Permission'), ['class' => 'btn btn-success']) ?>
                         
@@ -78,6 +78,7 @@ $this->registerJs(<<<EOTM
 
 		function onAsyncSuccess(event, treeId, treeNode, msg) 
 		{
+			$("#permissBtn_$uniqid").removeClass('hide');
 			showLog("[ "+getTime()+" onAsyncSuccess ]&nbsp;&nbsp;&nbsp;&nbsp;" + ((!!treeNode && !!treeNode.name) ? treeNode.name : "root") );
 		}
 

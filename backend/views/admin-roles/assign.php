@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use backend\assets\ZtreeAsset;
+use backend\models\AdminRoles;
 
 ZtreeAsset::register($this);
 $this->title = Yii::t('app', 'Assign Permission');
@@ -30,6 +31,7 @@ $this->title = Yii::t('app', 'Assign Permission');
 					<?= Html::hiddenInput('menuLists', null, ['id' => 'menu_lists_' . Yii::$app->controller->_uniqid]) ?>
 				</div>     
 				<div class="clearfix hr-line-dashed"></div>
+				<?php if ($model->id != AdminRoles::SUPER_ROLE_ID): ?>
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2  text-right">
                         <?= Html::SubmitButton(Yii::t('app', 'Assign Permission'), ['class' => 'btn btn-success']) ?>
@@ -37,18 +39,20 @@ $this->title = Yii::t('app', 'Assign Permission');
                         <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']);?>                        
                     </div>
                 </div>   
+            	<?php endif; ?>
                 <?php ActiveForm::end(); ?>  
             </div>      
         </div>
     </div>
 </div>
 <?php 
-$url = Url::toRoute(['admin-roles/ajax-menu-nodes']);
+$url = Url::toRoute(['admin-roles/ajax-menu-nodes', 'id' => $model->id]);
 $uniqid = Yii::$app->controller->_uniqid;
 $this->registerJs(<<<EOTM
 		var setting = {
 			check: {
-				enable: true
+				enable: true,
+				chkDisabledInherit: true,
 			},
 			async: {
 				enable: true,

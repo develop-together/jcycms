@@ -48,7 +48,7 @@ ALTER TABLE `byt_menu`
 DROP COLUMN `byt_menucol`;
 
 #2018-03-28
-CREATE TABLE IF NOT EXISTS `admin_role_permission` (
+CREATE TABLE IF NOT EXISTS `byt_admin_role_permission` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `role_id` int(11) unsigned NOT NULL,
   `menu_id` int(11) unsigned NOT NULL,
@@ -61,5 +61,7 @@ CREATE TABLE IF NOT EXISTS `admin_role_permission` (
 
 ALTER TABLE `byt_menu`
 DEFAULT CHARACTER SET=utf8;
+
+ALTER TABLE `byt_admin_role_permission` ADD `opt_id` INT(11) UNSIGNED NULL DEFAULT '0' COMMENT '操作者id' AFTER `menu_id`;
 
 

@@ -74,25 +74,26 @@ class Menu extends \common\models\Menu
 
 	private static function recurrenceCreateMenu($tree)
 	{
-		$listr = '';
+		$str = '';
 		foreach ($tree as $list) {
-			$childrenStr = '';
+			$childrenStr = $listr = '';
 			if ($list['parent_id'] > 0) {
 				continue;
 			}
 
 			$url = self::generateUrl($list['url'], $list['is_absolute_url']);
-			$listr .= '<li><a href=" '. $url . ' " class="J_menuItem"><i class="fa ' . $list['icon'] . '"></i><span class="nav-label">' . $list['name'] . '</span>';
+			$listr .= '<li><a  class="J_menuItem" href=" '. $url . ' "><i class="fa ' . $list['icon'] . '"></i><span class="nav-label">' . $list['name'] . '</span>';
 			if(isset($list['children'])) {
 				 $listr = str_replace($url, 'javascript:;', $listr);
+				 $listr = str_replace('J_menuItem', '', $listr);
 				 $listr .= '<span class="fa arrow"></span>';
 				 $childrenStr = self::recurrenceCreateSubMenu($list['children']);
 			}
 
-			$listr .= '</a>' . $childrenStr . '</li>';
+			$str .= $listr .= '</a>' . $childrenStr . '</li>';
 		}
 
-		return $listr;
+		return $str;
 	}
 
 	private static function recurrenceCreateSubMenu($tree, $deep=2)
@@ -107,6 +108,7 @@ class Menu extends \common\models\Menu
 			$childrenStr .= '<li><a class="J_menuItem" href="' . $url . '" data-index="' . $deep . '">' . $value['name'];
 			if(isset($value['children'])) {
 				$childrenStr = str_replace($url, 'javascript:;', $childrenStr);
+				// $childrenStr = str_replace('class="J_menuItem"', '', $childrenStr);
 				$childrenStr .= '<span class="fa arrow"></span>';
 				$childrenStr .= '</a>' . self::recurrenceCreateSubMenu($value['children'], $deep+1) . '</li>';
 			} else {
@@ -129,14 +131,24 @@ class Menu extends \common\models\Menu
 		}
 	}
 
-	public static function getMenuZtree(&$tree = [], $url = '')
+	public static function getMenuZtree($adminRolePermissionLists = [], $role_id = 0,&$tree = [], $url = '', $mode = 'roles')
 	{
         foreach ($tree as $key => $value) {
             $value['data-url'] = isset($value['url']) && !empty($value['url']) ? $value['url'] : $url;
             $value['url'] = 'javascript:;';
             $value['open'] = true;
+            if ($mode == 'roles' && $role_id == AdminRoles::SUPER_ROLE_ID) {
+            	$value['chkDisabled'] = true;
+            	$value['checked'] = true;
+            } elseif($adminRolePermissionLists) {
+            	foreach ($adminRolePermissionLists as $list) {
+            		if ($list['menu_id'] == $value['id']) {
+            			$value['checked'] = true;
+            		}
+            	}
+            }
             if (isset($value['children'])) {
-                self::getMenuZtree($value['children']);
+                self::getMenuZtree($adminRolePermissionLists, $role_id, $value['children']);
             }  
 
             $tree[$key] = $value;        

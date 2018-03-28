@@ -13,6 +13,7 @@ class User extends BaseModel implements IdentityInterface
 {
 	const STATUS_DELETED = 0;
 	const STATUS_ACTIVE = 10;
+	const SUPER_MANAGER = 3;
 	const AUTH_KEY = '123456';
 
 	public $password;
@@ -238,6 +239,11 @@ class User extends BaseModel implements IdentityInterface
 		];
 	}
 
+	public static function checkSuperManager()
+	{
+		return AdminRoleUser::find()->where(['user_id' => Yii::$app->user->id, 'role_id' => AdminRoles::SUPER_ROLE_ID]);
+	}
+
 	public function getStatusFormat()
 	{
 		$arr = self::loadStatusOptions();
@@ -271,7 +277,7 @@ class User extends BaseModel implements IdentityInterface
 	}
 
 	public function beforeDelete() {
-		if ($this->id == 3) {
+		if (self::checkSuperManager()) {
 			throw new ForbiddenHttpException(yii::t('app', "Not allowed to delete {attribute}", ['attribute' => yii::t('app', 'default super administrator admin')]));
 		}
 		return true;

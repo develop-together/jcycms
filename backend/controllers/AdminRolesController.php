@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\AdminRoles;
+use backend\models\AdminRolePermission;
 use backend\models\Menu;
 use yii\data\ActiveDataProvider;
 use common\components\BackendController;
@@ -102,25 +103,39 @@ class AdminRolesController extends BackendController
     {
         $model = $this->findModel($id);
         if (Yii::$app->request->isPost) {
-            $postData = Yii::$app->request->post();
-            var_dump($postData);
+            if ($model->id != AdminRoles::SUPER_ROLE_ID) {
+                Yii::$app->session->setFlash('error', "非法操作");
+            }
+
+            // $postData = Yii::$app->request->post();
+            // if ($postData['menuLists']) {
+            //     $menuLists = explode(',', $postData['menuLists']);
+            //     foreach ($menuLists as $value) {
+            //         $adminRolePermissionModel = $this->findAdminRolePermissionModel();
+            //     }
+            // }
             exit;
         }
         
-        return $this->render('assign', ['model' => $model]);
+        return $this->render('assign', [
+            'model' => $model,
+        ]);
     }
 
-    public function actionAjaxMenuNodes()
+    public function actionAjaxMenuNodes($id)
     {
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            $menuData =  Utils::tree_bulid(Menu::find()
-                        ->select(['id', 'parent_id', 'name', 'url'])
-                        ->where(['type' => Menu::MENU_TYPE_BACKEND])
-                        ->orderBy(['created_at' => SORT_ASC, 'sort' => SORT_ASC])                       
+            $adminRolePermissionLists = AdminRolePermission::find()
+                ->where(['role_id' => $id])
+                ->asArray()
+                ->all();
+            $adminRolePermissionLists = !$adminRolePermissionLists ? [] : $adminRolePermissionLists;
+            $query = Menu::find()->select(['id', 'parent_id', 'name', 'url'])->where(['type' => Menu::MENU_TYPE_BACKEND]);
+            $menuData =  Utils::tree_bulid($query->orderBy(['created_at' => SORT_ASC, 'sort' => SORT_ASC])                       
                         ->asArray()
                         ->all(), 'id', 'parent_id');
-            $menuData = Menu::getMenuZtree($menuData);
+            $menuData = Menu::getMenuZtree($adminRolePermissionLists, $id, $menuData);
 
             return $menuData;
         }
@@ -133,5 +148,13 @@ class AdminRolesController extends BackendController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    protected function findAdminRolePermissionModel($id) {
+        if (($model = AdminRolePermission::findOne($id)) !== null) {
+            return $model;
+        } else {
+            return new AdminRolePermission();
+        }        
     }
 }

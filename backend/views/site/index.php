@@ -64,22 +64,23 @@ $this->title = yii::t('app', 'Backend Manage System');
                     <!--动态菜单配置开始-->
                         <?php 
                             // 设置缓存依赖（重新缓存取决于它是否被修改过）
-                            $cacheDependencyObject = yii::createObject([
-                                'class' => 'common\components\FileDependencyHelper',
-                                'fileName' => 'backend_menu.log',
-                            ]);
-                            $dependency = [
-                                'class' => 'yii\caching\FileDependency',
-                                'fileName' => $cacheDependencyObject->createFile(),
-                            ];
-                            if ($this->beginCache('backend_menu', [
-                                'variations' => [
-                                    Yii::$app->language,
-                                ],                                
-                            ])){
-                                echo Menu::getBackendMenus();
-                                $this->endCache();
-                            }
+                            // $cacheDependencyObject = yii::createObject([
+                            //     'class' => 'common\components\FileDependencyHelper',
+                            //     'fileName' => 'backend_menu.log',
+                            // ]);
+                            // $dependency = [
+                            //     'class' => 'yii\caching\FileDependency',
+                            //     'fileName' => $cacheDependencyObject->createFile(),
+                            // ];
+                            // if ($this->beginCache('backend_menu', [
+                            //     'variations' => [
+                            //         Yii::$app->language,
+                            //     ],                                
+                            // ])){
+                            //     echo Menu::getBackendMenus();
+                            //     $this->endCache();
+                            // }
+                            echo Menu::getBackendMenus();
                          ?>
                     <!--动态菜单配置结束-->
                 <li><a href="gii/default" class="J_menuItem"><i class="fa fa-bolt"></i><span class="nav-label">GII</span></a></li>
@@ -102,7 +103,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                                 <li class="m-t-xs">
                                     <div class="dropdown-messages-box">
                                         <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="img/a7.jpg">
+                                            <img alt="image" class="img-circle" src="static/img/a7.jpg">
                                         </a>
                                         <div class="media-body">
                                             <small class="pull-right">46小时前</small>
@@ -116,7 +117,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                                 <li>
                                     <div class="dropdown-messages-box">
                                         <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="img/a4.jpg">
+                                            <img alt="image" class="img-circle" src="static/img/a4.jpg">
                                         </a>
                                         <div class="media-body ">
                                             <small class="pull-right text-navy">25小时前</small>

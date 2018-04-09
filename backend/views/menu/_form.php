@@ -5,7 +5,7 @@ use yii\helpers\Url;
 use backend\models\Menu;
 use common\components\Utils;
 use yii\widgets\ActiveForm AS BAF;
-$lists = $model::find()->where(['type' => Menu::MENU_TYPE_BACKEND])->asArray()->all();
+$lists = Menu::getBackendQuery()->asArray()->all();
 $menuTree = Utils::tree_bulid($lists, 'id', 'parent_id');
 /* @var $this yii\web\View */
 /* @var $model backend\models\Menu */

@@ -14,12 +14,4 @@ class BaseConfig
 		return ['1'=>'激活', '2'=>'锁定',];
 	}
 
-	/**
-	 * 权限与action对应列表
-	 * @return array
-	 */
-	public static function aclList()
-	{
-		return [];
-	}
 }

@@ -176,7 +176,7 @@ class AdminUserController extends BackendController
     	}
 
         $model = $this->findModel($id);
-        $roleLists = AdminRoles::loadRolesOptions();
+        $roleLists = AdminRoles::loadRolesOptions(true);
         return $this->render('assignment', ['model' => $model, 'roleLists' => $roleLists]);        
     }
 }

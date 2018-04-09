@@ -53,17 +53,24 @@ $assignment = function ($url, $model) {
                                 'filter' => '',
                             ],
                             [
-                                    'attribute' => 'status',
-                                    'filter' => '',//User::loadStatusOptions()
-                                    'value' => function ($model) {
-                                        return $model->statusFormat;
-                                    },
-                                    'enableSorting' => true,
+                                'attribute' => 'status',
+                                'filter' => '',//User::loadStatusOptions()
+                                'value' => function ($model) {
+                                    return $model->statusFormat;
+                                },
+                                'enableSorting' => true,
                             ],
                             [
-                                    'attribute' => 'created_at',
-                                    'format' => 'datetime',
-                                    'filter' => '',
+                                'attribute' => 'role_name',
+                                'filter' => '',
+                                'value' => function($model) {
+                                    return @$model->userRole->role->role_name;
+                                }
+                            ],
+                            [
+                                'attribute' => 'created_at',
+                                'format' => 'datetime',
+                                'filter' => '',
                             ],
 
                             [

@@ -5,6 +5,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use common\components\BaseModel;
+use common\components\UserAcl;
 use yii\web\ForbiddenHttpException;
 //use AdminRoleUser;
 use yii\web\IdentityInterface;
@@ -13,7 +14,7 @@ class User extends BaseModel implements IdentityInterface
 {
 	const STATUS_DELETED = 0;
 	const STATUS_ACTIVE = 10;
-	const SUPER_MANAGER = 3;
+	const SUPER_MANAGER = 1;
 	const AUTH_KEY = '123456';
 
 	public $password;
@@ -287,5 +288,38 @@ class User extends BaseModel implements IdentityInterface
 	public function getUserRole()
 	{
 		return $this->hasOne(AdminRoleUser::className(), ['user_id' => 'id']);
+	}
+
+    /**
+     * 判断用户是否拥有某个权限
+     * @param  string  $acl 权限名
+     * @return boolean  
+     */
+    public function hasAcl($acl='')
+    {
+        $route = explode('/', $acl);
+        $action = count($route) - 1;
+        // 特殊权限处理
+        if ($route[$action] == 'view') {
+            $route[$action] = 'index';
+            $acl = implode('/', $route);
+        }
+
+        return in_array($acl, $this->aclList);
+    }
+
+	public function getAclList()
+	{
+        $publicAclList = UserAcl::publicAclList();
+        $roleAclListModels = @$this->userRole->getRoleAclLists();
+        $roleAclLists = $roleAclListModels->all();
+        $aclLists = [];
+        if ($roleAclLists) {
+        	foreach ($roleAclLists as $list) {
+        		$aclLists[] = $list->menu ? $list->menu->url : '';
+        	}
+        }
+
+        return array_merge($publicAclList, $aclLists);		
 	}
 }

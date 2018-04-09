@@ -61,65 +61,13 @@ class Menu extends \common\models\Menu
 		return parent::scenarios();
 	}
 
-	public static function getBackendMenus()
+	public static function getBackendQuery($display=false)
 	{
-		$data = self::find()
-			->where(['is_display' => self::DISPLAY_SHOW, 'type' => self::MENU_TYPE_BACKEND])
-			->orderBy(['id' => SORT_ASC, 'sort' => SORT_DESC])
-			->asArray()
-			->all();
-
-       return self::recurrenceCreateMenu(Utils::tree_bulid($data, 'id', 'parent_id'));
+		$where = $display ? ['is_display' => self::DISPLAY_SHOW, 'type' => Menu::MENU_TYPE_BACKEND] : ['type' => Menu::MENU_TYPE_BACKEND];
+		return self::find()->where($where);
 	}
 
-	private static function recurrenceCreateMenu($tree)
-	{
-		$str = '';
-		foreach ($tree as $list) {
-			$childrenStr = $listr = '';
-			if ($list['parent_id'] > 0) {
-				continue;
-			}
-
-			$url = self::generateUrl($list['url'], $list['is_absolute_url']);
-			$listr .= '<li><a  class="J_menuItem" href=" '. $url . ' "><i class="fa ' . $list['icon'] . '"></i><span class="nav-label">' . $list['name'] . '</span>';
-			if(isset($list['children'])) {
-				 $listr = str_replace($url, 'javascript:;', $listr);
-				 $listr = str_replace('J_menuItem', '', $listr);
-				 $listr .= '<span class="fa arrow"></span>';
-				 $childrenStr = self::recurrenceCreateSubMenu($list['children']);
-			}
-
-			$str .= $listr .= '</a>' . $childrenStr . '</li>';
-		}
-
-		return $str;
-	}
-
-	private static function recurrenceCreateSubMenu($tree, $deep=2)
-	{
-		$childrenStr = '';
-		$levelArray = ['2' => 'second', '3' => 'third', '4' => 'fourth', '5' =>'fifth'];
-		$level = $levelArray[$deep];
-		$collapse = $deep > 2 ? 'collapse' : '';
-		$childrenStr .= '<ul class="nav nav-' . $level . '-level ' . $collapse . '">';
-		foreach ($tree as $value) {
-			$url = self::generateUrl($value['url'], $value['is_absolute_url']);
-			$childrenStr .= '<li><a class="J_menuItem" href="' . $url . '" data-index="' . $deep . '">' . $value['name'];
-			if(isset($value['children'])) {
-				$childrenStr = str_replace($url, 'javascript:;', $childrenStr);
-				// $childrenStr = str_replace('class="J_menuItem"', '', $childrenStr);
-				$childrenStr .= '<span class="fa arrow"></span>';
-				$childrenStr .= '</a>' . self::recurrenceCreateSubMenu($value['children'], $deep+1) . '</li>';
-			} else {
-				$childrenStr .= '</a></li>';
-			}
-			
-		}
-		return $childrenStr .= '</ul>';
-	}
-
-	private static function generateUrl($url, $is_absolute_url=0)
+	public static function generateUrl($url, $is_absolute_url=0)
 	{
 		if($url == '')
 		{

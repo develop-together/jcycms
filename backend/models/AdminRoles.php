@@ -75,9 +75,11 @@ class AdminRoles extends \common\components\BaseModel
         return true;
     }
 
-    public static function loadRolesOptions()
+    public static function loadRolesOptions($super=false)
     {
-        $roleModels = self::find()->all();
+        $query = self::find();
+        $super && $query->where(['!=', 'id', self::SUPER_ROLE_ID]);
+        $roleModels = $query->all();
         $roles = [];
         if ($roleModels) {
             foreach ($roleModels as $roleModel) {

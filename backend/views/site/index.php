@@ -3,7 +3,7 @@
 use backend\assets\IndexAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use backend\models\Menu;
+use common\components\UserAcl;
 
 IndexAsset::register($this);
 $this->title = yii::t('app', 'Backend Manage System');
@@ -64,23 +64,24 @@ $this->title = yii::t('app', 'Backend Manage System');
                     <!--动态菜单配置开始-->
                         <?php 
                             // 设置缓存依赖（重新缓存取决于它是否被修改过）
-                            // $cacheDependencyObject = yii::createObject([
-                            //     'class' => 'common\components\FileDependencyHelper',
-                            //     'fileName' => 'backend_menu.log',
-                            // ]);
-                            // $dependency = [
-                            //     'class' => 'yii\caching\FileDependency',
-                            //     'fileName' => $cacheDependencyObject->createFile(),
-                            // ];
-                            // if ($this->beginCache('backend_menu', [
-                            //     'variations' => [
-                            //         Yii::$app->language,
-                            //     ],                                
-                            // ])){
-                            //     echo Menu::getBackendMenus();
-                            //     $this->endCache();
-                            // }
-                            echo Menu::getBackendMenus();
+                            $cacheDependencyObject = yii::createObject([
+                                'class' => 'common\components\FileDependencyHelper',
+                                'fileName' => 'backend_menu.log',
+                            ]);
+                            $dependency = [
+                                'class' => 'yii\caching\FileDependency',
+                                'fileName' => $cacheDependencyObject->createFile(),
+                            ];
+                            if ($this->beginCache('backend_menu', [
+                                'variations' => [
+                                    Yii::$app->language,
+                                    UserAcl::getRoleId(),
+                                ],                                
+                            ])){
+                                echo UserAcl::getBackendMenus();
+                                $this->endCache();
+                            }
+                            // echo UserAcl::getBackendMenus();
                          ?>
                     <!--动态菜单配置结束-->
                 <li><a href="gii/default" class="J_menuItem"><i class="fa fa-bolt"></i><span class="nav-label">GII</span></a></li>

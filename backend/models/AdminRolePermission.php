@@ -55,6 +55,11 @@ class AdminRolePermission extends \common\components\BaseModel
         ]);
     }
 
+    public function getMenu()
+    {
+        return $this->hasOne(Menu::ClassName(), ['id' => 'menu_id']);
+    }
+
     public function beforeSave($insert)
     {
         if (!parent::beforeSave($insert)) {

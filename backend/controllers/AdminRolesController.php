@@ -172,7 +172,7 @@ class AdminRolesController extends BackendController
                 ->asArray()
                 ->all();
             $adminRolePermissionLists = !$adminRolePermissionLists ? [] : $adminRolePermissionLists;
-            $query = Menu::find()->select(['id', 'parent_id', 'name', 'url'])->where(['type' => Menu::MENU_TYPE_BACKEND]);
+            $query = Menu::getBackendQuery();
             $menuData =  Utils::tree_bulid($query->orderBy(['sort' => SORT_ASC])                       
                         ->asArray()
                         ->all(), 'id', 'parent_id');

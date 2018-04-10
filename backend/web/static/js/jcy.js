@@ -213,5 +213,31 @@ $(document).ready(function(){
     $('a.refresh').click(function(){
         location.reload();
         return false;
-    });    
+    });
+
+    $("div.input-append").bind('click', function(e) {
+        e.preventDefault();
+        $(this).parent('div').find( 'input[type="file"]' ).click();
+    });
+
+    $('input.feehi_html5_upload[type=file]').bind('change', function () {
+        if (typeof FileReader === 'undefined') {
+            return;
+        }
+        var that = $(this);
+        var files = $( this )[0].files;
+        if(that.parent().attr('class').indexOf("image") >= 0){
+            if(!/image\/\w+/.test(files[0].type)){
+                layer.tips(tips.onlyPictureCanBeSelected, that.parent());
+                return false;
+            }
+            var reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            that.parents("div.image").children("div.input-append").children("input[type='text']").val(files[0].name);
+            reader.onload = function (e) {
+                console.log("打印上传测试记录:", that.parents("div.image").children());
+                that.parents("div.image").children("img").attr("src", this.result);
+            }
+        }
+    });
 })

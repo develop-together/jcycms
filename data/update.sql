@@ -64,4 +64,84 @@ DEFAULT CHARACTER SET=utf8;
 
 ALTER TABLE `byt_admin_role_permission` ADD `opt_id` INT(11) UNSIGNED NULL DEFAULT '0' COMMENT '操作者id' AFTER `menu_id`;
 
+#2018-04-10
+
+CREATE TABLE `byt_article` (
+  `id` INT(11) UNSIGNED NOT NULL,
+  `category_id` INT(11) UNSIGNED NULL DEFAULT 0 COMMENT '分类',
+  `type` INT(11) UNSIGNED NULL DEFAULT 0 COMMENT '类型',
+  `title` VARCHAR(255) NOT NULL COMMENT '标题',
+  `sub_title` VARCHAR(255) NULL DEFAULT '' COMMENT '副标题',
+  `summary` VARCHAR(255) NULL DEFAULT '' COMMENT '概述',
+  `thumb` VARCHAR(255) NULL DEFAULT '' COMMENT '缩略图',
+  `seo_title` VARCHAR(255) NULL DEFAULT '' COMMENT 'seo标题',
+  `seo_keywords` VARCHAR(255) NULL DEFAULT '' COMMENT 'seo关键字',
+  `seo_description` VARCHAR(255) NULL DEFAULT '' COMMENT 'seo描述',
+  `status` SMALLINT(6) UNSIGNED NULL DEFAULT 1 COMMENT '状态[1=>发布,2=>草稿]',
+  `sort` INT(11) UNSIGNED NULL DEFAULT 0 COMMENT '排序',
+  `user_id` INT(11) UNSIGNED NULL DEFAULT 0 COMMENT '作者',
+  `scan_count` INT(11) UNSIGNED NULL DEFAULT 0 COMMENT '阅读量',
+  `can_comment` SMALLINT(6) UNSIGNED NULL DEFAULT 1 COMMENT '是否评论[1=>是,2=>否]',
+  `visibility` SMALLINT(6) UNSIGNED NULL DEFAULT 1 COMMENT '可见[1=>公开,2=>评论]',
+  `tag` VARCHAR(255) NULL DEFAULT '' COMMENT '标签',
+  `flag_headline` SMALLINT(6) UNSIGNED NULL DEFAULT 0 COMMENT '头条',
+  `flag_recommend` SMALLINT(6) UNSIGNED NULL DEFAULT 0,
+  `flag_slide_show` SMALLINT(6) UNSIGNED NULL DEFAULT 0,
+  `flag_special_recommend` SMALLINT(6) UNSIGNED NULL DEFAULT 0,
+  `flag_roll` SMALLINT(6) UNSIGNED NULL DEFAULT 0,
+  `flag_bold` SMALLINT(6) UNSIGNED NULL DEFAULT 0,
+  `flag_picture` SMALLINT(6) UNSIGNED NULL DEFAULT 0,
+  `created_at` INT(11) UNSIGNED NOT NULL DEFAULT 0,
+  `updated_at` INT(11) UNSIGNED NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  INDEX `index_title` (`title` ASC, `category_id` ASC, `tag` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COMMENT = '内容表';
+
+ALTER TABLE `byt_article` 
+CHANGE COLUMN `flag_recommend` `flag_recommend` SMALLINT(6) UNSIGNED NULL DEFAULT '0' COMMENT '推荐' ,
+CHANGE COLUMN `flag_slide_show` `flag_slide_show` SMALLINT(6) UNSIGNED NULL DEFAULT '0' COMMENT '幻灯' ,
+CHANGE COLUMN `flag_special_recommend` `flag_special_recommend` SMALLINT(6) UNSIGNED NULL DEFAULT '0' COMMENT '特别推荐' ,
+CHANGE COLUMN `flag_roll` `flag_roll` SMALLINT(6) UNSIGNED NULL DEFAULT '0' COMMENT '滚动' ,
+CHANGE COLUMN `flag_bold` `flag_bold` SMALLINT(6) UNSIGNED NULL DEFAULT '0' COMMENT '加粗' ,
+CHANGE COLUMN `flag_picture` `flag_picture` SMALLINT(6) UNSIGNED NULL DEFAULT '0' COMMENT '图片' ;
+
+CREATE TABLE `byt_category` (
+  `id` INT(11) UNSIGNED NOT NULL,
+  `parent_id` INT(11) UNSIGNED NULL DEFAULT 0,
+  `name` VARCHAR(255) NOT NULL COMMENT '名称',
+  `alias` VARCHAR(255) NOT NULL COMMENT '别名',
+  `sort` INT(11) UNSIGNED NULL DEFAULT 0 COMMENT '排序',
+  `remark` VARCHAR(255) NULL DEFAULT '' COMMENT '备注',
+  `created_at` INT(11) UNSIGNED NOT NULL DEFAULT 0,
+  `updated_at` INT(11) UNSIGNED NULL DEFAULT 0,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+CREATE TABLE `byt_article_content` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `article_id` INT(11) UNSIGNED NULL DEFAULT 0 COMMENT '文章表ID',
+  `content` TEXT NULL DEFAULT NULL COMMENT '内容',
+  PRIMARY KEY (`id`),
+  INDEX `fk_aid_idx` (`article_id` ASC),
+  CONSTRAINT `fk_aid`
+    FOREIGN KEY (`article_id`)
+    REFERENCES `yii2advanced`.`byt_article` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+ALTER TABLE `byt_category` 
+DROP COLUMN `alias`;
+
+ALTER TABLE `byt_category` 
+CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ;
+
+
+
+
+
 

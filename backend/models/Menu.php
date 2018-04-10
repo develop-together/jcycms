@@ -28,20 +28,6 @@ use yii\helpers\Url;
 class Menu extends \common\models\Menu
 {
 
-	public static function getDrowDownList($tree=[], &$result=[], $deep=0, $separator = "　　")
-	{
-		$deep++;
-		foreach ($tree as $list) {
-
-			$result[$list['id']] = $deep == 1 ? str_repeat($separator, $deep-1) . $list['name'] : str_repeat($separator, $deep-1) . '├' . $list['name'];
-			if (isset($list['children'])) {
-				self::getDrowDownList($list['children'], $result, $deep);
-			}
-		}
-
-		return $result;
-	}
-
 	private function chilrdenDatas($data, $parent_id, $lv=0)
 	{
 		$result = [];

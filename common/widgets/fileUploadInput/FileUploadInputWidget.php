@@ -9,7 +9,7 @@
 	{
 		public $type;
 
-		public $types = ['image', 'images', 'file', 'files'];
+		public $types = ['image', 'images', 'file', 'files', 'feehi_img'];/*feehi_img 是仿照feehi写的一个图片上传控件*/
 
 		public $inputOptions = ['class' => 'form-control'];
 
@@ -56,7 +56,11 @@
 				case 'files'://多文件上传
 					return MultipleWidget::widget(ArrayHelper::merge(['model' => $this->model, 'attribute' => $this->attribute, 'onlyUrl' => true], $this->widgetOptions));
 					
-					break;														
+					break;	
+				case 'feehi_img'://飞嗨单图上传
+					return FeehiWidget::widget(ArrayHelper::merge(['model' => $this->model, 'attribute' => $this->attribute, 'onlyUrl' => true], $this->widgetOptions));
+					
+					break;													
 				default:
 					break;
 			}
@@ -80,6 +84,10 @@
 					break;
 				case 'files'://多文件上传
 					return SingleWidget::widget(ArrayHelper::merge(['name' => $this->name, 'value' => $this->value, 'onlyUrl' => true], $this->widgetOptions));
+					
+					break;	
+				case 'feehi_img'://飞嗨单图上传
+					return FeehiWidget::widget(ArrayHelper::merge(['name' => $this->name, 'value' => $this->value, 'onlyUrl' => true], $this->widgetOptions));
 					
 					break;														
 				default:

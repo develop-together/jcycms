@@ -53,10 +53,6 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                 'class' => DeleteAction::className(),
                 'modelClass' => <?= $modelClass ?>::className(),
             ],
-            'sort' => [
-                'class' => SortAction::className(),
-                'modelClass' => <?= $modelClass ?>::className(),
-            ],
         ];
     }
     

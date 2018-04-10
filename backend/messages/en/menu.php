@@ -28,10 +28,8 @@ return [
     '清除后台' => 'Clear Backend',
     '前台用户' => 'Frontend Users',
     '后台用户' => 'Backend Users',
-
     '超级管理员' => 'Super Administrators',
     '编辑' => 'Editors',
-    '测试组' => 'Demo Group',
     '评论' => 'Comments',
     '附件管理' => 'Attachment',
 ];

@@ -4,6 +4,7 @@ namespace common\modules\attachment\actions;
 use Yii;
 use yii\base\Action;
 use yii\helpers\ArrayHelper;
+use common\modules\attachment\ext\Uploader;
 
 class UeditorAction extends Action
 {

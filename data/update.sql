@@ -128,7 +128,7 @@ CREATE TABLE `byt_article_content` (
   INDEX `fk_aid_idx` (`article_id` ASC),
   CONSTRAINT `fk_aid`
     FOREIGN KEY (`article_id`)
-    REFERENCES `yii2advanced`.`byt_article` (`id`)
+    REFERENCES `byt_article` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

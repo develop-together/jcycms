@@ -14,7 +14,7 @@ class User extends BaseModel implements IdentityInterface
 {
 	const STATUS_DELETED = 0;
 	const STATUS_ACTIVE = 10;
-	const SUPER_MANAGER = 3;
+	const SUPER_MANAGER = 1;
 	const AUTH_KEY = '123456';
 
 	public $password;

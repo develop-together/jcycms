@@ -1,11 +1,16 @@
 <?php
 
 use yii\helpers\Html;
+use common\models\Category;
 use yii\widgets\ActiveForm AS BAF;
+use common\components\Utils;
+use common\components\BaseConfig;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\search\ArticleSearch */
 /* @var $form yii\widgets\ActiveForm */
+$categoryTree = Utils::tree_bulid(Category::find()->asArray()->all(), 'id', 'parent_id');
+
 ?>
 
 <div class="article-search">
@@ -16,58 +21,25 @@ use yii\widgets\ActiveForm AS BAF;
         'options' => ['class' => 'form-inline'],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'category_id') ?>
-
-    <?= $form->field($model, 'type') ?>
+    <?= $form->field($model, 'category_id')->dropDownList(Category::getDrowDownList($categoryTree), ['prompt' => '请选择', 'style' => 'width:200px']) ?>
 
     <?= $form->field($model, 'title') ?>
 
-    <?= $form->field($model, 'sub_title') ?>
+    <?= $form->field($model, 'flag_headline')->dropDownList(BaseConfig::getYesNoItems(), ['prompt' => '请选择']) ?>
 
-    <?php // echo $form->field($model, 'summary') ?>
+    <?= $form->field($model, 'flag_recommend')->dropDownList(BaseConfig::getYesNoItems(), ['prompt' => '请选择']) ?>
 
-    <?php // echo $form->field($model, 'thumb') ?>
+    <?= $form->field($model, 'flag_slide_show')->dropDownList(BaseConfig::getYesNoItems(), ['prompt' => '请选择']) ?>
 
-    <?php // echo $form->field($model, 'seo_title') ?>
+    <?= $form->field($model, 'flag_special_recommend')->dropDownList(BaseConfig::getYesNoItems(), ['prompt' => '请选择']) ?>
 
-    <?php // echo $form->field($model, 'seo_keywords') ?>
+    <?= $form->field($model, 'flag_roll')->dropDownList(BaseConfig::getYesNoItems(), ['prompt' => '请选择']) ?>
 
-    <?php // echo $form->field($model, 'seo_description') ?>
+    <?= $form->field($model, 'flag_bold')->dropDownList(BaseConfig::getYesNoItems(), ['prompt' => '请选择']) ?>
 
-    <?php // echo $form->field($model, 'status') ?>
+    <?= $form->field($model, 'flag_picture')->dropDownList(BaseConfig::getYesNoItems(), ['prompt' => '请选择']) ?>
 
-    <?php // echo $form->field($model, 'sort') ?>
-
-    <?php // echo $form->field($model, 'user_id') ?>
-
-    <?php // echo $form->field($model, 'scan_count') ?>
-
-    <?php // echo $form->field($model, 'can_comment') ?>
-
-    <?php // echo $form->field($model, 'visibility') ?>
-
-    <?php // echo $form->field($model, 'tag') ?>
-
-    <?php // echo $form->field($model, 'flag_headline') ?>
-
-    <?php // echo $form->field($model, 'flag_recommend') ?>
-
-    <?php // echo $form->field($model, 'flag_slide_show') ?>
-
-    <?php // echo $form->field($model, 'flag_special_recommend') ?>
-
-    <?php // echo $form->field($model, 'flag_roll') ?>
-
-    <?php // echo $form->field($model, 'flag_bold') ?>
-
-    <?php // echo $form->field($model, 'flag_picture') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
+    <?= $form->field($model, 'status')->dropDownList(BaseConfig::getArticleStatus(), ['prompt' => '请选择']) ?>
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>

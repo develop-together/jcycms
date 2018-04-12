@@ -77,6 +77,10 @@ class BaseModel extends \yii\db\ActiveRecord {
             return false;
         }
 
+        if ($this->isNewRecord && $this->hasAttribute('user_id')) {
+            $this->user_id = Yii::$app->user->id;
+        }
+
         return true;
     }
 

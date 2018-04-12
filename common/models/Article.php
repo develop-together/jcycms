@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use backend\models\User;
 
 /**
  * This is the model class for table "{{%article}}".
@@ -60,7 +61,77 @@ class Article extends \common\components\BaseModel
             [['id', 'category_id', 'type', 'status', 'sort', 'user_id', 'scan_count', 'can_comment', 'visibility', 'flag_headline', 'flag_recommend', 'flag_slide_show', 'flag_special_recommend', 'flag_roll', 'flag_bold', 'flag_picture', 'created_at', 'updated_at'], 'integer'],
             [['title', 'sub_title', 'summary', 'thumb', 'seo_title', 'seo_keywords', 'seo_description', 'tag'], 'string', 'max' => 255],
             [['content'], 'string'],
+            [
+                [
+                    'flag_headline',
+                    'flag_recommend',
+                    'flag_slide_show',
+                    'flag_special_recommend',
+                    'flag_roll',
+                    'flag_bold',
+                    'flag_picture',
+                    'status',
+                    'can_comment'
+                ],
+                'in',
+                'range' => [0, 1]
+            ],
+            [['visibility'], 'in', 'range' => [1, 2, 3]],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $parentScenarios = parent::scenarios();
+        
+        return array_merge($parentScenarios, [
+            'article' => [
+                'category_id',
+                'type',
+                'title',
+                'sub_title',
+                'summary',
+                'content',
+                'thumb',
+                'seo_title',
+                'seo_keywords',
+                'seo_description',
+                'status',
+                'sort',
+                'user_id',
+                'created_at',
+                'updated_at',
+                'scan_count',
+                'can_comment',
+                'visibility',
+                'tag',
+                'flag_headline',
+                'flag_recommend',
+                'flag_slide_show',
+                'flag_special_recommend',
+                'flag_roll',
+                'flag_bold',
+                'flag_picture'
+            ],
+            'page' => [
+                'type',
+                'title',
+                'sub_title',
+                'summary',
+                'seo_title',
+                'content',
+                'seo_keywords',
+                'seo_description',
+                'status',
+                'can_comment',
+                'visibility',
+                'tag',
+                'sort'
+            ],
+        ]);
     }
 
     /**
@@ -70,7 +141,7 @@ class Article extends \common\components\BaseModel
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
             'id' => Yii::t('app', 'ID'),
-            'category_id' => Yii::t('app', 'Category Id'),
+            'category_id' => Yii::t('app', 'Category'),
             'type' => Yii::t('app', 'Type'),
             'title' => Yii::t('app', 'Title'),
             'sub_title' => Yii::t('app', 'Sub Title'),
@@ -82,7 +153,7 @@ class Article extends \common\components\BaseModel
             'seo_description' => Yii::t('app', 'Seo Description'),
             'status' => Yii::t('app', 'Status'),
             'sort' => Yii::t('app', 'Sort'),
-            'user_id' => Yii::t('app', 'User ID'),
+            'user_id' => Yii::t('app', 'Author'),
             'scan_count' => Yii::t('app', 'Scan Count'),
             'can_comment' => Yii::t('app', 'Can Comment'),
             'visibility' => Yii::t('app', 'Visibility'),
@@ -105,5 +176,36 @@ class Article extends \common\components\BaseModel
     public function getArticleContents()
     {
         return $this->hasMany(ArticleContent::className(), ['article_id' => 'id']);
+    }
+
+    public function getCategory()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'category_id']);
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeDelete()
+    {
+        // 删除该文章的所有评论
+        if (($articleContentModel = ArticleContent::findOne(['article_id' => $this->id])) != null) {
+            $articleContentModel->delete();
+        }
+
+        return parent::beforeDelete();
+    }
+    /**
+     * @inheritdoc
+     */
+    public function afterFind()
+    {
+        parent::afterFind();
+        $this->content = ArticleContent::findOne(['article_id' => $this->id])['content'];
     }
 }

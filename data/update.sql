@@ -140,6 +140,16 @@ DROP COLUMN `alias`;
 ALTER TABLE `byt_category` 
 CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ;
 
+#2018-04-12
+
+ALTER TABLE `byt_article` 
+CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ;
+
+ALTER TABLE `byt_article_content` 
+DROP FOREIGN KEY `fk_aid`;
+
+
+
 
 
 

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use backend\grid\GridView;
 use backend\grid\ActionColumn;
+use common\components\BaseConfig;
 
 ?>
 
@@ -22,15 +23,62 @@ use backend\grid\ActionColumn;
                                     'class' => 'yii\grid\CheckboxColumn'
                                 ],
                                 'id',
-								'category_id',
-								'type',
-								'title',
-								'sub_title',
-								// 'summary',
-								// 'thumb',
-								// 'seo_title',
-								// 'seo_keywords',
-								// 'seo_description',
+								[
+									'attribute' => 'category_id',
+									'enableSorting' => false,
+									'value' => function($model) {
+										return  $model->category->name;
+									},
+								],
+								[
+									'attribute' => 'user_id',
+									'enableSorting' => false,
+									'value' => function($model) {
+										return  $model->user->username;
+									},
+								],
+								[
+									'attribute' => 'title',
+									'enableSorting' => false,
+								],
+								[
+									'attribute' => 'thumb',
+									'enableSorting' => false,
+									'value' => function($model) {
+										return $model->thumb ? '有' : '无';
+									}
+								],
+		                        [
+		                            'attribute' => 'flag_headline',
+		                            'format' => 'raw',
+		                            'value' => function ($model, $key, $index, $column) {
+		                                if ($model->flag_headline) {
+		                                    $url = Url::to([
+		                                        'status',
+		                                        'id' => $model->id,
+		                                        'status' => 0,
+		                                        'field' => 'flag_headline'
+		                                    ]);
+		                                    $class = 'btn btn-info btn-xs btn-rounded';
+		                                    $confirm = Yii::t('app', 'Are you sure you want to disable this item?');
+		                                } else {
+		                                    $url = Url::to([
+		                                        'status',
+		                                        'id' => $model->id,
+		                                        'status' => 1,
+		                                        'field' => 'flag_headline'
+		                                    ]);
+		                                    $class = 'btn btn-default btn-xs btn-rounded';
+		                                    $confirm = Yii::t('app', 'Are you sure you want to enable this item?');
+		                                }
+		                                return Html::a(BaseConfig::getYesNoItems($model->flag_headline), $url, [
+		                                    'class' => $class,
+		                                    'data-confirm' => $confirm,
+		                                    'data-method' => 'post',
+		                                    'data-pjax' => '0',
+		                                ]);
+		                            },
+		                        ],
 								// 'status',
 								// 'sort',
 								// 'user_id',

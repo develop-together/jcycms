@@ -3,7 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Article;
+use backend\models\Article;
+use common\models\ArticleContent;
 use backend\models\search\ArticleSearch;
 use yii\web\Controller;
 use backend\actions\DeleteAction;
@@ -61,9 +62,44 @@ class ArticleController extends Controller
     {
         $model = new Article();
         $model->sort = 0;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
-            return $this->redirect(['index']);
+        if (Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+            $model->setScenario('article');
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if (!$model->load($post)) {
+                    throw new \yii\web\BadRequestHttpException('数据提交出错');
+                }
+
+                if (!$model->save()) {
+                    $errs = [];
+                    foreach ($model->getErrors() as $error) {
+                        $errs[] = $error[0];
+                    }
+
+                    throw new \yii\web\BadRequestHttpException(implode('<br>', $errs));
+                }
+
+                $articleContentModel = new ArticleContent();
+                $articleContentModel->article_id = $model->id;
+                $articleContentModel->content = $model->content;
+                if (!$articleContentModel->save()) {
+                    $articleContentErrs = [];
+                    foreach ($articleContentModel->getErrors() as $aError) {
+                        $articleContentErrs[] = $aError[0];
+                    }
+
+                    throw new \yii\web\BadRequestHttpException(implode('<br>', $articleContentErrs));
+                }
+
+                Yii::$app->session->setFlash('success', "操作成功");
+                $transaction->commit();
+
+                return $this->redirect(['index']);
+            } catch(\Expression $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
         }
 
         return $this->render('create', [
@@ -89,6 +125,48 @@ class ArticleController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * 改变某个字段状态操作
+     *
+     * @param string $id
+     * @param int $status
+     * @param string $field
+     * @return array|\yii\web\Response
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionStatus($id, $status = 0, $field = 'status')
+    {
+        if (! $id) {
+            throw new BadRequestHttpException(yii::t('app', "Id doesn't exit"));
+        }
+
+        $model->$field = $status;
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\View\FORMAT_JSON;
+            if(! $model->save(false)) {
+                $errs = [];
+                foreach ($model->getErrors() as $error) {
+                    $errs[] = $error[0];
+                }
+
+                return ['statusCode' => 300, 'message' => implode('<br>', $errs)];
+            } else {
+                return ['statusCode' => 200, 'message' => '操作成功'];
+            }
+        } else {
+            if (! $model->save()) {
+                $errs = [];
+                foreach ($model->getErrors() as $error) {
+                    $errs[] = $error[0];
+                }
+
+                Yii::$app->session->setFlash('error', implode('<br>', $errs));
+            }
+
+            return $this->redirect(['index']);
+        }
     }
 
     /**

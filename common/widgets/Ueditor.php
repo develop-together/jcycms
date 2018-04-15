@@ -100,11 +100,7 @@ class Ueditor extends yii\widgets\InputWidget
         if (empty($this->config['toolbars'])) {
             //为了避免每次使用都输入乱七八糟的按钮，这里预先定义一些常用的编辑器按钮。
             //这是一个丑陋的二维数组
-            if (Yii::$app->controller->id == 'product-template') {
-                $template =  ['source', 'fontsize', 'fontfamily', 'forecolor', 'bold', 'removeformat', 'justifyleft', 'justifycenter', 'justifyright', 'simpleupload', 'inserttable', 'fullscreen'];
-            } else {
-                $template =  ['source', 'fontsize', 'fontfamily', 'forecolor', 'bold', 'removeformat', 'justifyleft', 'justifycenter', 'justifyright', 'link', 'simpleupload', 'inserttable','insertvideo', 'template', 'fullscreen'];
-            }
+            $template =  ['source', 'fontsize', 'fontfamily', 'forecolor', 'bold', 'removeformat', 'justifyleft', 'justifycenter', 'justifyright', 'link', 'simpleupload', 'inserttable','insertvideo', 'template', 'fullscreen', 'insertcode'];
 
             $this->config['toolbars'] = [$template];
         }

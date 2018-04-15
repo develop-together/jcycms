@@ -40,7 +40,11 @@ use backend\models\User;
  */
 class Article extends \common\components\BaseModel
 {
-
+    const ARTICLE = 0;/*文章*/
+    const SINGLE_PAGE = 2;/*单页*/
+    const ARTICLE_PUBLISHED = 1;
+    const ARTICLE_DRAFT = 0;
+    
     public $content = '';
     
     /**
@@ -167,6 +171,7 @@ class Article extends \common\components\BaseModel
             'flag_picture' => Yii::t('app', 'Is Picture'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+            'linkUrl' => Yii::t('app', 'Url'),
         ]);
     }
 
@@ -188,6 +193,11 @@ class Article extends \common\components\BaseModel
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
+    public function getLinkUrl()
+    {
+        return Yii::$app->params['site']['url'] . '/page/' . $this->sub_title;
+    }
+
     /**
      * @inheritdoc
      */
@@ -207,5 +217,31 @@ class Article extends \common\components\BaseModel
     {
         parent::afterFind();
         $this->content = ArticleContent::findOne(['article_id' => $this->id])['content'];
+    }
+
+    public function saveArticle()
+    {
+        if (!$this->save()) {
+            $errs = [];
+            foreach ($this->getErrors() as $error) {
+                $errs[] = $error[0];
+            }
+
+            throw new \yii\web\BadRequestHttpException(implode('<br>', $errs));
+        }
+
+        $articleContentModel = new ArticleContent();
+        $articleContentModel->article_id = $this->id;
+        $articleContentModel->content = $this->content;
+        if (!$articleContentModel->save()) {
+            $articleContentErrs = [];
+            foreach ($articleContentModel->getErrors() as $aError) {
+                $articleContentErrs[] = $aError[0];
+            }
+
+            throw new \yii\web\BadRequestHttpException(implode('<br>', $articleContentErrs));
+        }
+
+        return true;
     }
 }

@@ -386,6 +386,23 @@ class Utils {
     }
 
     /**
+     * 验证是否含有中文 
+     */
+    public static function chinese($string)
+    {
+        if (empty($string)) {
+            return false;
+        }
+
+        $chars = "/[\x{4e00}-\x{9fa5}]/u";
+        if (preg_match($chars, $string) !== false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * 验证邮箱
      */
     public static function email( $str ) {

@@ -37,11 +37,10 @@ class FeehiWidget extends InputWidget
 	public function init()
 	{
         parent::init();
-        $value = '';
         if ($this->hasModel()) {
             $this->name = $this->name ? : Html::getInputName($this->model, $this->attribute);
             $this->attribute = Html::getAttributeName($this->attribute);
-            $value = $this->model->{$this->attribute};
+            $this->value = $this->model->{$this->attribute};
         }
 
         $this->acceptFileTypes = 'image/png, image/jpg, image/jpeg, image/gif, image/bmp';
@@ -51,8 +50,7 @@ class FeehiWidget extends InputWidget
 
 	public function run()
 	{
-
-		$src = Yii::$app->request->baseUrl . '/static/img/none.jpg';
+		$src = Yii::$app->request->baseUrl . (!empty($this->value) ? $this->value : '/static/img/none.jpg');
 		$content = Html::hiddenInput($this->name, null, $this->options);
 		$this->wrapperOptions = ArrayHelper::merge(['id' => $this->parentDivId, 'class' => 'image'], $this->wrapperOptions);
 		$content .= Html::beginTag('div', $this->wrapperOptions);
@@ -62,7 +60,7 @@ class FeehiWidget extends InputWidget
 			'accept' => $this->acceptFileTypes,
 			'style' => 'max-width: 200px; max-height: 200px; display: none;',
 		]);
-		$content .= '<div class="input-append input-group"><span class="input-group-btn"><button class="btn btn-white" type="button">选择文件</button></span><input class="input-large form-control" type="text" readonly></div><img src="' . $src . '" alt="" style="max-width:200px;max-height:200px"><div class="help-block m-b-none"></div></div>';
+		$content .= '<div class="input-append input-group"><span class="input-group-btn"><button class="btn btn-white" type="button">选择文件</button></span><input class="input-large form-control" type="text" readonly></div><img src="' . $src . '" alt="" style="max-width:200px;max-height:200px"><div class="help-block m-b-none"></div>';
 		$content .= Html::endTag('div');
 
 		return $content;

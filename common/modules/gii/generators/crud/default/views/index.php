@@ -16,6 +16,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use <?= $generator->indexWidgetType === 'grid' ? "backend\\grid\\GridView" : "yii\\widgets\\ListView" ?>;
 use backend\grid\ActionColumn;
+<?= $generator->enablePjax ? 'use yii\widgets\Pjax;' : '' ?>
 
 ?>
 
@@ -23,6 +24,7 @@ use backend\grid\ActionColumn;
     <div class="col-sm-12">
         <div class="ibox">
             <?= '<?=' ?> $this->render('/widgets/_ibox-index-title') ?>
+            <?= $generator->enablePjax ? "    <?php Pjax::begin(); ?>\n" : '' ?>
             <div class="ibox-content">
                 <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
                     <?= '<?=' ?> $this->render('_search', ['model' => $searchModel])?>
@@ -77,6 +79,7 @@ use backend\grid\ActionColumn;
                     ]) ?>
                 <?php endif; ?>
             </div>
+            <?= $generator->enablePjax ? "    <?php Pjax::end(); ?>\n" : '' ?>
         </div>
     </div>
 

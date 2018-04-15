@@ -6,6 +6,7 @@ use Yii;
 use backend\models\User;
 use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
+use yii\base\Event;
 
 /**
 * @author yjc <2064320087@qq.com>
@@ -67,4 +68,47 @@ class BackendController extends BaseController
 
 		return true;
 	}
+
+    /**
+     * 改变某个字段状态操作
+     *
+     * @param string $id
+     * @param int $status
+     * @param string $field
+     * @return array|\yii\web\Response
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionStatus($id, $status = 0, $field = 'status')
+    {
+        if (! $id) {
+            throw new BadRequestHttpException(yii::t('app', "Id doesn't exit"));
+        }
+
+        $model = $this->findModel($id);
+        $model->$field = $status;
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            if(! $model->save(false)) {
+                $errs = [];
+                foreach ($model->getErrors() as $error) {
+                    $errs[] = $error[0];
+                }
+
+                return ['code' => 300, 'message' => implode('<br>', $errs)];
+            } else {
+                return ['code' => 200, 'message' => '操作成功'];
+            }
+        } else {
+            if (! $model->save()) {
+                $errs = [];
+                foreach ($model->getErrors() as $error) {
+                    $errs[] = $error[0];
+                }
+
+                Yii::$app->session->setFlash('error', implode('<br>', $errs));
+            }
+
+            return $this->redirect(['index']);
+        }
+    }
 }

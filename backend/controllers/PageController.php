@@ -4,16 +4,16 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Article;
-use backend\models\search\ArticleSearch;
+use backend\models\Search\ArticleSearch;
 use common\components\BackendController;
 use backend\actions\DeleteAction;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Url;
 
 /**
- * ArticleController implements the CRUD actions for Article model.
+ * PageController implements the CRUD actions for Article model.
  */
-class ArticleController extends BackendController
+class PageController extends BackendController
 {
     public function actions()
     {
@@ -31,8 +31,8 @@ class ArticleController extends BackendController
      */
     public function actionIndex()
     {
-        $searchModel = new ArticleSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->post());
+        $searchModel = new ArticleSearch(['scenario' => 'page']);
+        $dataProvider = $searchModel->search(Yii::$app->request->post(), Article::SINGLE_PAGE);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -60,10 +60,10 @@ class ArticleController extends BackendController
     public function actionCreate()
     {
         $model = new Article();
-        $model->sort = 0;
+        $model->type = Article::SINGLE_PAGE;
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-            $model->setScenario('article');
+            $model->setScenario('page');
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if (!$model->load($post)) {
@@ -96,13 +96,13 @@ class ArticleController extends BackendController
         $model = $this->findModel($id);
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-            $model->setScenario('article');
+            $model->setScenario('page');
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if (!$model->load($post)) {
                     throw new \yii\web\BadRequestHttpException('数据提交出错');
                 }
-
+                
                 $model->saveArticle() && Yii::$app->session->setFlash('success', "操作成功");
                 $transaction->commit();
 

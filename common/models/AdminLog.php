@@ -1,8 +1,9 @@
 <?php
 
-namespace backend\models;
+namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%admin_log}}".
@@ -13,9 +14,12 @@ use Yii;
  * @property string $description
  * @property integer $created_at
  * @property integer $updated_at
+ *
+ * @property AdminUser $user
  */
 class AdminLog extends \common\components\BaseModel
 {
+
     /**
      * @inheritdoc
      */
@@ -33,33 +37,8 @@ class AdminLog extends \common\components\BaseModel
             [['user_id', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
             [['route'], 'string', 'max' => 255],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => AdminUser::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
-    }
-
-    public function getUser()
-    {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
-    }
-
-    public function afterFind()
-    {
-        $this->description = str_replace([
-            '{{%ADMIN_USER%}}',
-            '{{%BY%}}',
-            '{{%CREATED%}}',
-            '{{%UPDATED%}}',
-            '{{%DELETED%}}',
-            '{{%ID%}}',
-            '{{%RECORD%}}'            
-        ], [
-            yii::t('app', 'Admin user'),
-            yii::t('app', 'through'),
-            yii::t('app', 'created'),
-            yii::t('app', 'updated'),
-            yii::t('app', 'deleted'),
-            yii::t('app', 'id'),
-            yii::t('app', 'record')
-        ], $this->description);
     }
 
     /**
@@ -67,12 +46,21 @@ class AdminLog extends \common\components\BaseModel
      */
     public function attributeLabels()
     {
-        return [
-            'id' => 'ID',
+        return ArrayHelper::merge(parent::attributeLabels(), [
+            'id' => Yii::t('app', 'ID'),
+            'user_id' => Yii::t('app', 'User ID'),
             'route' => Yii::t('app', 'Route'),
             'description' => Yii::t('app', 'Description'),
             'created_at' => Yii::t('app', 'Created At'),
-            'user_id' => Yii::t('app', 'User'),
-        ];
+            'updated_at' => Yii::t('app', 'Updated At'),
+        ]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(AdminUser::className(), ['id' => 'user_id']);
     }
 }

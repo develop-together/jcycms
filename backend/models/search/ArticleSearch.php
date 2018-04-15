@@ -12,6 +12,10 @@ use common\models\Article;
  */
 class ArticleSearch extends Article
 {
+
+    public $create_start_at;
+    public $create_end_at;
+
     /**
      * @inheritdoc
      */
@@ -20,6 +24,7 @@ class ArticleSearch extends Article
         return [
             [['id', 'category_id', 'type', 'status', 'sort', 'user_id', 'scan_count', 'can_comment', 'visibility', 'flag_headline', 'flag_recommend', 'flag_slide_show', 'flag_special_recommend', 'flag_roll', 'flag_bold', 'flag_picture', 'created_at', 'updated_at'], 'integer'],
             [['title', 'sub_title', 'summary', 'thumb', 'seo_title', 'seo_keywords', 'seo_description', 'tag'], 'safe'],
+            [['create_start_at', 'create_end_at', ], 'string'],
         ];
     }
 
@@ -28,8 +33,13 @@ class ArticleSearch extends Article
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        $scenarios = parent::scenarios();
+        $scenarios['article'] = array_merge($scenarios['article'], [
+            'create_start_at',
+            'create_end_at',            
+        ]);
+
+        return $scenarios;
     }
 
     /**
@@ -39,9 +49,9 @@ class ArticleSearch extends Article
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $type = self::ARTICLE)
     {
-        $query = Article::find();
+        $query = Article::find()->where(['type' => $type]);
 
         // add conditions that should always apply here
 

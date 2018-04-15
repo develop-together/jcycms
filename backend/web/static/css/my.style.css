@@ -7,3 +7,7 @@ div.required label.control-label:after {
     border-color: #1ab394 !important;
     color: #FFF !important;
 }
+img.img-center-block {
+	display: block;
+	margin: 0 auto;
+}

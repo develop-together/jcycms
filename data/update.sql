@@ -148,6 +148,58 @@ CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ;
 ALTER TABLE `byt_article_content` 
 DROP FOREIGN KEY `fk_aid`;
 
+#2018-04-15
+
+ALTER TABLE `byt_article`
+MODIFY COLUMN `type`  int(11) UNSIGNED NULL DEFAULT 0 COMMENT '类型[0|文章，2|单页]' AFTER `category_id`;
+
+CREATE TABLE `byt_friend_link` (
+`id`  int(11) UNSIGNED NULL AUTO_INCREMENT ,
+`name`  varchar(255) NULL COMMENT '名称' ,
+`image`  varchar(255) NOT NULL DEFAULT '' COMMENT '图片' ,
+`url`  varchar(255) NOT NULL COMMENT '链接地址' ,
+`target`  varchar(255) NULL DEFAULT '_blank' COMMENT '打开方式' ,
+`sort`  int(11) NULL DEFAULT 0 ,
+`status`  tinyint(1) NULL DEFAULT 0 ,
+`created_at`  int(11) NOT NULL ,
+`updated_at`  int(11) NULL DEFAULT 0 ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+COMMENT='友情链接表'
+;
+
+ALTER TABLE  `byt_friend_link` ADD  `user_id` INT( 11 ) NULL DEFAULT  '0' COMMENT  '操作人' AFTER  `id`
+
+CREATE TABLE `byt_admin_log` (
+`id`  int(11) NULL AUTO_INCREMENT ,
+`user_id`  int(11) NOT NULL DEFAULT 0 ,
+`route`  varchar(255) NULL ,
+`description`  text NULL ,
+`created_at`  int(11) NOT NULL ,
+`updated_at`  int(11) NULL DEFAULT 0 ,
+PRIMARY KEY (`id`),
+CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `byt_admin_user` (`id`) ON DELETE CASCADE
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+COMMENT='系统操作日志'
+;
+
+
+CREATE TABLE IF NOT EXISTS `byt_config` (
+  `scope` char(20) NOT NULL DEFAULT '' COMMENT '类型',
+  `variable` varchar(50) NOT NULL COMMENT '变量',
+  `value` text COMMENT '值',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  PRIMARY KEY (`variable`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='系统配置';
+
+
+
+
+
 
 
 

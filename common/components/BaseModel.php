@@ -6,6 +6,8 @@ use Yii;
 use yii\helpers\Json;
 use yii\helpers\Html;
 use yii\behaviors\TimestampBehavior;
+use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
 
 /**
  * base model
@@ -22,6 +24,7 @@ class BaseModel extends \yii\db\ActiveRecord {
 		if ($this->hasAttribute('created_at') && $this->hasAttribute('updated_at')) {
 			$behaviors[] = TimestampBehavior::className();
 		}
+        
 		return $behaviors;
 	}
 
@@ -104,6 +107,35 @@ class BaseModel extends \yii\db\ActiveRecord {
         }
 
         return $result;
+    }
+
+    public function uploadOpreate($field='thumb', $uploadAlias='@thumb/', $attribute='Thumb')
+    {
+        $upload = UploadedFile::getInstance($this, $field);
+        // var_dump($upload, $field);exit;
+        if ($upload !== null) {
+            $uploadPath = yii::getAlias($uploadAlias);
+            if (! FileHelper::createDirectory($uploadPath)) { 
+                $this->addError($field, "Create directory failed " . $uploadPath);
+                return false;
+            }
+
+            $baseName = $upload->baseName;
+            if (Utils::chinese($baseName)) {
+                $baseName = iconv('UTF-8', 'GBK', $baseName);
+            }
+
+            $fullName = $uploadPath . uniqid() . '_' . $baseName . '.' . $upload->extension;
+            $filename = $uploadPath . uniqid() . '_' . $upload->baseName . '.' . $upload->extension;
+            if(! $upload->saveAs($fullName)) {
+                $this->addError($field, yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => yii::t('app', $attribute)]) . ': ' . $filename);
+                return false;                
+            }
+
+            return str_replace(yii::getAlias('@backend/web'), '', $filename);
+        }
+    
+        return !$this->isNewRecord ? $this->getOldAttribute($field) : '';
     }
 
 }

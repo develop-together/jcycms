@@ -312,4 +312,5 @@ return [
 	'Follow the link below to reset your password' => '点击以下链接重置密码',
 	'rememberMe' => '记住密码',
 	/*mail*/
+	'Opreator' => '操作人',
 ];

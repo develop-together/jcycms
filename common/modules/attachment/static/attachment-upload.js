@@ -43,7 +43,6 @@ function ajaxUpload(obj, res)
 		layer.alert('最多上传' + maxNumberOfFiles + '个文件', {icon : 0});
 		return;
 	}
-
 	var flag = true;
 	for (var p in obj.files) {
 		var fileObj = obj.files[p];
@@ -59,6 +58,9 @@ function ajaxUpload(obj, res)
 			}			
 		}
 	}
+	
+	$(obj).val('');
+
 	return flag;
 }
 

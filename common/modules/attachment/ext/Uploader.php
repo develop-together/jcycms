@@ -195,6 +195,8 @@ class Uploader
             $this->stateInfo = $this->getStateInfo("ERROR_DEAD_LINK");
             return;
         }
+        
+        $heads['Content-Type'] = isset($heads['Content-Type']) ? $heads['Content-Type'] : $heads[3];
         //格式验证(扩展名验证和Content-Type验证)
         $fileType = strtolower(strrchr($imgUrl, '.'));
         if (!in_array($fileType, $this->config['allowFiles']) || stristr($heads['Content-Type'], "image")) {

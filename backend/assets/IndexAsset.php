@@ -26,6 +26,7 @@ class IndexAsset extends \yii\web\AssetBundle {
 		"static/js/hplus.min.js?v=4.1.0",
 		"static/js/contabs.min.js",
 		"static/js/plugins/pace/pace.min.js",
+		'static/js/plugins/imgView/jcy-imgview.js',
 	];
 
 	public $depends = [

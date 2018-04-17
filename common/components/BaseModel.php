@@ -112,7 +112,6 @@ class BaseModel extends \yii\db\ActiveRecord {
     public function uploadOpreate($field='thumb', $uploadAlias='@thumb/', $attribute='Thumb')
     {
         $upload = UploadedFile::getInstance($this, $field);
-        // var_dump($upload, $field);exit;
         if ($upload !== null) {
             $uploadPath = yii::getAlias($uploadAlias);
             if (! FileHelper::createDirectory($uploadPath)) { 
@@ -121,12 +120,14 @@ class BaseModel extends \yii\db\ActiveRecord {
             }
 
             $baseName = $upload->baseName;
+            $extension = $upload->extension;
+            $uniqid = uniqid();
             if (Utils::chinese($baseName)) {
                 $baseName = iconv('UTF-8', 'GBK', $baseName);
             }
 
-            $fullName = $uploadPath . uniqid() . '_' . $baseName . '.' . $upload->extension;
-            $filename = $uploadPath . uniqid() . '_' . $upload->baseName . '.' . $upload->extension;
+            $fullName = $uploadPath . $uniqid . '_' . $baseName . '.' . $extension;
+            $filename = $uploadPath . $uniqid . '_' . $upload->baseName . '.' . $extension;
             if(! $upload->saveAs($fullName)) {
                 $this->addError($field, yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => yii::t('app', $attribute)]) . ': ' . $filename);
                 return false;                

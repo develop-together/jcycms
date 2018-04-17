@@ -32,7 +32,8 @@ use common\models\FriendLink;
                                         [
                                             'width' => '50%',
                                             'height' => '200',
-                                            'class' => 'img-center-block'
+                                            'class' => 'img-center-block',
+                                            'onclick' => 'parent.$.imgview({url: $(this).attr("src")})'
                                         ]
                                     ],
                                 ],

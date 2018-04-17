@@ -1,10 +1,4 @@
 <?php
-/**
- * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
- * Created at: 2016-04-18 09:41
- */
 
 return [
 	/*public*/
@@ -313,4 +307,9 @@ return [
 	'rememberMe' => '记住密码',
 	/*mail*/
 	'Opreator' => '操作人',
+	'System Name' => '系统名称',
+	'Company Name' => '公司名称',
+	'Company Url' => '公司网址',
+	'System Logo' => '网站logo',
+	'Web Templates' => '网站模板',
 ];

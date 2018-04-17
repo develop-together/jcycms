@@ -12,7 +12,8 @@ use yii\helpers\FileHelper;
 /**
  * base model
  */
-class BaseModel extends \yii\db\ActiveRecord {
+class BaseModel extends \yii\db\ActiveRecord 
+{
 
 	public static function getDb()
 	{

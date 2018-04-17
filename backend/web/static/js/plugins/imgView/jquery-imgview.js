@@ -26,7 +26,7 @@
 			$('#imgview_main').remove();
 		};
 		this.showview=function(){
-			var s='<div id="imgview_main" style="position:absolute;left:0px;top:0px;width:100%;height:100%;z-index:800">';
+			var s='<div id="imgview_main" style="position:absolute;left:0px;top:0px;width:100%;height:100%;z-index:9999">';
 			s+='<div style="position:absolute;z-index:0;left:0px;top:0px;width:100%;height:'+this.mheiht+'px;background-color:rgba(0,0,0,0.6)" id="imgview_mask"></div>';
 			s+='<span onclick="$(this).parent().remove()" style="position:fixed;z-index:2;top:2px;right:5px;color:white"><i class="fa fa-close"></i></span>';
 			s+='<div id="imgview_span" style="position:fixed;z-index:1;left:47%;top:47%;overflow:hidden;color:white">';

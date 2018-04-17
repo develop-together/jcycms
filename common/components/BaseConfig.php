@@ -39,6 +39,12 @@ class BaseConfig
     const ARTICLE_VISIBILITY_COMMENT = 2;
     const ARTICLE_VISIBILITY_SECRET = 3;
 
+    const LANGUAGE_ZN_CN = 'zh_CN';
+    // const LANGUAGE_ZN_TW = 'ZN_TW';
+    const LANGUAGE_EN_US = 'en-US'; 
+
+    const WEB_TEMPLATE_ONE = 'template1';
+
     public static function getYesNoItems($key = null)
     {
         $items = [
@@ -138,5 +144,24 @@ class BaseConfig
             throw new InvalidParamException( 'Unknown key:' . $key );
         }
         return $items;
+    }
+
+    public static function getLanguageItems($key = null)
+    {
+        $items = [
+            self::LANGUAGE_ZN_CN = '简体中文',
+            self::LANGUAGE_EN_US = 'English',
+        ];
+
+        return self::getItems($items, $key);
+    }
+
+    public static function getWebTemplateItems($key = null) 
+    {
+        $items = [
+            self::WEB_TEMPLATE_ONE => '模板一',
+        ];
+
+        return self::getItems($items, $key);        
     }
 }

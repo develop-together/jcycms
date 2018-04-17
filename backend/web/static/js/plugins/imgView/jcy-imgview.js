@@ -54,7 +54,7 @@
 			str += '</div>';
 			str += '<div style="position:fixed;z-index:2;left:0px;bottom:0px;text-align:center;color:white;width:100%;font-size:20px;background-color:rgba(0,0,0,0.2);height:40px;line-height:40px;overflow:hidden"><i style="cursor:pointer" id="imgview_zoom-out" class="fa fa-search-minus" title="缩小"></i> &nbsp; <span id="imgview_nowbili" style="font-size:14px">100%</span> &nbsp; <i style="cursor:pointer" class="fa fa-search-plus" title="放大" id="imgview_zoom-in"></i>';
 			str +='  &nbsp; <i style="cursor:pointer" class="fa fa-arrows" title="原始大小" id="imgview_zoom-move"></i>';
-			if(!this.ismobile)str += '  &nbsp; <a target="_blank" download="" style="color:white" href="'+this.url+'"><i style="cursor:pointer" class="fa fa-download" title="下载"></i></a>';
+			if(!this.ismobile)str += '  &nbsp; <a target="_blank" download="" style="color:white" href="' + this.url + '"><i style="cursor:pointer" class="fa fa-download" title="下载"></i></a>';
 			str += '  &nbsp; <i style="cursor:pointer" class="fa fa-retweet" title="旋转90度" id="imgview_zoom-refresh"></i>';
 			str += '</div>';
 			$('body').append(str);
@@ -66,10 +66,14 @@
 			img.src = this.url;
 			img.onload = function(){
 				self.showez(this.width,this.height, 1);
-				try{
-				$('#imgview_span').mousewheel(function(e){
-					self.bilixxx(e.deltaY*0.1);
-				});}catch(e){}
+				try {
+					// 鼠标滚轮插件
+					$('#imgview_span').mousewheel(function(e){
+						self.bilixxx(e.deltaY*0.1);
+					});
+				} catch(e) {
+
+				}
 				self.rotate(self.degree);
 				self.initmove();
 			}
@@ -96,107 +100,136 @@
 			$('#' + this.defaultId).remove();
 		}
 
-		this.showez=function(w, h, lx){
+		this.showez = function(w, h, lx) {
 			this.width = w;
 			this.height = h;
-			var zw = $(window).width(),zh=$(window).height();
-			var wm = zw-50,wh = zh-50;
-			var bl= 1,nw=w,nh=h;
-			if(w>wm){
-				bl=wm/w;
-				nh = h*bl;
+			var zw = $(window).width(), zh = $(window).height();
+			var wm = zw - 50, wh = zh - 50;
+			var bl = 1,nw  =  w,nh  =  h;
+			if (w > wm) {
+				bl = wm / w;
+				nh = h * bl;
 			}
-			if(nh>wh){
-				bl= wh/h;
+
+			if (nh > wh) {
+				bl = wh / h;
 			}
+
 			this.showbl(bl,lx);
-		};
-		this.showbl=function(bl,lx){
+		}
+
+		this.showbl = function(bl,lx) {
 			this.bl = bl;
-			$('#imgview_nowbili').html(''+parseInt(bl*100)+'%');
-			var zw = $(window).width(),zh=$(window).height();
-			var nw = this.width*this.bl,nh=this.height*this.bl;
-			var l = (zw-nw)*0.5,t = (zh-nh)*0.5;
-			var arr = {left:''+l+'px',top:''+t+'px',width:''+nw+'px',height:''+nh+'px'};
-			var o1 = $('#imgview_span');
-			if(lx!=2){
-				if(lx==1)_get(this.imgId).src=this.url;
+			$('#imgview_nowbili').html('' + parseInt(bl * 100) + '%');
+			var zw = $(window).width(),zh = $(window).height();
+			var nw = this.width * this.bl,nh = this.height * this.bl;
+			var l = (zw - nw) * 0.5,t = (zh - nh) * 0.5;
+			var arr = {left:'' + l + 'px',top:'' + t + 'px',width:''  +  nw  +  'px',height:'' + nh + 'px'};
+			var o1 = $('#imgview_span'); 
+			if (lx != 2) {
+				if (lx==1) {
+					_get(this.imgId).src=this.url;
+				}
+
 				o1.css(arr);
-			}else{
+			} else {
 				o1.stop();
-				o1.animate(arr,300);
+				o1.animate(arr, 300);
 			}
-		};
-		this.bilixxx=function(lx){
-			var bl = this.bl+lx;
-			if(bl<0)bl=0.05;
-			if(bl>3)bl=3;
-			this.showbl(bl,2);
-		};
-		this.initmove=function(){
-			if(this.ismobile){
+		}
+
+		this.bilixxx = function(lx) {
+			var bl = this.bl + lx;
+			if (bl < 0) {
+				bl = 0.05;
+			} 
+
+			if  (bl > 3) {
+				bl=3;
+			}
+
+			this.showbl(bl, 2);
+		}
+
+		this.initmove = function() {
+			if (this.ismobile) {
 				this.movehammer();
+
 				return;
-			}
+			} 
 			var o = $('#' + this.imgMaskId);
-			var x=0,y=0,oldl,oldt;
-			o.mousedown(function(e){
-				x=e.clientX;
-				y=e.clientY;
-				var o1=_get('imgview_span');
+			var x = 0, y = 0, oldl, oldt;
+			o.mousedown(function(e) {
+				x = e.clientX;
+				y = e.clientY;
+				var o1 = _get('imgview_span');
 				oldl = parseInt(o1.style.left);
 				oldt = parseInt(o1.style.top);
-				self.movebo=true;
+				self.movebo = true;
 			});
-			o.mousemove(function(e){
-				if(!self.movebo)return;
-				var _x = e.clientX-x,_y=e.clientY-y;
-				$('#imgview_span').css({left:''+(oldl+_x)+'px',top:''+(oldt+_y)+'px'});
+
+			o.mousemove(function(e) {
+				if (!self.movebo) {
+					return;
+				}
+				var _x = e.clientX - x, _y = e.clientY - y;
+				$('#imgview_span').css({left:'' + (oldl + _x) + 'px',top:'' + (oldt + _y) + 'px'});
 			});
-			o.mouseup(function(e){
-				self.movebo=false;
+
+			o.mouseup(function(e) {
+				self.movebo = false;
 			});
-		};
-		this.rotate=function(ds){
+		}
+
+		this.rotate = function(ds) {
 			var o = _get('imgview_span');
-			var val= "rotate("+ds+"deg)";
-			o.style.transform=val;
-			o.style.webkitTransform=val;
-			o.style.msTransform=val;
-			o.style.MozTransform=val;
-			o.style.OTransform=val;
-		};
-		this.clickrotate=function(){
-			this.degree+=90;
-			if(this.degree>=360)this.degree=0;
+			var val = "rotate(" + ds + "deg)";
+			o.style.transform = val;
+			o.style.webkitTransform = val;
+			o.style.msTransform = val;
+			o.style.MozTransform = val;
+			o.style.OTransform = val;
+		}
+
+		this.clickrotate = function() {
+			this.degree += 90;
+			if (this.degree >= 360) {
+				this.degree = 0;
+			}
+
 			this.rotate(this.degree);
-		};
-		this.movehammer=function(){
+		}
+
+		this.movehammer = function() {
 			var o = _get(this.imgMaskId);
-			var x=0,y=0,oldl,oldt;
+			var x = 0, y = 0, oldl, oldt;
 			this.touchci = 0;
-			o.addEventListener('touchstart',function(e){
+			o.addEventListener('touchstart', function(e) {
 				self.touchci++;
-				x=e.touches[0].clientX;
-				y=e.touches[0].clientY;
-				var o1=_get('imgview_span');
+				x = e.touches[0].clientX;
+				y = e.touches[0].clientY;
+				var o1 = _get('imgview_span');
 				oldl = parseInt(o1.style.left);
 				oldt = parseInt(o1.style.top);
-				self.movebo=true;
+				self.movebo = true;
 				clearTimeout(self.touctimes);
-				self.touctimes = setTimeout(function(){self.touchci=0},200);
+				self.touctimes = setTimeout(function() {self.touchci = 0}, 200);
 			}); 
-			o.addEventListener('touchmove',function(e){
+
+			o.addEventListener('touchmove', function(e){
 				e.preventDefault();
-				if(!self.movebo)return;
-				var _x = e.touches[0].clientX-x,_y=e.touches[0].clientY-y;
-				$('#imgview_span').css({left:''+(oldl+_x)+'px',top:''+(oldt+_y)+'px'});
+				if (!self.movebo) {
+					return;
+				}
+				var _x = e.touches[0].clientX - x, _y = e.touches[0].clientY - y;
+				$('#imgview_span').css({left:''+ (oldl + _x) + 'px',top:'' + (oldt + _y) + 'px'});
 			}); 
-			o.addEventListener('touchend',function(e){
-				self.movebo=false;
-				if(self.touchci==2){
+
+			o.addEventListener('touchend', function(e) {
+				self.movebo = false;
+				if (self.touchci == 2) {
 					self.bilixxx(0.1);
-					self.touchci=0;
+					self.touchci = 0;
 				}
 			}); 
 		}

@@ -51,7 +51,7 @@ function ajaxUpload(obj, res)
 		}
 
 		if (fileObj instanceof Object) {
-			flag = _fileUpload(fileObj, options, res);
+			flag = _fileUpload(fileObj, options, res, obj);
 			if (!flag) {
 				layer.alert(fileObj.name + '上传失败', {icon : 0});
 				continue;
@@ -77,10 +77,13 @@ function in_array(needle, haystack)
 	return false;
 }
 
-function _fileUpload(file,options, res) 
+function _fileUpload(file,options, res, _fileDomObj) 
 {
-	var form = document.getElementById('user-form');
-	var fd = new FormData(form);
+	var form = $(_fileDomObj).parent('div.upload-kit-input')
+		.parent('div')
+		.parent('div')
+		.parent('form');
+	var fd = new FormData(form.get(0));
 	var ajaxUrl = options.url;
 	var fileInputId = options.id;
 	var fileInputName = options.name;
@@ -174,6 +177,11 @@ function _fileUpload(file,options, res)
 }
 
 function _createImg(res,data,fileInputId) {
+	if (data.error) {
+		layer.alert(data.error);
+		return;
+	}
+
 	var resObj = document.getElementById(res);
 	var newObj = document.createElement('div');
 	$(newObj).addClass('upload-kit-item done');		

@@ -31,7 +31,7 @@ class Config extends \common\components\BaseModel
     {
         return [
             [['variable'], 'required'],
-            [['value'], 'string'],
+            [['value', 'system_logo'], 'string'],
             [['scope'], 'string', 'max' => 20],
             [['variable'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 255],
@@ -47,12 +47,12 @@ class Config extends \common\components\BaseModel
 
         $data = Yii::$app->cache->get($key);
         if (empty($data)) {
-            $lists = self::findAll();
+            $lists = self::find()->all();
             foreach ($lists as $key => $value) {
                 $data[$value->variable] = $value->value;
             }
 
-            Yii::$app->cache->set($data);
+            Yii::$app->cache->set($key, $data);
         }
 
         return $data;
@@ -87,7 +87,14 @@ class Config extends \common\components\BaseModel
      */
     public static function updateVariable($variable, $value='', $scope='base')
     {
-        return Yii::$app->db->createCommand("REPLACE INTO {{config}}(`scope`, `variable`, `value`) VALUES('$scope', '$variable', '$value')")->execute();
+        return Yii::$app->db->createCommand("REPLACE INTO " . self::tableName() . "(`scope`, `variable`, `value`) VALUES('$scope', '$variable', '$value')")->execute();
+    }
+
+    public function getSystem_logo()
+    {
+        $logo = self::findOne(['variable' => 'system_logo', 'scope' => 'base']);
+        
+        return $logo ? $logo->value : '';
     }
 
     /**
@@ -100,6 +107,7 @@ class Config extends \common\components\BaseModel
             'variable' => Yii::t('app', 'Variable'),
             'value' => Yii::t('app', 'Value'),
             'description' => Yii::t('app', 'Description'),
+            'system_logo' => Yii::t('app', 'System Logo'),
         ]);
     }
 }

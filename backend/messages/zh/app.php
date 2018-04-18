@@ -166,7 +166,9 @@ return [
 	'Sender' => '发件人',
 	'Encryption' => '连接类型',
 	'SMTP Setting' => 'SMTP设置',
+	'Send Test' => '发送测试',
 	'Test' => '测试',
+	'Fill In The Mail Box' => '填写收件邮箱',
 	/*setting*/
 
 	/*Log*/
@@ -312,4 +314,10 @@ return [
 	'Company Url' => '公司网址',
 	'System Logo' => '网站logo',
 	'Web Templates' => '网站模板',
+	'Please Enter The Correct Mailbox Format' => '请输入正确的邮箱格式',
+	'Send a failure, please confirm whether the mailbox exists!' => '发送失败，请确认邮箱是否存在！',
+	'A test email numbered {number} has been sent to mailbox {email}. Please check it.' => '已向邮箱({email})发送了一封编号为 {number} 的测试邮件，请查收',
+	'Test Email({email})' => '测试邮件({email})',
+	'Test Number:{number} .This is a test mail. When you receive this mail, it indicates that your sending mailbox is configured correctly.' => '测试编号: {number}<br><br>这是一封测试邮件，当您收到此邮件，则表明您的发件邮箱已配置正确。',
+	'Can not delete the home page' => '不能删除首页',
 ];

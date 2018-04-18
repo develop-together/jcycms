@@ -12,7 +12,7 @@ use backend\models\Menu;
  */
 class MenuSearch extends Menu
 {
-    public $searchType = 1;
+    public $searchType = 1;/*1表示查询后台菜单,2表示查询前台菜单*/
 
     /**
      * @inheritdoc
@@ -43,7 +43,7 @@ class MenuSearch extends Menu
 
         $pageSize = 30;
         $pageCurrent = 0;
-        $field = 'id';
+        $field = $this->searchType == 2 ? 'sort' : 'id';
         $sort = SORT_ASC;
 
         if (isset($params['pageSize'])) {
@@ -97,6 +97,8 @@ class MenuSearch extends Menu
 
         if ($this->searchType == 1) {
             $query->andFilterWhere(['type' => self::MENU_TYPE_BACKEND]);
+        } elseif ($this->searchType == 2) {
+            $query->andFilterWhere(['type' => self::MENU_TYPE_FRONTEND]);
         }
 
         $query->andFilterWhere(['like', 'name', $this->name])

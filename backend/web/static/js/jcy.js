@@ -1,7 +1,10 @@
 (function(){
     var jcms = function () {
         this.ajax = function(type, url, data, dataType, callback, async) {
-            data._csrf_backend = $("meta[name='csrf-token']").attr('content');
+            if (type.toLowerCase() == 'post') {
+               data._csrf_backend = $("meta[name='csrf-token']").attr('content'); 
+            }
+
             jQuery.ajax({
                 type: type,
                 url: url,
@@ -40,9 +43,10 @@
             }  
             var icon = statusCode == 200 ? 1 : 2;
             console.log('正确返回后是否关闭layer', closeLayer && statusCode == 200);
-            layer.alert(message, {icon: icon}, function(){
+            var alertIndex = layer.alert(message, {icon: icon}, function(){
                 closeLayer && statusCode == 200 && setTimeout(function () {
-                    parent.layer.closeAll();
+                    // parent.layer.closeAll();
+                    layer.close(alertIndex);
                 }, 1500);
             });
         },

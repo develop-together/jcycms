@@ -149,8 +149,8 @@ class BaseConfig
     public static function getLanguageItems($key = null)
     {
         $items = [
-            self::LANGUAGE_ZN_CN = '简体中文',
-            self::LANGUAGE_EN_US = 'English',
+            self::LANGUAGE_ZN_CN => '简体中文',
+            self::LANGUAGE_EN_US => 'English',
         ];
 
         return self::getItems($items, $key);

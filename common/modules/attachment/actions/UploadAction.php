@@ -57,9 +57,11 @@ class UploadAction extends Action
 	{
 		Yii::$app->response->format = Response::FORMAT_JSON;
 		if (Yii::$app->request->isAjax) {
-			// $res = $this->uploadOne();
-			// return $res;
 			$files = UploadedFile::getInstanceByName($this->uploadParam);
+			if (empty($files)) {
+				return ['error' => '找不到上传的文件'];
+			}
+
 			if(!$this->multiple) {
 				$res = $this->uploadOne($files);
 			} else {

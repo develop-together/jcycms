@@ -53,6 +53,12 @@ class Menu extends \common\models\Menu
 		return self::find()->where($where);
 	}
 
+	public static function getFrontendQuery($display=false)
+	{
+		$where = $display ? ['is_display' => self::DISPLAY_SHOW, 'type' => Menu::MENU_TYPE_FRONTEND] : ['type' => Menu::MENU_TYPE_FRONTEND];
+		return self::find()->where($where);
+	}
+
 	public static function generateUrl($url, $is_absolute_url=0)
 	{
 		if($url == '')

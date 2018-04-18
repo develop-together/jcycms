@@ -30,13 +30,13 @@ $categoryTree = Utils::tree_bulid(Category::find()->asArray()->all(), 'id', 'par
                 ]); ?>    
 
                     <?= $form->field($model, 'parent_id')->dropDownList(Category::getDrowDownList($categoryTree), ['prompt' => '请选择']) ?>
-
+                    <div class="hr-line-dashed"></div>
                     <?= $form->field($model, 'name')->textInput(['maxlength' => true]); ?>
-
+                    <div class="hr-line-dashed"></div>
                     <?= $form->field($model, 'sort')->textInput(['maxlength' => true]); ?>
-
+                    <div class="hr-line-dashed"></div>
                     <?= $form->field($model, 'remark')->textInput(['maxlength' => true]); ?>
-
+                    <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">
                             <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

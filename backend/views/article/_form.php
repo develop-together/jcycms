@@ -36,8 +36,11 @@ $this->title = yii::t('app', 'Articles');
                     <!--top start-->
                     <div class=" " style="">
                         <?= $form->field($model, 'title')->textInput(); ?>
+                        <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'sub_title')->textInput(); ?>
+                        <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'category_id')->dropDownList(Category::getDrowDownList($categoryTree), ['prompt' => '请选择', 'style' => 'width:200px']) ?>
+                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label"><?= yii::t('app', 'Attributes') ?>:</label>
                             <div class="col-sm-10">
@@ -56,6 +59,7 @@ $this->title = yii::t('app', 'Articles');
                                 <?= Html::activeCheckbox($model, 'flag_picture', []) ?>
                             </div>
                         </div>
+                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label"><?= yii::t('app', 'Seo Setting') ?>:</label>
                             <div class="col-sm-10">
@@ -70,6 +74,7 @@ $this->title = yii::t('app', 'Articles');
                                 ])->textInput(); ?>                                
                             </div>
                         </div>
+                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label"><?= yii::t('app', 'Other') ?>:</label>
                             <div class="col-sm-10">
@@ -94,14 +99,19 @@ $this->title = yii::t('app', 'Articles');
                             </div>
                         </div>
                         <?= $form->field($model, 'tag')->textInput(); ?>
+                        <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'sort')->textInput(['type' => 'number', 'min' => 0]); ?>
+                        <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'summary')->textArea(); ?>
+                        <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'thumb')->widget(FileUploadInputWidget::className(), [
                             'type' => 'feehi_img',
                             ]); ?>
+                        <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'content')->widget(Ueditor::className()) ?>
                     </div>
                     <!--top stop --> 
+                    <div class="hr-line-dashed"></div>
                     <div class="form-group text-right">
                         <div class="col-sm-4 col-sm-offset-2">
                             <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

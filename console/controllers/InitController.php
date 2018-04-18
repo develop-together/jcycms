@@ -1,12 +1,16 @@
 <?php
 namespace console\controllers;
 use backend\models\User;
+use common\models\Config;
+use Yii;
 
-class InitController extends \yii\console\Controller {
+class InitController extends \yii\console\Controller 
+{
 	/**
 	 * Create init user
 	 */
-	public function actionCreateAdministrator() {
+	public function actionCreateAdministrator() 
+	{
 		echo "创建一个新用户 ...\n"; // 提示当前操作
 		$username = $this->prompt('User Name:'); // 接收用户名
 		$email = $this->prompt('Email:'); // 接收Email
@@ -30,5 +34,39 @@ class InitController extends \yii\console\Controller {
 		}
 
 		return 0; // 返回0表示一切OK
+	}
+
+	/**
+	 * Create init config fields
+	 */
+	public function actionCreateConfig($scope='base')
+	{
+		echo "创建config表必须字段...\n";
+		$fieldLists = Yii::$app->params['configFileds'];
+		if ($fieldLists) {
+			foreach ($fieldLists as $filed) {
+				$model = new Config();
+				$model->scope = $scope;
+				$model->variable = $filed;
+				if(!$model->save()) {
+					$errs = [];
+					foreach ($model->errors as $error) {
+						$errs[] = $error[0];
+					}
+
+					echo implode("\n", $errs);
+
+					return 1;
+				}
+			}
+
+			$this->stderr('成功');
+			return 0;
+		}
+	}
+
+	public function actionTest()
+	{
+		$this->stderr('TEST');
 	}
 }

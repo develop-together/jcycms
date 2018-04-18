@@ -20,10 +20,6 @@ use yii\helpers\ArrayHelper;
  */
 class FriendLink extends \common\components\BaseModel
 {
-    const TARGET_BLANK = '_blank';
-    const TARGET_SELF = '_self';
-    const TAGET_PARENT = '_parent';
-    const TAGET_TOP = '_top';
     const DISPLAY_YES = 1;
     const DISPLAY_NO = 0;
 
@@ -45,16 +41,6 @@ class FriendLink extends \common\components\BaseModel
             [['sort', 'created_at', 'updated_at', 'user_id'], 'integer'],
             [['name', 'image', 'url', 'target'], 'string', 'max' => 255],
             [['status'], 'string', 'max' => 1],
-        ];
-    }
-
-    public static function loadTragetOptions()
-    {
-        return [
-            self::TARGET_BLANK => '新窗口中打开被链接文档(_blank)',
-            self::TARGET_SELF => '相同的框架中打开被链接文档(_slef)',
-            self::TAGET_PARENT => '父框架集中打开被链接文档(_parent)',
-            self::TAGET_TOP => '整个窗口中打开被链接文档(_top)',
         ];
     }
 

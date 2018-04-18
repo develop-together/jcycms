@@ -28,18 +28,19 @@ use common\models\FriendLink;
                                 'options' => ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data'],
                     ]); ?>    
                         <?= $form->field($model, 'name')->textInput(['maxlength' => true]); ?>
-                        
+                        <div class="hr-line-dashed"></div>                        
                         <?= $form->field($model, 'url')->textInput(['maxlength' => true]); ?>
-
+                        <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'target')->dropDownList(FriendLink::loadTragetOptions()); ?>
-
+                        <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'sort')->textInput(['type' => 'number', 'min' => 0]); ?>
-
+                        <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'status')->radioList(BaseConfig::getYesNoItems()); ?>
-
+                        <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'image')->widget(FileUploadInputWidget::className(), [
                             'type' => 'feehi_img',
                             ]); ?>
+                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
                                 <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -171,8 +171,21 @@ class Menu extends \common\components\BaseModel
 
         return array_merge($parentScenarios, [
             'backend' => ['parent_id', 'name', 'url', 'icon', 'type', 'is_absolute_url', 'target', 'sort', 'is_display', 'method'],
-            'frontend' => ['parent_id', 'name', 'url', 'icon', 'type', 'is_absolute_url', 'target', 'sort', 'is_display'],
+            'frontend' => ['parent_id', 'name', 'url', 'type', 'is_absolute_url', 'target', 'sort', 'is_display'],
         ]);
+    }
+
+    public function beforeSave($insert) 
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        if ($this->isNewRecord && $this->getScenario() == 'frontend') {
+            $this->type = self::MENU_TYPE_FRONTEND;
+        }
+
+        return true;
     }
 
     public function beforeDelete()
@@ -180,6 +193,11 @@ class Menu extends \common\components\BaseModel
         if ($this->children) {
             $this->addError('id', yii::t('app', 'Sub Menu exists, cannot be deleted'));
             return false;
+        }
+
+        if($this->name === '首页') {
+            $this->addError('id', yii::t('app', 'Can not delete the home page'));
+            return false;            
         }
 
         return true;

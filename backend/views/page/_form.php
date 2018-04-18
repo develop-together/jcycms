@@ -36,7 +36,9 @@ $this->title = yii::t('app', 'Articles');
                     <!--top start-->
                     <div class=" " style="">
                         <?= $form->field($model, 'title')->textInput(); ?>
+                        <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'sub_title')->textInput(); ?>
+                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label"><?= yii::t('app', 'Seo Setting') ?>:</label>
                             <div class="col-sm-10">
@@ -51,6 +53,7 @@ $this->title = yii::t('app', 'Articles');
                                 ])->textInput(); ?>                                
                             </div>
                         </div>
+                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label"><?= yii::t('app', 'Other') ?>:</label>
                             <div class="col-sm-10">
@@ -77,6 +80,7 @@ $this->title = yii::t('app', 'Articles');
                         <?= $form->field($model, 'content')->widget(Ueditor::className()) ?>
                     </div>
                     <!--top stop --> 
+                    <div class="hr-line-dashed"></div>
                     <div class="form-group text-right">
                         <div class="col-sm-4 col-sm-offset-2">
                             <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

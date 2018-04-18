@@ -24,8 +24,11 @@ $this->title = Yii::t('app', 'Roles');
 
                 <?= $form->field($model, 'role_name')->textInput(['maxlength' => 64]) ?>
 
+                <div class="hr-line-dashed"></div>
+                
                 <?= $form->field($model, 'remark')->textInput(['maxlength' => 64]) ?>
 
+                <div class="hr-line-dashed"></div>
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">
                         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

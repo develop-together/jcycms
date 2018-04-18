@@ -3,14 +3,18 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm AS BAF;
-use common\compnoents\BaseConfig;
+use common\components\BaseConfig;
+use common\widgets\fileUploadInput\FileUploadInputWidget;
 
+$this->title = Yii::t('app', 'Website Setting');
 ?>
 
 <div class="row">
     <div class="col-sm-12">
         <div class="ibox">
-            <?= $this->render('/widgets/_ibox-index-title') ?>
+            <div class="ibox-title">
+                <h5><?= $this->title ?></h5>
+            </div>
             <div class="ibox-content">
                 <?php $form = BAF::begin([
                             'fieldConfig' => [
@@ -20,40 +24,40 @@ use common\compnoents\BaseConfig;
                                 'inputOptions' => ['class' => 'form-control'],
                                 'errorOptions' => ['class' => 'help-block m-b-none'],                            
                             ],
-                            'options' => ['class' => 'form-horizontal'],
+                            'options' => ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data'],
                 ]); ?>
                 <div class="form-group">
                     <?= Html::label(Yii::t('app', 'System Name'), null, ['class' => 'col-sm-2 control-label']) ?>
                     <div class="col-sm-10">
-                        <?= Html::textInput('Config[system_name]', isset($config['system_name']) ? $config['system_name'] : '', ['class' => 'form-contorl', 'size' => 50]) ?> ?>
+                        <?= Html::textInput('Config[system_name]', isset($config['system_name']) ? $config['system_name'] : '', ['class' => 'form-control', 'style' => 'width:40%']) ?>
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
                     <?= Html::label(Yii::t('app', 'Company Name'), null, ['class' => 'col-sm-2 control-label']) ?>
                     <div class="col-sm-10">
-                        <?= Html::textInput('Config[company_name]', isset($config['company_name']) ? $config['company_name'] : '', ['class' => 'form-contorl', 'size' => 50]) ?> ?>
+                        <?= Html::textInput('Config[company_name]', isset($config['company_name']) ? $config['company_name'] : '', ['class' => 'form-control', 'style' => 'width:40%']) ?>
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
                     <?= Html::label(Yii::t('app', 'Company Url'), null, ['class' => 'col-sm-2 control-label']) ?>
                     <div class="col-sm-10">
-                        <?= Html::textInput('Config[company_url]', isset($config['company_url']) ? $config['company_url'] : '', ['class' => 'form-contorl', 'size' => 50]) ?> ?>
+                        <?= Html::textInput('Config[company_url]', isset($config['company_url']) ? $config['company_url'] : '', ['class' => 'form-control', 'style' => 'width:40%']) ?>
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
                     <?= Html::label(Yii::t('app', 'Seo Keyword'), null, ['class' => 'col-sm-2 control-label']) ?>
                     <div class="col-sm-10">
-                        <?= Html::textInput('Config[seo_keyword]', isset($config['seo_keyword']) ? $config['seo_keyword'] : '', ['class' => 'form-contorl', 'size' => 50]) ?> ?>
+                        <?= Html::textInput('Config[seo_keyword]', isset($config['seo_keyword']) ? $config['seo_keyword'] : '', ['class' => 'form-control', 'style' => 'width:40%']) ?>
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
                     <?= Html::label(Yii::t('app', 'Seo Description'), null, ['class' => 'col-sm-2 control-label']) ?>
                     <div class="col-sm-10">
-                        <?= Html::textInput('Config[seo_description]', isset($config['seo_description']) ? $config['seo_description'] : '', ['class' => 'form-contorl', 'size' => 50]) ?> ?>
+                        <?= Html::textarea('Config[seo_description]', isset($config['seo_description']) ? $config['seo_description'] : '', ['class' => 'form-control', 'rows' => 5, 'cols' => 60]) ?>
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
@@ -74,21 +78,20 @@ use common\compnoents\BaseConfig;
                 <div class="form-group">
                     <?= Html::label(Yii::t('app', 'Web Templates'), null, ['class' => 'col-sm-2 control-label']) ?>
                     <div class="col-sm-10">                        
-                        <?= Html::dropDownList('Config[web_templates]', isset($config['web_templates']) ? $config['web_templates'] : null, BaseConfig::getWebTemplateItems(), ['class' => 'form-control'])?>
+                        <?= Html::dropDownList('Config[web_templates]', isset($config['web_templates']) ? $config['web_templates'] : null, BaseConfig::getWebTemplateItems(), ['class' => 'form-control', 'style' => 'width:120px;'])?>
                     </div>
                 </div>  
                 <div class="hr-line-dashed"></div>              
-                <div class="form-group">
-                    <?= Html::label(Yii::t('app', 'System Logo'), null, ['class' => 'col-sm-2 control-label']) ?>
-                    <div class="col-sm-10">
-                        <?= Html::textInput('Config[system_logo]', isset($config['system_logo']) ? $config['system_logo'] : '', ['class' => 'form-contorl', 'size' => 50]) ?> ?>
-                    </div>
-                </div>
+                <?= $form->field($logo, 'system_logo')->widget(FileUploadInputWidget::className(),[
+                    'type' => 'image'
+                ]); ?>
                 <div class="hr-line-dashed"></div>
-                <div class="col-sm-4 col-sm-offset-2">
-                    <?= Html::submitButton(Yii::t('app', 'Save') , ['class' => 'btn btn-success']) ?>
-                    
-                    <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']);?>                        
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <?= Html::submitButton(Yii::t('app', 'Save') , ['class' => 'btn btn-success']) ?>
+                        
+                        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']);?>                        
+                    </div>
                 </div>
                 <?php  BAF::end(); ?> 
             </div>

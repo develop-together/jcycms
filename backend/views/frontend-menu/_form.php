@@ -5,11 +5,9 @@ use yii\helpers\Url;
 use backend\models\Menu;
 use common\components\Utils;
 use yii\widgets\ActiveForm AS BAF;
-$lists = Menu::getBackendQuery()->asArray()->all();
+$lists = Menu::getFrontendQuery()->asArray()->all();
 $menuTree = Utils::tree_bulid($lists, 'id', 'parent_id');
-/* @var $this yii\web\View */
-/* @var $model backend\models\Menu */
-/* @var $form yii\widgets\ActiveForm */
+
 ?>
 
 <div class="row">
@@ -36,11 +34,9 @@ $menuTree = Utils::tree_bulid($lists, 'id', 'parent_id');
                         <?= $form->field($model, 'url')->textInput(); ?>
                         <div class="hr-line-dashed"></div>                       
                         <?= $form->field($model, 'method')->dropDownList(Menu::loadMethodOptions(), ['prompt' => '请选择']); ?>
-                        <div class="hr-line-dashed"></div>                       
-                        <?= $form->field($model, 'icon')->widget(\backend\widgets\iconpicker\IconPickerWidget::className()) ?>
                         <div class="hr-line-dashed"></div>                        
                         <?= $form->field($model, 'target')->dropDownList(Menu::loadTragetOptions()); ?>
-                        <div class="hr-line-dashed"></div>                       
+                        <div class="hr-line-dashed"></div>                     
                         <?= $form->field($model, 'sort')->textInput(['maxlength' => true, 'type' => 'number', 'min' => 0]); ?>
                         <div class="hr-line-dashed"></div>                       
                         <?= $form->field($model, 'is_display')->radioList(Menu::loadDisplayOptions()); ?>

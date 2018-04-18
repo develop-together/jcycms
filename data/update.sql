@@ -196,6 +196,11 @@ CREATE TABLE IF NOT EXISTS `byt_config` (
   PRIMARY KEY (`variable`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='系统配置';
 
+#2018-04-18
+
+ALTER TABLE `byt_config` 
+ADD UNIQUE INDEX `variable_UNIQUE` (`variable` ASC);
+
 
 
 

@@ -14,7 +14,11 @@ use yii\helpers\FileHelper;
  */
 class BaseModel extends \yii\db\ActiveRecord 
 {
-
+    const TARGET_BLANK = '_blank';
+    const TARGET_SELF = '_self';
+    const TAGET_PARENT = '_parent';
+    const TAGET_TOP = '_top';
+    
 	public static function getDb()
 	{
 		return Yii::$app->get('db');
@@ -138,6 +142,16 @@ class BaseModel extends \yii\db\ActiveRecord
         }
     
         return !$this->isNewRecord ? $this->getOldAttribute($field) : '';
+    }
+
+    public static function loadTragetOptions()
+    {
+        return [
+            self::TARGET_BLANK => '新窗口中打开被链接文档(_blank)',
+            self::TARGET_SELF => '相同的框架中打开被链接文档(_slef)',
+            self::TAGET_PARENT => '父框架集中打开被链接文档(_parent)',
+            self::TAGET_TOP => '整个窗口中打开被链接文档(_top)',
+        ];
     }
 
 }

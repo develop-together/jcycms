@@ -34,6 +34,7 @@ class AppAsset extends \yii\web\AssetBundle {
 		'static/js/plugins/layer/layer.min.js',
 		'static/js/plugins/prettyfile/bootstrap-prettyfile.js',
 		'static/js/plugins/toastr/toastr.min.js',
+		'static/js/jquery.backstretch.min.js',
 	];
 
 	public $depends = [

@@ -179,4 +179,26 @@ class AdminUserController extends BackendController
         $roleLists = AdminRoles::loadRolesOptions(true);
         return $this->render('assignment', ['model' => $model, 'roleLists' => $roleLists]);        
     }
+
+    public function actionUpdateSelf()
+    {
+        $userModel = User::findOne(Yii::$app->user->id);
+        $userModel->scenario = 'updateSelf';
+        if (Yii::$app->request->isPost) {
+            if($userModel->load(Yii::$app->request->post()) && $userModel->save()) {
+                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+
+                return $this->redirect(['admin-user/update-self']);            
+            } else {
+                $errors = $userModel->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+                Yii::$app->getSession()->setFlash('error', $err); 
+            }
+        }
+
+        return $this->render('update-self', ['model' => $userModel]);
+    }
 }

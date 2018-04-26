@@ -320,4 +320,6 @@ return [
 	'Test Email({email})' => '测试邮件({email})',
 	'Test Number:{number} .This is a test mail. When you receive this mail, it indicates that your sending mailbox is configured correctly.' => '测试编号: {number}<br><br>这是一封测试邮件，当您收到此邮件，则表明您的发件邮箱已配置正确。',
 	'Can not delete the home page' => '不能删除首页',
+	'The Old Password Is Error' => '旧密码输入不对',
+	'Not to fill, by default do not modify' => '不填，默认不修改',
 ];

@@ -45,7 +45,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
                                 <li><a class="J_menuItem"
-                                       href="javascript:;"><?=yii::t('app', 'Profile')?></a>
+                                       href="<?= Url::toRoute(['admin-user/update-self']) ?>"><?=yii::t('app', 'Profile')?></a>
                                 </li>
                                 <li><a class="J_menuItem"
                                        href="javascript:;"><?=yii::t('app', 'Articles')?></a>
@@ -77,7 +77,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                                     Yii::$app->language,
                                     UserAcl::getRoleId(),
                                 ],                                
-                            ])){
+                            ])) {
                                 echo UserAcl::getBackendMenus();
                                 $this->endCache();
                             }
@@ -199,7 +199,6 @@ $this->title = yii::t('app', 'Backend Manage System');
                         </div>
                         <div class="setings-item">
                             <span>固定顶部</span>
-
                             <div class="switch">
                                 <div class="onoffswitch">
                                     <input type="checkbox" name="fixednavbar" class="onoffswitch-checkbox"
@@ -212,10 +211,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                             </div>
                         </div>
                         <div class="setings-item">
-                                <span>
-                        固定宽度
-                    </span>
-
+                            <span>固定宽度</span>
                             <div class="switch">
                                 <div class="onoffswitch">
                                     <input type="checkbox" name="boxedlayout" class="onoffswitch-checkbox"
@@ -229,25 +225,13 @@ $this->title = yii::t('app', 'Backend Manage System');
                         </div>
                         <div class="title">皮肤选择</div>
                         <div class="setings-item default-skin nb">
-                                <span class="skin-name ">
-                         <a href="#" class="s-skin-0">
-                             默认皮肤
-                         </a>
-                    </span>
+                            <span class="skin-name "><a href="#" class="s-skin-0">默认皮肤</a></span>
                         </div>
                         <div class="setings-item blue-skin nb">
-                                <span class="skin-name ">
-                        <a href="#" class="s-skin-1">
-                            蓝色主题
-                        </a>
-                    </span>
+                            <span class="skin-name "><a href="#" class="s-skin-1">蓝色主题 </a></span>
                         </div>
                         <div class="setings-item yellow-skin nb">
-                                <span class="skin-name ">
-                        <a href="#" class="s-skin-3">
-                            黄色/紫色主题
-                        </a>
-                    </span>
+                            <span class="skin-name "><a href="#" class="s-skin-3">黄色/紫色主题</a></span>
                         </div>
                     </div>
                 </div>

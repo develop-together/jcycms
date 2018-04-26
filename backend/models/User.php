@@ -19,9 +19,9 @@ class User extends BaseModel implements IdentityInterface
 
 	public $password;
 
-	public $repassword;
+	public $repeat_pwd;
 
-	public $old_password;
+	public $old_pwd;
 
 	/**
 	 * 返回数据表名
@@ -39,16 +39,26 @@ class User extends BaseModel implements IdentityInterface
 	public function rules() 
 	{
 		return [
-			[['username', 'auth_key', 'avatar', 'password', 'repassword', 'password_hash'], 'string'],
+			[['username', 'auth_key', 'avatar', 'password', 'repeat_pwd', 'password_hash'], 'string'],
 			['email', 'email'],
 			['email', 'unique'],
-			[['repassword'], 'compare', 'compareAttribute' => 'password'],
+			[['repeat_pwd'], 'compare', 'compareAttribute' => 'password'],
 			//[['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
 			[['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-			[['username', 'email', 'password', 'repassword'], 'required', 'on' => ['create']],
-			//[['username', 'email'], 'required', 'on' => ['update', 'self-update']],
+			[['username', 'email', 'password', 'avatar'], 'required', 'on' => ['create', 'update']],
+			[['email', 'avatar'], 'required', 'on' => ['updateSelf']],
+			// [['password'], 'checkOldAttribute','skipOnError' => false, 'skipOnEmpty' => false],
 		];
 	}
+
+/*	public function checkOldAttribute($attribute, $params)
+	{
+		if (!$this->hasError()) {
+			if($this->$attribute != $this->getOldAttribute('password')) {
+				$this->addError('password', Yii::t('app', 'The Old Password Is Error'));
+			}
+		}
+	}*/
 
 	public function scenarios()
 	{
@@ -57,6 +67,7 @@ class User extends BaseModel implements IdentityInterface
 			'default' => ['username', 'email'],
 			'create' => ['username', 'email', 'password', 'avatar', 'status'],
 			'update' => ['username', 'email', 'password', 'avatar', 'status'],
+			'updateSelf' => ['avatar', 'email', 'password'],
 		]);
 	}
 
@@ -68,9 +79,9 @@ class User extends BaseModel implements IdentityInterface
 		return [
 			'username' => yii::t('app', 'Username'),
 			'email' => yii::t('app', 'Email'),
-			'old_password' => yii::t('app', 'Old Password'),
+			'old_pwd' => yii::t('app', 'Old Password'),
 			'password' => yii::t('app', 'Password'),
-			'repassword' => yii::t('app', 'Repeat Password'),
+			'repeat_pwd' => yii::t('app', 'Repeat Password'),
 			'avatar' => yii::t('app', 'Avatar'),
 			'status' => yii::t('app', 'Status'),
 			'created_at' => yii::t('app', 'Created At'),

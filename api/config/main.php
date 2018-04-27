@@ -2,8 +2,7 @@
 $params = array_merge(
     require(__DIR__ . '/../../common/config/params.php'),
     require(__DIR__ . '/../../common/config/params-local.php'),
-    require(__DIR__ . '/params.php'),
-    require(__DIR__ . '/params-local.php')
+    require(__DIR__ . '/params.php')
 );
 
 return [
@@ -14,17 +13,13 @@ return [
     'timeZone' => 'Asia/Shanghai',//默认时区
     'bootstrap' => ['log'],
     'components' => [
-        'user' => [
-            'class' => yii\web\User::className(),
-            'identityClass' => api\models\User::className(),
-            'enableAutoLogin' => false,
-            'enableSession' => false,
-            'loginUrl' => null,
-        ],
-        'appClient' => [
-            'class' => api\components\AppClient::className(),
-            'clientClass' => api\models\AppClient::className(),
-        ],
+        // 'user' => [
+        //     'class' => yii\web\User::className(),
+        //     'identityClass' => api\models\User::className(),
+        //     'enableAutoLogin' => false,
+        //     'enableSession' => false,
+        //     'loginUrl' => null,
+        // ],
         'cache' => [
             'class' => yii\caching\FileCache::className(),
             'keyPrefix' => 'frontend',
@@ -41,26 +36,21 @@ return [
         'response' => [
             'class' => 'yii\web\Response',
             'on beforeSend' => function ($event) {
-                if (!in_array(Yii::$app->controller->id, ['site', 'docs'])) {
-                    $response = $event->sender;
-                    // 替换相对路径
-                    $website = str_replace('/', '\/', Yii::$app->params['web_site']);
-                    $data = preg_replace('@(?<=")\\\\\/uploads@', $website . '\/uploads', json_encode($response->data));
-                    $data = json_decode($data, true);
-                    // $data = $response->data;
-                    $message = isset($data['message']) ? $data['message'] : $response->statusText;
-                    if (isset($data['statusCode']) || (isset($data['status']) && isset($data['code']))) {
-                        $data = '';
-                    }
-
-                    $response->data = [
-                        'status' => $response->getStatusCode(),
-                        'message' => $message,
-                        'data' => $data,
-                    ];
-                    
-                    $response->format = yii\web\Response::FORMAT_JSON;
+                $response = $event->sender;
+                // 替换相对路径
+                $website = str_replace('/', '\/', Yii::$app->params['web_site']);
+                $data = preg_replace('@(?<=")\\\\\/uploads@', $website . '\/uploads', json_encode($response->data));
+                $data = json_decode($data, true);
+                $message = isset($data['message']) ? $data['message'] : $response->statusText;
+                if (isset($data['statusCode']) || (isset($data['status']) && isset($data['code']))) {
+                    $data = '';
                 }
+                $response->data = [
+                    'status' => $response->getStatusCode(),
+                    'message' => $message,
+                    'data' => $data,
+                ];
+                $response->format = yii\web\Response::FORMAT_JSON;
             },
         ],
         'urlManager' => [

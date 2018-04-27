@@ -5,7 +5,6 @@
 
 namespace api\components;
 
-use api\models\AppClient as AC;
 use Yii;
 use yii\base\ActionFilter;
 use yii\helpers\ArrayHelper;
@@ -47,30 +46,20 @@ class SignatureFilter extends ActionFilter
             throw new BadRequestHttpException('请求参数不全, 或参数不规范');
         }
 
+        if(Yii::$app->params['app_key'] !== $params['_key']) {
+             $this->callback(['message' => '非法的app_key'], 'error');
+        }
+
         if (!isset($params['_time']) || $this->getIsTimeOut($params['_time'])) {
             throw new BadRequestHttpException('请求超时');
         }
 
-        // @todo nonce验证
-        $nonce = $params['_nonce'];
-
-        // 客户端验证
-        $appKey = $params['_key'];
-        $requestSignature = $params['_sign'];
+        $requestSignature = Yii::$app->params['_sign'];
         $requestSignature = str_replace(' ', '+', $requestSignature);
-        $appClient = AC::find()->where(['app_key' => $appKey])->one();
-        if ($appClient === null) {
-            throw new BadRequestHttpException('非法的app_key');
-        }
-        // 客户端登记
-        Yii::$app->appClient->setClient($appClient);
-
         // 签名验证
         $toSignString = $this->getNormalizedString($params);
-        $signature = $this->getSignature($toSignString, $appClient->app_secret);
-        // echo $signature; exit;
+        $signature = $this->getSignature($toSignString, Yii::$app->params['app_secret']);
         if ($requestSignature != $signature) {
-            // throw new BadRequestHttpException('签名错误: ' . $signature . '; str=' . $toSignString );
             throw new BadRequestHttpException('签名错误' );
         }
 

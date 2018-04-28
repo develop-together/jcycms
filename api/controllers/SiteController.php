@@ -1,9 +1,9 @@
 <?php
 /**
- * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
- * Created at: 2017-03-15 21:16
+ * Author: yjc
+ * Blog: https://blog.yjcweb.tk
+ * Email: 2064320087@qq.com
+ * Created at: 2018-04-28 10:06:00
  */
 
 namespace api\controllers;
@@ -12,24 +12,53 @@ use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use api\models\Article;
 use api\components\SignatureFilter;
+use common\components\Utils;
 use yii\web\HttpException;
+use api\components\ApiCors;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
-    public function behaviors()
+    public $enableCsrfValidation = false;
+
+    public function init()
     {
-        return [
-            'class' => SignatureFilter::className(),
-        ];
+        parent::init();
+        file_put_contents(Yii::getAlias('@api') . '/runtime/logs/vue_request_data.log', Json::encode(['time' => date('Y-m-d H:i:s'), 'method' => Yii::$app->getRequest()->getMethod(), 'data' => Utils::get_request_payload(), 'header' => Yii::$app->request->headers]). "\r\n-------\r\n", FILE_APPEND);
     }
 
-    public function actionArcitleList()
+    public function behaviors()
     {
-        return ['test'];
+        return ArrayHelper::merge(parent::behaviors(), [
+            'class' => SignatureFilter::className(),
+            [
+                'class' => ApiCors::className(),
+                'cors' => [
+                    'Origin' => ['*'],
+                    'Access-Control-Allow-Credentials' => true,
+                    'Access-Control-Allow-Headers' => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'authKey']
+                ]
+            ]
+        ]);
+    }
+
+    public function actionArticleList()
+    {
+        $models = Article::find()->all();
+        
+        return ArrayHelper::toArray($models);
+    }
+
+    public function actionArticleCreate()
+    {
+        return [];
+     
     }
 
     /**
@@ -40,8 +69,8 @@ class SiteController extends Controller
     public function actionOffline()
     {
         Yii::$app->getResponse()->statusCode = 503;
-        yii::$app->getResponse()->content = "sorry, the site is temporary unserviceable";
-        yii::$app->getResponse()->send();
+        Yii::$app->getResponse()->content = "sorry, the site is temporary unserviceable";
+        Yii::$app->getResponse()->send();
     }
 
 

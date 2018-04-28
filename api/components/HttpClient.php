@@ -9,8 +9,8 @@ use Yii;
 use yii\httpclient\Client;
 use yii\web\Request;
 use yii\web\Response;
-use common\models\UserIotApi;
-use api\models\UserAccessToken;
+// use common\models\UserIotApi;
+// use api\models\UserAccessToken;
 use yii\helpers\ArrayHelper;
 
 class HttpClient extends Client
@@ -42,10 +42,9 @@ class HttpClient extends Client
     public function signatureData($data)
     {
         unset($data['_sign']);
-        // $apiInfo = UserIotApi::findOne(['user_id' => 2]);
         $apiInfo = self::getApiInfo();
 
-        $data['_key'] = $apiInfo->app_key;
+        $data['_key'] = Yii::$app->params['app_key'];
         $data['_time'] = time();
         $data['_nonce'] = Yii::$app->security->generateRandomString();
 
@@ -57,7 +56,7 @@ class HttpClient extends Client
         }
 
         $signData = implode("&", $normalized);
-        $data['_sign'] = hash_hmac(Yii::$app->params['algo'], $signData, $apiInfo->app_secret, false);
+        $data['_sign'] = hash_hmac(Yii::$app->params['algo'], $signData, Yii::$app->parmas['app_secret'], false);
         
         return $data;
     }
@@ -74,7 +73,7 @@ class HttpClient extends Client
         $appResponse->data = isset($data['data']) ? $data['data'] : $data;
     }
 
-    public static function getApiInfo()
+/*    public static function getApiInfo()
     {
         $params = ArrayHelper::merge(yii::$app->request->getQueryParams(), yii::$app->request->getBodyParams());
         $userAccessToken = UserAccessToken::findOne(['access_token' => $params['access-token'], 'app_key' => $params['_key']]);
@@ -88,5 +87,5 @@ class HttpClient extends Client
         }
 
         return $apiInfo;
-    }
+    }*/
 }

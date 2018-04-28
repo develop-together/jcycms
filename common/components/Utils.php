@@ -1186,6 +1186,11 @@ class Utils {
         return $tree;        
     }
 
+    public static function get_request_payload()
+    {
+        return Json::decode(Yii::$app->getRequest()->getRawBody(), true);
+    }
+
 }
 
 ?>

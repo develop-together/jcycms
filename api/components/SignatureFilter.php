@@ -54,7 +54,7 @@ class SignatureFilter extends ActionFilter
             throw new BadRequestHttpException('请求超时');
         }
 
-        $requestSignature = Yii::$app->params['_sign'];
+        $requestSignature = $params['_sign'];
         $requestSignature = str_replace(' ', '+', $requestSignature);
         // 签名验证
         $toSignString = $this->getNormalizedString($params);
@@ -83,9 +83,11 @@ class SignatureFilter extends ActionFilter
             $request = Yii::$app->getRequest();
             $this->_params = ArrayHelper::merge(
                 $request->getQueryParams(),
-                $request->getBodyParams()
+                $request->getBodyParams(),
+                $request->getHeaders()
             );
         }
+
         return $this->_params;
     }
 

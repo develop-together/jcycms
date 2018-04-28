@@ -36,6 +36,11 @@ return [
         'response' => [
             'class' => 'yii\web\Response',
             'on beforeSend' => function ($event) {
+                /*防止跨域*/      
+                // header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+                // header('Access-Control-Allow-Credentials: true');
+                // header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+                // header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, authKey, sessionId");
                 $response = $event->sender;
                 // 替换相对路径
                 $website = str_replace('/', '\/', Yii::$app->params['web_site']);

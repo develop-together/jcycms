@@ -190,7 +190,8 @@ $(document).ready(function(){
         return false;
     });
 
-/*    $("a.close-link").click(function () {
+    // x:关闭当前div效果
+    $("a.close-link").click(function () {
         var node = $(this).parents("div.ibox:first");
         node.hide();
         if(node.length == 0){
@@ -200,6 +201,7 @@ $(document).ready(function(){
         $(this).parents("div.ibox:first").hide();
     })
 
+    // ^:toggle效果
     $("a.collapse-link").click(function () {
         var node = $(this).parents("div.ibox:first").children("div.ibox-content");
         node.slideToggle();
@@ -213,7 +215,7 @@ $(document).ready(function(){
             $(this).parents("div.ibox-title:first").next().slideToggle();
         }
 
-    })*/
+    })
     $('a.refresh').click(function(){
         location.reload();
         return false;
@@ -222,6 +224,12 @@ $(document).ready(function(){
     $("div.input-append").bind('click', function(e) {
         e.preventDefault();
         $(this).parent('div').find( 'input[type="file"]' ).click();
+    });
+
+    // 拥有该属性的标签打开tab
+    $(".openContab").click(function(){
+        parent.openConTab($(this));
+        return false;
     });
 
     $('input.feehi_html5_upload[type=file]').bind('change', function () {

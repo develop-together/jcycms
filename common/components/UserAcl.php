@@ -17,6 +17,7 @@ class UserAcl
 	{
 		return [
 			'site/index',
+			'site/desktop',
 			'site/login',
 			'site/captcha', 
 			'site/logout',

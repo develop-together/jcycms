@@ -48,7 +48,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                                        href="<?= Url::toRoute(['admin-user/update-self']) ?>"><?=yii::t('app', 'Profile')?></a>
                                 </li>
                                 <li><a class="J_menuItem"
-                                       href="javascript:;"><?=yii::t('app', 'Articles')?></a>
+                                       href="<?= Url::toRoute(['article/index']) ?>"><?=yii::t('app', 'Articles')?></a>
                                 </li>
                                 <li><a target="_blank"
                                        href="javascript:;"><?=yii::t('app', 'Frontend')?></a>
@@ -132,7 +132,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                 </button>
                 <nav class="page-tabs J_menuTabs">
                     <div class="page-tabs-content">
-                        <a href="javascript:;" class="active J_menuTab" data-id="index_v1.html">首页</a>
+                        <a href="javascript:;" class="active J_menuTab" data-id="<?= Url::toRoute(['site/desktop']) ?>">首页</a>
                     </div>
                 </nav>
                 <button class="roll-nav roll-right J_tabRight" style="right:60px;"><i class="fa fa-forward"></i>
@@ -155,7 +155,7 @@ $this->title = yii::t('app', 'Backend Manage System');
             </div>
             <!--Tab面板结束-->
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="javascript:;" frameborder="0" data-id="index_v1.html" seamless></iframe>
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<?= Url::toRoute(['site/desktop']) ?>" frameborder="0" data-id="<?= Url::toRoute(['site/desktop']) ?>" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-right">&copy; 2016-<?=date('Y')?> <a href="https://www.cnblogs.com/YangJieCheng/" target="_blank">yangboom's blog</a>

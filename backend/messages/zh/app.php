@@ -145,6 +145,7 @@ return [
 	'Website Language' => '站点语言',
 	'Icp Sn' => 'ICP备案号',
 	'Statics Script' => '统计代码',
+	'Statistical Chart' => '统计图',
 	'Website Status' => '站点状态',
 	'Website Timezone' => '时区设置',
 	'Open Comment' => '开启评论',

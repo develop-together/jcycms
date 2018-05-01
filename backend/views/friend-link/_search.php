@@ -16,8 +16,6 @@ use yii\widgets\ActiveForm AS BAF;
         'options' => ['class' => 'form-inline'],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
     <?= $form->field($model, 'name') ?>
 
     <?= $form->field($model, 'image') ?>

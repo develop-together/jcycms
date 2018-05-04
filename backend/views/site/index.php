@@ -54,7 +54,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                                        href="javascript:;"><?=yii::t('app', 'Frontend')?></a>
                                 </li>
                                 <li class="divider"></li>
-                                <li><a href="<?=Url::toRoute(['site/logout'])?>"><?=yii::t('app', 'Logout')?></a>
+                                <li><a href="<?=Url::toRoute(['public/logout'])?>"><?=yii::t('app', 'Logout')?></a>
                                 </li>
                             </ul>
                         </div>
@@ -137,7 +137,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                 </nav>
                 <button class="roll-nav roll-right J_tabRight" style="right:60px;"><i class="fa fa-forward"></i>
                 </button>
-                <a href="<?=Url::toRoute(['site/logout'])?>" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+                <a href="<?=Url::toRoute(['public/logout'])?>" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
                 <!--                 <div class="btn-group roll-nav roll-right">
                 <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span>
 

@@ -17,10 +17,11 @@ class UserAcl
 	{
 		return [
 			'site/index',
-			'site/desktop',
-			'site/login',
-			'site/captcha', 
-			'site/logout',
+			'site/desktop', 
+			'site/test',
+			'public/captcha',
+			'public/logout',
+			'public/login',
 			'admin-user/info',
 		];
 	}	

@@ -47,11 +47,13 @@ return [
 			'identityClass' => 'backend\models\User',
 			'enableAutoLogin' => true,
 			'identityCookie' => ['name' => '_backend_identity'],
+            'idParam' => '__backend__id',
+            'returnUrlParam' => '_backend_returnUrl',
 		],	
-		'session' => [
-			// this is the name of the session cookie used for login on the backend
-			'name' => 'advanced-backend',
-		],
+		// 'session' => [
+		// 	// this is the name of the session cookie used for login on the backend
+		// 	'name' => 'advanced-backend',
+		// ],
 		'log' => [//此项具体详细配置，请访问http://wiki.feehi.com/index.php?title=Yii2_log
 			'traceLevel' => YII_DEBUG ? 3 : 0,
 			'targets' => [

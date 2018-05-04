@@ -43,7 +43,7 @@ class BaseController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST', 'GET'],
-                    'logout' => ['POST'],
+                    'logout' => ['GET'],
                 ],
             ],
         ];
@@ -57,15 +57,28 @@ class BaseController extends Controller
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
-                'backColor' => 0xffffff,
-                'foreColor' => 0x105C9A,
-                'transparent' => true,
-                'maxLength' => 4,
-                'minLength' => 4,
-                'offset' => 1,
-                'height' => 33,
-                'width' => 80,
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+                'backColor' => 0x66b3ff, //背景颜色
+                'maxLength' => 4, //最大显示个数
+                'minLength' => 4, //最少显示个数
+                'padding' => 6, //验证码字体大小，数值越小字体越大
+                'height' => 34, //高度
+                'width' => 100, //宽度
+                'foreColor' => 0xffffff, //字体颜色
+                'offset' => 13, //设置字符偏移量
+                //'controller'=>'login',        //拥有这个动作的controller
             ],
+            // 'captcha' => [
+            //     'class' => 'yii\captcha\CaptchaAction',
+            //     'backColor' => 0xffffff,
+            //     'foreColor' => 0x105C9A,
+            //     'transparent' => true,
+            //     'maxLength' => 4,
+            //     'minLength' => 4,
+            //     'offset' => 1,
+            //     'height' => 33,
+            //     'width' => 80,
+            // ],
         ];
     }
 

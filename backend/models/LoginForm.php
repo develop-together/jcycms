@@ -28,7 +28,7 @@ class LoginForm extends Model {
 			[
 				'verifyCode',
 				'captcha',
-				'captchaAction' => '/site/captcha',
+				'captchaAction' => 'public/captcha',
 				'message' => yii::t('app', 'Verification code error.'),
 			],
 			///注意这里，在百度中查到很多教程，这里写的都不一样，最 简单的写法就像我这种写法，当然还有其它各种写法
@@ -82,6 +82,7 @@ class LoginForm extends Model {
 			'username' => yii::t('app', 'Username'),
 			'password' => yii::t('app', 'Password'),
 			'rememberMe' => yii::t('app', 'rememberMe'),
+			'verifyCode' => yii::t('app', 'Captcha'),
 		];
 	}
 }

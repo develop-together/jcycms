@@ -5,7 +5,6 @@
  * Email: job@feehi.com
  * Created at: 2017-03-15 21:16
  */
-
 if (Yii::$app->getSession()->hasFlash('success')) {
     $successTitle = addslashes( yii::t('app', 'Success') );
     $info = addslashes( Yii::$app->getSession()->getFlash('success') );
@@ -28,6 +27,7 @@ if (Yii::$app->getSession()->hasFlash('success')) {
 EOF;
     $this->registerJs($str);
 }
+
 if (Yii::$app->getSession()->hasFlash('error')) {
     $errorTitle = addslashes( yii::t('app', 'Error') );
     $info = addslashes( Yii::$app->getSession()->getFlash('error') );

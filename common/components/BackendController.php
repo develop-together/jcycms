@@ -22,7 +22,7 @@ class BackendController extends BaseController
 		parent::init();
 
 		if (Yii::$app->user->isGuest) {
-			return $this->redirect(['/site/login']);
+			return $this->redirect(['/public/login']);
 		}
 	}
 
@@ -33,7 +33,7 @@ class BackendController extends BaseController
 		}
 
 		if (Yii::$app->user->isGuest) {
-			exit('<script>window.top.location.href="' . Url::toRoute(['site/login']) . '"</script>');
+			exit('<script>window.top.location.href="' . Url::toRoute(['public/login']) . '"</script>');
 			// return false;
 		}
 

@@ -63,8 +63,11 @@ class Article extends \common\components\BaseModel
         return [
             [['title', 'status'], 'required'],
             [['id', 'category_id', 'type', 'status', 'sort', 'user_id', 'scan_count', 'can_comment', 'visibility', 'flag_headline', 'flag_recommend', 'flag_slide_show', 'flag_special_recommend', 'flag_roll', 'flag_bold', 'flag_picture', 'created_at', 'updated_at'], 'integer'],
-            [['title', 'sub_title', 'summary', 'thumb', 'seo_title', 'seo_keywords', 'seo_description', 'tag'], 'string', 'max' => 255],
+            [['title', 'sub_title', 'summary', 'seo_title', 'seo_keywords', 'seo_description', 'tag'], 'string', 'max' => 255],
+             // [['file'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png',],  
+             // [['file'], 'file', 'maxFiles' => 10,'extensions'=>'jpg,png,gif'], 
             [['content'], 'string'],
+            [['thumb'], 'safe'],
             [
                 [
                     'flag_headline',

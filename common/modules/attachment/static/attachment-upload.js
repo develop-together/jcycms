@@ -77,7 +77,7 @@ function in_array(needle, haystack)
 	return false;
 }
 
-function _fileUpload(file,options, res, _fileDomObj) 
+function _fileUpload(file, options, res, _fileDomObj) 
 {
 	var form = $(_fileDomObj).parent('div.upload-kit-input')
 		.parent('div')
@@ -92,6 +92,7 @@ function _fileUpload(file,options, res, _fileDomObj)
 	var acceptFileTypes = options.acceptFileTypes;
 	var acceptFileTypeArr = acceptFileTypes.split(',');
 	var flag = true;
+	var many = options.many;
 	fd.append(fileInputId, file);
 
 	if (!file) {
@@ -121,10 +122,10 @@ function _fileUpload(file,options, res, _fileDomObj)
 		xhr: function() {  // custom xhr  
 			myXhr = $.ajaxSettings.xhr();  
 			if(myXhr.upload){ // check if upload property exists  
-				myXhr.upload.addEventListener('progress',function(evt){  
+				myXhr.upload.addEventListener('progress', function(evt){  
 					evt = window.event || evt;
 					var percentComplete = Math.round(evt.loaded*100 / evt.total);  
-					console.log(percentComplete);  
+					console.log('上传完成时间：', percentComplete);  
 				}, false); // for handling the progress of the upload  
 			}  
 			return myXhr;  
@@ -151,7 +152,7 @@ function _fileUpload(file,options, res, _fileDomObj)
 				$("#" + fileInputId).val(data.filepath.replace('\/uploads\/', ''));
 				resObj.parentNode.insertBefore(newObj, resObj);	
 				resObj.style.display = 'none';*/
-				_createImg(res, data, fileInputId);
+				_createImg(res, data, fileInputId, many);
 			}
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -176,12 +177,11 @@ function _fileUpload(file,options, res, _fileDomObj)
 	return flag;	
 }
 
-function _createImg(res,data,fileInputId) {
+function _createImg(res, data, fileInputId, many) {
 	if (data.error) {
 		layer.alert(data.error);
 		return;
 	}
-
 	var resObj = document.getElementById(res);
 	var newObj = document.createElement('div');
 	$(newObj).addClass('upload-kit-item done');		
@@ -198,9 +198,16 @@ function _createImg(res,data,fileInputId) {
 	}
 	
 	newObj.appendChild(newImg);
-	$("#" + fileInputId).val(filepath.replace('\/uploads\/', ''));
 	resObj.parentNode.insertBefore(newObj, resObj);	
-	resObj.style.display = 'none';	
+	if (!many) {
+		$("#" + fileInputId).val(filepath.replace('\/uploads\/', ''));
+		resObj.style.display = 'none';	
+	} else {
+		var fileContents = $("#" + fileInputId).val();
+		fileContents += filepath.replace('\/uploads\/', '') + '、';
+		$("#" + fileInputId).val(fileContents);
+	}
+
 }
 
 function _trim(string) 

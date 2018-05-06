@@ -323,4 +323,8 @@ return [
 	'Can not delete the home page' => '不能删除首页',
 	'The Old Password Is Error' => '旧密码输入不对',
 	'Not to fill, by default do not modify' => '不填，默认不修改',
+	'Time Tips' => '时间小贴士',
+	'Click On The List Last Week' => '上周点击排行榜',
+	"Last week's Comments On The List" => '上周评论排行榜',
+	'New Quantity Statistical Chart' => '新增数量统计图',
 ];

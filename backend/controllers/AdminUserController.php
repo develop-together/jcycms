@@ -65,8 +65,8 @@ class AdminUserController extends BackendController
         $model->setScenario('create');
         $model->status = User::STATUS_ACTIVE;
         $rolesModel = new AdminRoleUser();
-        $post = Yii::$app->request->post();
         if (Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
             if ($model->load($post) && $model->validate()  && $model->save()) {
                 $rolesModel->user_id = $model->id;
                 if ($rolesModel->load($post) && $rolesModel->validate() && $rolesModel->save()) {

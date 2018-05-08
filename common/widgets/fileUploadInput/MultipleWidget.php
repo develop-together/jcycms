@@ -44,6 +44,8 @@
 
 		public $parentDivId;
 
+		public $many = false;
+
 		public function init()
 		{
 	        parent::init();
@@ -60,7 +62,7 @@
 	            $this->name = $this->name ? : Html::getInputName($this->model, $this->attribute);
 	            $this->attribute = Html::getAttributeName($this->attribute);
 	            $value = $this->model->{$this->attribute};
-	            $attachments = $this->multiple == true ? $value :[$value];
+	            $attachments = $this->multiple == true ? $value : [$value];
 	            $this->value = [];
 	            if ($attachments) {
 	                foreach ($attachments as $attachment) {
@@ -89,6 +91,7 @@
 	            'maxFileSize' => $this->maxFileSize,
 	            'acceptFileTypes' => $this->acceptFileTypes,
 	            'files' => $this->value?:[],
+	            'many' => $this->many
 	        ]);
 		}
 

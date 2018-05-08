@@ -114,9 +114,22 @@ class BaseModel extends \yii\db\ActiveRecord
         return $result;
     }
 
-    public function uploadOpreate($field='thumb', $uploadAlias='@thumb/', $attribute='Thumb')
+    public function uploadMultiple($field='thumb', $uploadAlias='@thumb/', $attribute='Thumb')
     {
-        $upload = UploadedFile::getInstance($this, $field);
+        $uploads = UploadedFile::getInstances($this, $field);
+        $result = [];
+        if ($uploads) {
+            foreach ($uploads as $upload) {
+                $result = $this->uploadOpreate($field, $uploadAlias, $attribute, $upload);
+            }
+        }
+
+        return $result;
+    }
+
+    public function uploadOpreate($field='thumb', $uploadAlias='@thumb/', $attribute='Thumb', $UploadedFile= null)
+    {
+        $upload = $UploadedFile === null ? UploadedFile::getInstance($this, $field) : $UploadedFile;
         if ($upload !== null) {
             $uploadPath = yii::getAlias($uploadAlias);
             if (! FileHelper::createDirectory($uploadPath)) { 

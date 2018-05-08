@@ -9,7 +9,7 @@
 	{
 		public $type;
 
-		public $types = ['image', 'images', 'file', 'files', 'feehi_img'];/*feehi_img 是仿照feehi写的一个图片上传控件*/
+		public $types = ['image', 'images', 'file', 'feehi_img', 'feehi_imgs'];/*feehi_img 是仿照feehi写的一个图片上传控件*/
 
 		public $inputOptions = ['class' => 'form-control'];
 
@@ -45,22 +45,22 @@
 					return SingleWidget::widget(ArrayHelper::merge(['model' => $this->model, 'attribute' => $this->attribute, 'onlyUrl' => true], $this->widgetOptions));
 
 					break;
-				case 'images'://多图上传
-					return MultipleWidget::widget(ArrayHelper::merge(['model' => $this->model, 'attribute' => $this->attribute, 'onlyUrl' => true], $this->widgetOptions));
-					
+				case 'images'://多次图片上传
+					return ManyWidget::widget(ArrayHelper::merge(['model' => $this->model, 'attribute' => $this->attribute, 'onlyUrl' => true], $this->widgetOptions));
+
 					break;
 				case 'file'://单文件上传
 					return SingleWidget::widget(ArrayHelper::merge(['model' => $this->model, 'attribute' => $this->attribute, 'onlyUrl' => true], $this->widgetOptions));
 					
 					break;
-				case 'files'://多文件上传
-					return MultipleWidget::widget(ArrayHelper::merge(['model' => $this->model, 'attribute' => $this->attribute, 'onlyUrl' => true], $this->widgetOptions));
-					
-					break;	
 				case 'feehi_img'://飞嗨单图上传
 					return FeehiWidget::widget(ArrayHelper::merge(['model' => $this->model, 'attribute' => $this->attribute, 'onlyUrl' => true], $this->widgetOptions));
 					
-					break;													
+					break;		
+				case 'feehi_imgs'://飞嗨多图上传
+					return FeehiWidget::widget(ArrayHelper::merge(['model' => $this->model, 'attribute' => $this->attribute . '[]', 'onlyUrl' => true, 'multiple' => true], $this->widgetOptions));
+					
+					break;												
 				default:
 					break;
 			}
@@ -74,22 +74,22 @@
 					return SingleWidget::widget(ArrayHelper::merge(['name' => $this->name, 'value' => $this->value, 'onlyUrl' => true], $this->widgetOptions));
 
 					break;
-				case 'images'://多图上传
-					return SingleWidget::widget(ArrayHelper::merge(['name' => $this->name, 'value' => $this->value, 'onlyUrl' => true], $this->widgetOptions));
-					
+				case 'images'://多次图片上传
+					return ManyWidget::widget(ArrayHelper::merge(['name' => $this->name, 'value' => $this->value, 'onlyUrl' => true], $this->widgetOptions));
+
 					break;
 				case 'file'://单文件上传
 					return SingleWidget::widget(ArrayHelper::merge(['name' => $this->name, 'value' => $this->value, 'onlyUrl' => true], $this->widgetOptions));
 					
 					break;
-				case 'files'://多文件上传
-					return SingleWidget::widget(ArrayHelper::merge(['name' => $this->name, 'value' => $this->value, 'onlyUrl' => true], $this->widgetOptions));
-					
-					break;	
 				case 'feehi_img'://飞嗨单图上传
 					return FeehiWidget::widget(ArrayHelper::merge(['name' => $this->name, 'value' => $this->value, 'onlyUrl' => true], $this->widgetOptions));
 					
-					break;														
+					break;	
+				case 'feehi_imgs'://飞嗨多图上传
+					return FeehiWidget::widget(ArrayHelper::merge(['name' => $this->name . '[]', 'value' => $this->value, 'onlyUrl' => true, 'multiple' => true], $this->widgetOptions));
+					
+					break;													
 				default:
 					break;
 			}

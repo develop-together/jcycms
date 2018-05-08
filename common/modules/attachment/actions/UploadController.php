@@ -34,11 +34,6 @@ class UploadController extends Controller
                 'path' => date('Ymd'),
                 'uploadOnlyImage' => false
             ],
-            'images-upload' => [
-                'class' => UploadAction::className(),
-                'path' => date('Ymd'),
-                'multiple' => true,
-            ],
             'backend-files-upload' => [
                 'class' => UploadAction::className(),
                 'path' => date('Ymd'),

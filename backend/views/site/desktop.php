@@ -4,6 +4,7 @@
 	$this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/echarts/echarts.min.js', [
 		'position' => \yii\web\View::POS_END]);
 	$uniqid = Yii::$app->controller->_uniqid;
+    $chartTitle = Yii::t('app', 'New Quantity Statistical Chart');
  ?>
  <div class="row">
  	<?php if ($countData): ?>
@@ -34,7 +35,7 @@
 <div class="row">
 	<div class="col-sm-12">
         <div class="ibox-title">
-            <h5><?= Yii::t('app', 'Statistical Chart') ?></h5>
+            <h5><?= $chartTitle ?></h5>
             <div class="ibox-tools">
                 <a class="collapse-link ui-sortable">
                     <i class="fa fa-chevron-up"></i>
@@ -54,6 +55,44 @@
     <div class="col-sm-6">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
+                <h5><?= Yii::t('app', 'Click On The List Last Week') ?></h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>                
+            </div>
+            <div class="ibox-content no-padding">
+                
+            </div>        
+        </div>       
+    </div>
+    <div class="col-sm-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5><?= Yii::t('app', "Last week's Comments On The List") ?></h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>                
+            </div>
+            <div class="ibox-content no-padding">
+                
+            </div>             
+        </div>       
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
                 <h5><?= Yii::t('app', 'Environment') ?></h5>
                 <div class="ibox-tools">
                     <a class="collapse-link">
@@ -66,15 +105,6 @@
             </div>
             <div class="ibox-content no-padding">
                 <ul class="list-group">
-                    <style>
-                        .list-group-item > .badge {
-                            float: left
-                        }
-
-                        li.list-group-item strong {
-                            margin-left: 15px;
-                        }
-                    </style>
                     <li class="list-group-item">
                         <span class="badge badge-primary">&nbsp;&nbsp;</span><strong>JCY
                             CMS</strong>: <?= yii::$app->version ?>
@@ -103,7 +133,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
         <div class="ibox-title">
             <h5><?= Yii::t('app', 'Status') ?></h5>
             <div class="ibox-tools">
@@ -156,28 +186,163 @@
             </div>
         </div>
     </div>
+    <div class="col-sm-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5><?= Yii::t('app', 'Time Tips') ?></h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>                
+            </div>
+            <div class="ibox-content no-padding">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                       <strong>当前时间:</strong>
+                       <span id="clock_<?= $uniqid ?>"></span>
+                    </li>    
+                    <li class="list-group-item">
+                        <strong>今天是星期<?= date('w') == 0 ? '天' : date('w') ?>(<?= date('l') ?>)</strong>
+                    </li>        
+                    <li class="list-group-item">
+                        <strong>今天是本月的第<?= date('j') ?>天</strong>
+                    </li>       
+                    <li class="list-group-item">
+                        <strong>今年已经过去<?= date('z')?> 天</strong>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>现在是今年的第<?= date('W')?> 周</strong>
+                    </li>      
+                    <li class="list-group-item">
+                        <strong><?= date('L') == 1 ? '今年是闰年' : '今年不是闰年' ?></strong>
+                    </li>      
+                </ul>
+            </div>             
+        </div>        
+    </div>
 </div>
+<style>
+    .list-group-item > .badge {
+        float: left
+    }
+
+    li.list-group-item strong {
+        margin-left: 15px;
+    }
+</style>
 <?php 
 	$this->registerJs(<<<EOT
-		<!--报名统计图
+		<!--当周新增数量统计图
 		var myChart = echarts.init(document.getElementById('countMap_$uniqid'));
-		var option = {
-		    xAxis: {
-		        type: 'category',
-		        boundaryGap: false,
-		        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-		    },
-		    yAxis: {
-		        type: 'value'
-		    },
-		    series: [{
-		        data: [820, 932, 901, 934, 1290, 1330, 1320],
-		        type: 'line',
-		        areaStyle: {}
-		    }]
-		};
+        var option = {
+            title: {
+                text: '$chartTitle',
+            },
+            tooltip : {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                }
+            },
+            legend: {
+                data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    dataView: {readOnly: false},
+                    magicType: {type: ['line', 'bar']},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : ['周一','周二','周三','周四','周五','周六','周日']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'邮件营销',
+                    type:'line',
+                    stack: '总量',
+                    areaStyle: {normal: {}},
+                    data:[120, 132, 101, 134, 90, 230, 210]
+                },
+                {
+                    name:'联盟广告',
+                    type:'line',
+                    stack: '总量',
+                    areaStyle: {normal: {}},
+                    data:[220, 182, 191, 234, 290, 330, 310]
+                },
+                {
+                    name:'视频广告',
+                    type:'line',
+                    stack: '总量',
+                    areaStyle: {normal: {}},
+                    data:[150, 232, 201, 154, 190, 330, 410]
+                },
+                {
+                    name:'直接访问',
+                    type:'line',
+                    stack: '总量',
+                    areaStyle: {normal: {}},
+                    data:[320, 332, 301, 334, 390, 330, 320]
+                },
+                {
+                    name:'搜索引擎',
+                    type:'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    areaStyle: {normal: {}},
+                    data:[820, 932, 901, 934, 1290, 1330, 1320]
+                }
+            ]
+        };
 		myChart.setOption(option);
 		//-->
+        function displayTime(domId)
+        {
+            var obj = document.getElementById(domId);
+            var nowDate = new Date();
+            var year = nowDate.getFullYear();
+            var month = nowDate.getMonth() + 1;
+            var date = nowDate.getDate() ;
+            obj.innerHTML = year + '-' + month + '-' + date + ' ' + nowDate.toLocaleTimeString();
+            
+        }
+        setInterval(function() {
+            displayTime("clock_$uniqid");
+        }, 1000);
 EOT
 	);
 ?>

@@ -145,10 +145,20 @@ class SiteController extends BackendController
             ],
 		];
 
+		// 当周新增数量统计图
+		$echartsData = $xAxis = $articleData = $frontendUserData = [];
+		$echartsData['legend'] = [yii::t('app', 'Articles'), yii::t('app', 'Users')];
+		$nWeek = date('w');
+		for ($i = 0 ; $i <= $nWeek; $i++) {
+			$xAxis[] = '周' . $nWeek == 0 ? '日' : $i;
+			// $articleData = Article::find();
+		}
+		$echartsData['xAxis'] = $xAxis;
 		return $this->render('desktop', [
 			'countData' => $countData,
 			'enviromentInfo' => $enviromentInfo,
 			'serverStatics' => $serverStatics,
+			'echartsData' => $echartsData,
 		]);
 	}
 }

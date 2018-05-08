@@ -142,6 +142,25 @@ function close_tab() {
     });
 }
 
+function reloadImageList(that, file)
+{
+
+    if(that.parent().attr('class').indexOf("image") >= 0){
+        if(!/image\/\w+/.test(file.type)){
+            layer.tips(tips.onlyPictureCanBeSelected, that.parent());
+            return false;
+        }
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            console.log("打印上传测试记录:", that.parents("div.image").children());
+            // that.parents("div.image").children("img").attr("src", this.result);
+            that.parents("div.image").children("img.none_image").remove();
+            that.parents("div.image").append("<img src='"+ this.result +"' style='max-width:200px;max-height:200px' class='upload_image_lists'/>");
+        }
+    }
+}
+
 $(document).ready(function(){
     $(".multi-operate").click(function () {
         var url = $(this).attr('href');
@@ -223,6 +242,10 @@ $(document).ready(function(){
 
     $("div.input-append").bind('click', function(e) {
         e.preventDefault();
+        if ($('img.upload_image_lists')) {
+            $('img.upload_image_lists').remove();
+            $(this).parents("div.image").children("div.input-append").children("input[type='text']").val('');
+        }
         $(this).parent('div').find( 'input[type="file"]' ).click();
     });
 
@@ -238,18 +261,16 @@ $(document).ready(function(){
         }
         var that = $(this);
         var files = $( this )[0].files;
-        if(that.parent().attr('class').indexOf("image") >= 0){
-            if(!/image\/\w+/.test(files[0].type)){
-                layer.tips(tips.onlyPictureCanBeSelected, that.parent());
-                return false;
-            }
-            var reader = new FileReader();
-            reader.readAsDataURL(files[0]);
-            that.parents("div.image").children("div.input-append").children("input[type='text']").val(files[0].name);
-            reader.onload = function (e) {
-                console.log("打印上传测试记录:", that.parents("div.image").children());
-                that.parents("div.image").children("img").attr("src", this.result);
+        var fileContents = '';
+        var file = null;
+        for(var p in files) {
+            file = files[p];
+            if(typeof(file) == 'object') {
+                fileContents += file.name + '、';
+                reloadImageList(that, file);
             }
         }
+
+        that.parents("div.image").children("div.input-append").children("input[type='text']").val(fileContents.substr(0, fileContents.length-1));
     });
 })

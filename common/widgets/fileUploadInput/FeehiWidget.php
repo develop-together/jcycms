@@ -16,6 +16,7 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\widgets\InputWidget;
+use common\modules\attachment\models\Attachment;
 
 class FeehiWidget extends InputWidget
 {
@@ -44,7 +45,23 @@ class FeehiWidget extends InputWidget
         if ($this->hasModel()) {
             $this->name = $this->name ? : Html::getInputName($this->model, $this->attribute);
             $this->attribute = Html::getAttributeName($this->attribute);
-            $this->value = $this->model->{$this->attribute};
+            if ($this->attribute === 'photo_file_ids') {
+            	$value = $this->model->{$this->attribute};
+            	$attachmentModels = Attachment::find()
+            		->where(['in', 'id', explode(',', $value)])
+            		->all();
+            	$data = [];
+            	if ($attachmentModels) {
+            		foreach ($attachmentModels as $attachmentModel) {
+            			$data[$attachmentModel->id] = $attachmentModel;
+            		}
+            	}
+
+            	$this->value = $data;
+            } else {
+            	$this->value = $this->model->{$this->attribute};
+            }
+            
         }
 
         $this->acceptFileTypes = 'image/png, image/jpg, image/jpeg, image/gif, image/bmp';
@@ -54,7 +71,17 @@ class FeehiWidget extends InputWidget
 
 	public function run()
 	{
-		$src = Yii::$app->request->baseUrl . (!empty($this->value) ? $this->value : '/static/img/none.jpg');
+		$imgHtml = $inputValue = '';
+		if (is_array($this->value)) {
+			foreach ($this->value as $key => $value) {
+				$src = Yii::$app->request->baseUrl . (!empty($value->filepath) ? '/' . $value->filepath : '/static/img/none.jpg');
+				$imgHtml .=  '<img src="' . $src . '" alt="" style="max-width:200px;max-height:200px;    display: block;float: left;padding-right: 5px;" class="mutil_image" data-file-id="' . $key . '">';
+				$inputValue .= $value->filename . '、';
+			}
+		} else {
+			$src = Yii::$app->request->baseUrl . (!empty($this->value) ? '/' . $this->value : '/static/img/none.jpg');
+			$imgHtml = '<img src="' . $src . '" alt="" style="max-width:200px;max-height:200px" class="none_image">';
+		}
 		$content = Html::hiddenInput($this->name, null, $this->options);
 		$this->wrapperOptions = ArrayHelper::merge(['id' => $this->parentDivId, 'class' => 'image'], $this->wrapperOptions);
 		$content .= Html::beginTag('div', $this->wrapperOptions);
@@ -65,7 +92,7 @@ class FeehiWidget extends InputWidget
 			'multiple' => $this->multiple,
 			'style' => 'max-width: 200px; max-height: 200px; display: none;',
 		]);
-		$content .= '<div class="input-append input-group"><span class="input-group-btn"><button class="btn btn-white" type="button">选择文件</button></span><input class="input-large form-control" type="text" readonly placeHolder="' . $this->placeHolder . '"></div><img src="' . $src . '" alt="" style="max-width:200px;max-height:200px" class="none_image"><div class="help-block m-b-none"></div>';
+		$content .= '<div class="input-append input-group"><span class="input-group-btn"><button class="btn btn-white" type="button">选择文件</button></span><input class="input-large form-control filename_lists" type="text" readonly placeHolder="' . $this->placeHolder . '" value="' . rtrim($inputValue, '、') . '" ></div>' . $imgHtml . '<div class="help-block m-b-none"></div>';
 		$content .= Html::endTag('div');
 
 		return $content;

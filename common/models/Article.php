@@ -141,6 +141,7 @@ class Article extends \common\components\BaseModel
             ],
             'photos' => [
                 'type',
+                'category_id',
                 'title',
                 'sub_title',
                 'summary',

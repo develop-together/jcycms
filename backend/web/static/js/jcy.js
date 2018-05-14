@@ -261,7 +261,8 @@ $(document).ready(function(){
         }
         var that = $(this);
         var files = $( this )[0].files;
-        var fileContents = '';
+        // console.log('value is:', $('input.filename_lists').val());
+        var fileContents = !that.parent('div').find('input.filename_lists').val() ? '' : that.parent('div').find('input.filename_lists').val();
         var file = null;
         for(var p in files) {
             file = files[p];

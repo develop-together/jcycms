@@ -28,6 +28,7 @@ $(document).ready(function(){
 				$("#" + fileInputId).val(file.path.replace('\/uploads\/', ''));
 				resObj.parentNode.insertBefore(newObj, resObj);	
 				resObj.style.display = 'none';*/
+				console.log('file Is:', file);
 				_createImg(res, file, fileInputId, options.many);				
 			}
 		}
@@ -205,11 +206,13 @@ function _createImg(res, data, fileInputId, many) {
 	newObj.appendChild(newImg);
 	resObj.parentNode.insertBefore(newObj, resObj);	
 	if (!many) {
-		$("#" + fileInputId).val(filepath.replace('\/uploads\/', ''));
+		// .replace('\/uploads\/', '')
+		$("#" + fileInputId).val(filepath.substr(1));
 		resObj.style.display = 'none';	
 	} else {
 		var fileContents = $("#" + fileInputId).val();
-		fileContents += filepath.replace('\/uploads\/', '') + '、';
+		// .replace('\/uploads\/', '')
+		fileContents += filepath.substr(1) + '、';
 		$("#" + fileInputId).val(fileContents);
 	}
 

@@ -155,7 +155,7 @@ class BaseModel extends \yii\db\ActiveRecord
             }
 
             $attachmentModel = new Attachment();
-            $relativePath = str_replace(yii::getAlias('@backend/web'), '', $filename);
+            $relativePath = str_replace(yii::getAlias('@backend/web/'), '', $filename);
             if (!$attachmentModel->saveAttachments($upload, $relativePath, $uploadPath)) {
                 $this->addError($field, yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => yii::t('app', $attribute)]) . ': ' . $filename);
 

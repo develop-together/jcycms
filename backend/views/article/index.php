@@ -44,7 +44,7 @@ use backend\models\Article;
 		                            'enableSorting' => false,
 		                            'value' => function ($model, $key, $index, $column) {
 		                                return Html::a($model->title, 'javascript:void(0)', [
-		                                    'title' => $model->thumb,
+		                                    'title' => Yii::$app->request->baseUrl . '/' . $model->thumb,
 		                                    'class' => 'title'
 		                                ]);
 		                            }

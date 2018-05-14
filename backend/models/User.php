@@ -45,7 +45,7 @@ class User extends BaseModel implements IdentityInterface
 			[['repeat_pwd'], 'compare', 'compareAttribute' => 'password'],
 			//[['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
 			[['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-			[['username', 'email', 'password', 'avatar'], 'required', 'on' => ['create', 'update']],
+			[['username', 'email', 'password', 'avatar'], 'required', 'on' => ['create']],
 			[['email', 'avatar'], 'required', 'on' => ['updateSelf']],
 			// [['password'], 'checkOldAttribute','skipOnError' => false, 'skipOnEmpty' => false],
 		];

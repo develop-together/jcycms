@@ -270,6 +270,10 @@ class User extends BaseModel implements IdentityInterface
 	public function getAvatarFormat()
 	{
 		if ($this->avatar) {
+			if(strpos($this->avatar, Yii::$app->params['uploadSaveFilePath']) !== false) {
+				return Yii::$app->request->baseUrl  . '/' . $this->avatar;				
+			}
+
 			return Yii::$app->request->baseUrl . '/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $this->avatar;
 		}
 

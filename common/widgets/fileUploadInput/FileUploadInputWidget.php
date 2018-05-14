@@ -58,7 +58,7 @@
 					
 					break;		
 				case 'feehi_imgs'://飞嗨多图上传
-					return FeehiWidget::widget(ArrayHelper::merge(['model' => $this->model, 'attribute' => $this->attribute . '[]', 'onlyUrl' => true, 'multiple' => true], $this->widgetOptions));
+					return FeehiWidget::widget(ArrayHelper::merge(['model' => $this->model, 'attribute' => $this->attribute . '[]', 'onlyUrl' => true, 'multiple' => true, 'placeHolder' => '多图片上传，一次可选择多张图片!'], $this->widgetOptions));
 					
 					break;												
 				default:

@@ -180,6 +180,10 @@ class Menu extends \common\components\BaseModel
         if (!parent::beforeSave($insert)) {
             return false;
         }
+        
+        if ($this->sort == null) {
+            $this->sort = 0;
+        }
 
         if ($this->isNewRecord && $this->getScenario() == 'frontend') {
             $this->type = self::MENU_TYPE_FRONTEND;

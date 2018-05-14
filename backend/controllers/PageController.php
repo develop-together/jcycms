@@ -3,7 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Article;
+use common\models\Article;
 use backend\models\Search\ArticleSearch;
 use common\components\BackendController;
 use backend\actions\DeleteAction;

@@ -42,6 +42,7 @@ class Article extends \common\components\BaseModel
 {
     const ARTICLE = 0;/*文章*/
     const SINGLE_PAGE = 2;/*单页*/
+    const PHOTOS_PAGE = 3;/*相册*/
     const ARTICLE_PUBLISHED = 1;
     const ARTICLE_DRAFT = 0;
     
@@ -67,7 +68,7 @@ class Article extends \common\components\BaseModel
              // [['file'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png',],  
              // [['file'], 'file', 'maxFiles' => 10,'extensions'=>'jpg,png,gif'], 
             [['content'], 'string'],
-            [['thumb'], 'safe'],
+            [['thumb', 'photo_file_ids'], 'safe'],
             [
                 [
                     'flag_headline',
@@ -138,6 +139,21 @@ class Article extends \common\components\BaseModel
                 'tag',
                 'sort'
             ],
+            'photos' => [
+                'type',
+                'title',
+                'sub_title',
+                'summary',
+                'seo_title',
+                'seo_keywords',
+                'seo_description',
+                'status',
+                'can_comment',
+                'visibility',
+                'tag',
+                'sort',
+                'photo_file_ids',
+            ],
         ]);
     }
 
@@ -165,6 +181,7 @@ class Article extends \common\components\BaseModel
             'can_comment' => Yii::t('app', 'Can Comment'),
             'visibility' => Yii::t('app', 'Visibility'),
             'tag' => Yii::t('app', 'Tag'),
+            'photo_file_ids' => Yii::t('app', 'Photo Album'),
             'flag_headline' => Yii::t('app', 'Is Headline'),
             'flag_recommend' => Yii::t('app', 'Is Recommend'),
             'flag_slide_show' => Yii::t('app', 'Is Slide Show'),
@@ -244,6 +261,46 @@ class Article extends \common\components\BaseModel
 
             throw new \yii\web\BadRequestHttpException(implode('<br>', $articleContentErrs));
         }
+
+        return true;
+    }
+
+    public function beforeSave($insert)
+    {
+        if(!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        if ($this->flag_headline == null) {
+            $this->flag_headline = 0;
+        }
+
+        if ($this->flag_recommend == null) {
+            $this->flag_recommend = 0;
+        }
+
+        if ($this->flag_slide_show == null) {
+            $this->flag_slide_show = 0;
+        }
+
+        if ($this->flag_special_recommend == null) {
+            $this->flag_special_recommend = 0;
+        }
+
+        if ($this->flag_roll == null) {
+            $this->flag_roll = 0;
+        }
+
+        if ($this->flag_bold == null) {
+            $this->flag_bold = 0;
+        }
+
+        if ($this->flag_picture == null) {
+            $this->flag_picture = 0;
+        }
+
+        $this->tag = str_replace('，', ',', $this->tag);
+        $this->seo_keywords = str_replace('，', ',', $this->seo_keywords);
 
         return true;
     }

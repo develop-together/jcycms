@@ -36,6 +36,8 @@ class FeehiWidget extends InputWidget
 
 	public $multiple = false;
 
+	public $placeHolder = '';
+
 	public function init()
 	{
         parent::init();
@@ -63,7 +65,7 @@ class FeehiWidget extends InputWidget
 			'multiple' => $this->multiple,
 			'style' => 'max-width: 200px; max-height: 200px; display: none;',
 		]);
-		$content .= '<div class="input-append input-group"><span class="input-group-btn"><button class="btn btn-white" type="button">选择文件</button></span><input class="input-large form-control" type="text" readonly></div><img src="' . $src . '" alt="" style="max-width:200px;max-height:200px" class="none_image"><div class="help-block m-b-none"></div>';
+		$content .= '<div class="input-append input-group"><span class="input-group-btn"><button class="btn btn-white" type="button">选择文件</button></span><input class="input-large form-control" type="text" readonly placeHolder="' . $this->placeHolder . '"></div><img src="' . $src . '" alt="" style="max-width:200px;max-height:200px" class="none_image"><div class="help-block m-b-none"></div>';
 		$content .= Html::endTag('div');
 
 		return $content;

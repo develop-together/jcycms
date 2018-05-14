@@ -41,7 +41,7 @@ $this->title = "Admin";
 
                 <div class="hr-line-dashed"></div>
 
-                <?= $form->field($model, 'password')->passwordInput(['maxlength' => 512]) ?>
+                <?= $form->field($model, 'password')->passwordInput(['value' => '', 'maxlength' => 512, 'placeHolder' => $model->isNewRecord ? '' : Yii::t('app', 'Not to fill, by default do not modify')]) ?>
 
                 <div class="hr-line-dashed"></div>
 

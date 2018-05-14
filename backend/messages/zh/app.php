@@ -327,4 +327,6 @@ return [
 	'Click On The List Last Week' => '上周点击排行榜',
 	"Last week's Comments On The List" => '上周评论排行榜',
 	'New Quantity Statistical Chart' => '新增数量统计图',
+	'Photo Album' => '相册图片',
+	'Photos' => '相册',
 ];

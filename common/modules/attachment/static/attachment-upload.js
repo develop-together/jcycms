@@ -28,7 +28,7 @@ $(document).ready(function(){
 				$("#" + fileInputId).val(file.path.replace('\/uploads\/', ''));
 				resObj.parentNode.insertBefore(newObj, resObj);	
 				resObj.style.display = 'none';*/
-				_createImg(res, file, fileInputId);				
+				_createImg(res, file, fileInputId, options.many);				
 			}
 		}
 	}
@@ -178,10 +178,15 @@ function _fileUpload(file, options, res, _fileDomObj)
 }
 
 function _createImg(res, data, fileInputId, many) {
+	if(!data || !data.filepath) {
+		return;
+	}
 	if (data.error) {
 		layer.alert(data.error);
 		return;
 	}
+
+	// many = !many || false;
 	var resObj = document.getElementById(res);
 	var newObj = document.createElement('div');
 	$(newObj).addClass('upload-kit-item done');		
@@ -241,7 +246,7 @@ var removeFile = (function(obj){
 			});
 		    layer.close(index);
 		},function(){
-		    layer.close(index);;
+		    layer.close(index);
 		});
 });
 

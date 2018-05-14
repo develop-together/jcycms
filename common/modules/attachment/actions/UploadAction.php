@@ -72,7 +72,7 @@ class UploadAction extends Action
 					'id' => $attachmentModel->id, 
 					'filename' => $attachmentModel->filename, 
 					'extension' => $attachmentModel->extension, 
-					'filepath' => Yii::$app->request->baseUrl . '/'. Yii::$app->params['uploadSaveFilePath'] . '/' . $attachmentModel->filepath,
+					'filepath' => Yii::$app->request->baseUrl . '/' . $attachmentModel->filepath,
 					'filetype' => $attachmentModel->filetype,
 				];			 	
 			} else {

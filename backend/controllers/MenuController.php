@@ -64,6 +64,7 @@ class MenuController extends BackendController
         $model->is_display = Menu::DISPLAY_SHOW;
         $model->method = Menu::REQUEST_METHOD_ON_GET;
         $model->scenario = 'backend';
+        $model->target = '';
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
             return $this->redirect(['index']);

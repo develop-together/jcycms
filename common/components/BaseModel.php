@@ -8,6 +8,7 @@ use yii\helpers\Html;
 use yii\behaviors\TimestampBehavior;
 use yii\web\UploadedFile;
 use yii\helpers\FileHelper;
+use common\modules\attachment\models\Attachment;
 
 /**
  * base model
@@ -120,7 +121,7 @@ class BaseModel extends \yii\db\ActiveRecord
         $result = [];
         if ($uploads) {
             foreach ($uploads as $upload) {
-                $result = $this->uploadOpreate($field, $uploadAlias, $attribute, $upload);
+                $result[] = $this->uploadOpreate($field, $uploadAlias, $attribute, $upload);
             }
         }
 
@@ -130,6 +131,7 @@ class BaseModel extends \yii\db\ActiveRecord
     public function uploadOpreate($field='thumb', $uploadAlias='@thumb/', $attribute='Thumb', $UploadedFile= null)
     {
         $upload = $UploadedFile === null ? UploadedFile::getInstance($this, $field) : $UploadedFile;
+        // var_dump($upload);exit;
         if ($upload !== null) {
             $uploadPath = yii::getAlias($uploadAlias);
             if (! FileHelper::createDirectory($uploadPath)) { 
@@ -139,7 +141,7 @@ class BaseModel extends \yii\db\ActiveRecord
 
             $baseName = $upload->baseName;
             $extension = $upload->extension;
-            $uniqid = uniqid();
+            $uniqid = time() . '-' . uniqid();
             if (Utils::chinese($baseName)) {
                 $baseName = iconv('UTF-8', 'GBK', $baseName);
             }
@@ -148,10 +150,19 @@ class BaseModel extends \yii\db\ActiveRecord
             $filename = $uploadPath . $uniqid . '_' . $upload->baseName . '.' . $extension;
             if(! $upload->saveAs($fullName)) {
                 $this->addError($field, yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => yii::t('app', $attribute)]) . ': ' . $filename);
+
                 return false;                
             }
 
-            return str_replace(yii::getAlias('@backend/web'), '', $filename);
+            $attachmentModel = new Attachment();
+            $relativePath = str_replace(yii::getAlias('@backend/web'), '', $filename);
+            if (!$attachmentModel->saveAttachments($upload, $relativePath, $uploadPath)) {
+                $this->addError($field, yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => yii::t('app', $attribute)]) . ': ' . $filename);
+
+                return false; 
+            }
+
+            return !$UploadedFile ? $relativePath : $attachmentModel->id;
         }
     
         return !$this->isNewRecord ? $this->getOldAttribute($field) : '';

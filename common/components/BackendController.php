@@ -16,7 +16,8 @@ use yii\base\Event;
 */
 class BackendController extends BaseController
 {
- 
+    public $page = 1;
+
 	public function init()
 	{
 		parent::init();
@@ -24,6 +25,8 @@ class BackendController extends BaseController
 		if (Yii::$app->user->isGuest) {
 			return $this->redirect(['/public/login']);
 		}
+
+        $this->page = Yii::$app->request->get('page');
 	}
 
 	public function beforeAction($action)
@@ -110,5 +113,11 @@ class BackendController extends BaseController
 
             return $this->redirect(['index']);
         }
+    }
+
+    public function redirect($url, $statusCode = 302)
+    {
+        $route = (in_array('index', $url) && $this->page > 1) ? Url::to(array_merge($url, ['page' => $this->page])) : Url::to($url);
+        return Yii::$app->getResponse()->redirect($route, $statusCode);
     }
 }

@@ -38,8 +38,6 @@ $menuTree = Utils::tree_bulid($lists, 'id', 'parent_id');
                         <?= $form->field($model, 'method')->dropDownList(Menu::loadMethodOptions(), ['prompt' => '请选择']); ?>
                         <div class="hr-line-dashed"></div>                       
                         <?= $form->field($model, 'icon')->widget(\backend\widgets\iconpicker\IconPickerWidget::className()) ?>
-                        <div class="hr-line-dashed"></div>                        
-                        <?= $form->field($model, 'target')->dropDownList(Menu::loadTragetOptions()); ?>
                         <div class="hr-line-dashed"></div>                       
                         <?= $form->field($model, 'sort')->textInput(['maxlength' => true, 'type' => 'number', 'min' => 0]); ?>
                         <div class="hr-line-dashed"></div>                       

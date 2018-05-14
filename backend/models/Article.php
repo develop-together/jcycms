@@ -47,36 +47,6 @@ class Article extends \common\models\Article
             $this->thumb = str_replace(yii::getAlias('@backend/web'), '', $thumbName);
         }*/
         $this->thumb = $this->uploadOpreate();
-        if ($this->flag_headline == null) {
-            $this->flag_headline = 0;
-        }
-
-        if ($this->flag_recommend == null) {
-            $this->flag_recommend = 0;
-        }
-
-        if ($this->flag_slide_show == null) {
-            $this->flag_slide_show = 0;
-        }
-
-        if ($this->flag_special_recommend == null) {
-            $this->flag_special_recommend = 0;
-        }
-
-        if ($this->flag_roll == null) {
-            $this->flag_roll = 0;
-        }
-
-        if ($this->flag_bold == null) {
-            $this->flag_bold = 0;
-        }
-
-        if ($this->flag_picture == null) {
-            $this->flag_picture = 0;
-        }
-
-        $this->tag = str_replace('，', ',', $this->tag);
-        $this->seo_keywords = str_replace('，', ',', $this->seo_keywords);
 
         return true;
     }

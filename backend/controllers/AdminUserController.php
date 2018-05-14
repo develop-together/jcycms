@@ -110,10 +110,14 @@ class AdminUserController extends BackendController
             $rolesModel->user_id = $id;
         }
 
-        if (Yii::$app->request->post()) {
-            if ($model->load(Yii::$app->request->post()) 
+        if (Yii::$app->request->isPost) {
+            $parmas = Yii::$app->request->post();
+            if (!empty($params['User']['password'])) {
+                $params['User']['password'] = $model->setPassword($params['User']['password']);
+            }
+            if ($model->load($parmas) 
                 && $model->validate() 
-                && $rolesModel->load(Yii::$app->request->post()) 
+                && $rolesModel->load($parmas) 
                 && $model->save()  
                 && $rolesModel->validate() 
                 && $rolesModel->save()) {

@@ -201,6 +201,9 @@ CREATE TABLE IF NOT EXISTS `byt_config` (
 ALTER TABLE `byt_config` 
 ADD UNIQUE INDEX `variable_UNIQUE` (`variable` ASC);
 
+#2018-05-07
+ALTER TABLE  `byt_article` 
+ADD  `photo_file_ids` CHAR( 16 ) NULL DEFAULT NULL COMMENT  '相册文件' AFTER  `tag`
 
 
 

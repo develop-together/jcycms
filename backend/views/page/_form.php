@@ -7,13 +7,8 @@ use common\widgets\Ueditor;
 use common\models\Category;
 use common\components\Utils;
 use common\components\BaseConfig;
-use common\widgets\fileUploadInput\FileUploadInputWidget;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Article */
-/* @var $form yii\widgets\ActiveForm */
-$categoryTree = Utils::tree_bulid(Category::find()->asArray()->all(), 'id', 'parent_id');
-$this->title = yii::t('app', 'Articles');
+$this->title = yii::t('app', 'Pages');
 
 ?>
 

@@ -1206,7 +1206,6 @@ class Utils {
 
         return $xml;
     }
-
 }
 
 ?>

@@ -31,6 +31,7 @@ class SiteController extends Controller
     {
         parent::init();
         file_put_contents(Yii::getAlias('@api') . '/runtime/logs/vue_request_data.log', Json::encode(['time' => date('Y-m-d H:i:s'), 'method' => Yii::$app->getRequest()->getMethod(), 'data' => Utils::get_request_payload(), 'header' => Yii::$app->request->headers]). "\r\n-------\r\n", FILE_APPEND);
+        return true;
     }
 
     public function behaviors()
@@ -42,7 +43,7 @@ class SiteController extends Controller
                 'cors' => [
                     'Origin' => ['*'],
                     'Access-Control-Allow-Credentials' => true,
-                    'Access-Control-Allow-Headers' => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'authKey']
+                    'Access-Control-Allow-Headers' => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'AppKey', 'Nonce', 'SignatureString', 'RequetTime']
                 ]
             ]
         ]);

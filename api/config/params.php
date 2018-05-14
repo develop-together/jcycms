@@ -13,6 +13,6 @@ return [
     'api_username' => 'admin',
     'api_password' => '$2y$13$eLoLOkmlHPzD4dchr2a4IOJjbJrFgN/1nBwUxFHjjxmt8drGPUUZy',
     'web_site' => 'http://blog.yjcweb.tk',
-    'app_key' => 'voBVVQxfMxDmhuxV70',
-    'app_secret' => 'QJF5P8qWFJakF9Ve89ZcIstHKbkt5fVA',
+    'app_key' => 'joBVVQxfMxDmhuxV20',
+    'app_secret' => 'YJF5P8qCFJakF9Ve89ZcIstHKbkt4fVN',
 ];

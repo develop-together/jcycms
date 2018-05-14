@@ -34,7 +34,14 @@ class SignatureFilter extends ActionFilter
             return false;
         }
 
+        if (Yii::$app->getRequest()->getMethod() === 'OPTIONS') {
+            return true;
+        }
+ 
+        
         $params = $this->getParams();
+/*        var_dump(!isset($params['_key']), !isset($params['_sign']), strlen($params['_nonce']) !== 32, !is_numeric($params['_time']), $params);
+        return true;*/
         // 参数完整性验证
         if (!isset($params['_key'])
             || !isset($params['_sign'])
@@ -47,7 +54,7 @@ class SignatureFilter extends ActionFilter
         }
 
         if(Yii::$app->params['app_key'] !== $params['_key']) {
-             $this->callback(['message' => '非法的app_key'], 'error');
+             throw new BadRequestHttpException('非法的app_key');
         }
 
         if (!isset($params['_time']) || $this->getIsTimeOut($params['_time'])) {
@@ -75,20 +82,34 @@ class SignatureFilter extends ActionFilter
     }
 
     public function getIsTimeOut($time) {
+
         return abs($time - time()) > $this->timeOut;
     }
 
     public function getParams() {
-        if ($this->_params === null) {
+        if (!$this->_params) {
             $request = Yii::$app->getRequest();
             $this->_params = ArrayHelper::merge(
                 $request->getQueryParams(),
                 $request->getBodyParams(),
-                $request->getHeaders()
+                $this->getParamsToVue()
             );
         }
 
         return $this->_params;
+    }
+
+    private function getParamsToVue()
+    {
+        $request = Yii::$app->getRequest();
+        $headers = $request->getHeaders();
+        $params = [];
+        $params['_key'] = $headers['appkey'];
+        $params['_nonce'] = $headers['nonce'];
+        $params['_time'] = strtotime($headers['requettime']);
+        $params['_sign'] = $headers['signaturestring'];
+
+        return $params;
     }
 
     public function getNormalizedString($params)

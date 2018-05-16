@@ -91,7 +91,7 @@ class SignatureFilter extends ActionFilter
             $request = Yii::$app->getRequest();
             $this->_params = ArrayHelper::merge(
                 $request->getQueryParams(),
-                $request->getBodyParams(),
+                // $request->getBodyParams(),
                 $this->getParamsToVue()
             );
         }
@@ -106,7 +106,7 @@ class SignatureFilter extends ActionFilter
         $params = [];
         $params['_key'] = $headers['appkey'];
         $params['_nonce'] = $headers['nonce'];
-        $params['_time'] = strtotime($headers['requettime']);
+        $params['_time'] = $headers['requettime'];
         $params['_sign'] = $headers['signaturestring'];
 
         return $params;

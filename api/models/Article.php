@@ -4,6 +4,17 @@ use common\models\Article AS CommArticle;
 
 class Article extends CommArticle 
 {
+    public function beforeSave($insert)
+    {	
+        if(!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        $this->thumb = $this->uploadOpreate();
+
+        return true;
+    }
+
 	public function fields()
 	{
 		return [

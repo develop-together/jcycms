@@ -267,7 +267,7 @@ class Article extends \common\components\BaseModel
     }
 
     public function beforeSave($insert)
-    {
+    {   
         if(!parent::beforeSave($insert)) {
             return false;
         }
@@ -304,5 +304,28 @@ class Article extends \common\components\BaseModel
         $this->seo_keywords = str_replace('，', ',', $this->seo_keywords);
 
         return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            $contentModel = new ArticleContent();
+            $contentModel->article_id = $this->id;
+        } else {
+            if ($this->content === null) {
+                return;
+            }
+            $contentModel = ArticleContent::findOne(['article_id' => $this->id]);
+            if ($contentModel == null) {
+                $contentModel = new ArticleContent();
+                $contentModel->article_id = $this->id;
+            }
+        }
+        $contentModel->content = $this->content;
+        $contentModel->save();
+        parent::afterSave($insert, $changedAttributes);
     }
 }

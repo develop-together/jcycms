@@ -13,6 +13,7 @@ use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use api\models\Article;
+use backend\models\User;
 use api\components\SignatureFilter;
 use common\components\Utils;
 use yii\web\HttpException;
@@ -30,7 +31,7 @@ class SiteController extends Controller
     public function init()
     {
         parent::init();
-        file_put_contents(Yii::getAlias('@api') . '/runtime/logs/vue_request_data.log', Json::encode(['time' => date('Y-m-d H:i:s'), 'method' => Yii::$app->getRequest()->getMethod(), 'data' => Utils::get_request_payload(), 'header' => Yii::$app->request->headers]). "\r\n-------\r\n", FILE_APPEND);
+        // file_put_contents(Yii::getAlias('@api') . '/runtime/logs/vue_request_data.log', Json::encode(['time' => date('Y-m-d H:i:s'), 'method' => Yii::$app->getRequest()->getMethod(), 'data' => Utils::get_request_payload(), 'header' => Yii::$app->request->headers]). "\r\n-------\r\n", FILE_APPEND);
         return true;
     }
 
@@ -58,7 +59,36 @@ class SiteController extends Controller
 
     public function actionArticleCreate()
     {
-        return [];
+        if (Yii::$app->request->isPost) {
+            $model = new Article();
+            $params = Yii::$app->request->post();
+            $attributes = Json::decode($params['article'], true);
+            $model->attributes = $attributes;
+            $model->type = Article::ARTICLE;
+            $model->user_id = User::SUPER_MANAGER;
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if (!$model->save()) {
+                    $errors = [];
+                    foreach ($model->errors as $error) {
+                        $errors[] = $error[0]; 
+                    }
+                    throw new \yii\web\BadRequestHttpException(implode(",", $errors));
+                }  
+                $transaction->commit();
+                
+                return ['message' => '操作成功']; 
+            } catch(\Expression $e) {
+                $transaction->rollBack();
+                Yii::$app->getResponse()->statusCode = 400;
+                return ['message' => $e->getMessage()]; 
+            }
+         
+        }
+
+        Yii::$app->getResponse()->statusCode = 500;
+
+        return yii::$app->getResponse()->send();
      
     }
 

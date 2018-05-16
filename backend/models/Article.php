@@ -50,28 +50,4 @@ class Article extends \common\models\Article
 
         return true;
     }
-
-    /**
-     * @inheritdoc
-     */
-/*    public function afterSave($insert, $changedAttributes)
-    {
-        if ($insert) {
-            $contentModel = new ArticleContent();
-            $contentModel->aid = $this->id;
-        } else {
-            if ($this->content === null) {
-                return;
-            }
-            $contentModel = ArticleContent::findOne(['aid' => $this->id]);
-            if ($contentModel == null) {
-                $contentModel = new ArticleContent();
-                $contentModel->aid = $this->id;
-            }
-        }
-        $contentModel->content = $this->content;
-        $contentModel->save();
-        parent::afterSave($insert, $changedAttributes);
-    }*/
-
 }

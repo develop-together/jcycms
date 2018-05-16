@@ -86,7 +86,7 @@ class BaseModel extends \yii\db\ActiveRecord
             return false;
         }
 
-        if ($this->isNewRecord && $this->hasAttribute('user_id')) {
+        if (Yii::$app->id != 'app-api' && $this->isNewRecord && $this->hasAttribute('user_id')) {
             $this->user_id = Yii::$app->user->id;
         }
 
@@ -130,8 +130,13 @@ class BaseModel extends \yii\db\ActiveRecord
 
     public function uploadOpreate($field='thumb', $uploadAlias='@thumb/', $attribute='Thumb', $UploadedFile= null)
     {
-        $upload = $UploadedFile === null ? UploadedFile::getInstance($this, $field) : $UploadedFile;
-        // var_dump($upload);exit;
+        
+        if (Yii::$app->id == 'app-api') {
+            $upload = UploadedFile::getInstanceByName($field);
+        } else {
+          $upload = $UploadedFile === null ? UploadedFile::getInstance($this, $field) : $UploadedFile;  
+        }
+
         if ($upload !== null) {
             $uploadPath = yii::getAlias($uploadAlias);
             if (! FileHelper::createDirectory($uploadPath)) { 
@@ -162,7 +167,11 @@ class BaseModel extends \yii\db\ActiveRecord
                 return false; 
             }
 
-            return !$UploadedFile ? $relativePath : $attachmentModel->id;
+            if(Yii::$app->id == 'app-api' || !$UploadedFile) {
+                return $relativePath;
+            } 
+
+            return $attachmentModel->id;
         }
     
         return !$this->isNewRecord ? $this->getOldAttribute($field) : '';

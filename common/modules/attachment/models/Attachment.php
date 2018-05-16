@@ -6,6 +6,8 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\base\Exception;
 use yii\helpers\FileHelper;
+use backend\models\User;
+
 /**
  * This is the model class for table "{{%attachment}}".
  *
@@ -127,7 +129,7 @@ class Attachment extends \common\components\BaseModel
    public function saveAttachments($uploadData, $filepath = '', $uploadPath = '')
    {
 
-        $this->user_id = Yii::$app->user->id;
+        $this->user_id = Yii::$app->id == 'app-backend' ? Yii::$app->user->id : User::SUPER_MANAGER;
         $this->filename = $uploadData->name;
         $this->filetype = $uploadData->type;
         $this->extension = $uploadData->extension;

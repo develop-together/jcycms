@@ -11,6 +11,8 @@ use yii\filters\VerbFilter;
 use common\components\BackendController;
 use yii\db\Query;
 use yii\helpers\Url;
+use yii\helpers\Json;
+use common\components\Utils;
 
 /**
  * Site controller
@@ -148,12 +150,38 @@ class SiteController extends BackendController
 		// 当周新增数量统计图
 		$echartsData = $xAxis = $articleData = $frontendUserData = [];
 		$echartsData['legend'] = [yii::t('app', 'Articles'), yii::t('app', 'Users')];
+	    $echartsData['legends'] = Json::encode(array_values($echartsData['legend']));;
+	    $series = $articleCount = $userCount = [];
 		$nWeek = date('w');
 		for ($i = 0 ; $i <= $nWeek; $i++) {
-			$xAxis[] = '周' . $nWeek == 0 ? '日' : $i;
-			// $articleData = Article::find();
+			$day = $i  == 0 ? '日' : Utils::numberToChinese($i);
+			$xAxis[] = '周' . $day;
+			$startTime = strtotime(date('Y-m-d 00:00:00', strtotime('-' . ($nWeek-$i) . 'day')));
+			$endTime = strtotime(date('Y-m-d 23:59:59', strtotime('-' . ($nWeek-$i) . 'day')));
+			$articleCount[] = Article::find()
+				->where(['type' => ARTICLE])
+				->andWhere(['between', 'created_at', $startTime, $endTime])
+				->count();
+			$userCount[] = $i + mt_rand(0, 10);
+
 		}
-		$echartsData['xAxis'] = $xAxis;
+
+		$series[0] = [
+			'type' => 'line', 
+			'stack' => '总量', 
+			'areaStyle' => ['normal' => []],
+			'name' => $echartsData['legend'][0], 
+			'data' => $articleCount
+		];
+		$series[1] = [
+			'type' => 'line', 
+			'stack' => '总量', 
+			'areaStyle' => ['normal' => []],
+			'name' => $echartsData['legend'][1], 
+			'data' => $userCount
+		];
+		$echartsData['series'] = Json::encode($series);
+		$echartsData['xAxis'] = Json::encode(array_values($xAxis));
 		return $this->render('desktop', [
 			'countData' => $countData,
 			'enviromentInfo' => $enviromentInfo,

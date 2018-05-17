@@ -1206,6 +1206,13 @@ class Utils {
 
         return $xml;
     }
+
+    public static function numberToChinese($key)
+    {
+        $arr = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+
+        return array_key_exists($key, $arr) ? $arr[$key] : '';
+    }
 }
 
 ?>

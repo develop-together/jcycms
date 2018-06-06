@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use backend\models\User;
+use common\modules\attachment\models\Attachment;
 
 /**
  * This is the model class for table "{{%article}}".
@@ -327,5 +328,20 @@ class Article extends \common\components\BaseModel
         $contentModel->content = $this->content;
         $contentModel->save();
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function getPictures()
+    {
+        $data = [];
+        $attachmentModels = Attachment::find()
+            ->where(['in', 'id', explode(',', $this->photo_file_ids)])
+            ->all();
+        if ($attachmentModels) {
+            foreach ($attachmentModels as $attachmentModel) {
+                $data[$attachmentModel->id] = $attachmentModel;
+            }
+        }
+
+        return $data;
     }
 }

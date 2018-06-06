@@ -241,5 +241,15 @@ class Attachment extends \common\components\BaseModel
         }
 
         return str_replace($path . '/', '', $filepath);
-    }    
+    }  
+
+    public function getPictureJson()
+    {
+        return [
+            'title' => $this->filename,
+            'pid' => $this->id,
+            'src' => $this->filepath,
+            'thumb' => $this->filepath,
+        ];
+    }  
 }

@@ -53,4 +53,13 @@ return [
 	'News' => '文章',
 	'Gallery' => '心情物语',
 	'Contact' => '联系我们',
+	'About Us' => '关于我们',
+	'Tel' => '电话',
+	'Email' => '电子邮件',
+	'Let Me Log In' => '点我登录',
+	'Please Log In' => '请登录',
+	'Register' => '注册',
+	'I sign up' => '点我注册',
+	'Password' => '密码',
+	'Duplicate Password' => '重复密码',
 ];

@@ -21,7 +21,7 @@ Yii::$container->set(\yii\widgets\ActiveField::className(), ['template' => "{lab
     <?= $form->field($model, 'email') ?>
     <?= $form->field($model, 'status')->dropDownList(User::loadStatusOptions(), []) ?>
 
-    <div class="form-group">
+    <div class="form-group"  style="padding-bottom:10px;">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>

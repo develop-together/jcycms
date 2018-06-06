@@ -205,6 +205,13 @@ ADD UNIQUE INDEX `variable_UNIQUE` (`variable` ASC);
 ALTER TABLE  `byt_article` 
 ADD  `photo_file_ids` CHAR( 16 ) NULL DEFAULT NULL COMMENT  '相册文件' AFTER  `tag`
 
+#2018-06-02
+ALTER TABLE `byt_config`
+ENGINE=InnoDB;
+
+#2018-06-06
+INSERT INTO `byt_config` (`scope`, `variable`, `value`, `description`) VALUES ('base', 'system_notes', NULL, '系统描述'), ('base', 'tel', '', '')
+INSERT INTO `byt_config` (`scope`, `variable`, `value`, `description`) VALUES ('base', 'email', '', '');
 
 
 

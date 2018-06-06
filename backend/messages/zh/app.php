@@ -329,4 +329,6 @@ return [
 	'New Quantity Statistical Chart' => '新增数量统计图',
 	'Photo Album' => '相册图片',
 	'Photos' => '相册',
+	'Tel' => '电话',
+	'System Description' => '系统描述',
 ];

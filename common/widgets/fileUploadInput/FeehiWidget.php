@@ -47,7 +47,8 @@ class FeehiWidget extends InputWidget
             $this->attribute = Html::getAttributeName($this->attribute);
             if ($this->attribute === 'photo_file_ids') {
             	$value = $this->model->{$this->attribute};
-            	$attachmentModels = Attachment::find()
+            	$this->value = $this->model->getPictures();
+/*            	$attachmentModels = Attachment::find()
             		->where(['in', 'id', explode(',', $value)])
             		->all();
             	$data = [];
@@ -57,7 +58,7 @@ class FeehiWidget extends InputWidget
             		}
             	}
 
-            	$this->value = $data;
+            	$this->value = $data;*/
             } else {
             	$this->value = $this->model->{$this->attribute};
             }

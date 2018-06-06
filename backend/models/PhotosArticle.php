@@ -33,6 +33,4 @@ class PhotosArticle extends \common\models\Article
         return true;
     }
 
-
-
 }

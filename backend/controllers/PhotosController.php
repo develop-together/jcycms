@@ -9,6 +9,7 @@ use common\components\BackendController;
 use backend\actions\DeleteAction;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 
 /**
  * PhotosController implements the CRUD actions for Article model.
@@ -128,6 +129,34 @@ class PhotosController extends BackendController
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    public function actionShowPictures($id)
+    {
+        $model = $this->findModel($id);
+        $data = [];
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            if ($model->pictures) {
+                foreach ($model->pictures as $picture) {
+                    $data[] = [
+                        'alt' => $picture->filename,
+                        'pid' => $picture->id,
+                        'src' => Yii::$app->request->baseUrl . '/' . $picture->filepath,
+                        'thumb' => $picture->filepath,
+                    ];
+                }
+            }
+
+            return [
+                'title' => $model->title,
+                'id' => $id,
+                'start' => 0,
+                'data' => $data
+            ];
+        } else {
+            return $data;
         }
     }
 

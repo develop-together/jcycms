@@ -1,10 +1,12 @@
 <?php
 
-/* @var $this yii\web\View */
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\Html;
 
-$this->title = 'jcycms frontend index';
+    $this->title = Yii::t('common', 'Home');
+
 ?>
-   <div class="row">
+    <div class="row">
         <div class="tm-intro">
 
             <section id="tm-section-1">                        
@@ -18,7 +20,6 @@ $this->title = 'jcycms frontend index';
 
         </div>
     </div>
-
     <div class="row gray-bg">
         
         <div id="tm-section-2" class="tm-section">
@@ -64,8 +65,7 @@ $this->title = 'jcycms frontend index';
             </div>                    
        </div>
 
-   </div> <!-- row -->
-
+    </div> <!-- row -->
     <div class="row">
 
         <section id="tm-section-3" class="tm-section">
@@ -141,41 +141,68 @@ $this->title = 'jcycms frontend index';
         </section>
 
     </div> <!-- row -->
-
     <div class="row gray-bg">
 
         <section id="tm-section-4" class="tm-section">
             <div class="tm-container">
 
-                <h2 class="blue-text tm-title text-xs-center">Contact Us</h2>
-              
-                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
-                    <form action="index.html" method="post" class="tm-contact-form">                                
-                        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 tm-form-group-left">
-                            <input type="text" id="contact_name" name="contact_name" class="form-control" placeholder="Name"  required/>
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 tm-form-group-right">
-                            <input type="email" id="contact_email" name="contact_email" class="form-control" placeholder="Email"  required/>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="contact_subject" name="contact_subject" class="form-control" placeholder="Subject"  required/>
-                        </div>
-                        <div class="form-group">
-                            <textarea id="contact_message" name="contact_message" class="form-control" rows="6" placeholder="Message" required></textarea>
-                        </div>
-                    
-                        <button type="submit" class="btn tm-light-blue-bordered-btn pull-xs-right">Submit</button>                          
-                    </form>   
-                </div> <!-- col -->
-                
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 margin-top-xs-50">
-                    <h3 class="light-blue-text tm-subtitle">Etiam at rhoncus nisl</h3>
-                    <p>Nunc rutrum ac ante euismod cursus. Suspendisse imperdiet feugiat massa nec iaculis</p>
+                <h2 class="blue-text tm-title text-xs-center"><?= Yii::t('common', 'About Us') ?></h2>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 ">
+                    <p><?= $configData['system_notes'] ?></p>
                     <p>
-                        Tel: <a href="tel:0100200340">010-020-0340</a><br>
-                        Email: <a href="mailto:info@company.com">info@company.com</a>
+                        <?= Yii::t('common', 'Tel') ?>: <a href="tel:<?= $configData['tel'] ?>"><?= $configData['tel'] ?></a><br>
+                        <?= Yii::t('common', 'Email') ?>: <span><?= $configData['email'] ?></span>
                     </p>
                 </div>
             </div>                    
         </section>
     </div> <!-- row -->
+    <!-- 登录模态框 start -->
+    <div class="modal fade " id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myLoginModal">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="recipient-name" class="control-label">用户名:</label>
+                    <input type="text" class="form-control" placeholder="请输入用户名">
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text" class="control-label">密码:</label>
+                    <input type="password" class="form-control" placeholder="请输入密码">
+                  </div>
+                  <div class="form-group"> 
+                  </div>
+                </form>
+            </div>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+              </div>
+        </div>
+      </div>
+    </div>
+    <!-- 登录模态框 end -->
+    <!-- 注册模态框 start -->
+    <div class="modal fade " id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myRegisterModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+            <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+
+                <?= $form->field($signupModel, 'username')->textInput(['autofocus' => true]) ?>
+
+                <?= $form->field($signupModel, 'email') ?>
+
+                <?= $form->field($signupModel, 'password')->passwordInput() ?>
+                <?= $form->field($signupModel, 'password_too')->passwordInput() ?>
+            </div>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+              </div>
+              <?php ActiveForm::end(); ?>
+        </div>
+      </div>
+    </div>
+    <!-- 注册模态框 end -->

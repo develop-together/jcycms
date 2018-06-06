@@ -2,10 +2,21 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\Json;
 use backend\grid\GridView;
 use backend\grid\ActionColumn;
 use common\components\BaseConfig;
 use backend\models\Article;
+
+$showPicture = function($url, $model, $uniqid) {
+    return Html::a('<i class="fa fa-image"></i> ' . yii::t('app', 'View'), 'javacript:;', [
+        'title' => yii::t('app', 'View'),
+        'class' => 'btn btn-white btn-sm',
+        'id' => 'show_picture',
+        'data-id' => $model->id,
+        'data-fids' => $model->photo_file_ids,
+    ]);	
+}
 
 ?>
 
@@ -38,7 +49,10 @@ use backend\models\Article;
 										return  $model->user->username;
 									},
 								],
-								'title',
+								[
+									'attribute' => 'title',
+									'enableSorting' => false,
+								],
 		                        [
 		                            'attribute' => 'status',
 		                            'format' => 'raw',
@@ -77,15 +91,44 @@ use backend\models\Article;
 
                                 [
                                     'class' => 'backend\grid\ActionColumn',
-                                    'template' => '{view}{update}{delete}',
+                                    'template' => '{showPicture}{update}{delete}',
+                                    'buttons' => ['showPicture' => $showPicture],
                                 ],
                             ]
                         ]); ?>
                             </div>
                     </div>
     </div>
-
-
 </div>
+<?php
+	$url = Url::toRoute(['photos/show-pictures']);
+	$this->registerJs(<<<EOT
+		$("#show_picture").on('click', function(event) {
+			if (!$(this).data('fids')) {
+				layer.tips('暂无图片', this, {
+				  tips: [1, '#3595CC'],
+				  time: 4000
+				});
+				return;
+			}
+			jQuery.ajax({
+				type: 'GET',
+				url: "$url",
+				data: {id: $(this).data('id')},
+				dataType: 'JSON',
+				success: function(responseData) {
+					if (responseData.data) {
+						layer.photos({
+							photos: responseData,
+							anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+						});
+					}
+				}
+			});
+		});
+EOT
+);	
+?>
+
 
 

@@ -28,7 +28,7 @@ $(document).ready(function(){
 				$("#" + fileInputId).val(file.path.replace('\/uploads\/', ''));
 				resObj.parentNode.insertBefore(newObj, resObj);	
 				resObj.style.display = 'none';*/
-				console.log('file Is:', file);
+				// console.log('file Is:', file);
 				_createImg(res, file, fileInputId, options.many);				
 			}
 		}
@@ -179,14 +179,15 @@ function _fileUpload(file, options, res, _fileDomObj)
 }
 
 function _createImg(res, data, fileInputId, many) {
-	if(!data || !data.filepath) {
+	var filepath = data.path ? data.path : data.filepath;
+	if(!data || !filepath) {
 		return;
 	}
+
 	if (data.error) {
 		layer.alert(data.error);
 		return;
 	}
-
 	// many = !many || false;
 	var resObj = document.getElementById(res);
 	var newObj = document.createElement('div');
@@ -196,7 +197,6 @@ function _createImg(res, data, fileInputId, many) {
 	newImg.style.width = '150px';
 	newImg.style.height = '150px';	
 	$(newObj).append('<span class=\'fa fa-trash remove\' data-id =\' ' + data.id + '\' onclick=\'removeFile(this)\' data-temp =\' '+ fileInputId+ '\' data-resid  = \' '+ res +' \'></span>');							 		
-	var filepath = data.path ? data.path : data.filepath;
 	if (!/image\/\w+/.test(data.filetype)) {//如果不是图片格式
 		newImg.src = '/static/img/file.png';
 	} else {						 			

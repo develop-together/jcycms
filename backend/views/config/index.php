@@ -48,6 +48,27 @@ $this->title = Yii::t('app', 'Website Setting');
                 </div>
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
+                    <?= Html::label(Yii::t('app', 'Tel'), null, ['class' => 'col-sm-2 control-label']) ?>
+                    <div class="col-sm-10">
+                        <?= Html::textInput('Config[tel]', isset($config['tel']) ? $config['tel'] : '', ['class' => 'form-control', 'style' => 'width:40%']) ?>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <?= Html::label(Yii::t('app', 'Email'), null, ['class' => 'col-sm-2 control-label']) ?>
+                    <div class="col-sm-10">
+                        <?= Html::textInput('Config[email]', isset($config['email']) ? $config['email'] : '', ['class' => 'form-control', 'style' => 'width:40%']) ?>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <?= Html::label(Yii::t('app', 'System Description'), null, ['class' => 'col-sm-2 control-label']) ?>
+                    <div class="col-sm-10">
+                        <?= Html::textarea('Config[system_notes]', isset($config['system_notes']) ? $config['system_notes'] : '', ['class' => 'form-control', 'rows' => 5, 'cols' => 60]) ?>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
                     <?= Html::label(Yii::t('app', 'Seo Keyword'), null, ['class' => 'col-sm-2 control-label']) ?>
                     <div class="col-sm-10">
                         <?= Html::textInput('Config[seo_keyword]', isset($config['seo_keyword']) ? $config['seo_keyword'] : '', ['class' => 'form-control', 'style' => 'width:40%']) ?>

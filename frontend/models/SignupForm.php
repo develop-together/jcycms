@@ -1,7 +1,9 @@
 <?php
 namespace frontend\models;
 
+use Yii;
 use yii\base\Model;
+use yii\helpers\ArrayHelper;
 use common\models\User;
 
 /**
@@ -12,7 +14,7 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
-
+    public $password_too;
 
     /**
      * @inheritdoc
@@ -32,8 +34,19 @@ class SignupForm extends Model
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
 
             ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            [['password', 'password_too'], 'string', 'min' => 6],
         ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'id' => Yii::t('common', 'ID'),
+            'username' => Yii::t('common', 'User'),
+            'password' => Yii::t('common', 'Password'),
+            'email' => Yii::t('common', 'Email'),
+            'password_too' => Yii::t('common', 'Duplicate Password'),
+        ];        
     }
 
     /**

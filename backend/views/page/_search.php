@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm AS BAF;
 
     <?= $form->field($model, 'title') ?>
 
-    <div class="form-group">
+    <div class="form-group"  style="padding-bottom:10px;">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
     </div>

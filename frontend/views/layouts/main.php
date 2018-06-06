@@ -7,9 +7,15 @@ use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use common\models\Config;
+use common\models\FriendLink;
 use yii\helpers\Url;
 
 AppAsset::register($this);
+$configData = Config::loadData();
+$selfLinks = FriendLink::loadSelfLinks();
+$this->title = $configData['system_name'];
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -18,6 +24,8 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="<?= $configData['seo_keyword']?>">
+    <meta name="description" content="<?= $configData['seo_description']?>">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -25,10 +33,15 @@ AppAsset::register($this);
 <body id="top_<?= Yii::$app->controller->_uniqid ?>" class="home">
 <?php $this->beginBody() ?>
     <div class="container-fluid">
-        <div class="row">
-          
+        <div class="row">          
             <div class="tm-navbar-container bg-inverse">
-            
+            <div id="header-container" class=" container">
+                <div class="nav-login">
+                    <a href="javascript:;" data-toggle="modal" data-target="#loginModal" title="<?= Yii::t('common', 'Let Me Log In') ?>">Hi, <?= Yii::t('common', 'Please Log In') ?></a>
+                    &nbsp; &nbsp;
+                    <a href="javascript:;" data-toggle="modal" data-target="#registerModal" title="<?= Yii::t('common', 'I sign up') ?>"><?= Yii::t('common', 'Register') ?></a>                 
+                </div>       
+            </div>
             <!-- navbar   -->
             <nav class="navbar navbar-full navbar-fixed-top">
 
@@ -72,26 +85,28 @@ AppAsset::register($this);
         <!-- footer -->
         <footer class="tm-footer">                
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                <p class="text-xs-center tm-footer-text">Copyright &copy; <?= date('Y') ?> jcycms  <a href="https://www.cnblogs.com/YangJieCheng/
-" target="_blank" title="JieChengYang">JieChengYang</a> - Collect from <a href="https://github.com/jiechengyang" title="MyGitHub" target="_blank">MyGitHub</a></p>                    
+                <p class="text-xs-center tm-footer-text">
+                    <?= $configData['icp']?>&nbsp;Copyright &copy; <?= date('Y') ?> <?= $this->title ?>  
+                     <?php if ($selfLinks): ?>
+                         <?php foreach ($selfLinks as  $key => $link): ?>
+                             <a href="<?= $link['url'] ?>" target="<?= $link['target'] ?>" title="JieChengYang"><?= $link['name'] ?></a>
+                             <?= $key == 0 ? ' - Collect from' : ''; ?>
+                         <?php endforeach; ?>
+                     <?php endif; ?>
+                </p>                    
             </div>                
         </footer> 
     </div> <!-- container-fluid -->
-
-
 <?php $this->endBody() ?>
 <?php 
     $jsStr = <<<JS
             $(document).ready(function(){
-
                 var mobileTopOffset = 54;
                 var desktopTopOffset = 80;
                 var topOffset = desktopTopOffset;
-
                 if($(window).width() <= 767) {
                     topOffset = mobileTopOffset;
                 }
-                
                 /* Single page nav
                 -----------------------------------------*/
                 $('#tmNavbar').singlePageNav({

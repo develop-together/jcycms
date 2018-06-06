@@ -2,13 +2,9 @@
 
 namespace common\components;
 
-/**
-* @author atuxe <atuxe@atuxe.com>
-* @copyright Copyright (c) Boyuntong Inc. All rights reserved.
-* @link http://www.boyuntong.com 
-* @license http://www.boyuntong.com/licence
-* @version 1.0.0
-*/
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+
 class FrontendController extends BaseController
 {
 	public function init()
@@ -16,4 +12,44 @@ class FrontendController extends BaseController
 		parent::init();
 	}
 
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['logout', 'signup'],
+                'rules' => [
+                    [
+                        'actions' => ['signup'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
+
+/*    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+        ];
+    }*/
 }

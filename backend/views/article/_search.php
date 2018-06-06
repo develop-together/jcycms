@@ -40,7 +40,7 @@ $categoryTree = Utils::tree_bulid(Category::find()->asArray()->all(), 'id', 'par
     <?= $form->field($model, 'flag_picture')->dropDownList(BaseConfig::getYesNoItems(), ['prompt' => '请选择']) ?>
 
     <?= $form->field($model, 'status')->dropDownList(BaseConfig::getArticleStatus(), ['prompt' => '请选择']) ?>
-    <div class="form-group">
+    <div class="form-group"  style="padding-bottom:10px;">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
     </div>

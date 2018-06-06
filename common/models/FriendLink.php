@@ -73,4 +73,22 @@ class FriendLink extends \common\components\BaseModel
 
         return true;
     }
+
+    public static function loadSelfLinks($refresh = false)
+    {
+        $cacheId = '_cache_self_link_';
+        if ($refresh) {
+            Yii::$app->cache->delete($cacheId);
+        }
+        $data = Yii::$app->cache->get($cacheId);
+        if(empty($data)) {
+            $data = self::find()
+                ->where(['in', 'id', [2, 3]])
+                ->asArray()
+                ->all();   
+            Yii::$app->cache->set($cacheId, $data);
+        } 
+
+        return $data;
+    }
 }

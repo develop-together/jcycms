@@ -17,5 +17,8 @@ return [
     	'smtp_sender',
     	'smtp_password',
         'icp',
+        'system_notes',
+        'tel',
+        'email',
     ]
 ];

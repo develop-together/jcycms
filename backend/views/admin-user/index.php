@@ -46,11 +46,13 @@ $assignment = function ($url, $model) {
                             [
                                 'attribute' => 'username',
                                 'filter' => '',
+                                'enableSorting' => false,
                             ],
                             [
                                 'attribute' => 'email',
                                 'format' => 'email',
                                 'filter' => '',
+                                'enableSorting' => false,
                             ],
                             [
                                 'attribute' => 'status',
@@ -65,6 +67,19 @@ $assignment = function ($url, $model) {
                                 'filter' => '',
                                 'value' => function($model) {
                                     return @$model->userRole->role->role_name;
+                                }
+                            ],
+                            [
+                                'attribute' => 'last_login_ip',
+                                'filter' => '',
+                                'enableSorting' => false,
+                            ],
+                            'login_count',
+                            [
+                                'attribute' => 'last_login_at',
+                                'filter' => '',
+                                'value' => function($model) {
+                                    return $model->last_login_at ? date('Y-m-d H:i:s', $model->last_login_at) : '';
                                 }
                             ],
                             [

@@ -2,8 +2,16 @@
 
     use yii\bootstrap\ActiveForm;
     use yii\helpers\Html;
+    use yii\helpers\Url;
+    use frontend\assets\CaptchaAsset;
+    use frontend\components\Captcha;
+    
+    CaptchaAsset::register($this);
 
     $this->title = Yii::t('common', 'Home');
+    if (Yii::$app->getSession()->getFlash('error')) {
+        echo '<script>alert("' . Yii::$app->getSession()->getFlash('error') . '")</script>';
+    }
 
 ?>
     <div class="row">
@@ -146,12 +154,12 @@
         <section id="tm-section-4" class="tm-section">
             <div class="tm-container">
 
-                <h2 class="blue-text tm-title text-xs-center"><?= Yii::t('common', 'About Us') ?></h2>
+                <h2 class="blue-text tm-title text-xs-center"><?= Yii::t('frontend', 'About us') ?></h2>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 ">
                     <p><?= $configData['system_notes'] ?></p>
                     <p>
-                        <?= Yii::t('common', 'Tel') ?>: <a href="tel:<?= $configData['tel'] ?>"><?= $configData['tel'] ?></a><br>
-                        <?= Yii::t('common', 'Email') ?>: <span><?= $configData['email'] ?></span>
+                        <?= Yii::t('frontend', 'Tel') ?>: <a href="tel:<?= $configData['tel'] ?>"><?= $configData['tel'] ?></a><br>
+                        <?= Yii::t('frontend', 'Email') ?>: <span><?= $configData['email'] ?></span>
                     </p>
                 </div>
             </div>                    
@@ -162,23 +170,28 @@
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <form>
-                  <div class="form-group">
-                    <label for="recipient-name" class="control-label">用户名:</label>
-                    <input type="text" class="form-control" placeholder="请输入用户名">
-                  </div>
-                  <div class="form-group">
-                    <label for="message-text" class="control-label">密码:</label>
-                    <input type="password" class="form-control" placeholder="请输入密码">
-                  </div>
-                  <div class="form-group"> 
-                  </div>
-                </form>
+                <?php 
+                    $loginForm = ActiveForm::begin([
+                        'id' => 'login-form',
+                        'action' => Url::toRoute(['site/login']),
+                    ]);
+                ?>
+                    <?= $loginForm->field($loginModel, 'username')->textInput(['autofocus' => true]) ?>
+                    
+                    <?= $loginForm->field($loginModel, 'password')->passwordInput() ?>
+
+                    <?= $loginForm->field($loginModel, 'rememberMe')->checkbox() ?>
+
+                    <div style="color:#999;margin:1em 0">
+                        <?= Yii::t('common', 'If you forgot your password you can') ?> <?= Html::a(Yii::t('common', 'reset it'), 'javascript:;', ['id' => 'reset_passwod_link']) ?>.
+                    </div>
             </div>
              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Submit</button>
-              </div>
+                <?= Html::submitButton(Yii::t('common', 'Submit'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                <button type="button" class="btn btn-default btn-danger" data-dismiss="modal"><?= Yii::t('common', 'Close')?></button>
+                
+            </div>
+            <?php ActiveForm::end(); ?>
         </div>
       </div>
     </div>
@@ -188,21 +201,58 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
-            <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+                <div class="alert alert-info">
+                    说明：带 * 为必填项
+                </div>
+            <?php 
+                $form = ActiveForm::begin([
+                    'action' => Url::toRoute(['site/signup']),
+                    'options' => ['id' => 'form-signup',]
+                ]); 
+            ?>
 
                 <?= $form->field($signupModel, 'username')->textInput(['autofocus' => true]) ?>
 
                 <?= $form->field($signupModel, 'email') ?>
 
                 <?= $form->field($signupModel, 'password')->passwordInput() ?>
-                <?= $form->field($signupModel, 'password_too')->passwordInput() ?>
+                <?= $form->field($signupModel, 'repeat_pwd')->passwordInput() ?>
+                <?= $form->field($signupModel, 'verifyCode')->widget(Captcha::className(), [
+                    'captchaAction' => 'site/captcha',
+                    'imageOptions' => ['alt' => '点击换图', 'title' => '点击换图', 'style' => 'cursor:pointer'],
+                    'options' => ['size' => 51, 'class' => 'form-control'],
+                    'template' => '<div class="form-inline">{input}{image}</div>',
+                ]) ?>
             </div>
              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                <p>我已注册，现在就<button type="button" id="go_login" class="btn btn-default" >登录</button></p>
+                <?= Html::submitButton(Yii::t('common', 'Submit'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                <button type="reset" class="btn btn-default btn-success"><?= Yii::t('common', 'Reset')?></button>
+                <button type="button" class="btn btn-default btn-danger" data-dismiss="modal"><?= Yii::t('common', 'Close')?></button>
               </div>
               <?php ActiveForm::end(); ?>
         </div>
       </div>
     </div>
+    <!-- 注册模态框 end -->
+    <!-- 重置密码模态框 start -->
+    <div div class="modal fade " id="resetPwdModal" tabindex="-1" role="dialog" aria-labelledby="myResetModal">
+        
+    </div>
+    <!-- 重置密码模态框 end -->
+    <?php 
+        $this->registerJs(<<<EOT
+            $("#go_login").bind('click', function() {
+                $('#registerModal').modal('hide');
+                setTimeout(function() {
+                    $('#loginModal').modal('show');
+                }, 200)
+            });
+
+            $("#reset_passwod_link").bind('click', function() {
+
+            });
+EOT
+          );
+     ?>
     <!-- 注册模态框 end -->

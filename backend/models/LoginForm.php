@@ -3,6 +3,7 @@ namespace backend\models;
 
 use Yii;
 use yii\base\Model;
+use common\components\Utils;
 
 /**
  * Login form
@@ -58,7 +59,15 @@ class LoginForm extends Model {
 	 */
 	public function login() {
 		if ($this->validate()) {
-			return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+			$loginResult = Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+			if ($loginResult) {
+		        $this->user->last_login_ip = Utils::getClientIP();
+		        $this->user->last_login_at = time();
+		        $this->user->login_count = $this->user->login_count + 1;
+		        $this->user->save();				
+			}
+
+			return $loginResult;
 		}
 
 		return false;

@@ -27,6 +27,7 @@ class SiteController extends FrontendController
         $configData = Config::loadData();
         $signupModel = new SignupForm();
         $loginModel = new LoginForm();
+        
         return $this->render('index', [
             'configData' => $configData,
             'signupModel' => $signupModel,
@@ -46,13 +47,11 @@ class SiteController extends FrontendController
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+        if (!($model->load(Yii::$app->request->post()) && $model->login())) {
+            Yii::$app->session->setFlash('error', Yii::t('common', 'Login Failed'));
         }
+
+        return $this->goBack();
     }
 
     /**
@@ -113,12 +112,15 @@ class SiteController extends FrontendController
                 if (Yii::$app->getUser()->login($user)) {
                     return $this->goHome();
                 }
+            } else {
+                $errors = [];
+                foreach ($user->errors as $error) {
+                    $errors[] = $error[0];
+                }
+                Yii::$app->getSession()->setFlash('error', implode(',', $errors));
+                return $this->goHome();
             }
         }
-
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
     }
 
     public function actionColumns()

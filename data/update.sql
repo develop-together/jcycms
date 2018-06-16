@@ -213,6 +213,24 @@ ENGINE=InnoDB;
 INSERT INTO `byt_config` (`scope`, `variable`, `value`, `description`) VALUES ('base', 'system_notes', NULL, '系统描述'), ('base', 'tel', '', '')
 INSERT INTO `byt_config` (`scope`, `variable`, `value`, `description`) VALUES ('base', 'email', '', '');
 
+#2018-06-09
+
+ALTER TABLE `byt_admin_user` ADD `last_login_ip` CHAR(16) NULL DEFAULT NULL AFTER `status`;
+
+ALTER TABLE `byt_admin_user` ADD `lat_login_at` INT(11) NOT NULL DEFAULT '0' AFTER `last_login_ip`;
+
+ALTER TABLE `byt_admin_user` ADD `login_count` INT(11) NOT NULL DEFAULT '0' AFTER `last_login_ip`;
+
+ALTER TABLE `byt_admin_user` CHANGE `lat_login_at` `last_login_at` INT(11) NOT NULL DEFAULT '0';
+
+#2018-06-16
+
+ALTER TABLE `byt_user`
+ADD COLUMN `login_count`  int(10) NOT NULL DEFAULT 0 COMMENT '登陆次数' AFTER `status`,
+ADD COLUMN `last_login_ip`  char(16) NOT NULL DEFAULT '' COMMENT '最后登录IP' AFTER `login_count`,
+ADD COLUMN `last_login_at`  int(11) NOT NULL DEFAULT 0 COMMENT '最后登录时间' AFTER `last_login_ip`;
+
+
 
 
 

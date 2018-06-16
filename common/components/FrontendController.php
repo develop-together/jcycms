@@ -4,6 +4,7 @@ namespace common\components;
 
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 
 class FrontendController extends BaseController
 {
@@ -14,7 +15,7 @@ class FrontendController extends BaseController
 
     public function behaviors()
     {
-        return [
+        return ArrayHelper::merge(parent::behaviors(), [
             'access' => [
                 'class' => AccessControl::className(),
                 'only' => ['logout', 'signup'],
@@ -34,10 +35,10 @@ class FrontendController extends BaseController
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'logout' => ['get'],
                 ],
             ],
-        ];
+        ]); 
     }
 
 /*    public function actions()

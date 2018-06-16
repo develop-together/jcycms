@@ -66,7 +66,7 @@ class BaseModel extends \yii\db\ActiveRecord
     public function afterValidate()
     {
     	if ($this->hasErrors()) {
-    		$message = '<strong>以下表单填写有误:</strong><br>';
+    		$message = '<strong>' . Yii::t('common', 'The following form is mistaken') . ':</strong><br>';
 			foreach ($this->getErrors() as $value) {
 				$message .= implode(",", $value) . '<br>';
 			}
@@ -86,7 +86,7 @@ class BaseModel extends \yii\db\ActiveRecord
             return false;
         }
 
-        if (Yii::$app->id != 'app-api' && $this->isNewRecord && $this->hasAttribute('user_id')) {
+        if (Yii::$app->id == 'app-backend' && $this->isNewRecord && $this->hasAttribute('user_id')) {
             $this->user_id = Yii::$app->user->id;
         }
 

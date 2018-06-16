@@ -18,14 +18,14 @@ class AppAsset extends AssetBundle
         'static/css/templatemo-style.css',
     ];
     public $js = [
-        'static/js/jquery-1.11.3.min.js',
+        // 'static/js/jquery-1.11.3.min.js',
         'static/js/tether.min.js',
-        'static/js/bootstrap.min.js',
+        // 'static/js/bootstrap.min.js',
         'static/js/jquery.singlePageNav.min.js',
         'static/js/jquery.magnific-popup.min.js',
     ];
     public $depends = [
-        // 'yii\web\YiiAsset',
-        // 'yii\bootstrap\BootstrapAsset',
+        'yii\web\YiiAsset',
+        'frontend\assets\BootstrapAsset',
     ];
 }

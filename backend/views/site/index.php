@@ -31,14 +31,14 @@ $this->title = yii::t('app', 'Backend Manage System');
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="<?=Yii::$app->getUser()->getIdentity()->avatar ?  Yii::$app->request->baseUrl.'/' .Yii::$app->params['uploadSaveFilePath'] . '/' .Yii::$app->getUser()->getIdentity()->avatar : 'static/img/profile_small.jpg'?>" width="64" height="64"/></span>
+                            <span><img alt="image" class="img-circle" src="<?= Yii::$app->getUser()->getIdentity()->avatar ?  Yii::$app->request->baseUrl . '/' . Yii::$app->getUser()->getIdentity()->avatar : 'static/img/profile_small.jpg' ?>" width="64" height="64"/></span>
                              <a data-toggle="dropdown" class="dropdown-toggle" href="#" data-target="#" role="button" aria-haspopup="true" aria-expanded="false">
                                     <span class="clear">
                                         <span class="block m-t-xs">
                                             <strong class="font-bold">超级管理员</strong>
                                         </span>
                                         <span class="text-muted text-xs block">
-                                            <?=\yii::$app->getUser()->getIdentity()->username?>
+                                            <?= \yii::$app->getUser()->getIdentity()->username ?>
                                             <b class="caret"></b>
                                         </span>
                                     </span>

@@ -37,9 +37,14 @@ $this->title = $configData['system_name'];
             <div class="tm-navbar-container bg-inverse">
             <div id="header-container" class=" container">
                 <div class="nav-login">
-                    <a href="javascript:;" data-toggle="modal" data-target="#loginModal" title="<?= Yii::t('common', 'Let Me Log In') ?>">Hi, <?= Yii::t('common', 'Please Log In') ?></a>
-                    &nbsp; &nbsp;
-                    <a href="javascript:;" data-toggle="modal" data-target="#registerModal" title="<?= Yii::t('common', 'I sign up') ?>"><?= Yii::t('common', 'Register') ?></a>                 
+                    <?php if (Yii::$app->user->isGuest): ?>
+                        <a href="javascript:;"  title="<?= Yii::t('common', 'Let Me Log In') ?>" id="openid_loginModal">Hi, <?= Yii::t('common', 'Please Log In') ?></a>
+                        &nbsp; &nbsp;
+                        <a href="javascript:;"  title="<?= Yii::t('common', 'I sign up') ?>" id="openid_regModal"><?= Yii::t('common', 'Register') ?></a> 
+                    <?php else: ?>       
+                        <span class="h6 text-success">Welcome, <?= Html::encode(yii::$app->user->identity->username) ?></span>
+                        <a href="<?= Url::to(['site/logout']) ?>" class="signup-loader"><?= yii::t('frontend', 'Log out') ?></a>                  
+                    <?php endif; ?>               
                 </div>       
             </div>
             <!-- navbar   -->
@@ -56,20 +61,20 @@ $this->title = $configData['system_name'];
                             <a class="nav-link external" href="/"><?= Yii::t('common', 'Home') ?></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#top_<?= Yii::$app->controller->_uniqid ?>"><?= Yii::t('common', 'Intro') ?></a>
+                            <a class="nav-link" href="#top_<?= Yii::$app->controller->_uniqid ?>"><?= Yii::t('frontend', 'Intro') ?></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#tm-section-2"><?= Yii::t('common', 'News') ?></a>
+                            <a class="nav-link" href="#tm-section-2"><?= Yii::t('frontend', 'Article') ?></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#tm-section-3"><?= Yii::t('common', 'Gallery') ?></a>
+                            <a class="nav-link" href="#tm-section-3"><?= Yii::t('frontend', 'Gallery') ?></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#tm-section-4"><?= Yii::t('common', 'Contact') ?></a>
+                            <a class="nav-link" href="#tm-section-4"><?= Yii::t('frontend', 'Contact us') ?></a>
                         </li>
-                        <li class="nav-item">
+<!--                         <li class="nav-item">
                             <a class="nav-link external" href="<?= Url::toRoute(['site/columns']) ?>">Columns</a>
-                        </li>
+                        </li> -->
                     </ul>
 
                 </div>
@@ -181,14 +186,21 @@ $this->title = $configData['system_name'];
                     }
                 }); 
 
-              
                 /* Magnific pop up
                 ------------------------- */
                 $('.tm-img-grid').magnificPopup({
                     delegate: 'a', // child items selector, by clicking on it popup will open
                     type: 'image',
                     gallery: {enabled:true}            
-                });            
+                });
+
+                $("#openid_loginModal").bind('click', function() {
+                    $("#loginModal").modal('show');
+                });  
+
+                $("#openid_regModal").bind('click', function() {
+                    $("#registerModal").modal('show');
+                });      
             });
 JS;
 $this->registerJs($jsStr);

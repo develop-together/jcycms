@@ -331,4 +331,7 @@ return [
 	'Photos' => '相册',
 	'Tel' => '电话',
 	'System Description' => '系统描述',
+	'Last Login IP' => '登录IP',
+	'Login Number' => '登录次数',
+	'Last Login Time' => '最后登录时间',
 ];

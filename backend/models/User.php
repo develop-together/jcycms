@@ -47,6 +47,7 @@ class User extends BaseModel implements IdentityInterface
 			[['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
 			[['username', 'email', 'password', 'avatar'], 'required', 'on' => ['create']],
 			[['email', 'avatar'], 'required', 'on' => ['updateSelf']],
+			[['last_login_at', 'login_count'], 'integer'],
 			// [['password'], 'checkOldAttribute','skipOnError' => false, 'skipOnEmpty' => false],
 		];
 	}
@@ -78,12 +79,16 @@ class User extends BaseModel implements IdentityInterface
 	{
 		return [
 			'username' => yii::t('app', 'Username'),
+			'role_name' => Yii::t('app', 'Role'),
 			'email' => yii::t('app', 'Email'),
 			'old_pwd' => yii::t('app', 'Old Password'),
 			'password' => yii::t('app', 'Password'),
 			'repeat_pwd' => yii::t('app', 'Repeat Password'),
 			'avatar' => yii::t('app', 'Avatar'),
 			'status' => yii::t('app', 'Status'),
+			'last_login_ip' => yii::t('app', 'Last Login IP'),
+			'login_count' => yii::t('app', 'Login Number'),
+			'last_login_at' => yii::t('app', 'Last Login Time'),
 			'created_at' => yii::t('app', 'Created At'),
 			'updated_at' => yii::t('app', 'Updated At'),
 		];

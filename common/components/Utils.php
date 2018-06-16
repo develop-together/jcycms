@@ -12,10 +12,10 @@ use yii\web\UploadedFile;
  * 系统助手类
  * 
  * @author        Atuxe Young [atuxe@atuxe.com]
- * @copyright     Copyright (c) 2006-2015 Boyuntong Inc. All rights reserved.
- * @link          http://www.boyuntong.com
- * @package       Boyuntong.Tools
- * @license       http://www.boyuntong.com/license
+ * @copyright     Copyright (c) 2006-2015 JCYCMS Inc. All rights reserved.
+ * @link          
+ * @package       JCYCMS.Tools
+ * @license       
  * @version       1.0.0
  */
 class Utils {

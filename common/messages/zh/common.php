@@ -1,10 +1,4 @@
 <?php
-/**
- * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
- * Created at: 2016-04-18 09:41
- */
 
 return [
 	/*public*/
@@ -62,4 +56,18 @@ return [
 	'I sign up' => '点我注册',
 	'Password' => '密码',
 	'Duplicate Password' => '重复密码',
+	'Verify Code' => '验证码',
+	'Close' => '关闭',
+	'Reset' =>'重置',
+	'Submit' => '提交',
+	'This email address has already been taken!' => '该电子邮件已经被注册！',
+	'Verification code error.' => '验证码错误。',
+	'The value of the repeated password must be equal to the "password".' => '重复密码的值必须等于"密码"。',
+	'This username has already been taken!' => '该用户名已经被注册！',
+	'The following form is mistaken' => '以下表单填写有误',
+	'Login Failed' => '登录失败',
+	'Username' => '用户名',
+	'Password' => '密码',
+	'If you forgot your password you can' => '如果你忘记了密码，你可以',
+	'reset it' => '重置它',
 ];

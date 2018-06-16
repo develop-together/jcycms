@@ -1,13 +1,8 @@
 <?php
-/**
- * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
- * Created at: 2017-01-04 09:37
- */
 
-namespace backend\components;
+namespace frontend\components;
 
+use frontend\assets\CaptchaAsset;
 use yii\helpers\Json;
 
 class Captcha extends \yii\captcha\Captcha {

@@ -13,10 +13,12 @@
         echo '<script>alert("' . Yii::$app->getSession()->getFlash('error') . '")</script>';
     }
 
+    if (Yii::$app->getSession()->getFlash('success')) {
+        echo '<script>alert("' . Yii::$app->getSession()->getFlash('success') . '")</script>';
+    }
 ?>
     <div class="row">
         <div class="tm-intro">
-
             <section id="tm-section-1">                        
                 <div class="tm-container text-xs-center tm-section-1-inner">
                     <img src="<?= Yii::$app->request->baseUrl ?>/static/img/tm-lumino-logo.png" alt="Logo" class="tm-logo">
@@ -25,7 +27,6 @@
                     <a href="#tm-section-2" class="tm-intro-link">Begin</a>    
                 </div>                                               
            </section>
-
         </div>
     </div>
     <div class="row gray-bg">
@@ -237,7 +238,24 @@
     <!-- 注册模态框 end -->
     <!-- 重置密码模态框 start -->
     <div div class="modal fade " id="resetPwdModal" tabindex="-1" role="dialog" aria-labelledby="myResetModal">
-        
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p><?= Yii::t('frontend', 'Please fill out your email. A link to reset password will be sent there.') ?></p>
+                </div>
+                <div class="modal-body">
+                    <?php $form = ActiveForm::begin(['id' => 'reset-password-form', 'action' => Url::toRoute(['site/request-password-reset'])]); ?>
+                    <?= $form->field($resetModel, 'email')->textInput(['autofocus' => true]) ?> 
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <?= Html::submitButton(Yii::t('common', 'Submit'), ['class' => 'btn btn-primary']) ?>
+                        <button type="button" class="btn btn-default btn-danger" data-dismiss="modal"><?= Yii::t('common', 'Close')?></button>
+                    </div>                
+                </div>            
+            </div>
+            <?php ActiveForm::end(); ?>  
+        </div>     
     </div>
     <!-- 重置密码模态框 end -->
     <?php 
@@ -250,9 +268,9 @@
             });
 
             $("#reset_passwod_link").bind('click', function() {
-
+                $('#loginModal').modal('hide');
+                $('#resetPwdModal').modal('show');
             });
 EOT
           );
      ?>
-    <!-- 注册模态框 end -->

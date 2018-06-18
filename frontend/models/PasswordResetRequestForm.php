@@ -4,6 +4,7 @@ namespace frontend\models;
 use Yii;
 use yii\base\Model;
 use common\models\User;
+use common\components\BaseMail;
 
 /**
  * Password reset request form
@@ -27,6 +28,13 @@ class PasswordResetRequestForm extends Model
                 'filter' => ['status' => User::STATUS_ACTIVE],
                 'message' => 'There is no user with this email address.'
             ],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'email' => Yii::t('common', 'Email'),
         ];
     }
 
@@ -54,15 +62,20 @@ class PasswordResetRequestForm extends Model
             }
         }
 
-        return Yii::$app
-            ->mailer
-            ->compose(
+        return BaseMail::send($this->email, 'Password reset for ' . Yii::$app->name, '请点击该链接：<br>', [
                 ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
                 ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($this->email)
-            ->setSubject('Password reset for ' . Yii::$app->name)
-            ->send();
+            ]
+        );
+        // return Yii::$app
+        //     ->mailer
+        //     ->compose(
+        //         ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
+        //         ['user' => $user]
+        //     )
+        //     ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+        //     ->setTo($this->email)
+        //     ->setSubject('Password reset for ' . Yii::$app->name)
+        //     ->send();
     }
 }

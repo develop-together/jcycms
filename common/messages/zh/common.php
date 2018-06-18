@@ -70,4 +70,11 @@ return [
 	'Password' => '密码',
 	'If you forgot your password you can' => '如果你忘记了密码，你可以',
 	'reset it' => '重置它',
+	'Follow the link below to reset your password' => '点击以下链接重置密码',
+	'Last Login IP' => '登录IP',
+	'Login Number' => '登录次数',
+	'Last Login Time' => '最后登录时间',
+	'Created At' => '创建时间',
+	'Updated At' => '最后更新',
+	'Status' => '状态',
 ];

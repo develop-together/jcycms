@@ -67,3 +67,9 @@
     </ul>
 
 ####YANGboom123456####
+
+
+####前台导航@#####
+<!--                         <li class="nav-item">
+                            <a class="nav-link external" href="<?= Url::toRoute(['site/columns']) ?>">Columns</a>
+                        </li> -->

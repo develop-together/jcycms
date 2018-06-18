@@ -27,11 +27,12 @@ class SiteController extends FrontendController
         $configData = Config::loadData();
         $signupModel = new SignupForm();
         $loginModel = new LoginForm();
-        
+        $resetModel = new PasswordResetRequestForm();
         return $this->render('index', [
             'configData' => $configData,
             'signupModel' => $signupModel,
-            'loginModel' => $loginModel
+            'loginModel' => $loginModel,
+            'resetModel' => $resetModel
         ]);
     }
 
@@ -138,17 +139,13 @@ class SiteController extends FrontendController
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-
-                return $this->goHome();
+                Yii::$app->session->setFlash('success', Yii::t('frontend', 'Check your email for further instructions.'));
             } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+                Yii::$app->session->setFlash('error', Yii::t('frontend', 'Sorry, we are unable to reset password for the provided email address.'));
             }
         }
 
-        return $this->render('requestPasswordResetToken', [
-            'model' => $model,
-        ]);
+        return $this->goHome();
     }
 
     /**
@@ -167,7 +164,7 @@ class SiteController extends FrontendController
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
+            Yii::$app->session->setFlash('success', Yii::t('frontend', 'New password saved.'));
 
             return $this->goHome();
         }

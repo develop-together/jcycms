@@ -176,4 +176,17 @@ class User extends BaseModel implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    public static function loadStatusOptions()
+    {
+        return [
+            self::STATUS_ACTIVE => '正常',
+            self::STATUS_DELETED => '禁用',
+        ];
+    }
+
+    public function getStatusFormat()
+    {
+        return self::loadStatusOptions()[$this->status];
+    }
 }

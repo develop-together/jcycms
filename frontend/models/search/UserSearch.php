@@ -1,39 +1,16 @@
 <?php
-/**
- * This is the template for generating CRUD search class of the specified model.
- */
 
-use yii\helpers\StringHelper;
-
-
-/* @var $this yii\web\View */
-/* @var $generator yii\gii\generators\crud\Generator */
-
-$modelClass = StringHelper::basename($generator->modelClass);
-$searchModelClass = StringHelper::basename($generator->searchModelClass);
-if ($modelClass === $searchModelClass) {
-    $modelAlias = $modelClass . 'Model';
-}
-$rules = $generator->generateSearchRules();
-$labels = $generator->generateSearchLabels();
-$searchAttributes = $generator->getSearchAttributes();
-$searchConditions = $generator->generateSearchConditions();
-
-echo "<?php\n";
-?>
-
-namespace <?= StringHelper::dirname(ltrim($generator->searchModelClass, '\\')) ?>;
+namespace frontend\models\search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use <?= ltrim($generator->modelClass, '\\') . (isset($modelAlias) ? " as $modelAlias" : "") ?>;
+use frontend\models\User;
 
 /**
- * <?= $searchModelClass ?> represents the model behind the search form about `<?= $generator->modelClass ?>`.
+ * UserSearch represents the model behind the search form about `frontend\models\User`.
  */
-class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $modelClass ?>
-
+class UserSearch extends User
 {
     /**
      * @inheritdoc
@@ -41,7 +18,8 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
     public function rules()
     {
         return [
-            <?= implode(",\n            ", $rules) ?>,
+            [['id', 'status', 'login_count', 'last_login_at', 'created_at', 'updated_at'], 'integer'],
+            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'last_login_ip'], 'safe'],
         ];
     }
 
@@ -63,7 +41,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
      */
     public function search($params)
     {
-        $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find();
+        $query = User::find();
 
         // add conditions that should always apply here
 
@@ -71,7 +49,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
 
         $pageSize = 10;
         $pageCurrent = 0;
-        $field = 'id';
+        $field = 'last_login_at';
         $sort = SORT_DESC;
 
         if (isset($params['pageSize'])) {
@@ -79,7 +57,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
 
             $pageCurrent = $params['pageCurrent']-1;
 
-            if (in_array(($params['orderField']), ['id', 'created_at', 'updated_at', 'created_at_format', 'created_at_format'])) {
+            if (in_array(($params['orderField']), ['id', 'created_at', 'updated_at', 'created_at_format', 'updated_at_format'])) {
                 $field = $params['orderField'];
             }
 
@@ -111,7 +89,21 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
         }
 
         // grid filtering conditions
-        <?= implode("\n        ", $searchConditions) ?>
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'status' => $this->status,
+            'login_count' => $this->login_count,
+            'last_login_at' => $this->last_login_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ]);
+
+        $query->andFilterWhere(['like', 'username', $this->username])
+            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
+            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
+            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'last_login_ip', $this->last_login_ip]);
 
         return $dataProvider;
     }

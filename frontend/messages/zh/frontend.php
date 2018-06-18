@@ -91,4 +91,17 @@
     'Comment waiting for approved.' => '您的评论正在排队审核中，请稍后！',
     'a minutes ago' => '一分钟前',
     /*comment*/
+    /*reset password*/
+    'Please choose your new password:' => '请输入您的新密码：',
+    'Please fill out your email. A link to reset password will be sent there.' => '请填写你的电子邮件。将在那里发送重置密码的链接。',
+    'Check your email for further instructions.' => '检查您的电子邮件以获得进一步的说明。',
+    'Sorry, we are unable to reset password for the provided email address.' => '对不起，我们无法为所提供的电子邮件地址重置密码。',
+    'New password saved.' => '密码修改成功，新密码已经保存。',
+    /*reset password*/
+    /*error*/
+    'The above error occurred while the Web server was processing your request.' => '当Web服务器正在处理您的请求时发生上述错误。',
+    'Please contact us if you think this is a server error. Thank you.' => '如果您认为这是服务器错误，请与我们联系。谢谢您。',
+    'Wrong password reset token.' => '错误（或者过期）的密码重置令牌。',
+    'Password reset token cannot be blank.' => '密码重置令牌不能为空。',
+    /*error*/
 ];

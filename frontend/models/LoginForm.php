@@ -10,10 +10,11 @@
  {
 	public function login() {
 		if (parent::login()) {
-	        $this->user->last_login_ip = Utils::getClientIP();
-	        $this->user->last_login_at = time();
-	        $this->user->login_count = $this->user->login_count + 1;
-	        $this->user->save();
+	        $this->user->updateAttributes([
+	        	'last_login_ip' => Utils::getClientIP(),
+	        	'last_login_at' => time(),
+	        	'login_count' => $this->user->login_count + 1
+	        ]);	
 
 	        return true;
 		}

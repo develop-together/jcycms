@@ -86,9 +86,9 @@ class User extends BaseModel implements IdentityInterface
 			'repeat_pwd' => yii::t('app', 'Repeat Password'),
 			'avatar' => yii::t('app', 'Avatar'),
 			'status' => yii::t('app', 'Status'),
-			'last_login_ip' => yii::t('app', 'Last Login IP'),
-			'login_count' => yii::t('app', 'Login Number'),
-			'last_login_at' => yii::t('app', 'Last Login Time'),
+			'last_login_ip' => yii::t('common', 'Last Login IP'),
+			'login_count' => yii::t('common', 'Login Number'),
+			'last_login_at' => yii::t('common', 'Last Login Time'),
 			'created_at' => yii::t('app', 'Created At'),
 			'updated_at' => yii::t('app', 'Updated At'),
 		];

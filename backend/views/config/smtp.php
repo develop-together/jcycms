@@ -59,7 +59,7 @@ $uniqid = Yii::$app->controller->_uniqid;
                 <div class="form-group">
                     <?= Html::label(Yii::t('app', 'SMTP Password'), null, ['class' => 'col-sm-2 control-label']) ?>
                     <div class="col-sm-10">
-                        <?= Html::textInput('Config[smtp_password]', isset($config['smtp_password']) ? $config['smtp_password'] : '', ['class' => 'form-control', 'style' => 'width:40%']) ?>
+                        <?= Html::passwordInput('Config[smtp_password]', isset($config['smtp_password']) ? $config['smtp_password'] : '', ['class' => 'form-control', 'style' => 'width:40%']) ?>
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>

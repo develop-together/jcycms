@@ -42,7 +42,7 @@ $config = [
             'currencyCode' => 'CHY',
             'nullDisplay' => '-',
         ],
-        'mailer' => [
+/*        'mailer' => [
             'class' => yii\swiftmailer\Mailer::className(),
             'viewPath' => '@common/mail',
             'useFileTransport' => false,//false发送邮件，true只是生成邮件在runtime文件夹下，不发邮件
@@ -58,7 +58,7 @@ $config = [
                 'charset' => 'UTF-8',
                 'from' => ['admin@feehi.com' => 'Feehi CMS robot ']
             ],
-        ],
+        ],*/
         'i18n' => [
             'translations' => [ //多语言包设置
                 '*' => [

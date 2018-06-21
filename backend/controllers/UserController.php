@@ -60,12 +60,25 @@ class UserController extends BackendController
     public function actionCreate()
     {
         $model = new User();
+        $model->setScenario('create');
+        if (Yii::$app->request->isPost) {
+            $params = Yii::$app->request->post();
+            if ($model->load($params) && $model->save()) {
+                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
-            return $this->redirect(['index']);
-        }
+                return $this->redirect(['index']);
+            } else {
+                $errors = $model->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+                Yii::$app->getSession()->setFlash('error', $err);                 
+            }
+        } 
 
+        $model->status = User::STATUS_ACTIVE;
+        
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -80,11 +93,22 @@ class UserController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $model->setScenario('update');
+        if (Yii::$app->request->isPost) {
+            $params = Yii::$app->request->post();
+            if ($model->load($params) && $model->save()) {
                 Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+
                 return $this->redirect(['index']);
-        }
+            } else {
+                $errors = $model->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+                Yii::$app->getSession()->setFlash('error', $err);                 
+            }
+        } 
 
         return $this->render('update', [
             'model' => $model,

@@ -15,7 +15,7 @@ use backend\grid\ActionColumn;
                 <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
                     <?= $this->render('_search', ['model' => $searchModel])?>
                 </div>
-                                    <?= GridView::widget([
+                    <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'columns' => [
                                 [
@@ -23,6 +23,16 @@ use backend\grid\ActionColumn;
                                 ],
                                 'id',
 								'username',
+                                [
+                                    'attribute' => 'avatar',
+                                    'format' => 'raw',
+                                    'value' => function($model) {
+                                        return Html::img($model->getAvatarFormat(), ['width' => '100' , 'height' => '100']);
+                                    },
+                                    'options' => ['width' => '100' , 'height' => '100'],
+                                    'filter' => '',
+                                    'enableSorting' => false,
+                                ],
 								'email:email',
 								[
                                     'attribute' => 'status',

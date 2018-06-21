@@ -238,9 +238,9 @@ class User extends BaseModel implements IdentityInterface
 		if (!$this->validate()) {
 			return false;
 		}
-		$this->password = $this->password == null ? $this->getModule()->defaultPassword : $this->password;
-		$this->setPassword($this->password);
+		$this->password = $this->password == null ? self::AUTH_KEY : $this->password;
 		$this->generateAuthKey();
+		$this->setPassword($this->password);
 		if (!$this->save()) {
 			return false;
 		}
@@ -272,27 +272,14 @@ class User extends BaseModel implements IdentityInterface
 		return $this->status;
 	}
 
-	public function getAvatarFormat()
-	{
-		if ($this->avatar) {
-			if(strpos($this->avatar, Yii::$app->params['uploadSaveFilePath']) !== false) {
-				return Yii::$app->request->baseUrl  . '/' . $this->avatar;				
-			}
-
-			return Yii::$app->request->baseUrl . '/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $this->avatar;
-		}
-
-		return Yii::$app->request->baseUrl . '/static/img/noface.png';
-	}
-
 	public function beforeSave($insert)
 	{
-		if (!$insert) {
-			$this->password = $this->password ? $this->password : self::AUTH_KEY;
+		if (!$insert && !empty($this->password)) {
+			// $this->password = $this->password ? $this->password : self::AUTH_KEY;
+			$this->generateAuthKey();
+			$this->setPassword($this->password);
 		}
 		
-		$this->generateAuthKey();
-		$this->setPassword($this->password);
 		return parent::beforeSave($insert);
 
 	}

@@ -59,6 +59,7 @@ class LoginForm extends Model {
 	 */
 	public function login() {
 		if ($this->validate()) {
+			
 			$loginResult = Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
 			if ($loginResult) {
 		        $this->user->updateAttributes([

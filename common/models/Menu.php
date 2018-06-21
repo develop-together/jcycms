@@ -77,6 +77,7 @@ class Menu extends \common\components\BaseModel
             'is_display' => Yii::t('app', 'Is Display'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+            'subMenus_format' => Yii::t('app', 'Related menus'),
         ]);
     }
 

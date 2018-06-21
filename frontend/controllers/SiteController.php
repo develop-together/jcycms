@@ -49,7 +49,14 @@ class SiteController extends FrontendController
 
         $model = new LoginForm();
         if (!($model->load(Yii::$app->request->post()) && $model->login())) {
-            Yii::$app->session->setFlash('error', Yii::t('common', 'Login Failed'));
+            $errs = '';
+            if ($model->errors) {
+                foreach ($model->errors as $error) {
+                    $errs .= $error[0] . ',';
+                }
+                $errs = rtrim($errs, ',');
+            } 
+            Yii::$app->session->setFlash('error', Yii::t('common', 'Login Failed') . '(' . $errs . ')');
         }
 
         return $this->goBack();

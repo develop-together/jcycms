@@ -18,9 +18,6 @@ use backend\grid\ActionColumn;
                    <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'columns' => [
-                                [
-                                    'class' => 'yii\grid\CheckboxColumn'
-                                ],
 								[
                                     'attribute' => 'name',
                                     'format' => 'html',
@@ -66,7 +63,7 @@ use backend\grid\ActionColumn;
 								'created_at:date',
 								'updated_at:date',
                                 [
-                                    'class' => 'backend\grid\ActionColumn',
+                                    'class' => ActionColumn::className(),
                                     'template' => '{view}{update}{delete}',
                                 ],
                             ]

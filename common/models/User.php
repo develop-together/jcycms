@@ -25,6 +25,7 @@ class User extends BaseModel implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
+    const AUTH_KEY = '666666';
 
 
     /**
@@ -175,6 +176,17 @@ class User extends BaseModel implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function beforeSave($insert)
+    {
+        if (!$insert && !empty($this->password)) {
+            $this->generateAuthKey();
+            $this->setPassword($this->password);          
+        }
+
+        return parent::beforeSave($insert);
+
     }
 
     public static function loadStatusOptions()

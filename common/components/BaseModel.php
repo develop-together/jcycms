@@ -101,6 +101,19 @@ class BaseModel extends \yii\db\ActiveRecord
         }
     }	
 
+    public function getAvatarFormat()
+    {
+        if ($this->hasAttribute('avatar') && $this->avatar) {
+            if(strpos($this->avatar, Yii::$app->params['uploadSaveFilePath']) !== false) {
+                return Yii::$app->request->baseUrl  . '/' . $this->avatar;              
+            }
+
+            return Yii::$app->request->baseUrl . '/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $this->avatar;
+        }
+
+        return Yii::$app->request->baseUrl . '/static/img/noface.png';
+    }
+
     public static function getDrowDownList($tree=[], &$result=[], $deep=0, $separator = "　　")
     {
         $deep++;

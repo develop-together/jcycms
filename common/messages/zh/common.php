@@ -77,4 +77,5 @@ return [
 	'Created At' => '创建时间',
 	'Updated At' => '最后更新',
 	'Status' => '状态',
+	'Avatar' => '头像',
 ];

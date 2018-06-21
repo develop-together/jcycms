@@ -191,7 +191,7 @@ $(document).ready(function(){
                     "type" : "get",
                     "data":{'id':ids},
                     "success" : function (data) {
-                        if (data.code == 0) {
+                        if (data.code == 200) {
                             swal(tips.success + '!', tips.operatingSuccess + '.', "success");
                             location.reload();
                         } else {

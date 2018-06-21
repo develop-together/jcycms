@@ -334,4 +334,6 @@ return [
 	'Last Login IP' => '登录IP',
 	'Login Number' => '登录次数',
 	'Last Login Time' => '最后登录时间',
+	'Account exception' => '账号异常',
+	'Related menus' => '相关菜单',
 ];

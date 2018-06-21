@@ -230,6 +230,10 @@ ADD COLUMN `login_count`  int(10) NOT NULL DEFAULT 0 COMMENT '登陆次数' AFTE
 ADD COLUMN `last_login_ip`  char(16) NOT NULL DEFAULT '' COMMENT '最后登录IP' AFTER `login_count`,
 ADD COLUMN `last_login_at`  int(11) NOT NULL DEFAULT 0 COMMENT '最后登录时间' AFTER `last_login_ip`;
 
+#2018-06-19
+
+ALTER TABLE `byt_user` ADD `avatar` VARCHAR(255) NULL DEFAULT NULL AFTER `email`;
+
 
 
 

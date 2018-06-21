@@ -62,7 +62,7 @@ class UserAcl
 	{
 		!$userId && $userId = Yii::$app->user->id;
 		$query = Menu::getBackendQuery(true);
-		$data = $query->orderBy(['id' => SORT_ASC, 'sort' => SORT_DESC])->asArray()->all();
+		$data = $query->orderBy(['sort' => SORT_ASC, 'id' => SORT_DESC])->asArray()->all();
 		if ($userId != User::SUPER_MANAGER && $data) {
 			$user = User::findOne($userId);
 			foreach ($data as $key => $value) {

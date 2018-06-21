@@ -14,17 +14,29 @@ use yii\widgets\DetailView;
                     'model' => $model,
                     'attributes' => [
                         'id',
-            'username',
-            'auth_key',
-            'password_hash',
-            'password_reset_token',
-            'email:email',
-            'status',
-            'login_count',
-            'last_login_ip',
-            'last_login_at',
-            'created_at',
-            'updated_at',
+                        'username',
+                        'email:email',
+                        [
+                            'attribute' => 'status',
+                            'value' => function($model) {
+                                return $model->statusFormat;
+                            }
+                        ],
+                        [
+                            'attribute' => 'login_count',
+                            'value' => function($model) {
+                                return $model->login_count . '次';
+                            }
+                        ],
+                        'last_login_ip',
+                        [
+                            'attribute' => 'last_login_at',
+                            'value' => function($model) {
+                                return $model->last_login_at ? date('Y-m-d H:i:s', $model->last_login_at) : '';
+                            }
+                        ],
+                        'created_at:datetime',
+                        'updated_at:datetime',
                     ],
 ]) ?>  
             </div>

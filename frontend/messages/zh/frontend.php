@@ -104,4 +104,5 @@
     'Wrong password reset token.' => '错误（或者过期）的密码重置令牌。',
     'Password reset token cannot be blank.' => '密码重置令牌不能为空。',
     /*error*/
+    'Account exception' => '账号异常',
 ];

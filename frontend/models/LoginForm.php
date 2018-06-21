@@ -9,6 +9,13 @@
  class LoginForm extends CommonLoginForm
  {
 	public function login() {
+		// findByUsername方法已经验证
+		if ($this->user->status != User::STATUS_ACTIVE) {
+			$this->addError('username', Yii::t('frontend', 'Account exception'));
+
+			return false;
+		}
+
 		if (parent::login()) {
 	        $this->user->updateAttributes([
 	        	'last_login_ip' => Utils::getClientIP(),

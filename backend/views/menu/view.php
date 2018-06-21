@@ -38,6 +38,7 @@ use yii\widgets\DetailView;
                         ],
                         'created_at:datetime',
                         'updated_at:datetime',
+                        'subMenus_format:raw',
                     ],
 ]) ?>  
             </div>

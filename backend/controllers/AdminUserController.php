@@ -86,12 +86,12 @@ class AdminUserController extends BackendController
                 }      
                 Yii::$app->getSession()->setFlash('error', $err);  
             }
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                'rolesModel' => $rolesModel,
-            ]);
-        }
+        } 
+
+        return $this->render('create', [
+            'model' => $model,
+            'rolesModel' => $rolesModel,
+        ]);
     }
 
     /**
@@ -112,9 +112,6 @@ class AdminUserController extends BackendController
 
         if (Yii::$app->request->isPost) {
             $parmas = Yii::$app->request->post();
-            if (!empty($params['User']['password'])) {
-                $params['User']['password'] = $model->setPassword($params['User']['password']);
-            }
             if ($model->load($parmas) 
                 && $model->validate() 
                 && $rolesModel->load($parmas) 
@@ -181,6 +178,7 @@ class AdminUserController extends BackendController
 
         $model = $this->findModel($id);
         $roleLists = AdminRoles::loadRolesOptions(true);
+        
         return $this->render('assignment', ['model' => $model, 'roleLists' => $roleLists]);        
     }
 

@@ -36,7 +36,9 @@ $this->title = "Admin";
                 <?= $form->field($model, 'avatar')->widget(FileUploadInputWidget::className(),[
                     'type' => 'image'
                 ]); ?>
-
+                
+                <div class="hr-line-dashed"></div>
+                
                 <?= $form->field($model, 'email')->textInput(['maxlength' => 64]) ?>
 
                 <div class="hr-line-dashed"></div>

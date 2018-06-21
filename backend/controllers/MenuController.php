@@ -31,9 +31,8 @@ class MenuController extends BackendController
      */
     public function actionIndex()
     {
-        $searchModel = new MenuSearch(['scenario' => 'backend']);
-        $dataProvider = $searchModel->search(Yii::$app->request->post());
-
+        $searchModel = new MenuSearch();
+        $dataProvider = $searchModel->backendSearch(Yii::$app->request->post());
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

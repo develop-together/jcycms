@@ -28,7 +28,9 @@ use yii\helpers\Url;
 class Menu extends \common\models\Menu
 {
 
-	private function chilrdenDatas($data, $parent_id, $lv=0)
+	public $lv = 0;
+
+	protected function chilrdenDatas($data, $parent_id, $lv = 0)
 	{
 		$result = [];
 		foreach ($data as $key => $value) {
@@ -42,9 +44,18 @@ class Menu extends \common\models\Menu
 		return $result;
 	}
 
-	public function scenarios()
+	protected function chilrdenDatasToObject($object, $parent_id, $lv = 0)
 	{
-		return parent::scenarios();
+		$result = [];
+		foreach ($object as $obj) {
+			if ($obj->parent_id == $parent_id) {
+				$obj->lv = $lv;
+				$result[] = $obj;
+				$result = array_merge($result, $this->chilrdenDatas($object, $obj->id, $lv+1));
+			}
+		}
+
+		return $result;
 	}
 
 	public static function getBackendQuery($display=false)
@@ -80,7 +91,7 @@ class Menu extends \common\models\Menu
             if ($mode == 'roles' && $role_id == AdminRoles::SUPER_ROLE_ID) {
             	$value['chkDisabled'] = true;
             	$value['checked'] = true;
-            } elseif($adminRolePermissionLists) {
+            } elseif ($adminRolePermissionLists) {
             	foreach ($adminRolePermissionLists as $list) {
             		if ($list['menu_id'] == $value['id']) {
             			$value['checked'] = true;
@@ -95,5 +106,18 @@ class Menu extends \common\models\Menu
         }
 
         return $tree;
+	}
+
+	public function getSubMenus_format()
+	{
+		$datas = Yii::$app->db->createCommand("SELECT id,name,url FROM {{%menu}} WHERE is_display = '" . self::NOT_DISPLAY_SHOW . "' AND url like '" . $this->url . "/%'")->queryAll();
+		$str = '';
+		if ($datas) {
+			foreach($datas as $data) {
+				$str .= '<span style="cursor: pointer;"  title="' . $data['url'] . '">' . $data['name'] . '</span>，';
+			}
+		}
+
+		return rtrim($str, '，');
 	}
 }

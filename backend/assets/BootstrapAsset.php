@@ -3,7 +3,7 @@
 namespace backend\assets;
 use yii;
 
-class ZtreeAsset extends \yii\web\AssetBundle 
+class BootstrapAsset extends \yii\web\AssetBundle 
 {
 	public function init() 
 	{
@@ -13,15 +13,13 @@ class ZtreeAsset extends \yii\web\AssetBundle
 		}
 	}
 
-	public $css = [
-		'static/js/plugins/ztree/css/zTreeStyle/zTreeStyle.css',
-	];
+	public $css = ['static/css/bootstrap.min.css'];
 
 	public $js = [
-		'static/js/plugins/ztree/js/jquery.ztree.all.js',
+		"static/js/bootstrap.min.js?v=3.3.6",
 	];
 
 	public $depends = [
-		'backend\assets\IndexAsset',
+		'backend\assets\JqueryAsset'
 	];
 }

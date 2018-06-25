@@ -1,5 +1,6 @@
 (function(){
     var jcms = function () {
+        var self = this;
         this.ajax = function(type, url, data, dataType, callback, async) {
             if (type.toLowerCase() == 'post') {
                data._csrf_backend = $("meta[name='csrf-token']").attr('content'); 
@@ -57,6 +58,66 @@
             } else {
                 return false;
             }
+        },
+        this.datum = {},
+        this.autocomplete = function (counter, options) {
+            // console.log('options:', options);
+            if (!options.data && options.url) {// async
+                if(options.url.indexOf('?search=%QUERY') == -1) {
+                    if (options.url.indexOf('&') != -1) {
+                        options.url += '&keyword=%QUERY%';
+                    } else {
+                        options.url += '?keyword=%QUERY%';
+                    }                   
+                }
+                console.log('options.displayKey', options.displayKey);
+                var params = {
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace(options.displayKey),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                }
+                if (options.isCache) {
+                    params.prefetch = options.url;
+                } else {
+                    params.remote = {url: options.url, wildcard: '%QUERY%'};
+                }
+                // console.log('params', params);
+                this.datum = new Bloodhound(params);
+            } else {// sync
+                this.datum = new Bloodhound({
+                    datumTokenizer: function(d) { return d[options.displayKey]; },
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    local: options.data,
+                    identify: function(obj) { return obj[options.valueKey]; },
+                });             
+            }
+
+            this.datum.initialize();
+            var jqueryTypeahead = jQuery('.typeahead-' + counter).typeahead({
+                // minLength: 0, //设置该项后鼠标放入输入框就会显示列表
+                hint: true,
+                highlight: true
+            } , {
+                name: options.name,
+                displayKey: options.displayKey, 
+                limit: parseInt(options.limit),
+                // async: true,
+                source: baseUtil.nflTeamsWithDefaults,/*.ttAdapter()*/
+            }).on('typeahead:select', function(ev, suggestion) {
+                // console.log('Selection: ' + suggestion[options.valueKey]);
+                $("#" + options.selectedDomId).val(suggestion[options.valueKey]);
+            }).on('typeahead:asyncrequest', function() {// beforeAjax
+
+            }).on('typeahead:asynccancel typeahead:asyncreceive', function(type) {// completed
+            });
+
+        },
+        this.nflTeamsWithDefaults = function(query, sync, async) {
+            this.datum.search(query, sync, async);
+            // if (query === '') {
+            //   this.datum.get('1');
+            // } else {
+            //   this.datum.search(query, sync, async);
+            // }
         }
     }
 

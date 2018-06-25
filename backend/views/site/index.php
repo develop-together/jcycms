@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use common\components\UserAcl;
 
 IndexAsset::register($this);
+
 $this->title = yii::t('app', 'Backend Manage System');
 ?>
 <?php $this->beginPage();?>

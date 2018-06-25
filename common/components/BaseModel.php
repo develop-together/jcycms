@@ -45,8 +45,7 @@ class BaseModel extends \yii\db\ActiveRecord
     public function image($attribute = '', $htmlOptions = [])
     {
         $src = $this->path($attribute);
-        $alt = isset($htmlOptions['alt']) ? $htmlOptions['alt'] : '';
-        return Html::img($src, $alt, $htmlOptions);
+        return Html::img($src, $htmlOptions);
     }
 
     /**

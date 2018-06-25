@@ -162,6 +162,7 @@ function reloadImageList(that, file)
 }
 
 $(document).ready(function(){
+    // 批量操作
     $(".multi-operate").click(function () {
         var url = $(this).attr('href');
         var ids = new Array();
@@ -235,11 +236,20 @@ $(document).ready(function(){
         }
 
     })
+
+    // 刷新
     $('a.refresh').click(function(){
         location.reload();
         return false;
     });
 
+    // 拥有该属性的标签打开tab
+    $(".openContab").click(function(){
+        parent.openConTab($(this));
+        return false;
+    });
+
+    // myself 文件上传
     $("div.input-append").bind('click', function(e) {
         e.preventDefault();
         if ($('img.upload_image_lists')) {
@@ -249,11 +259,10 @@ $(document).ready(function(){
         $(this).parent('div').find( 'input[type="file"]' ).click();
     });
 
-    // 拥有该属性的标签打开tab
-    $(".openContab").click(function(){
-        parent.openConTab($(this));
-        return false;
-    });
+    // feehi 文件上传
+    if ($('input.feehi_html5_upload[type=file]').val()) {
+        $('input.feehi_html5_upload[type=file]').val('');
+    }
 
     $('input.feehi_html5_upload[type=file]').bind('change', function () {
         if (typeof FileReader === 'undefined') {

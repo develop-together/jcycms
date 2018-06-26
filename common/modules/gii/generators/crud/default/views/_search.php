@@ -10,11 +10,11 @@ echo "<?php\n";
 ?>
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm AS BAF;
+use common\widgets\ActiveForm AS BAF;
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->searchModelClass, '\\') ?> */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form common\widgets\ActiveForm */
 ?>
 
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-search">

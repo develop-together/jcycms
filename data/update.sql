@@ -234,6 +234,14 @@ ADD COLUMN `last_login_at`  int(11) NOT NULL DEFAULT 0 COMMENT '最后登录时�
 
 ALTER TABLE `byt_user` ADD `avatar` VARCHAR(255) NULL DEFAULT NULL AFTER `email`;
 
+#2018-06-26
+
+CREATE TABLE `byt_options` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `type` TINYINT(2) NOT NULL DEFAULT '0' COMMENT '类型.0系统,1自定义,2banner,3广告' , `name` VARCHAR(255) NOT NULL COMMENT '标识符' , `value` TEXT NOT NULL COMMENT '值' , `status` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '状态' , `sort` INT(11) NOT NULL DEFAULT '0' COMMENT '排序' , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `byt_options` ADD `created_at` INT(11) NOT NULL COMMENT '创建时间' AFTER `sort`;
+
+ALTER TABLE `byt_options` ADD `updated_at` INT(11) NOT NULL DEFAULT '0' COMMENT '修改时间' AFTER `created_at`;
+
 
 
 

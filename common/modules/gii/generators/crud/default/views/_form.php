@@ -18,11 +18,11 @@ echo "<?php\n";
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm AS BAF;
+use common\widgets\ActiveForm AS BAF;
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form common\widgets\ActiveForm */
 ?>
 
 <div class="row">
@@ -30,20 +30,12 @@ use yii\widgets\ActiveForm AS BAF;
         <div class="ibox">
             <?= '<?='; ?> $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-                <?= "<?php " ?>$form = BAF::begin([
-                            'fieldConfig' => [
-                                'template' =>"{label}\n<div class=\"col-sm-10\">{input}\n{error}</div>\n{hint}",
-                                'labelOptions' => ['class' => 'col-sm-2 control-label'],
-                                'options' => ['class' => 'form-group'],    
-                                'inputOptions' => ['class' => 'form-control'],
-                                'errorOptions' => ['class' => 'help-block m-b-none'],                            
-                            ],
-                            'options' => ['class' => 'form-horizontal'],
-                ]); ?>    
+                <?= "<?php " ?>$form = BAF::begin(); ?>    
                 <?php foreach ($generator->getColumnNames() as $attribute) {
                     if (in_array($attribute, $safeAttributes) && !in_array($attribute, ['created_at', 'updated_at'])) {
                 ?>
                     <?= "<?= " . $generator->generateActiveField($attribute)."; ?>\n\n"; ?>
+                    <div class="hr-line-dashed"></div>
                 <?php } } ?>
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">

@@ -8,7 +8,8 @@
 
 namespace backend\assets;
 
-class CaptchaAsset extends \yii\web\AssetBundle {
+class CaptchaAsset extends \yii\web\AssetBundle 
+{
 	public $sourcePath = '@yii/assets';
 
 	public $js = [

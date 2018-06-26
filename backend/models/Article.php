@@ -24,28 +24,6 @@ class Article extends \common\models\Article
             return false;
         }
 
-/*        $upload = UploadedFile::getInstance($this, 'thumb');
-        if ($upload !== null) {
-            $uploadPath = yii::getAlias('@thumb/');
-            if (! FileHelper::createDirectory($uploadPath)) { 
-                $this->addError('thumb', "Create directory failed " . $uploadPath);
-                return false;
-            }
-
-            $baseName = $upload->baseName;
-            if (Utils::chinese($baseName)) {
-                $baseName = iconv('UTF-8', 'GBK', $baseName);
-            }
-
-            $fullName = $uploadPath . uniqid() . '_' . $baseName . '.' . $upload->extension;
-            $thumbName = $uploadPath . uniqid() . '_' . $upload->baseName . '.' . $upload->extension;
-            if(! $upload->saveAs($fullName)) {
-                $this->addError('thumb', yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => yii::t('app', 'Thumb')]) . ': ' . $thumbName);
-                return false;                
-            }
-
-            $this->thumb = str_replace(yii::getAlias('@backend/web'), '', $thumbName);
-        }*/
         $this->thumb = $this->uploadOpreate();
 
         return true;

@@ -334,20 +334,19 @@ $this->registerJs(<<<EOT
     }, 
     function(){
     	// debugger;
-    	// console.log(timer);
         clearTimeout(timer);
     });
 
-    var container = $('#pjax');
-    container.on('pjax:send',function(args){
-        layer.load(2);
-    });
-    container.on('pjax:complete',function(args){
-        layer.closeAll('loading');
-        $('table tr td a.title').bind('mouseover mouseout', function() {
-        	showImage(this);
-        });
-    });
+    // var container = $('#pjax');
+    // container.on('pjax:send',function(args){
+    //     layer.load(2);
+    // });
+    // container.on('pjax:complete',function(args){
+    //     layer.closeAll('loading');
+    //     $('table tr td a.title').bind('mouseover mouseout', function() {
+    //     	showImage(this);
+    //     });
+    // });
 
 	function showImage(obj)
 	{

@@ -25,7 +25,8 @@ class BaseModel extends \yii\db\ActiveRecord
 		return Yii::$app->get('db');
 	}
 
-	public function behaviors() {
+	public function behaviors() 
+    {
 		$behaviors = [];
 		if ($this->hasAttribute('created_at') && $this->hasAttribute('updated_at')) {
 			$behaviors[] = TimestampBehavior::className();

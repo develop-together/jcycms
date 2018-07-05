@@ -2,13 +2,14 @@
 
 use yii\helpers\Html;
 use common\widgets\ActiveForm AS BAF;
+use common\components\BaseConfig;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\search\OptionsSearch */
+/* @var $model backend\models\search\CarouselSearch */
 /* @var $form common\widgets\ActiveForm */
 ?>
 
-<div class="options-search">
+<div class="carousel-search">
 
     <?php $form = BAF::begin([
         'action' => ['index'],
@@ -20,19 +21,11 @@ use common\widgets\ActiveForm AS BAF;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'type') ?>
+    <?= $form->field($model, 'key') ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'title') ?>
 
-    <?= $form->field($model, 'value') ?>
-
-    <?= $form->field($model, 'status') ?>
-
-    <?php // echo $form->field($model, 'sort') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
+    <?= $form->field($model, 'status')->dropDownList(BaseConfig::getYesNoItems(), ['prompt' => '全部']); ?>
 
     <div class="form-group" style="padding-bottom:10px;">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>

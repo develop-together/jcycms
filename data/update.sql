@@ -242,6 +242,25 @@ ALTER TABLE `byt_options` ADD `created_at` INT(11) NOT NULL COMMENT '创建时�
 
 ALTER TABLE `byt_options` ADD `updated_at` INT(11) NOT NULL DEFAULT '0' COMMENT '修改时间' AFTER `created_at`;
 
+#2018-07-05
+
+ALTER TABLE `byt_carousel_item`
+MODIFY COLUMN `carousel_id`  int(11) NOT NULL COMMENT '父级' AFTER `id`,
+MODIFY COLUMN `url`  varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '链接地址' AFTER `carousel_id`,
+MODIFY COLUMN `caption`  varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '描述' AFTER `url`,
+MODIFY COLUMN `image`  varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '图片' AFTER `caption`,
+MODIFY COLUMN `status`  smallint(6) NOT NULL DEFAULT 0 COMMENT '是否启用' AFTER `image`,
+MODIFY COLUMN `sort`  int(11) NULL DEFAULT 0 COMMENT '排序' AFTER `status`;
+
+ALTER TABLE `byt_carousel_item` ADD CONSTRAINT `carousel` FOREIGN KEY (`carousel_id`) REFERENCES `byt_carousel` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `byt_carousel`
+MODIFY COLUMN `key`  varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '键值' AFTER `id`,
+MODIFY COLUMN `title`  varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '描述' AFTER `key`,
+MODIFY COLUMN `status`  smallint(6) NULL DEFAULT 0 COMMENT '是否开启' AFTER `title`;
+
+
+
 
 
 

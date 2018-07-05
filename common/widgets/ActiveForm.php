@@ -19,7 +19,7 @@ class ActiveForm extends \yii\widgets\ActiveForm
 	public $fieldClass = 'common\widgets\ActiveField';
 
 	public $fieldConfig = [
-		'template' =>"{label}\n<div class=\"col-sm-10\">{input}\n{error}</div>\n{hint}",
+		'template' =>"{label}\n<div class=\"col-sm-10\">{input}\n{error}\n{hint}</div>",
 	    'labelOptions' => ['class' => 'col-sm-2 control-label'],
 	    'options' => ['class' => 'form-group'],    
 	    'inputOptions' => ['class' => 'form-control'],

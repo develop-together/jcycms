@@ -78,4 +78,8 @@ return [
 	'Updated At' => '最后更新',
 	'Status' => '状态',
 	'Avatar' => '头像',
+	'Position' => '位置',
+	'Name' => '名称',
+	'Active' => '是否开启',
+	'Description' => '描述',
 ];

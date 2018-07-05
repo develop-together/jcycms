@@ -23,6 +23,10 @@ use common\widgets\ActiveForm AS BAF;
         'action' => ['index'],
         'method' => 'post',
         'options' => ['class' => 'form-inline'],
+        'fieldConfig' => [
+            'template' =>"{label}\n{input}\n{error}\n{hint}",
+            'labelOptions' => ['class' => 'control-label'],                          
+        ],
     ]); ?>
 
 <?php

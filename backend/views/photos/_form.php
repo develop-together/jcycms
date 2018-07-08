@@ -10,7 +10,7 @@ use common\components\BaseConfig;
 use common\widgets\fileUploadInput\FileUploadInputWidget;
 
 $categoryTree = Utils::tree_bulid(Category::find()->asArray()->all(), 'id', 'parent_id');
-$this->title = yii::t('app', 'Photos');
+$this->title = Yii::t('app', 'Photos');
 
 ?>
 
@@ -39,7 +39,7 @@ $this->title = yii::t('app', 'Photos');
                         <?= $form->field($model, 'category_id')->dropDownList(Category::getDrowDownList($categoryTree), ['prompt' => '请选择', 'style' => 'width:200px']) ?>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label"><?= yii::t('app', 'Seo Setting') ?>:</label>
+                            <label class="col-sm-2 control-label"><?= Yii::t('app', 'Seo Setting') ?>:</label>
                             <div class="col-sm-10">
                                 <?= $form->field($model, 'seo_title', [                                    
                                     'labelOptions' => ['class' => 'col-sm-3']
@@ -54,7 +54,7 @@ $this->title = yii::t('app', 'Photos');
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label"><?= yii::t('app', 'Other') ?>:</label>
+                            <label class="col-sm-2 control-label"><?= Yii::t('app', 'Other') ?>:</label>
                             <div class="col-sm-10">
                                 <div class="col-sm-3">
                                     <?= $form->field($model, 'status', [

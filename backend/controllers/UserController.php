@@ -64,7 +64,7 @@ class UserController extends BackendController
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
 
                 return $this->redirect(['index']);
             } else {
@@ -97,7 +97,7 @@ class UserController extends BackendController
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
 
                 return $this->redirect(['index']);
             } else {

@@ -53,7 +53,7 @@ $this->title = "Admin";
                 
                 <?= $form->field($rolesModel, 'role_id', [
                     'labelOptions' => [
-                        'label' => yii::t('app', 'Roles'),
+                        'label' => Yii::t('app', 'Roles'),
                     ]
                 ])->radioList(AdminRoles::loadRolesOptions()) ?>
 

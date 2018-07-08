@@ -22,6 +22,6 @@ class ZtreeAsset extends \yii\web\AssetBundle
 	];
 
 	public $depends = [
-		'backend\assets\IndexAsset',
+		'backend\assets\appAsset',
 	];
 }

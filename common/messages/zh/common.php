@@ -36,6 +36,10 @@ return [
 	'Filetype' => '文件类型',
 	'Extension' => '后缀',
 	'Filepath' => '文件路径',
+	'Fileinfo' => '文件信息',
+	'Old Name' => '原始名称',
+	'Save Path' => '保存路径',
+	'New Name' => '当前名称',
 	'Downci' => '下载次数',
 	'Mime' => 'MIME类型',
 	'Preview' => '预览',
@@ -82,4 +86,7 @@ return [
 	'Name' => '名称',
 	'Active' => '是否开启',
 	'Description' => '描述',
+	'The File Is Not Exists' => '该文件不存在',
+	'Please select the picture file' => '请选择图片文件',
+	'Image List' => '图片列表',
 ];

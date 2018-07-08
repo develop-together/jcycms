@@ -8,7 +8,7 @@ use common\models\Category;
 use common\components\Utils;
 use common\components\BaseConfig;
 
-$this->title = yii::t('app', 'Pages');
+$this->title = Yii::t('app', 'Pages');
 
 ?>
 
@@ -35,7 +35,7 @@ $this->title = yii::t('app', 'Pages');
                         <?= $form->field($model, 'sub_title')->textInput(); ?>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label"><?= yii::t('app', 'Seo Setting') ?>:</label>
+                            <label class="col-sm-2 control-label"><?= Yii::t('app', 'Seo Setting') ?>:</label>
                             <div class="col-sm-10">
                                 <?= $form->field($model, 'seo_title', [                                    
                                     'labelOptions' => ['class' => 'col-sm-3']
@@ -50,7 +50,7 @@ $this->title = yii::t('app', 'Pages');
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label"><?= yii::t('app', 'Other') ?>:</label>
+                            <label class="col-sm-2 control-label"><?= Yii::t('app', 'Other') ?>:</label>
                             <div class="col-sm-10">
                                 <div class="col-sm-3">
                                     <?= $form->field($model, 'status', [

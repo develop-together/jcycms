@@ -48,8 +48,8 @@ class BaseConfig
     public static function getYesNoItems($key = null)
     {
         $items = [
-            self::YesNo_Yes => yii::t('app', 'Yes'),
-            self::YesNo_No => yii::t('app', 'No'),
+            self::YesNo_Yes => Yii::t('app', 'Yes'),
+            self::YesNo_No => Yii::t('app', 'No'),
         ];
         return self::getItems($items, $key);
     }
@@ -62,8 +62,8 @@ class BaseConfig
     public static function getWebsiteStatusItems($key = null)
     {
         $items = [
-            self::YesNo_Yes => yii::t('app', 'Opened'),
-            self::YesNo_No => yii::t('app', 'Closed'),
+            self::YesNo_Yes => Yii::t('app', 'Opened'),
+            self::YesNo_No => Yii::t('app', 'Closed'),
         ];
         return self::getItems($items, $key);
     }
@@ -71,9 +71,9 @@ class BaseConfig
     public static function getCommentStatusItems($key = null)
     {
         $items = [
-            self::COMMENT_INITIAL => yii::t('app', 'Not Audited'),
-            self::COMMENT_PUBLISH => yii::t('app', 'Passed'),
-            self::COMMENT_RUBISSH => yii::t('app', 'Unpassed'),
+            self::COMMENT_INITIAL => Yii::t('app', 'Not Audited'),
+            self::COMMENT_PUBLISH => Yii::t('app', 'Passed'),
+            self::COMMENT_RUBISSH => Yii::t('app', 'Unpassed'),
         ];
         return self::getItems($items, $key);
     }
@@ -81,8 +81,8 @@ class BaseConfig
     public static function getTargetOpenMethod($key = null)
     {
         $items = [
-            self::TARGET_BLANK => yii::t('app', 'Yes'),
-            self::TARGET_SELF => yii::t('app', 'No'),
+            self::TARGET_BLANK => Yii::t('app', 'Yes'),
+            self::TARGET_SELF => Yii::t('app', 'No'),
         ];
         return self::getItems($items, $key);
     }
@@ -100,8 +100,8 @@ class BaseConfig
     public static function getArticleStatus($key = null)
     {
         $items = [
-            self::PUBLISH_YES => yii::t('app', 'Publish'),
-            self::PUBLISH_NO => yii::t('app', 'Draft'),
+            self::PUBLISH_YES => Yii::t('app', 'Publish'),
+            self::PUBLISH_NO => Yii::t('app', 'Draft'),
         ];
         return self::getItems($items, $key);
     }
@@ -119,9 +119,9 @@ class BaseConfig
     public static function getArticleVisibility($key = null)
     {
         $items = [
-            self::ARTICLE_VISIBILITY_PUBLIC => yii::t('app', 'Public'),
-            self::ARTICLE_VISIBILITY_COMMENT => yii::t('app', 'Reply'),
-            self::ARTICLE_VISIBILITY_SECRET => yii::t('app', 'Password'),
+            self::ARTICLE_VISIBILITY_PUBLIC => Yii::t('app', 'Public'),
+            self::ARTICLE_VISIBILITY_COMMENT => Yii::t('app', 'Reply'),
+            self::ARTICLE_VISIBILITY_SECRET => Yii::t('app', 'Password'),
         ];
         return self::getItems($items, $key);
     }
@@ -129,8 +129,8 @@ class BaseConfig
     public static function getStatusItems($key = null)
     {
         $items = [
-            self::Status_Enable => yii::t('app', 'Enable'),
-            self::Status_Desable => yii::t('app', 'Disable'),
+            self::Status_Enable => Yii::t('app', 'Enable'),
+            self::Status_Desable => Yii::t('app', 'Disable'),
         ];
         return self::getItems($items, $key);
     }

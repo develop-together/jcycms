@@ -337,4 +337,5 @@ return [
 	'Account exception' => '账号异常',
 	'Related menus' => '相关菜单',
 	'Entry' => '进入',
+	'Permission Manage' => '权限管理'
 ];

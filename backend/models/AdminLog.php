@@ -52,13 +52,13 @@ class AdminLog extends \common\components\BaseModel
             '{{%ID%}}',
             '{{%RECORD%}}'            
         ], [
-            yii::t('app', 'Admin user'),
-            yii::t('app', 'through'),
-            yii::t('app', 'created'),
-            yii::t('app', 'updated'),
-            yii::t('app', 'deleted'),
-            yii::t('app', 'id'),
-            yii::t('app', 'record')
+            Yii::t('app', 'Admin user'),
+            Yii::t('app', 'through'),
+            Yii::t('app', 'created'),
+            Yii::t('app', 'updated'),
+            Yii::t('app', 'deleted'),
+            Yii::t('app', 'id'),
+            Yii::t('app', 'record')
         ], $this->description);
     }
 

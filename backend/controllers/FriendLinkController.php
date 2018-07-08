@@ -64,7 +64,7 @@ class FriendLinkController extends BackendController
         $model->sort = 0;
         $model->status = BaseConfig::YesNo_No;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+            Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
             return $this->redirect(['index']);
         }
 
@@ -84,7 +84,7 @@ class FriendLinkController extends BackendController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
         }
 

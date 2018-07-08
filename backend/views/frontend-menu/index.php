@@ -6,7 +6,7 @@ use backend\grid\GridView;
 use backend\grid\ActionColumn;
 
 $createSub = function ($url, $model) {
-    return Html::a('<i class="fa fa-plus"></i> ' . yii::t('app', 'Create'), Url::toRoute(['frontend-menu/create', 'parent_id' => $model->id]), [
+    return Html::a('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Create'), Url::toRoute(['frontend-menu/create', 'parent_id' => $model->id]), [
         'title' => 'create',
         'class' => 'btn btn-white btn-sm',
     ]);

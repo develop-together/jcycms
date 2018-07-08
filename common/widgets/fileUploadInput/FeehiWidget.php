@@ -42,6 +42,7 @@ class FeehiWidget extends InputWidget
 	public function init()
 	{
         parent::init();
+
         if ($this->hasModel()) {
             $this->name = $this->name ? : Html::getInputName($this->model, $this->attribute);
             $this->attribute = Html::getAttributeName($this->attribute);
@@ -66,24 +67,36 @@ class FeehiWidget extends InputWidget
         }
 
         $this->acceptFileTypes = 'image/png, image/jpg, image/jpeg, image/gif, image/bmp';
-        $this->inputId = 'feehi-' . $this->name;
+        $this->inputId = strtolower($this->model->formName()) . '-' . $this->attribute;//'feehi-' . $this->name;
         $this->parentDivId = 'feehi-res-' . time();
 	}
 
 	public function run()
 	{
 		$imgHtml = $inputValue = '';
+		$maxWidth = $maxHeight = '200px';
+
+		if (isset($this->wrapperOptions['max-width'])) {
+			$maxWidth =  $this->wrapperOptions['max-width'];
+		}
+
+		if (isset($this->wrapperOptions['max-height'])) {
+			$maxHeight =  $this->wrapperOptions['max-height'];
+		}
+
 		if (is_array($this->value)) {
 			foreach ($this->value as $key => $value) {
 				$src = Yii::$app->request->baseUrl . (!empty($value->filepath) ? '/' . $value->filepath : '/static/img/none.jpg');
-				$imgHtml .=  '<img src="' . $src . '" alt="" style="max-width:200px;max-height:200px;    display: block;float: left;padding-right: 5px;" class="mutil_image" data-file-id="' . $key . '">';
+				$imgHtml .=  '<img src="' . $src . '" alt="" style="max-width:' . $maxWidth . ';max-height:' . $maxHeight . ';    display: block;float: left;padding-right: 5px;" class="mutil_image" data-file-id="' . $key . '">';
 				$inputValue .= $value->filename . '、';
 			}
 		} else {
 			$src = Yii::$app->request->baseUrl . (!empty($this->value) ? '/' . $this->value : '/static/img/none.jpg');
-			$imgHtml = '<img src="' . $src . '" alt="" style="max-width:200px;max-height:200px" class="none_image">';
+			$imgHtml = '<img src="' . $src . '" alt="" style="max-width:' . $maxWidth . ';max-height:' . $maxHeight . '" class="none_image">';
 		}
-		$content = Html::hiddenInput($this->name, null, $this->options);
+
+		$content = '';
+		// $content = Html::hiddenInput($this->name, null, $this->options);
 		$this->wrapperOptions = ArrayHelper::merge(['id' => $this->parentDivId, 'class' => 'image'], $this->wrapperOptions);
 		$content .= Html::beginTag('div', $this->wrapperOptions);
 		$content .= Html::fileInput($this->name, null,[
@@ -91,9 +104,9 @@ class FeehiWidget extends InputWidget
 			'class' => 'feehi_html5_upload',
 			'accept' => $this->acceptFileTypes,
 			'multiple' => $this->multiple,
-			'style' => 'max-width: 200px; max-height: 200px; display: none;',
+			'style' => 'max-width: ' . $maxWidth . '; max-height: ' . $maxHeight . '; display: none;',
 		]);
-		$content .= '<div class="input-append input-group"><span class="input-group-btn"><button class="btn btn-white" type="button">选择文件</button></span><input class="input-large form-control filename_lists" type="text" readonly placeHolder="' . $this->placeHolder . '" value="' . rtrim($inputValue, '、') . '" ></div>' . $imgHtml . '<div class="help-block m-b-none"></div>';
+		$content .= '<div class="input-append input-group"><span class="input-group-btn"><button class="btn btn-white" type="button">选择文件</button></span><input class="input-large form-control filename_lists" type="text" readonly placeHolder="' . $this->placeHolder . '" value="' . rtrim($inputValue, '、') . '" ></div>' . $imgHtml;// . '<div class="help-block m-b-none"></div>'
 		$content .= Html::endTag('div');
 
 		return $content;

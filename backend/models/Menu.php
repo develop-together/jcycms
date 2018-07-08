@@ -101,7 +101,7 @@ class Menu extends \common\models\Menu
             if (isset($value['children'])) {
                 self::getMenuZtree($adminRolePermissionLists, $role_id, $value['children']);
             }  
-
+            unset($value['icon']);
             $tree[$key] = $value;        
         }
 

@@ -49,7 +49,7 @@ class AdminRolePermission extends \common\components\BaseModel
             'opt_id' => Yii::t('app', 'Use ID'),
             'name' => Yii::t('app', 'Name'),
             'url' => Yii::t('app', 'Url'),
-            'method' => yii::t('app', 'Method'),
+            'method' => Yii::t('app', 'Method'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ]);

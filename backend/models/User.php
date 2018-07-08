@@ -78,27 +78,27 @@ class User extends BaseModel implements IdentityInterface
 	public function attributeLabels() 
 	{
 		return [
-			'username' => yii::t('app', 'Username'),
+			'username' => Yii::t('app', 'Username'),
 			'role_name' => Yii::t('app', 'Role'),
-			'email' => yii::t('app', 'Email'),
-			'old_pwd' => yii::t('app', 'Old Password'),
-			'password' => yii::t('app', 'Password'),
-			'repeat_pwd' => yii::t('app', 'Repeat Password'),
-			'avatar' => yii::t('app', 'Avatar'),
-			'status' => yii::t('app', 'Status'),
-			'last_login_ip' => yii::t('common', 'Last Login IP'),
-			'login_count' => yii::t('common', 'Login Number'),
-			'last_login_at' => yii::t('common', 'Last Login Time'),
-			'created_at' => yii::t('app', 'Created At'),
-			'updated_at' => yii::t('app', 'Updated At'),
+			'email' => Yii::t('app', 'Email'),
+			'old_pwd' => Yii::t('app', 'Old Password'),
+			'password' => Yii::t('app', 'Password'),
+			'repeat_pwd' => Yii::t('app', 'Repeat Password'),
+			'avatar' => Yii::t('app', 'Avatar'),
+			'status' => Yii::t('app', 'Status'),
+			'last_login_ip' => Yii::t('common', 'Last Login IP'),
+			'login_count' => Yii::t('common', 'Login Number'),
+			'last_login_at' => Yii::t('common', 'Last Login Time'),
+			'created_at' => Yii::t('app', 'Created At'),
+			'updated_at' => Yii::t('app', 'Updated At'),
 		];
 	}
 
 	public static function getStatuses() 
 	{
 		return [
-			self::STATUS_ACTIVE => yii::t('app', 'Normal'),
-			self::STATUS_DELETED => yii::t('app', 'Disabled'),
+			self::STATUS_ACTIVE => Yii::t('app', 'Normal'),
+			self::STATUS_DELETED => Yii::t('app', 'Disabled'),
 		];
 	}
 
@@ -286,7 +286,7 @@ class User extends BaseModel implements IdentityInterface
 
 	public function beforeDelete() {
 		if (self::checkSuperManager()) {
-			throw new ForbiddenHttpException(yii::t('app', "Not allowed to delete {attribute}", ['attribute' => yii::t('app', 'default super administrator admin')]));
+			throw new ForbiddenHttpException(Yii::t('app', "Not allowed to delete {attribute}", ['attribute' => Yii::t('app', 'default super administrator admin')]));
 		}
 		return true;
 	}

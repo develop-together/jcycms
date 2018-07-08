@@ -43,7 +43,7 @@ $this->title = $configData['system_name'];
                             <a href="javascript:;"  title="<?= Yii::t('common', 'I sign up') ?>" id="openid_regModal"><?= Yii::t('common', 'Register') ?></a> 
                         <?php else: ?>       
                             <span class="h6 text-success">Welcome, <?= Html::encode(yii::$app->user->identity->username) ?></span>
-                            <a href="<?= Url::to(['site/logout']) ?>" class="signup-loader"><?= yii::t('frontend', 'Log out') ?></a>                  
+                            <a href="<?= Url::to(['site/logout']) ?>" class="signup-loader"><?= Yii::t('frontend', 'Log out') ?></a>                  
                         <?php endif; ?>               
                     </div>       
                 </div>

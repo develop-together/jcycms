@@ -9,7 +9,7 @@ use yii\helpers\Url;
 
 $this->title = 'Admin';
 $assignment = function ($url, $model) {
-    return @$model->userRole->role_id != AdminRoles::SUPER_ROLE_ID  ? Html::a('<i class="fa fa-tablet"></i> ' . yii::t('app', 'Assign Roles'), 'javacript:;', [
+    return @$model->userRole->role_id != AdminRoles::SUPER_ROLE_ID  ? Html::a('<i class="fa fa-tablet"></i> ' . Yii::t('app', 'Assign Roles'), 'javacript:;', [
         'title' => 'assignment',
         'class' => 'btn btn-white btn-sm',
         'onclick' => 'assignRole(this)',

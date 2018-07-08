@@ -188,7 +188,8 @@ function viewLayer(type, url, obj, cssoption)
     });
 }
 
-function close_tab() {
+function close_tab() 
+{
     $(".J_menuTab", parent.document).each(function (index) {
         if ($(this).hasClass("active")) {
             if ($(this).prev("a.J_menuTab").length > 0) {
@@ -203,6 +204,16 @@ function close_tab() {
     });
 }
 
+function showPhotos(obj, shift) 
+{
+    shift = shift || 5;
+    var json =  JSON.parse($(obj).attr('data'));
+    layer.photos({
+        photos: json,
+        shift: shift //0-6的选择，指定弹出图片动画类型，默认随机
+    });
+}
+
 function reloadImageList(that, file)
 {
 
@@ -214,10 +225,19 @@ function reloadImageList(that, file)
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function (e) {
-            console.log("打印上传测试记录:", that.parents("div.image").children());
+            // console.log("打印上传测试记录:", that.parents("div.image").children());
             // that.parents("div.image").children("img").attr("src", this.result);
+            var maxWidth = '200px', maxHeight = '200px';
+            if($(that).css('max-width')) {
+                maxWidth = $(that).css('max-width');
+            }
+
+            if($(that).css('max-width')) {
+                maxHeight = $(that).css('max-height');
+            }
+
             that.parents("div.image").children("img.none_image").remove();
-            that.parents("div.image").append("<img src='"+ this.result +"' style='max-width:200px;max-height:200px' class='upload_image_lists'/>");
+            that.parents("div.image").append("<img src='"+ this.result +"' style='max-width:" + maxWidth + ";max-height:" + maxHeight + "' class='upload_image_lists'/>");
         }
     }
 }
@@ -344,4 +364,11 @@ $(document).ready(function(){
 
         that.parents("div.image").children("div.input-append").children("input[type='text']").val(fileContents.substr(0, fileContents.length-1));
     });
+
+    // layer phots
+    if ($("div.photos_list").length) {
+        $("div.photos_list").bind('click', function(){
+            showPhotos(this, 3);
+        });
+    }
 })

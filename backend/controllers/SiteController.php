@@ -74,25 +74,25 @@ class SiteController extends BackendController
 		// 友情链接（总数量）当月与上月相比的变化率
 		$countData = [
 			'article' => [
-				'countName' => yii::t('app', 'Articles'),
+				'countName' => Yii::t('app', 'Articles'),
 				'type' => 'Month',
 				'url' => Url::to(['article/index']),
 				'countNumber' => Article::find()->where(['type' => Article::ARTICLE])->count('id'),
 			],
 			'comment' => [
-				'countName' => yii::t('app', 'Comments'),
+				'countName' => Yii::t('app', 'Comments'),
 				'type' => 'Today',
 				'url' => 'javascript:;',
 				'countNumber' => 0,
 			],
 			'frontendUser' => [
-				'countName' => yii::t('app', 'Users'),
+				'countName' => Yii::t('app', 'Users'),
 				'type' => 'Month',
 				'url' => 'javascript:;',
 				'countNumber' => 0,
 			],
 			'friendLink' => [
-				'countName' => yii::t('app', 'Friendly Links'),
+				'countName' => Yii::t('app', 'Friendly Links'),
 				'type' => 'Month',
 				'url' => Url::to(['friend-link/index']),
 				'countNumber' => friendLink::find()->count('id'),
@@ -149,7 +149,7 @@ class SiteController extends BackendController
 
 		// 当周新增数量统计图
 		$echartsData = $xAxis = $articleData = $frontendUserData = [];
-		$echartsData['legend'] = [yii::t('app', 'Articles'), yii::t('app', 'Users')];
+		$echartsData['legend'] = [Yii::t('app', 'Articles'), Yii::t('app', 'Users')];
 	    $echartsData['legends'] = Json::encode(array_values($echartsData['legend']));;
 	    $series = $articleCount = $userCount = [];
 		$nWeek = date('w');

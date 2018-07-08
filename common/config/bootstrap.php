@@ -9,3 +9,4 @@ Yii::setAlias('@gii', dirname(__DIR__) . '/modules/gii');
 Yii::setAlias('@uploads', '@backend/web/uploads');//文件上传目录
 Yii::setAlias('@thumb', '@uploads/thumb');//文章缩略图上传目录
 Yii::setAlias('@friendlylink', '@uploads/friendlylink');//友情链接图片上传目录
+Yii::setAlias('@banner', '@uploads/banner');//Banner图片上传目录

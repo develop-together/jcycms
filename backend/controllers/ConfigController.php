@@ -22,10 +22,10 @@ class ConfigController extends BackendController
     {
         if (Yii::$app->request->isPost) {
             if (Config::updateData()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
             } else {
-                Yii::$app->getSession()->setFlash('error', yii::t('app', 'Error'));
+                Yii::$app->getSession()->setFlash('error', Yii::t('app', 'Error'));
             }
         }
 
@@ -42,10 +42,10 @@ class ConfigController extends BackendController
     {
         if (Yii::$app->request->isPost) {
             if (Config::updateData()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['config/smtp']);
             } else {
-                Yii::$app->getSession()->setFlash('error', yii::t('app', 'Error'));
+                Yii::$app->getSession()->setFlash('error', Yii::t('app', 'Error'));
             }
         }   
 
@@ -102,7 +102,7 @@ class ConfigController extends BackendController
         $model = new Config();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+            Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
             return $this->redirect(['index']);
         }
 
@@ -122,7 +122,7 @@ class ConfigController extends BackendController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
         }
 

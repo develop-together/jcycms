@@ -9,8 +9,8 @@ use common\components\BaseConfig;
 use backend\models\Article;
 
 $showPicture = function($url, $model, $uniqid) {
-    return Html::a('<i class="fa fa-image"></i> ' . yii::t('app', 'View'), 'javacript:;', [
-        'title' => yii::t('app', 'View'),
+    return Html::a('<i class="fa fa-image"></i> ' . Yii::t('app', 'View'), 'javacript:;', [
+        'title' => Yii::t('app', 'View'),
         'class' => 'btn btn-white btn-sm',
         'id' => 'show_picture',
         'data-id' => $model->id,

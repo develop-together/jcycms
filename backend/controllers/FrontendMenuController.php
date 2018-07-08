@@ -67,7 +67,7 @@ class FrontendMenuController extends BackendController
         $model->scenario = 'frontend';
         !empty($parent_id) && $model->parent_id = $parent_id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+            Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
             return $this->redirect(['index']);
         }
 
@@ -87,7 +87,7 @@ class FrontendMenuController extends BackendController
         $model = $this->findModel($id);
         $model->scenario = 'frontend';
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
         }
 

@@ -27,6 +27,14 @@ use backend\grid\ActionColumn;
                                 'attribute' => 'title',
                                 'enableSorting' => false,
                             ],
+                            [
+                                'attribute' => 'image-list',
+                                'format' => 'raw',
+                                'enableSorting' => false,
+                                'value' => function($model) {
+                                    return $model->layerPhotos;
+                                }
+                            ],
 							[
                                 'attribute' => 'status',
                                 'value' => function($model) {
@@ -37,12 +45,10 @@ use backend\grid\ActionColumn;
                                 'class' => 'backend\grid\ActionColumn',
                                 'buttons' => [
                                     'entry' => function($url ,$model ,$key) {
-                                        return Html::a('<i class="fa fa-bars" aria-hidden="true"></i> ' . Yii::t('app', 'Entry'), Url::toRoute([
-                                            'carousel-items',
-                                            'id' => $model->id]), ['class' => 'btn btn-white btn-sm']);                                    
+                                        return Html::a('<i class="fa fa-bars" aria-hidden="true"></i> ' . Yii::t('app', 'Entry'), Url::toRoute(['carousel-item/list', 'id' => $model->id]), ['class' => 'btn btn-white btn-sm']);                                    
                                     }
                                 ],
-                                'template' => '{entry}{view}{update}{delete}',
+                                'template' => '{entry}{update}{delete}',
                             ],
                         ]
                     ]); ?>

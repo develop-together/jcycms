@@ -21,7 +21,7 @@ class AppAsset extends \yii\web\AssetBundle
 		'static/css/animate.min.css',
 		'static/css/style.min.css?v=4.1.0',
 		'static/css/plugins/sweetalert/sweetalert.css',
-		'static/js/plugins/layer/laydate/need/laydate.css',
+		'static/js/plugins/layer2.0/laydate/need/laydate.css',
 		'static/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
 		'static/css/plugins/toastr/toastr.min.css',
 		'static/css/my.style.css',
@@ -29,8 +29,8 @@ class AppAsset extends \yii\web\AssetBundle
 
 	public $js = [
 		'static/js/plugins/sweetalert/sweetalert.min.js',
-		'static/js/plugins/layer/laydate/laydate.js',
-		'static/js/plugins/layer/layer.min.js',
+		'static/js/plugins/layer2.0/laydate/laydate.js',
+		'static/js/plugins/layer3.1.1/layer.js',
 		'static/js/plugins/prettyfile/bootstrap-prettyfile.js',
 		'static/js/plugins/toastr/toastr.min.js',
 		'static/js/jquery.backstretch.min.js',

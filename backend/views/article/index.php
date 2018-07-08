@@ -326,7 +326,7 @@ use backend\models\Article;
     </div>
 </div>
 <?php 
-$noPic = yii::t('app', 'No picture');
+$noPic = Yii::t('app', 'No picture');
 $this->registerJs(<<<EOT
 	var timer;
     $('table tr td a.title').hover(function() {

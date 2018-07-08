@@ -33,3 +33,13 @@ img.img-center-block {
 .tt-dropdown-menu, .tt-menu div.tt-selectable:hover {
     background: #0097cf;
 }
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    background-color: green;
+    border-color: #DDD;
+    color: #fff;
+    cursor: default;
+    z-index: 2;
+}
+.photos_list{position: relative;}
+.photos_list:hover{cursor:pointer;}
+.photos_list_count{position: absolute; bottom: 0; left: 150px; color: #1ab394;font-weight: bold;}

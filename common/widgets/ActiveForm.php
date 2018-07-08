@@ -8,6 +8,7 @@
 namespace common\widgets;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 class ActiveForm extends \yii\widgets\ActiveForm 
 {
@@ -25,4 +26,19 @@ class ActiveForm extends \yii\widgets\ActiveForm
 	    'inputOptions' => ['class' => 'form-control'],
 	    'errorOptions' => ['class' => 'help-block m-b-none'],                            
 	];
+
+	public function init()
+	{
+		
+    	$id = Yii::$app->controller->id . '-form-' . Yii::$app->controller->_uniqid;
+    	if (!isset($this->options['id'])) {
+            $this->options['id'] = $this->setId($id);
+        }
+
+		if (!isset($this->options['class'])) {
+			$this->options['class'] = 'form-horizontal';
+		}
+
+		parent:: init();
+	}
 }

@@ -6,6 +6,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\base\Exception;
 use yii\helpers\FileHelper;
+use yii\helpers\Html;
 use backend\models\User;
 
 /**
@@ -76,6 +77,7 @@ class Attachment extends \common\components\BaseModel
             'filesize' => Yii::t('common', 'Filesize'),
             'filesizecn' => Yii::t('common', 'Filesize'),
             'filepath' => Yii::t('common', 'Filepath'),
+            'fileinfo' => Yii::t('common', 'Fileinfo'),
             'ip' => 'Ip',
             'web' => 'Web',
             'downci' => Yii::t('common', 'Downci'),
@@ -97,7 +99,7 @@ class Attachment extends \common\components\BaseModel
             $newName = $this->uniqidFilename($relativeUploadPath);
             $fullName = $this->uploadPath . '/' . $newName . '.' . $uploadData->extension;
             if (!$uploadData->saveAs($fullName)) {
-                $this->addError('avatar', yii::t('app', 'Upload {attribute} error: ' . $uploadData->error, ['attribute' => yii::t('app', 'Avatar')]) . ': ' . $fullName);
+                $this->addError('avatar', Yii::t('app', 'Upload {attribute} error: ' . $uploadData->error, ['attribute' => Yii::t('app', 'Avatar')]) . ': ' . $fullName);
                 return false;
             }
 /*            $this->user_id = Yii::$app->user->id;
@@ -252,4 +254,31 @@ class Attachment extends \common\components\BaseModel
             'thumb' => $this->filepath,
         ];
     }  
+
+    public function getFileFormat()
+    {
+        if (preg_match('/^images\/*$/', $this->filetype) !== false) {
+            $src = Yii::$app->request->baseUrl . '/' . $this->filepath;
+            $absoluteSrc = str_replace('uploads', '', Yii::getAlias('@uploads')) . $this->filepath;
+            if (!file_exists($absoluteSrc)) {
+                return Yii::t('common', 'The File Is Not Exists');
+            }
+
+            return Html::a(Html::img($src, ['style' => 'width:70px;', 'alt' => $this->filename]), $src, ['title' => $this->filename, 'target' => '_blank']);
+        } 
+
+        return $this->filename;
+    }
+
+    public function getFileInfoFormat()
+    {
+        $info = explode('/', $this->filepath);
+        $newName = end($info);
+        $saveDir = $info[0] . '/' . $info[1]; 
+        if (empty($this->filepath)) {
+            return '';
+        }
+        
+        return Html::tag('p', Yii::t('common', 'Old Name') . '：' . $this->filename) . Html::tag('p', Yii::t('common', 'Save Path') . '：' . $saveDir) . Html::tag('p', Yii::t('common', 'New Name') . '：' . $newName);
+    }
 }

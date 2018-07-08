@@ -69,7 +69,7 @@ class AdminRoles extends \common\components\BaseModel
     public function beforeDelete()
     {
         if ($this->id == 1) {
-            throw new BadRequestHttpException(yii::t('app', 'Not allowed to delete {attribute}', ['attribute' => yii::t('app', 'super administrator roles')]));
+            throw new BadRequestHttpException(Yii::t('app', 'Not allowed to delete {attribute}', ['attribute' => Yii::t('app', 'super administrator roles')]));
         }
 
         return true;

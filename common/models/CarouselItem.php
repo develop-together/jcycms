@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use common\components\BaseConfig;
 
 /**
  * This is the model class for table "{{%carousel_item}}".
@@ -37,9 +38,10 @@ class CarouselItem extends \common\components\BaseModel
     public function rules()
     {
         return [
-            [['carousel_id'], 'required'],
+            [['carousel_id', 'url', 'status', 'image'], 'required'],
             [['carousel_id', 'status', 'sort', 'created_at', 'updated_at'], 'integer'],
-            [['url', 'caption', 'image'], 'string', 'max' => 255],
+            [['url', 'caption'], 'string', 'max' => 255],
+            [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,gif,bmp,png', 'message' => Yii::t('common', 'Please select the picture file')],
             [['carousel_id'], 'exist', 'skipOnError' => true, 'targetClass' => Carousel::className(), 'targetAttribute' => ['carousel_id' => 'id']],
         ];
     }
@@ -52,13 +54,13 @@ class CarouselItem extends \common\components\BaseModel
         return ArrayHelper::merge(parent::attributeLabels(), [
             'id' => 'ID',
             'carousel_id' => 'Carousel ID',
-            'url' => 'Url',
-            'caption' => 'Caption',
-            'image' => 'Image',
-            'status' => 'Status',
-            'sort' => 'Sort',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'url' => Yii::t('app', 'Url'),
+            'caption' => Yii::t('app', 'Description'),
+            'image' => Yii::t('app', 'Image'),
+            'status' => Yii::t('common', 'Active'),
+            'sort' => Yii::t('app', 'Sort'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'updated_at' => Yii::t('app', 'Updated At'),
         ]);
     }
 
@@ -69,4 +71,27 @@ class CarouselItem extends \common\components\BaseModel
     {
         return $this->hasOne(Carousel::className(), ['id' => 'carousel_id']);
     }
+
+    public function getStatusFormat()
+    {
+        return BaseConfig::getYesNoItems($this->status);
+    }
+
+    public function beforeValidate()
+    {
+        $this->image = $this->uploadOpreate('image', '@banner/', 'Image');
+
+        return parent::beforeValidate();
+    }
+
+    // public function beforeSave($insert) 
+    // {
+    //     if (!parent::beforeSave($insert)) {
+    //         return false;
+    //     }
+
+        
+
+    //     return true;
+    // }
 }

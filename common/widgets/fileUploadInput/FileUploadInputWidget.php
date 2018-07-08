@@ -24,7 +24,9 @@
 
 	        if (empty($this->widgetOptions)) {
 	            $this->widgetOptions = ArrayHelper::remove($this->options, 'widgetOptions', []);
+
 	        }
+
 
 		}
 
@@ -54,11 +56,11 @@
 					
 					break;
 				case 'feehi_img'://飞嗨单图上传
-					return FeehiWidget::widget(ArrayHelper::merge(['model' => $this->model, 'attribute' => $this->attribute, 'onlyUrl' => true], $this->widgetOptions));
+					return FeehiWidget::widget(['model' => $this->model, 'attribute' => $this->attribute, 'onlyUrl' => true, 'wrapperOptions' =>  $this->widgetOptions]);
 					
 					break;		
 				case 'feehi_imgs'://飞嗨多图上传
-					return FeehiWidget::widget(ArrayHelper::merge(['model' => $this->model, 'attribute' => $this->attribute . '[]', 'onlyUrl' => true, 'multiple' => true, 'placeHolder' => '多图片上传，一次可选择多张图片!'], $this->widgetOptions));
+					return FeehiWidget::widget(['model' => $this->model, 'attribute' => $this->attribute . '[]', 'onlyUrl' => true, 'multiple' => true, 'placeHolder' => '多图片上传，一次可选择多张图片!', 'wrapperOptions' =>  $this->widgetOptions]);
 					
 					break;												
 				default:

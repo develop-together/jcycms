@@ -11,6 +11,7 @@ use common\components\BaseConfig;
 use backend\actions\DeleteAction;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Url;
+use yii\data\ActiveDataProvider;
 
 /**
  * CarouselController implements the CRUD actions for Carousel model.
@@ -42,17 +43,6 @@ class CarouselController extends BackendController
         ]);
     }
 
-    public function actionCarouselItems($id)
-    {
-        $model = $this->findModel($id);
-        $carouselItems = CarouselItem::find()->where(['carousel_id' => $id])->all();
-        
-        return $this->render('list', [
-            'model' => $model,
-            'carouselItems' => $carouselItems,
-        ]);
-    }
-
     /**
      * Displays a single Carousel model.
      * @param integer $id
@@ -77,7 +67,7 @@ class CarouselController extends BackendController
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
             }
         }
@@ -100,7 +90,7 @@ class CarouselController extends BackendController
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
             }
         }

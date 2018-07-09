@@ -221,7 +221,7 @@
                 <?= $form->field($signupModel, 'verifyCode')->widget(Captcha::className(), [
                     'captchaAction' => 'site/captcha',
                     'imageOptions' => ['alt' => '点击换图', 'title' => '点击换图', 'style' => 'cursor:pointer'],
-                    'options' => ['size' => 51, 'class' => 'form-control'],
+                    'options' => ['size' => 50, 'class' => 'form-control'],
                     'template' => '<div class="form-inline">{input}{image}</div>',
                 ]) ?>
             </div>

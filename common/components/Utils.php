@@ -108,7 +108,7 @@ class Utils {
     public static function photoUrl($path='')
     {
         if (empty($path)) {
-            return self::baseUrl() . '/images/nopic.jpg';
+            return self::baseUrl() . '/static/img/noimg.jpg';
         }
         // 绝对地址
         if (self::url($path)) {

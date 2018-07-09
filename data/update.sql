@@ -210,7 +210,7 @@ ALTER TABLE `byt_config`
 ENGINE=InnoDB;
 
 #2018-06-06
-INSERT INTO `byt_config` (`scope`, `variable`, `value`, `description`) VALUES ('base', 'system_notes', NULL, '系统描述'), ('base', 'tel', '', '')
+INSERT INTO `byt_config` (`scope`, `variable`, `value`, `description`) VALUES ('base', 'system_notes', NULL, '系统描述'), ('base', 'tel', '', '');
 INSERT INTO `byt_config` (`scope`, `variable`, `value`, `description`) VALUES ('base', 'email', '', '');
 
 #2018-06-09

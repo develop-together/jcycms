@@ -20,5 +20,6 @@ return [
         'system_notes',
         'tel',
         'email',
+        'deny_external_access'
     ]
 ];

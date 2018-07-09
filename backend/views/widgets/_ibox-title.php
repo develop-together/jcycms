@@ -16,7 +16,7 @@ if ($action == 'index') {
         $buttons = [
             [
                 'name' => Yii::t('app', 'Back'),
-                'url' => ($controller === 'carousel-item' && isset($pid)) ? ['list', 'id' => $pid] : ['index'],
+                'url' => (isset($pid)) ? ['list', 'id' => $pid] : ['index'],//$controller === 'carousel-item' && 
                 'options' => [
                     'class' => 'btn btn-primary btn-xs',
                 ]

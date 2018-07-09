@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use backend\models\AuthItem;
 
 /**
  * This is the model class for table "{{%menu}}".
@@ -36,7 +37,6 @@ class Menu extends \common\components\BaseModel
     const REQUEST_METHOD_ON_GET = 1;
     const REQUEST_METHOD_ON_POST = 2;
 
-
     /**
      * @inheritdoc
      */
@@ -51,7 +51,7 @@ class Menu extends \common\components\BaseModel
     public function rules()
     {
         return [
-            [['type', 'parent_id', 'sort', 'is_absolute_url', 'is_display', 'method', 'created_at', 'updated_at'], 'integer'],
+            [['type', 'parent_id', 'sort', 'is_absolute_url', 'is_display', 'method', 'created_at', 'updated_at', 'isAddRoute'], 'integer'],
             [['name', 'url'], 'required'],
             [['name', 'url', 'icon'], 'string', 'max' => 255],
             [['target'], 'string', 'max' => 45],
@@ -78,6 +78,7 @@ class Menu extends \common\components\BaseModel
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
             'subMenus_format' => Yii::t('app', 'Related menus'),
+            'isAddRoute' => Yii::t('app', 'Add to permissions'),
         ]);
     }
 
@@ -160,7 +161,20 @@ class Menu extends \common\components\BaseModel
 
     public function getUrlFormat()
     {
-        return $this->url ? Url::toRoute([$this->url]) : '';
+        if (empty($this->url)) {
+            return '';
+        }
+
+        if ($this->isCorrect) {
+            return $this->url;
+        }
+
+        return Url::toRoute([$this->url]);
+    }
+
+    public function getIsCorrect()
+    {
+        return in_array(strtolower($this->url), ['/', '#', 'javascript:;']);
     }
 
     /**
@@ -189,9 +203,9 @@ class Menu extends \common\components\BaseModel
         if ($this->parent_id == null) {
             $this->parent_id = 0;
         }
-        
-        if ($this->isNewRecord && $this->getScenario() == 'frontend') {
-            $this->type = self::MENU_TYPE_FRONTEND;
+
+        if ($this->isNewRecord) {
+            $this->getScenario() == 'frontend' && $this->type = self::MENU_TYPE_FRONTEND;
         }
 
         return true;

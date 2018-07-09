@@ -337,5 +337,10 @@ return [
 	'Account exception' => '账号异常',
 	'Related menus' => '相关菜单',
 	'Entry' => '进入',
-	'Permission Manage' => '权限管理'
+	'Permission Manage' => '权限管理',
+	'Internal address external access' => '内部地址外部访问',
+	'Rule Name' => '路由',
+	'Add to permissions' => '添加到权限',
+	'Top menu links can not be filled' => '顶级菜单链接可不填',
+	'Top-level menu links can be entered' => '顶级菜单链接可填写',
 ];

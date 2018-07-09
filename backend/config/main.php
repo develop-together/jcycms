@@ -13,32 +13,6 @@ return [
 	'language' => 'zh-CN', //默认语言
 	'timeZone' => 'Asia/Shanghai', //默认时区
 	'bootstrap' => ['log'],
-	'modules' => [
-            'gii' => [
-                    'class' => 'common\modules\gii\Module',
-                    'allowedIPs' => ['127.0.0.1', '::1'],
-                    'generators' => [
-                        'crud' => [
-                            'class' => 'yii\gii\generators\crud\Generator',
-                            'templates' => [
-                                'myCrud' => '@common/modules/gii/generators/crud/default',
-                            ],
-                        ],
-                        'model' => [
-                            'class' => 'yii\gii\generators\model\Generator',
-                            'templates' => [
-                                'myModel' => '@common/modules/gii/generators/model/default',
-                            ],
-                        ],
-                        'form' => [
-                            'class' => 'yii\gii\generators\form\Generator',
-                            'templates' => [
-                                'myForm' => '@common/modules/gii/generators/form/default',
-                            ],
-                        ],
-                    ],
-            ],
-	],
 	'components' => [
 		'request' => [
 			'csrfParam' => '_csrf-backend',

@@ -3,44 +3,56 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Menu;
-use backend\models\search\MenuSearch;
+use backend\models\AuthItem;
+use backend\models\search\AuthItemSearch;
 use common\components\BackendController;
 use backend\actions\DeleteAction;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Url;
 
 /**
- * MenuController implements the CRUD actions for Menu model.
+ * RabcController implements the CRUD actions for AuthItem model.
  */
-class MenuController extends BackendController
+class RabcController extends BackendController
 {
     public function actions()
     {
         return [
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => Menu::className(),
+                'modelClass' => AuthItem::className(),
             ],
         ];
     }
     
     /**
-     * Lists all Menu models.
+     * Lists all AuthItem models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new MenuSearch();
-        $dataProvider = $searchModel->backendSearch(Yii::$app->request->post());
+        $searchModel = new AuthItemSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->post());
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
+    public function actionList($id)
+    {
+        $searchModel = new AuthItemSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->post(), $id);
+
+        return $this->render('list', [
+            'menuId' => $id,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
     /**
-     * Displays a single Menu model.
+     * Displays a single AuthItem model.
      * @param integer $id
      * @return mixed
      */
@@ -52,24 +64,16 @@ class MenuController extends BackendController
     }
 
     /**
-     * Creates a new Menu model.
+     * Creates a new AuthItem model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($pid = '')
     {
-        $model = new Menu();
-        $model->is_absolute_url = Menu::NOT_ABSOLUTE_URL;
-        $model->is_display = Menu::DISPLAY_SHOW;
-        $model->method = Menu::REQUEST_METHOD_ON_GET;
-        $model->scenario = 'backend';
-        $model->target = '';
+        $model = new AuthItem();
+        
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
-            if (empty($params['Menu']['parent_id']) && empty($params['Menu']['url'])) {
-                $params['Menu']['url'] = Menu::DEFAULT_URL;
-            }
-            $model->isAddRoute = $params['Menu']['isAddRoute'];
             if ($model->load($params) && $model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
@@ -77,12 +81,13 @@ class MenuController extends BackendController
         }
 
         return $this->render('create', [
+            'pid' => $pid,
             'model' => $model,
         ]);
     }
 
     /**
-     * Updates an existing Menu model.
+     * Updates an existing AuthItem model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -90,34 +95,31 @@ class MenuController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->scenario = 'backend';
+        
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
-            if (empty($params['Menu']['parent_id']) && empty($params['Menu']['url'])) {
-                $params['Menu']['url'] = Menu::DEFAULT_URL;
-            }
-            $model->isAddRoute = $params['Menu']['isAddRoute'];
             if ($model->load($params) && $model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
             }
         }
-        
+
         return $this->render('update', [
+            'pid' => $model->menu_id,
             'model' => $model,
         ]);
     }
 
     /**
-     * Finds the Menu model based on its primary key value.
+     * Finds the AuthItem model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Menu the loaded model
+     * @return AuthItem the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Menu::findOne($id)) !== null) {
+        if (($model = AuthItem::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

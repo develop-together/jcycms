@@ -90,6 +90,13 @@ $this->title = Yii::t('app', 'Website Setting');
                 </div>
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
+                    <?= Html::label(Yii::t('app', 'Internal address external access'), null, ['class' => 'col-sm-2 control-label']) ?>
+                    <div class="col-sm-10">
+                        <?= Html::radioList('Config[deny_external_access]', isset($config['deny_external_access']) ? $config['deny_external_access'] : null, BaseConfig::getYesNoItems())?>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
                     <?= Html::label(Yii::t('app', 'Open Comment Verify'), null, ['class' => 'col-sm-2 control-label']) ?>
                     <div class="col-sm-10">
                         <?= Html::radioList('Config[open_comment_verify]', isset($config['open_comment_verify']) ? $config['open_comment_verify'] : null, BaseConfig::getYesNoItems())?>

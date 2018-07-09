@@ -259,6 +259,26 @@ MODIFY COLUMN `key`  varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT
 MODIFY COLUMN `title`  varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '描述' AFTER `key`,
 MODIFY COLUMN `status`  smallint(6) NULL DEFAULT 0 COMMENT '是否开启' AFTER `title`;
 
+#2018-07-09
+
+CREATE TABLE `byt_auth_item` (
+`id`  int(11) NULL AUTO_INCREMENT ,
+`menu_id`  int(11) NOT NULL DEFAULT 0 ,
+`rule_name`  varchar(64) NOT NULL COMMENT 'rule名称' ,
+`method`  varchar(64) NOT NULL COMMENT 'rule请求方法(POST\\GET\\PUT\\DELETE....)' ,
+`description`  text NULL ,
+`created_at`  int(11) NULL DEFAULT 0 ,
+`updated_at`  int(11) NULL DEFAULT 0 ,
+PRIMARY KEY (`id`),
+UNIQUE INDEX `rule_unqiue` (`rule_name`) USING BTREE 
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8
+COMMENT='权限规则表'
+;
+
+
+
 
 
 

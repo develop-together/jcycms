@@ -28,7 +28,11 @@ use yii\helpers\Url;
 class Menu extends \common\models\Menu
 {
 
+	const DEFAULT_URL = 'javascript:;';
+
 	public $lv = 0;
+
+	public $isAddRoute = 0;
 
 	protected function chilrdenDatas($data, $parent_id, $lv = 0)
 	{
@@ -120,4 +124,20 @@ class Menu extends \common\models\Menu
 
 		return rtrim($str, '，');
 	}
+
+    public function afterSave($insert, $changedAttributes)
+    {
+
+        if ($this->isAddRoute && !$this->isCorrect) {
+            $rabcModel = AuthItem::findOne(['menu_id' => $this->id]);
+            $rabcModel = $rabcModel ? $rabcModel : new AuthItem();
+            $rabcModel->menu_id = $this->id;
+            $rabcModel->rule_name = $this->url;
+            $rabcModel->method = strtoupper($this->methodFormat);
+            $rabcModel->description = $this->name . '(查看)';
+            $rabcModel->save();
+        }        
+
+        parent::afterSave($insert, $changedAttributes);
+    }
 }

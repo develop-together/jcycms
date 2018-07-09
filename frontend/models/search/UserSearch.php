@@ -52,19 +52,19 @@ class UserSearch extends User
         $field = 'last_login_at';
         $sort = SORT_DESC;
 
-        if (isset($params['pageSize'])) {
-            $pageSize = $params['pageSize'];
+        // if (isset($params['pageSize'])) {
+        //     $pageSize = $params['pageSize'];
 
-            $pageCurrent = $params['pageCurrent']-1;
+        //     $pageCurrent = $params['pageCurrent']-1;
 
-            if (in_array(($params['orderField']), ['id', 'created_at', 'updated_at', 'created_at_format', 'updated_at_format'])) {
-                $field = $params['orderField'];
-            }
+        //     if (in_array(($params['orderField']), ['id', 'created_at', 'updated_at', 'created_at_format', 'updated_at_format'])) {
+        //         $field = $params['orderField'];
+        //     }
 
-            if (strtolower($params['orderDirection']) == 'asc') {
-                $sort = SORT_ASC;
-            }
-        }
+        //     if (strtolower($params['orderDirection']) == 'asc') {
+        //         $sort = SORT_ASC;
+        //     }
+        // }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -74,6 +74,7 @@ class UserSearch extends User
             ],
             'sort' =>[
                 'defaultOrder' =>[
+                    'created_at' => SORT_DESC,
                     $field => $sort,
                 ],
             ],

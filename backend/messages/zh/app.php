@@ -336,4 +336,6 @@ return [
 	'Last Login Time' => '最后登录时间',
 	'Account exception' => '账号异常',
 	'Related menus' => '相关菜单',
+	'Entry' => '进入',
+	'Permission Manage' => '权限管理'
 ];

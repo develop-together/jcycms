@@ -101,10 +101,13 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     public function actionCreate()
     {
         $model = new <?= $modelClass ?>();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
-            return $this->redirect(['index']);
+        
+        if (Yii::$app->request->isPost) {
+            $params = Yii::$app->request->post();
+            if ($model->load($params) && $model->save()) {
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
+                return $this->redirect(['index']);
+            }
         }
 
         return $this->render('create', [
@@ -121,10 +124,13 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     public function actionUpdate(<?= $actionParams ?>)
     {
         $model = $this->findModel(<?= $actionParams ?>);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+        
+        if (Yii::$app->request->isPost) {
+            $params = Yii::$app->request->post();
+            if ($model->load($params) && $model->save()) {
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
+            }
         }
 
         return $this->render('update', [

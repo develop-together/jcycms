@@ -74,7 +74,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
         $field = 'id';
         $sort = SORT_DESC;
 
-        if (isset($params['pageSize'])) {
+        /*if (isset($params['pageSize'])) {
             $pageSize = $params['pageSize'];
 
             $pageCurrent = $params['pageCurrent']-1;
@@ -86,7 +86,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
             if (strtolower($params['orderDirection']) == 'asc') {
                 $sort = SORT_ASC;
             }
-        }
+        }*/
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

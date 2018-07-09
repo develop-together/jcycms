@@ -105,8 +105,8 @@ class Menu extends \common\components\BaseModel
     public static function loadDisplayOptions()
     {
         return [
-            self::DISPLAY_SHOW => yii::t('app', 'Yes'),
-            self::NOT_DISPLAY_SHOW => yii::t('app', 'No'),
+            self::DISPLAY_SHOW => Yii::t('app', 'Yes'),
+            self::NOT_DISPLAY_SHOW => Yii::t('app', 'No'),
         ];
     }
 
@@ -122,8 +122,8 @@ class Menu extends \common\components\BaseModel
     public static function loadAbsoluteOptions()
     {
         return [
-            self::ABSOLUTE_URL => yii::t('app', 'Yes'),
-            self::NOT_ABSOLUTE_URL => yii::t('app', 'No'),
+            self::ABSOLUTE_URL => Yii::t('app', 'Yes'),
+            self::NOT_ABSOLUTE_URL => Yii::t('app', 'No'),
         ];
     }
 
@@ -186,6 +186,10 @@ class Menu extends \common\components\BaseModel
             $this->sort = 0;
         }
 
+        if ($this->parent_id == null) {
+            $this->parent_id = 0;
+        }
+        
         if ($this->isNewRecord && $this->getScenario() == 'frontend') {
             $this->type = self::MENU_TYPE_FRONTEND;
         }
@@ -196,12 +200,12 @@ class Menu extends \common\components\BaseModel
     public function beforeDelete()
     {
         if ($this->children) {
-            $this->addError('id', yii::t('app', 'Sub Menu exists, cannot be deleted'));
+            $this->addError('id', Yii::t('app', 'Sub Menu exists, cannot be deleted'));
             return false;
         }
 
         if($this->name === '首页') {
-            $this->addError('id', yii::t('app', 'Can not delete the home page'));
+            $this->addError('id', Yii::t('app', 'Can not delete the home page'));
             return false;            
         }
 

@@ -52,19 +52,19 @@ class FriendLinkSearch extends FriendLink
         $field = 'id';
         $sort = SORT_DESC;
 
-        if (isset($params['pageSize'])) {
-            $pageSize = $params['pageSize'];
+        // if (isset($params['pageSize'])) {
+        //     $pageSize = $params['pageSize'];
 
-            $pageCurrent = $params['pageCurrent']-1;
+        //     $pageCurrent = $params['pageCurrent']-1;
 
-            if (in_array(($params['orderField']), ['id', 'create_time', 'update_time', 'create_time_format', 'update_time_format'])) {
-                $field = $params['orderField'];
-            }
+        //     if (in_array(($params['orderField']), ['id', 'create_time', 'update_time', 'create_time_format', 'update_time_format'])) {
+        //         $field = $params['orderField'];
+        //     }
 
-            if (strtolower($params['orderDirection']) == 'asc') {
-                $sort = SORT_ASC;
-            }
-        }
+        //     if (strtolower($params['orderDirection']) == 'asc') {
+        //         $sort = SORT_ASC;
+        //     }
+        // }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

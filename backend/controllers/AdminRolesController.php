@@ -56,7 +56,7 @@ class AdminRolesController extends BackendController
         $model = new AdminRoles();
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
 
                 return $this->redirect(['index']);
             } else {
@@ -80,7 +80,7 @@ class AdminRolesController extends BackendController
         $model = $this->findModel($id);
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
 
                 return $this->redirect(['index']);
             } else {

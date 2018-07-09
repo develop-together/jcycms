@@ -24,7 +24,7 @@
 			                <div class="stat-percent font-bold text-info"><?= $data['proportion'] ?>% <i class="fa fa-level-up"></i>
 			                </div>
 		            	<?php endif; ?>
-		                <small><?= yii::t('app', 'Total') ?></small>
+		                <small><?= Yii::t('app', 'Total') ?></small>
 		            </div>
 		        </div>
 		    </div>
@@ -153,7 +153,7 @@
                         <?php if (PHP_OS == 'Linux') {
                             echo $serverStatics['mem']['num'];
                         } else {
-                            echo yii::t('app', 'Only supported linux system');
+                            echo Yii::t('app', 'Only supported linux system');
                         }
                         ?>
                     </small>
@@ -168,7 +168,7 @@
                         <?php if (PHP_OS == 'Linux') {
                             echo $serverStatics['real_mem']['num'];
                         } else {
-                            echo yii::t('app', 'Only supported linux system');
+                            echo Yii::t('app', 'Only supported linux system');
                         }
                         ?>
                     </small>

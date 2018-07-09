@@ -6,7 +6,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 AppAsset::register($this);
-$this->title = yii::t('app', 'Login');
+$this->title = Yii::t('app', 'Login');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php $this->beginPage();?>
@@ -77,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ['template' => "<div style='position:relative'>{input}\n{error}\n{hint}</div>"])
                                             ->textInput([
                                                 'autofocus' => true, 
-                                                'placeholder' => yii::t("app", "Username"),
+                                                'placeholder' => Yii::t("app", "Username"),
                                                 'class' => 'form-username form-control'
                                             ])
                                     ?>
@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <?= $form->field($model, 'password', [
                                         'template' => "<div style='position:relative'>{input}\n{error}\n{hint}</div>"])
                                             ->passwordInput([
-                                                'placeholder' => yii::t("app", "Password"),
+                                                'placeholder' => Yii::t("app", "Password"),
                                                  'class' => 'form-password form-control'
                                             ])
                                     ?>
@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ]) ?>
     
                                     <?= $form->field($model, 'rememberMe', ['template' => "<div style='position:relative' class='text-center'>{input}</div>"])->checkbox()?>
-                                    <?= Html::submitButton(yii::t("app", "Login"), [
+                                    <?= Html::submitButton(Yii::t("app", "Login"), [
                                     'class' => 'btn btn-primary',
                                     'name' => 'login-button',
                                     ])?>

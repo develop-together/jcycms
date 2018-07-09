@@ -70,7 +70,7 @@ class AdminUserController extends BackendController
             if ($model->load($post) && $model->validate()  && $model->save()) {
                 $rolesModel->user_id = $model->id;
                 if ($rolesModel->load($post) && $rolesModel->validate() && $rolesModel->save()) {
-                    Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                    Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                     return $this->redirect(['index']);
                 }
             } else {
@@ -118,7 +118,7 @@ class AdminUserController extends BackendController
                 && $model->save()  
                 && $rolesModel->validate() 
                 && $rolesModel->save()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
             } else {
                 $errors = $model->getErrors();
@@ -188,7 +188,7 @@ class AdminUserController extends BackendController
         $userModel->scenario = 'updateSelf';
         if (Yii::$app->request->isPost) {
             if($userModel->load(Yii::$app->request->post()) && $userModel->save()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
 
                 return $this->redirect(['admin-user/update-self']);            
             } else {

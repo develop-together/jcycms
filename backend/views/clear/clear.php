@@ -5,7 +5,7 @@
     <div class="col-sm-12">
         <div class="ibox">
             <div class="ibox-content">
-                <?= yii::t('app', 'Success') ?>
+                <?= Yii::t('app', 'Success') ?>
             </div>
         </div>
     </div>

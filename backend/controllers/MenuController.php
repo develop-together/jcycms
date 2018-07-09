@@ -65,7 +65,7 @@ class MenuController extends BackendController
         $model->scenario = 'backend';
         $model->target = '';
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+            Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
             return $this->redirect(['index']);
         }
 
@@ -85,7 +85,7 @@ class MenuController extends BackendController
         $model = $this->findModel($id);
         $model->scenario = 'backend';
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
         }
 

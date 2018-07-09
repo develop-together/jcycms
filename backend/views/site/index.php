@@ -7,7 +7,7 @@ use common\components\UserAcl;
 
 IndexAsset::register($this);
 
-$this->title = yii::t('app', 'Backend Manage System');
+$this->title = Yii::t('app', 'Backend Manage System');
 ?>
 <?php $this->beginPage();?>
 <!DOCTYPE html>
@@ -46,16 +46,16 @@ $this->title = yii::t('app', 'Backend Manage System');
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
                                 <li><a class="J_menuItem"
-                                       href="<?= Url::toRoute(['admin-user/update-self']) ?>"><?=yii::t('app', 'Profile')?></a>
+                                       href="<?= Url::toRoute(['admin-user/update-self']) ?>"><?=Yii::t('app', 'Profile')?></a>
                                 </li>
                                 <li><a class="J_menuItem"
-                                       href="<?= Url::toRoute(['article/index']) ?>"><?=yii::t('app', 'Articles')?></a>
+                                       href="<?= Url::toRoute(['article/index']) ?>"><?=Yii::t('app', 'Articles')?></a>
                                 </li>
                                 <li><a target="_blank"
-                                       href="javascript:;"><?=yii::t('app', 'Frontend')?></a>
+                                       href="javascript:;"><?=Yii::t('app', 'Frontend')?></a>
                                 </li>
                                 <li class="divider"></li>
-                                <li><a href="<?=Url::toRoute(['public/logout'])?>"><?=yii::t('app', 'Logout')?></a>
+                                <li><a href="<?=Url::toRoute(['public/logout'])?>"><?=Yii::t('app', 'Logout')?></a>
                                 </li>
                             </ul>
                         </div>
@@ -85,7 +85,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                             // echo UserAcl::getBackendMenus();
                          ?>
                     <!--动态菜单配置结束-->
-                <li><a href="gii/default" class="J_menuItem"><i class="fa fa-bolt"></i><span class="nav-label">GII</span></a></li>
+                <li><a href="<?= Url::toRoute(['gii/default/index']) ?>" class="J_menuItem"><i class="fa fa-bolt"></i><span class="nav-label">GII</span></a></li>
                 </ul>
             </div>
         </nav>
@@ -109,19 +109,19 @@ $this->title = yii::t('app', 'Backend Manage System');
                         </li>
                         <li class="hidden-xs">
                             <a href="<?=yii::$app->params['site']['url']?>" target='_blank'><i
-                                        class="fa fa-internet-explorer"></i> <?=yii::t('app', 'Frontend')?></a>
+                                        class="fa fa-internet-explorer"></i> <?=Yii::t('app', 'Frontend')?></a>
                         </li>
                         <li class="hidden-xs">
                             <a href="javascript:void(0)" onclick="reloadIframe()"><i
-                                        class="fa fa-refresh"></i> <?=yii::t('app', 'Refresh')?></a>
+                                        class="fa fa-refresh"></i> <?=Yii::t('app', 'Refresh')?></a>
                         </li>
                         <li class="hidden-xs">
                             <a href="javascript:;" data-index="0" target="_blank"><i
-                                        class="fa fa-cart-arrow-down"></i> <?=yii::t('app', 'Support')?></a>
+                                        class="fa fa-cart-arrow-down"></i> <?=Yii::t('app', 'Support')?></a>
                         </li>
                         <li class="dropdown hidden-xs">
                             <a class="right-sidebar-toggle" aria-expanded="false">
-                                <i class="fa fa-tasks"></i> <?=yii::t('app', 'Theme')?>
+                                <i class="fa fa-tasks"></i> <?=Yii::t('app', 'Theme')?>
                             </a>
                         </li>
                     </ul>

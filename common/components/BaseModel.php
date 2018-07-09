@@ -46,6 +46,8 @@ class BaseModel extends \yii\db\ActiveRecord
     public function image($attribute = '', $htmlOptions = [])
     {
         $src = $this->path($attribute);
+        $alt = isset($htmlOptions['alt']) ? $htmlOptions['alt'] : '';
+
         return Html::img($src, $htmlOptions);
     }
 
@@ -167,7 +169,7 @@ class BaseModel extends \yii\db\ActiveRecord
             $fullName = $uploadPath . $uniqid . '_' . $baseName . '.' . $extension;
             $filename = $uploadPath . $uniqid . '_' . $upload->baseName . '.' . $extension;
             if(! $upload->saveAs($fullName)) {
-                $this->addError($field, yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => yii::t('app', $attribute)]) . ': ' . $filename);
+                $this->addError($field, Yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => Yii::t('app', $attribute)]) . ': ' . $filename);
 
                 return false;                
             }
@@ -175,7 +177,7 @@ class BaseModel extends \yii\db\ActiveRecord
             $attachmentModel = new Attachment();
             $relativePath = str_replace(yii::getAlias('@backend/web/'), '', $filename);
             if (!$attachmentModel->saveAttachments($upload, $relativePath, $uploadPath)) {
-                $this->addError($field, yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => yii::t('app', $attribute)]) . ': ' . $filename);
+                $this->addError($field, Yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => Yii::t('app', $attribute)]) . ': ' . $filename);
 
                 return false; 
             }

@@ -49,19 +49,19 @@ class MenuSearch extends Menu
         $field = $this->searchType == 2 ? 'sort' : 'id';
         $sort = SORT_ASC;
 
-        if (isset($params['pageSize'])) {
-            $pageSize = $params['pageSize'];
+        // if (isset($params['pageSize'])) {
+        //     $pageSize = $params['pageSize'];
 
-            $pageCurrent = $params['pageCurrent']-1;
+        //     $pageCurrent = $params['pageCurrent']-1;
 
-            if (in_array(($params['orderField']), ['id', 'created_at', 'updated_at', 'created_at_format', 'updated_at_format'])) {
-                $field = $params['orderField'];
-            }
+        //     if (in_array(($params['orderField']), ['id', 'created_at', 'updated_at', 'created_at_format', 'updated_at_format'])) {
+        //         $field = $params['orderField'];
+        //     }
 
-            if (strtolower($params['orderDirection']) == 'desc') {
-                $sort = SORT_DESC;
-            }
-        }
+        //     if (strtolower($params['orderDirection']) == 'desc') {
+        //         $sort = SORT_DESC;
+        //     }
+        // }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

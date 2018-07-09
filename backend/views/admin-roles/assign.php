@@ -7,6 +7,7 @@ use backend\models\AdminRoles;
 
 ZtreeAsset::register($this);
 $this->title = Yii::t('app', 'Assign Permission');
+
 ?>
 
  <div class="row">

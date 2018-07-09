@@ -30,7 +30,7 @@ class LoginForm extends Model {
 				'verifyCode',
 				'captcha',
 				'captchaAction' => 'public/captcha',
-				'message' => yii::t('app', 'Verification code error.'),
+				'message' => Yii::t('app', 'Verification code error.'),
 			],
 			///注意这里，在百度中查到很多教程，这里写的都不一样，最 简单的写法就像我这种写法，当然还有其它各种写法
 		];
@@ -47,7 +47,7 @@ class LoginForm extends Model {
 		if (!$this->hasErrors()) {
 			$user = $this->getUser();
 			if (!$user || !$user->validatePassword($this->password)) {
-				$this->addError($attribute, yii::t('app', 'Incorrect username or password.'));
+				$this->addError($attribute, Yii::t('app', 'Incorrect username or password.'));
 			}
 		}
 	}
@@ -90,10 +90,10 @@ class LoginForm extends Model {
 
 	public function attributeLabels() {
 		return [
-			'username' => yii::t('app', 'Username'),
-			'password' => yii::t('app', 'Password'),
-			'rememberMe' => yii::t('app', 'rememberMe'),
-			'verifyCode' => yii::t('app', 'Captcha'),
+			'username' => Yii::t('app', 'Username'),
+			'password' => Yii::t('app', 'Password'),
+			'rememberMe' => Yii::t('app', 'rememberMe'),
+			'verifyCode' => Yii::t('app', 'Captcha'),
 		];
 	}
 }

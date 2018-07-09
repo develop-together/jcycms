@@ -6,8 +6,8 @@ use Yii;
 
 class Module extends \yii\gii\Module
 {
-    public $allowedIPs = ['*'];
-    public $controllerNamespace = 'gii\controllers';
+    // public $allowedIPs = ['*'];
+    // public $controllerNamespace = 'gii\controllers';
 
     public function init()
     {

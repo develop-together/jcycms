@@ -37,7 +37,13 @@ use common\models\FriendLink;
                                         ]
                                     ],
                                 ],
-								'url:url',
+								[
+                                    'attribute' => 'url',
+                                    'format' => 'raw',
+                                    'value' => function($model) {
+                                        return Html::a($model->url, $model->url, ['target' => '_blank']);
+                                    }
+                                ],
 								'target',
                                 [
                                     'attribute' => 'status',

@@ -132,8 +132,9 @@ class Menu extends \common\models\Menu
             $rabcModel = AuthItem::findOne(['menu_id' => $this->id]);
             $rabcModel = $rabcModel ? $rabcModel : new AuthItem();
             $rabcModel->menu_id = $this->id;
-            $rabcModel->rule_name = $this->url;
+            $rabcModel->rule_name = Url::toRoute($this->url);
             $rabcModel->method = strtoupper($this->methodFormat);
+            $rabcModel->rule_format = $rabcModel->rule_name  . ':' . $rabcModel->method;
             $rabcModel->description = $this->name . '(查看)';
             $rabcModel->save();
         }        

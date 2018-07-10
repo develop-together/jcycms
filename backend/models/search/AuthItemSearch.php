@@ -101,7 +101,7 @@ class AuthItemSearch extends AuthItem
             ->andFilterWhere(['like', 'description', $this->description]);
 
         if ($menuId) {
-            $query->andFilterWhere(['menu_id' => $this->menu_id]);
+            $query->andFilterWhere(['menu_id' => $menuId]);
         }
         
         return $dataProvider;

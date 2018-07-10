@@ -27,9 +27,9 @@ class BaseConfig
     const TARGET_BLANK = '_blank';
     const TARGET_SELF = '_self';
 
-    const HTTP_METHOD_ALL = 0;
-    const HTTP_METHOD_GET = 1;
-    const HTTP_METHOD_POST = 2;
+    // const HTTP_METHOD_ALL = 0;
+    // const HTTP_METHOD_GET = 1;
+    // const HTTP_METHOD_POST = 2;
 
     const INPUT_INPUT = 1;
     const INPUT_TEXTAREA = 2;
@@ -44,6 +44,11 @@ class BaseConfig
     const LANGUAGE_EN_US = 'en-US'; 
 
     const WEB_TEMPLATE_ONE = 'template1';
+
+    const HTTP_METHOD_GET = 'GET';
+    const HTTP_METHOD_POST = 'POST';
+    const HTTP_METHOD_PUT = 'PUT';
+    const HTTP_METHOD_DELETE = 'DELETE';
 
     public static function getYesNoItems($key = null)
     {
@@ -87,15 +92,15 @@ class BaseConfig
         return self::getItems($items, $key);
     }
 
-    public static function getHttpMethodItems($key = null)
-    {
-        $items = [
-            self::HTTP_METHOD_ALL => 'all',
-            self::HTTP_METHOD_GET => 'get',
-            self::HTTP_METHOD_POST => 'post',
-        ];
-        return self::getItems($items, $key);
-    }
+    // public static function getHttpMethodItems($key = null)
+    // {
+    //     $items = [
+    //         self::HTTP_METHOD_ALL => 'all',
+    //         self::HTTP_METHOD_GET => 'get',
+    //         self::HTTP_METHOD_POST => 'post',
+    //     ];
+    //     return self::getItems($items, $key);
+    // }
 
     public static function getArticleStatus($key = null)
     {
@@ -163,5 +168,17 @@ class BaseConfig
         ];
 
         return self::getItems($items, $key);        
+    }
+
+    public static function getHttpMethods($key = null)
+    {
+        $items = [
+            self::HTTP_METHOD_GET => self::HTTP_METHOD_GET,
+            self::HTTP_METHOD_POST => self::HTTP_METHOD_POST,
+            self::HTTP_METHOD_PUT => self::HTTP_METHOD_PUT,
+            self::HTTP_METHOD_DELETE => self::HTTP_METHOD_DELETE,
+        ];
+
+        return self::getItems($items, $key);
     }
 }

@@ -33,11 +33,11 @@ class AuthItem extends \common\components\BaseModel
     public function rules()
     {
         return [
-            [['menu_id', 'created_at', 'updated_at'], 'integer'],
+            [['menu_id', 'created_at', 'updated_at', 'sort'], 'integer'],
             [['rule_name', 'method'], 'required'],
             [['description'], 'string'],
             [['rule_name', 'method'], 'string', 'max' => 64],
-            [['rule_name'], 'unique'],
+            [['rule_format'], 'unique'],
         ];
     }
 
@@ -50,7 +50,9 @@ class AuthItem extends \common\components\BaseModel
             'id' => Yii::t('app', 'ID'),
             'menu_id' => Yii::t('app', 'Related menus'),
             'rule_name' => Yii::t('app', 'Rule Name'),
+            'rule_format' => Yii::t('app', 'Rule Name'),
             'method' => Yii::t('app', 'HTTP Method'),
+            'sort' => Yii::t('app', 'Sort'),
             'description' => Yii::t('app', 'Description'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),

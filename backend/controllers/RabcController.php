@@ -76,7 +76,7 @@ class RabcController extends BackendController
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
-                return $this->redirect(['index']);
+                return $this->redirect(['list', 'id' => $model->menu_id]);
             }
         }
 
@@ -100,7 +100,7 @@ class RabcController extends BackendController
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
-                return $this->redirect(['index']);
+                return $this->redirect(['list', 'id' => $model->menu_id]);
             }
         }
 

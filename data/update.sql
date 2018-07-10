@@ -277,6 +277,16 @@ DEFAULT CHARACTER SET=utf8
 COMMENT='权限规则表'
 ;
 
+#2018-07-10
+
+ALTER TABLE `byt_auth_item` ADD `sort` INT(11) NULL DEFAULT '0' AFTER `method`;
+
+ALTER TABLE `byt_auth_item` ADD `pid` INT(11) NULL DEFAULT '0' COMMENT '上级ID' AFTER `id`;
+
+ALTER TABLE `byt_auth_item`
+ADD COLUMN `rule_format`  varchar(100) NOT NULL COMMENT 'rule' AFTER `rule_name`,
+DROP INDEX `rule_unqiue` ,
+ADD UNIQUE INDEX `rule_unqiue` (`rule_format`) USING BTREE ;
 
 
 

@@ -60,6 +60,7 @@ $this->title = Yii::t('app', 'Permission Manage');
                                         'format' => 'ntext',
                                         'enableSorting' => false,
                                     ],
+                                    'sort',
     								'created_at:datetime',
     								'updated_at:datetime',
                                 [

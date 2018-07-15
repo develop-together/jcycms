@@ -14,12 +14,17 @@ use yii\widgets\DetailView;
                     'model' => $model,
                     'attributes' => [
                         'id',
-            'menu_id',
-            'rule_name',
-            'method',
-            'description:ntext',
-            'created_at',
-            'updated_at',
+                        [
+                            'attribute' => 'menu_id',
+                            'enableSorting' => false,
+                            'value' => function($model) {
+                                return $model->menuFormat;
+                            }
+                        ],
+                        'rule_format',
+                        'description:ntext',
+                        'created_at:datetime',
+                        'updated_at:datetime',
                     ],
 ]) ?>  
             </div>

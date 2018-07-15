@@ -14,13 +14,13 @@ use yii\widgets\DetailView;
                     'model' => $model,
                     'attributes' => [
                         'id',
-            'type',
-            'name',
-            'value:ntext',
-            'status',
-            'sort',
-            'created_at',
-            'updated_at',
+                        'type',
+                        'name',
+                        'value:ntext',
+                        'status',
+                        'sort',
+                        'created_at',
+                        'updated_at',
                     ],
 ]) ?>  
             </div>

@@ -288,6 +288,20 @@ ADD COLUMN `rule_format`  varchar(100) NOT NULL COMMENT 'rule' AFTER `rule_name`
 DROP INDEX `rule_unqiue` ,
 ADD UNIQUE INDEX `rule_unqiue` (`rule_format`) USING BTREE ;
 
+#2018-07-15
+
+ALTER TABLE `byt_auth_item`
+MODIFY COLUMN `menu_id`  int(11) NULL DEFAULT 0 AFTER `pid`;
+
+ALTER TABLE `byt_options`
+ADD COLUMN `input_type`  tinyint(2) NULL DEFAULT 0 COMMENT '输入类型' AFTER `type`;
+
+ALTER TABLE `byt_options`
+ADD COLUMN `title`  varchar(255) NOT NULL COMMENT '名称' AFTER `input_type`;
+
+
+
+
 
 
 

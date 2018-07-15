@@ -92,7 +92,7 @@ class RabcController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $pid = '')
     {
         $model = $this->findModel($id);
         
@@ -105,7 +105,7 @@ class RabcController extends BackendController
         }
 
         return $this->render('update', [
-            'pid' => $model->menu_id,
+            'pid' => $pid,
             'model' => $model,
         ]);
     }

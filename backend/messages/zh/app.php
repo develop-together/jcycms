@@ -343,4 +343,14 @@ return [
 	'Add to permissions' => '添加到权限',
 	'Top menu links can not be filled' => '顶级菜单链接可不填',
 	'Top-level menu links can be entered' => '顶级菜单链接可填写',
+	'Association Menu' => '关联菜单',
+	'AD' => '广告',
+	'Advertisement Name' => '广告名称',
+	'Advertisement Type' => '广告类型',
+	'Advertisement Flag' => '广告标识',
+	'Size' => '尺寸',
+	'Pixel' => '像素',
+	'Width' => '宽',
+	'Height' => '高',
+	'If you fill in the picture, it will be cut into that size. If you do not fill it, it will not be cut.' => '可不填，填写后图片将会裁剪成该尺寸，不填则不裁剪!'
 ];

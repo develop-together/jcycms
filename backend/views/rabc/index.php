@@ -24,12 +24,29 @@ use backend\grid\ActionColumn;
                                         'class' => 'yii\grid\CheckboxColumn'
                                     ],
                                     'id',
-								'menu_id',
-								'rule_name',
-								'method',
-								'description:ntext',
-								// 'created_at',
-								// 'updated_at',
+                                    [
+                                        'attribute' => 'menu_id',
+                                        'enableSorting' => false,
+                                        'value' => function($model) {
+                                            return $model->menuFormat;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'rule_name',
+                                        'enableSorting' => false,
+                                    ],
+                                    [
+                                        'attribute' => 'method',
+                                        'enableSorting' => false,
+                                    ],
+                                    [
+                                        'attribute' => 'description',
+                                        'format' => 'ntext',
+                                        'enableSorting' => false,
+                                    ],
+                                    'sort',
+                                    'created_at:datetime',
+                                    'updated_at:datetime',
                                 [
                                     'class' => 'backend\grid\ActionColumn',
                                     'template' => '{view}{update}{delete}',

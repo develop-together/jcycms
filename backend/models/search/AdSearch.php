@@ -5,12 +5,9 @@ namespace backend\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Options;
+use backend\models\Ad;
 
-/**
- * OptionsSearch represents the model behind the search form about `common\models\Options`.
- */
-class OptionsSearch extends Options
+class AdSearch extends Ad
 {
     /**
      * @inheritdoc
@@ -41,7 +38,7 @@ class OptionsSearch extends Options
      */
     public function search($params)
     {
-        $query = Options::find();
+        $query = Ad::find();
 
         // add conditions that should always apply here
 

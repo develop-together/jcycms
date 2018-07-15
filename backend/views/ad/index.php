@@ -15,20 +15,25 @@ use backend\grid\ActionColumn;
                 <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
                     <?= $this->render('_search', ['model' => $searchModel])?>
                 </div>
-                                    <?= GridView::widget([
+                    <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'columns' => [
                                 [
                                     'class' => 'yii\grid\CheckboxColumn'
                                 ],
                                 'id',
-								'type',
-								'name',
-								'value:ntext',
+								[
+                                    'attribute' => 'name',
+                                    'enableSorting' => false,
+                                ],
+                                'input_type',
+								'imgUrl',
+                                'url',
+                                'description',
 								'status',
-								// 'sort',
-								// 'created_at',
-								// 'updated_at',
+								'sort',
+								'created_at:datetime',
+								'updated_at:datetime',
                                 [
                                     'class' => 'backend\grid\ActionColumn',
                                     'template' => '{view}{update}{delete}',

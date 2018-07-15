@@ -47,7 +47,7 @@ class AuthItemSearch extends AuthItem
 
         $this->load($params);
 
-        $pageSize = 10;
+        $pageSize = 20;
         $pageCurrent = 0;
         $field = 'id';
         $sort = SORT_DESC;

@@ -73,9 +73,9 @@ use backend\grid\ActionColumn;
                                             
                                             return Html::a('<i class="fa fa-bars" aria-hidden="true"></i> ' . Yii::t('app', 'Permission Manage'), Url::toRoute(['rabc/list', 'id' => $model->id]), ['class' => 'btn btn-white btn-sm ']); 
                                         },
-                                        'create' => function($url, $model, $key) {
+/*                                        'create' => function($url, $model, $key) {
                                             return Html::a('<i class="fa fa-bars" aria-hidden="true"></i> ' . Yii::t('app', 'Create'), Url::toRoute(['menu/create-children', 'id' => $model->id]), ['class' => 'btn btn-white btn-sm']);  
-                                        }
+                                        }*/
                                     ],
                                     'template' => '{rabc}{create}{update}{delete}{view}',
                                 ],

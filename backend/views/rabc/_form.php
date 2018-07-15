@@ -2,8 +2,12 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use backend\models\Menu;
+use common\components\Utils;
 use common\components\BaseConfig;
 use common\widgets\ActiveForm AS BAF;
+$lists = Menu::getBackendQuery()->asArray()->all();
+$menuTree = Utils::tree_bulid($lists, 'id', 'parent_id');
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\AuthItem */
@@ -15,8 +19,15 @@ use common\widgets\ActiveForm AS BAF;
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title', ['pid' => $pid]) ?>
             <div class="ibox-content">
-                <?php $form = BAF::begin(); ?>    
-                    <?= $form->field($model, 'menu_id', ['options' => ['class' => 'hide']])->hiddenInput(['value' => $pid]); ?>
+                <?php $form = BAF::begin([]); ?>    
+
+                    <?php if (empty($pid)): ?>
+
+                        <?= $form->field($model, 'has_menu_id')->radioList(BaseConfig::getYesNoItems(), ['value' => 0]); ?>
+                        <?php echo $form->field($model, 'menu_id', ['options' => ['class' => 'hide']])->dropDownList(Menu::getDrowDownList($menuTree), ['prompt' => '请选择']); ?>
+                    <?php else: ?>
+                        <?= $form->field($model, 'menu_id', ['options' => ['class' => 'hide']])->hiddenInput(['value' => $pid]); ?>
+                    <?php endif ?>
                     
                     <?= $form->field($model, 'rule_format', ['options' => ['class' => 'hide']])->hiddenInput(); ?>
 
@@ -49,6 +60,7 @@ use common\widgets\ActiveForm AS BAF;
 </div>
 
 <?php 
+    $uniqid = Yii::$app->controller->_uniqid;
     $this->registerJs(<<<EOT
         $("#authitem-method").bind('blur', function() {
             var url = $("#authitem-rule_name").val();
@@ -57,7 +69,26 @@ use common\widgets\ActiveForm AS BAF;
             }
             var method = $(this).val().toUpperCase();
             $("#authitem-rule_format").val(url + ':' + method);
-        });    
+        }); 
+    
+        $("#rabc-form-$uniqid").bind('submit', function() {
+            var url = $("#authitem-rule_name").val();
+            if (url.substr(0, 1) !== '/') {
+                url = '/' + url;
+            }
+            var method = $("#authitem-method").val().toUpperCase();
+            $("#authitem-rule_format").val(url + ':' + method);
+            
+            return true;
+        })
+
+        $("input[name='AuthItem[has_menu_id]']").bind('click', function(){
+            if ($(this).val() == 1) {
+                $("div.field-authitem-menu_id").removeClass('hide');
+            } else {
+                $("div.field-authitem-menu_id").addClass('hide');
+            }
+        })
 EOT
     );
  ?>

@@ -19,6 +19,8 @@ use yii\helpers\ArrayHelper;
 class AuthItem extends \common\components\BaseModel
 {
 
+    public $has_menu_id = 1;
+    
     /**
      * @inheritdoc
      */
@@ -56,11 +58,17 @@ class AuthItem extends \common\components\BaseModel
             'description' => Yii::t('app', 'Description'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+            'has_menu_id' => Yii::t('app', 'Association Menu'),
         ]);
     }
 
     public function getMenu()
     {
         return $this->hasOne(Menu::className(), ['id' => 'menu_id']);
+    }
+
+    public function getMenuFormat()
+    {
+        return $this->menu ? $this->menu->name : Yii::t('app', 'Other');
     }
 }

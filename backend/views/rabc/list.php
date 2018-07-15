@@ -44,7 +44,7 @@ $this->title = Yii::t('app', 'Permission Manage');
                                         'attribute' => 'menu_id',
                                         'enableSorting' => false,
                                         'value' => function($model) {
-                                            return $model->menu->name;
+                                            return $model->menuFormat;
                                         }
                                     ],
     								[

@@ -91,6 +91,7 @@ return [
 	'Sub Title' => '副标题',
 	'Summary' => '概述',
 	'Content' => '正文内容',
+	'Original' => '原图',
 	'Thumb' => '缩略图',
 	'Seo Title' => 'seo标题',
 	'Seo Keyword' => 'seo关键字',

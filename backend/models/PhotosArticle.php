@@ -22,7 +22,7 @@ class PhotosArticle extends \common\models\Article
             return false;
         }
 
-        $uploaded = $this->uploadMultiple('photo_file_ids', '@thumb/' . date('Ymd') . '/');
+        $uploaded = $this->uploadMultiple('photo_file_ids', '@original/' . date('Ymd') . '/');
         // var_dump($uploaded);exit;
         $this->photo_file_ids = implode(',', $uploaded);
 

@@ -130,7 +130,7 @@ class BaseModel extends \yii\db\ActiveRecord
         return $result;
     }
 
-    public function uploadMultiple($field='thumb', $uploadAlias='@thumb/', $attribute='Thumb')
+    public function uploadMultiple($field='thumb', $uploadAlias='@original/', $attribute='Thumb')
     {
         $uploads = UploadedFile::getInstances($this, $field);
         $result = [];
@@ -143,13 +143,13 @@ class BaseModel extends \yii\db\ActiveRecord
         return $result;
     }
 
-    public function uploadOpreate($field='thumb', $uploadAlias='@thumb/', $attribute='Thumb', $UploadedFile= null)
+    public function uploadOpreate($field='thumb', $uploadAlias='@original/', $attribute='Thumb', $UploadedFile= null)
     {
         
         if (Yii::$app->id == 'app-api') {
             $upload = UploadedFile::getInstanceByName($field);
         } else {
-          $upload = $UploadedFile === null ? UploadedFile::getInstance($this, $field) : $UploadedFile;  
+            $upload = $UploadedFile === null ? UploadedFile::getInstance($this, $field) : $UploadedFile;  
         }
 
         if ($upload !== null) {
@@ -180,6 +180,14 @@ class BaseModel extends \yii\db\ActiveRecord
                 $this->addError($field, Yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => Yii::t('app', $attribute)]) . ': ' . $filename);
 
                 return false; 
+            }
+
+            // 给需要裁剪的地方加入裁剪(两种情况：1、系统开启图片裁剪并设置裁剪尺寸2、对于广告设置了宽高)
+            if ($this->formName() === 'Ad') {
+                if (!empty($this->width) && !empty($this->height)) {
+                    $imageTools = new ImageHelper();
+                    $this->thumbUrl = $imageTools->crop($fullName, $this->width, $this->height);
+                }
             }
 
             if(Yii::$app->id == 'app-api' || !$UploadedFile) {

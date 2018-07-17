@@ -14,13 +14,34 @@ use yii\widgets\DetailView;
                     'model' => $model,
                     'attributes' => [
                         'id',
-                        'type',
-                        'name',
-                        'value:ntext',
-                        'status',
+                        [
+                            'attribute' => 'name',
+                            'enableSorting' => false,
+                        ],
+                        [
+                            'attribute' => 'input_type',
+                            'value' => function($model) {
+                                return $model->adTypeFormat;
+                            }
+                        ],
+                        [
+                            'attribute' => 'imgUrl',
+                            'format' => 'raw',
+                            'value' => function($model) {
+                                return $model->imgFormat;
+                            }
+                        ],
+                        'url',
+                        'description',
+                        [
+                            'attribute' => 'status',
+                            'value' => function($model) {
+                                return $model->statusFormat;
+                            }
+                        ],
                         'sort',
-                        'created_at',
-                        'updated_at',
+                        'created_at:datetime',
+                        'updated_at:datetime',
                     ],
 ]) ?>  
             </div>

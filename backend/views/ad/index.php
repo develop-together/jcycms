@@ -26,11 +26,27 @@ use backend\grid\ActionColumn;
                                     'attribute' => 'name',
                                     'enableSorting' => false,
                                 ],
-                                'input_type',
-								'imgUrl',
+                                [
+                                    'attribute' => 'input_type',
+                                    'value' => function($model) {
+                                        return $model->adTypeFormat;
+                                    }
+                                ],
+								[
+                                    'attribute' => 'imgUrl',
+                                    'format' => 'raw',
+                                    'value' => function($model) {
+                                        return $model->imgFormat;
+                                    }
+                                ],
                                 'url',
                                 'description',
-								'status',
+								[
+                                    'attribute' => 'status',
+                                    'value' => function($model) {
+                                        return $model->statusFormat;
+                                    }
+                                ],
 								'sort',
 								'created_at:datetime',
 								'updated_at:datetime',

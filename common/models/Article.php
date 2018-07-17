@@ -69,7 +69,7 @@ class Article extends \common\components\BaseModel
              // [['file'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png',],  
              // [['file'], 'file', 'maxFiles' => 10,'extensions'=>'jpg,png,gif'], 
             [['content'], 'string'],
-            [['thumb', 'photo_file_ids'], 'safe'],
+            [['thumb', 'original', 'photo_file_ids'], 'safe'],
             [
                 [
                     'flag_headline',
@@ -171,6 +171,7 @@ class Article extends \common\components\BaseModel
             'title' => Yii::t('app', 'Title'),
             'sub_title' => Yii::t('app', 'Sub Title'),
             'summary' => Yii::t('app', 'Summary'),
+            'original' => Yii::t('app', 'Original'),
             'thumb' => Yii::t('app', 'Thumb'),
             'content' => Yii::t('app', 'Content'),
             'seo_title' => Yii::t('app', 'Seo Title'),

@@ -299,6 +299,12 @@ ADD COLUMN `input_type`  tinyint(2) NULL DEFAULT 0 COMMENT '输入类型' AFTER 
 ALTER TABLE `byt_options`
 ADD COLUMN `title`  varchar(255) NOT NULL COMMENT '名称' AFTER `input_type`;
 
+#2018-07-17
+
+ALTER TABLE `byt_article`
+ADD COLUMN `original`  varchar(255) NULL COMMENT '原图地址' AFTER `summary`;
+
+
 
 
 

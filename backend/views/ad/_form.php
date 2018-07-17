@@ -17,7 +17,7 @@ use common\components\BaseConfig;
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-                <?php $form = BAF::begin(); ?>    
+                <?php $form = BAF::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>    
 
                     <div class="hr-line-dashed"></div>
                     

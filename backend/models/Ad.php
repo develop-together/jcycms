@@ -5,7 +5,10 @@ namespace backend\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\helpers\Json;
+use yii\helpers\Html;
 use common\components\Utils;
+use common\components\BaseConfig;
 
 class Ad extends \common\models\Options
 {
@@ -16,6 +19,7 @@ class Ad extends \common\models\Options
 	public $description;
 	public $url;
 	public $imgUrl;
+    public $thumbUrl = '';
 	public $size;
 	public $width;
 	public $height;
@@ -24,10 +28,11 @@ class Ad extends \common\models\Options
     public function rules()
     {
         return [
-            [['title', 'imgUrl', 'url', 'name'], 'required'],
+            [['title', 'name'], 'required'],
             [['type', 'input_type', 'created_at', 'updated_at'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['name', 'target', 'description', 'url'], 'string', 'max' => 255],
             [['status'], 'string', 'max' => 1],
+            [['width', 'height'], 'safe'],
         ];
     }
 
@@ -62,16 +67,61 @@ class Ad extends \common\models\Options
         return key_exists($this->input_type, $items) ? $items[$this->input_type] : $this->input_type;
     }
 
+    public function getImgFormat()
+    {
+        $src = Yii::$app->request->baseUrl  . '/' . $this->imgUrl;
+        if ($this->thumbUrl) {
+            $src = Yii::$app->request->baseUrl  . '/' . $this->thumbUrl;
+        }
+
+        return Html::img($src, ['width' => 200]);
+    }
+
+    public function getStatusFormat()
+    {
+        return BaseConfig::getStatusItems($this->status);
+    }
+
     public function beforeSave($insert)
     {
     	if (!parent::beforeSave($insert)) {
     		return false;
     	}
 
-    	if (!$insert) {
+        $this->imgUrl = $this->uploadOpreate('imgUrl', '@ad' . '/' . date('Ymd') . '/', 'Image');
+        if (empty($this->imgUrl)) {
+            return false;
+        }
+
+    	if ($insert) {
     		$this->type = self::TYPE_AD;
     	}
 
+        $values = [
+            'description' => $this->description,
+            'url' => $this->url,
+            'imgUrl' => $this->imgUrl,
+            'thumbUrl' => $this->thumbUrl,
+            'target' => $this->target,
+            'width' => $this->width,
+            'height' => $this->height,
+        ];
+        $this->value = Json::encode($values);
+
     	return true;
+    }
+
+    public function afterFind()
+    {
+        $value = Json::decode($this->value, false);
+
+        $this->imgUrl = $value->imgUrl;
+        $this->url = $value->url;
+        $this->description = $value->description;
+        $this->imgUrl = trim($value->imgUrl);
+        $this->thumbUrl = trim($value->thumbUrl);
+        $this->target = $value->target;
+        $this->width = $value->width;
+        $this->height = $value->height;
     }
 }

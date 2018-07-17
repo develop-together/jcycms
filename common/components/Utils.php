@@ -20,6 +20,14 @@ use yii\web\UploadedFile;
  */
 class Utils {
 
+    public static function checkEncoding($string, $string_encoding)
+    {
+        $fs = $string_encoding == 'UTF-8' ? 'UTF-32' : $string_encoding;
+        $ts = $string_encoding == 'UTF-32' ? 'UTF-8' : $string_encoding;
+
+        return $string === mb_convert_encoding ( mb_convert_encoding ( $string, $fs, $ts ), $ts, $fs );       
+    }
+
     /*
      * 精确时间间隔函数
      * $time 发布时间 如 1356973323

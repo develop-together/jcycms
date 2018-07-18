@@ -7,8 +7,10 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\helpers\Json;
 use yii\helpers\Html;
+use yii\helpers\FileHelper;
 use common\components\Utils;
 use common\components\BaseConfig;
+use common\components\ImageHelper;
 
 class Ad extends \common\models\Options
 {
@@ -56,7 +58,7 @@ class Ad extends \common\models\Options
     {
     	return [
     		self::INPUT_TYPE_IMAGE => 'image',
-    		self::INPUT_TYPE_VIDEO => 'video'
+    		// self::INPUT_TYPE_VIDEO => 'video'
     	];
     }
 
@@ -89,6 +91,26 @@ class Ad extends \common\models\Options
     	}
 
         $this->imgUrl = $this->uploadOpreate('imgUrl', '@ad' . '/' . date('Ymd') . '/', 'Image');
+        if (!$insert) {
+            $imgUrl = $this->getOldAttribute('imgUrl');
+            $thumbUrl = $this->getOldAttribute('thumbUrl');
+            $imgPath = Yii::getAlias('@backend') . '/web/' . $imgUrl;
+            $thumbPath = Yii::getAlias('@backend') . '/web/' . $thumbUrl;
+            if ($thumbUrl && file_exists($thumbPath)) {
+                FileHelper::unlink($thumbPath); 
+                $this->thumbUrl = '';
+            }
+
+            if((!empty($this->width) && $this->width != $this->getOldAttribute('width')) || (!empty($this->height) && $this->height != $this->getOldAttribute('height'))) {
+                $imageHelper = new ImageHelper();
+                $this->thumbUrl = $imageHelper->thumbnail($imgPath, $this->width, $this->height); 
+            }
+
+            if ($imgUrl && $imgUrl != $this->imgUrl && file_exists($imgPath)) {
+                FileHelper::unlink($imgPath);  
+            }
+        }
+
         if (empty($this->imgUrl)) {
             return false;
         }
@@ -106,6 +128,7 @@ class Ad extends \common\models\Options
             'width' => $this->width,
             'height' => $this->height,
         ];
+
         $this->value = Json::encode($values);
 
     	return true;
@@ -123,5 +146,23 @@ class Ad extends \common\models\Options
         $this->target = $value->target;
         $this->width = $value->width;
         $this->height = $value->height;
+
+        $this->setOldAttributes([
+            'id' => $this->id,
+            'name' => $this->name,
+            'title' => $this->title,
+            'input_type' => $this->input_type,
+            'sort' => $this->sort,
+            'status' => $this->status,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'imgUrl' => $value->imgUrl,
+            'thumbUrl' => $value->thumbUrl,
+            'url' => $value->url,
+            'description' => $value->description,
+            'target' => $value->target,
+            'width' => $value->width,
+            'height' => $value->height,
+        ]);
     }
 }

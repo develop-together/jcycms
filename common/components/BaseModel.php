@@ -186,7 +186,7 @@ class BaseModel extends \yii\db\ActiveRecord
             if ($this->formName() === 'Ad') {
                 if (!empty($this->width) && !empty($this->height)) {
                     $imageTools = new ImageHelper();
-                    $this->thumbUrl = $imageTools->crop($fullName, $this->width, $this->height);
+                    $this->thumbUrl = $imageTools->thumbnail($fullName, $this->width, $this->height);
                 }
             }
 

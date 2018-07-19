@@ -31,6 +31,7 @@ class CategoryController extends Controller
      */
     public function actionIndex()
     {
+        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
         $searchModel = new CategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->post());
 

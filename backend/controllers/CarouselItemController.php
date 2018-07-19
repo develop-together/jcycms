@@ -31,6 +31,7 @@ class CarouselItemController extends BackendController
      */
     public function actionIndex()
     {
+        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
         $dataProvider = new ActiveDataProvider([
             'query' => CarouselItem::find(),
         ]);
@@ -42,6 +43,7 @@ class CarouselItemController extends BackendController
 
     public function actionList($id)
     {
+        Url::remember(Url::current(), 'BackendDynamic-list-' . $this->id);
         $query = CarouselItem::find()->where(['carousel_id' => $id]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

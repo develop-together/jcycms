@@ -11,6 +11,7 @@ use common\components\BackendController;
 use common\components\Utils;
 use yii\web\NotFoundHttpException;
 use backend\actions\DeleteAction;
+use yii\helpers\Url;
 
 class AdminRolesController extends BackendController
 {
@@ -27,6 +28,7 @@ class AdminRolesController extends BackendController
     
     public function actionIndex()
     {
+        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
         $dataProvider = new ActiveDataProvider([
             'query' => AdminRoles::find(),
             'sort' => [

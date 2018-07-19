@@ -6,7 +6,13 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\AdminRoles */
 
-$this->title = Yii::t('app', 'Roles');
+$this->title = $model->role_name;
+
+$this->params['breadcrumbs'] = [
+    ['label' => Yii::t('app', 'Role'), 'url' =>  Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
+    ['label' => $this->title],
+];
+
 ?>
 <div class="row">
     <div class="col-sm-12">

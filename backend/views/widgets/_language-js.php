@@ -1,11 +1,3 @@
-<?php
-/**
- * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
- * Created at: 2016-06-15 16:47
- */
-?>
 <script>
     var common = {
         chooseFile: "<?=Yii::t('app', 'Choose File')?>",

@@ -6,6 +6,7 @@ use backend\grid\GridView;
 use backend\grid\ActionColumn;
 
 $this->title = Yii::t('app', 'Permission Manage');
+
 ?>
 
 <div class="row">
@@ -19,7 +20,7 @@ $this->title = Yii::t('app', 'Permission Manage');
                     <a href="<?=Url::toRoute(['create', 'pid' => $menuId])?>" class="btn  btn-sm btn-success" title="<?= Yii::t('app', 'Create');?>" data-pjax="0">
                         <i class="fa fa-plus"></i> <?= Yii::t('app', 'Create');?>
                     </a>   
-                    <a href="<?=Url::toRoute(['delete'])?>" data-confirm="<?= yii::t('app', 'Realy to delete?')?>" class="btn btn-danger btn-sm multi-operate" title="<?= Yii::t('app', 'BatchDelete');?>" data-pjax="0">
+                    <a href="<?=Url::toRoute(['delete'])?>" data-confirm="<?= Yii::t('app', 'Realy to delete?')?>" class="btn btn-danger btn-sm multi-operate" title="<?= Yii::t('app', 'BatchDelete');?>" data-pjax="0">
                         <i class="fa fa-trash-o" ></i> <?= Yii::t('app', 'BatchDelete');?>
                     </a>        
                     <div class="pull-right" style="padding-top: 6px">                     

@@ -10,6 +10,7 @@ use backend\models\AdminRoles;
 use common\components\BackendController;
 use yii\web\NotFoundHttpException;
 use backend\actions\DeleteAction;
+use yii\helpers\Url;
 
 /**
  * AdminUserController implements the CRUD actions for User model.
@@ -33,6 +34,7 @@ class AdminUserController extends BackendController
      */
     public function actionIndex()
     {
+        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->post());
 

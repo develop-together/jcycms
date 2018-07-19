@@ -1,6 +1,11 @@
 <?php
 
-use yii\helpers\Html;
+use yii\helpers\Url;
+
+$this->params['breadcrumbs'] = [
+    ['label' => Yii::t('app', 'Role'), 'url' => Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
+    ['label' => Yii::t('app', 'Create') . Yii::t('app', 'Role')],
+];
 
 ?>
 <?= $this->render('_form', [

@@ -31,6 +31,7 @@ class RabcController extends BackendController
      */
     public function actionIndex()
     {
+        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
         $searchModel = new AuthItemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->post());
 
@@ -42,6 +43,7 @@ class RabcController extends BackendController
 
     public function actionList($id)
     {
+        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
         $searchModel = new AuthItemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->post(), $id);
 

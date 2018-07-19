@@ -4,6 +4,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 
+$this->title = $model->caption;
+
+$this->params['breadcrumbs'] = [
+    ['label' => 'Banner', 'url' => Url::previous('BackendDynamic-list-' . Yii::$app->controller->id)],
+    ['label' => $this->title],
+];
+
 ?>
 <div class="row">
     <div class="col-sm-12">

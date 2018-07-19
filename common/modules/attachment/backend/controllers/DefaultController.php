@@ -10,6 +10,7 @@ use yii\imagine\Image;
 use common\components\BackendController;
 use yii\web\NotFoundHttpException;
 use backend\actions\DeleteAction;
+use yii\helpers\Url;
 
 class DefaultController extends BackendController
 {

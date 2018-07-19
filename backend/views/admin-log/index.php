@@ -11,7 +11,6 @@ use yii\widgets\Pjax;
 <div class="row">
     <div class="col-sm-12">
         <div class="ibox">
-            <?= $this->render('/widgets/_ibox-index-title') ?>
             <?php //Pjax::begin(['id' => 'adminLog', 'enablePushState' => false]); ?>
                 <div class="ibox-content">
                     <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">

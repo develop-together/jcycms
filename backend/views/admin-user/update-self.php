@@ -11,7 +11,7 @@ $this->title = $model->username;
 <div class="row">
     <div class="col-sm-12">
         <div class="ibox">
-        	<?= $this->render('/widgets/_ibox-title') ?>
+        	<?php //echo $this->render('/widgets/_ibox-title') ?>
         	<div class="ibox-content">
                 <?php $form = ActiveForm::begin([
                             'id' => 'user-form',

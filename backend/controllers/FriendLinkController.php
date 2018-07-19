@@ -32,6 +32,7 @@ class FriendLinkController extends BackendController
      */
     public function actionIndex()
     {
+        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
         $searchModel = new FriendLinkSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->post());
 

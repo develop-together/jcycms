@@ -6,7 +6,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 $config = Config::loadData(true);
-
 AppAsset::register($this);
 ?>
  <?php $this->beginPage();?>

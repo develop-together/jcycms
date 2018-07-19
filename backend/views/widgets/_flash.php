@@ -1,10 +1,5 @@
 <?php
-/**
- * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
- * Created at: 2017-03-15 21:16
- */
+
 if (Yii::$app->getSession()->hasFlash('success')) {
     $successTitle = addslashes( Yii::t('app', 'Success') );
     $info = addslashes( Yii::$app->getSession()->getFlash('success') );

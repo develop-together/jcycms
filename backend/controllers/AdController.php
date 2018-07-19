@@ -25,6 +25,7 @@ class AdController extends BackendController
 
     public function actionIndex()
     {
+        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
         $searchModel = new AdSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->post());
 

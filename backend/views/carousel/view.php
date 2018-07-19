@@ -14,9 +14,9 @@ use yii\widgets\DetailView;
                     'model' => $model,
                     'attributes' => [
                         'id',
-            'key',
-            'title',
-            'status',
+                        'key',
+                        'title',
+                        'status',
                     ],
 ]) ?>  
             </div>

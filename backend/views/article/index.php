@@ -7,6 +7,8 @@ use backend\grid\ActionColumn;
 use common\components\BaseConfig;
 use backend\models\Article;
 
+$this->title = Yii::t('app', 'Article');
+
 ?>
 
 <div class="row">

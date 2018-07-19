@@ -31,6 +31,7 @@ class FrontendMenuController extends BackendController
      */
     public function actionIndex()
     {
+        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
         $searchModel = new MenuSearch(['scenario' => 'frontend']);
         $searchModel->searchType = 2;
         $dataProvider = $searchModel->search(Yii::$app->request->post());

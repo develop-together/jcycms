@@ -85,6 +85,7 @@ return [
 	'Login' => '登陆',
 	/*public*/
 	/*Article*/
+	'Article' => '文章',
 	'Category Id' => '分类ID',
 	'Category' => '分类',
 	'Title' => '标题',
@@ -235,6 +236,7 @@ return [
 	'Backend Menus' => '后台菜单',
 	'Frontend Menus' => '前台菜单',
 	'Administrators' => '管理员',
+	'Frontend Users' => '前台用户',
 	'Roles' => '角色',
 	'Friendly Links' => '友情链接',
 	'Environment' => '环境',
@@ -338,6 +340,7 @@ return [
 	'Account exception' => '账号异常',
 	'Related menus' => '相关菜单',
 	'Entry' => '进入',
+	'Permission' => '权限',
 	'Permission Manage' => '权限管理',
 	'Internal address external access' => '内部地址外部访问',
 	'Rule Name' => '路由',
@@ -345,6 +348,7 @@ return [
 	'Top menu links can not be filled' => '顶级菜单链接可不填',
 	'Top-level menu links can be entered' => '顶级菜单链接可填写',
 	'Association Menu' => '关联菜单',
+	'Banner' => 'Banner管理',
 	'AD' => '广告',
 	'Advertisement Name' => '广告名称',
 	'Advertisement Type' => '广告类型',

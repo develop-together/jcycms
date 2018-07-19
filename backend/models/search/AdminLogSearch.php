@@ -48,7 +48,12 @@ class AdminLogSearch extends AdminLog
         $this->load($params);
 
         $pageSize = 10;
+        $getParams = Yii::$app->request->getQueryParams();
         $pageCurrent = 0;
+        if (isset($getParams['page'])) {
+            $pageCurrent = $getParams['page'] - 1;
+        }
+        
         $field = 'id';
         $sort = SORT_DESC;
 

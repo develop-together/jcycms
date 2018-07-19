@@ -6,7 +6,12 @@ use backend\assets\ZtreeAsset;
 use backend\models\AdminRoles;
 
 ZtreeAsset::register($this);
-$this->title = Yii::t('app', 'Assign Permission');
+$this->title = $model->role_name . ':' . Yii::t('app', 'Assign Permission');
+
+$this->params['breadcrumbs'] = [
+    ['label' => Yii::t('app', 'Role'), 'url' =>  Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
+    ['label' => $this->title],
+];
 
 ?>
 

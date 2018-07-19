@@ -4,6 +4,12 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 
+$this->title = $model->name;
+
+$this->params['breadcrumbs'] = [
+    ['label' => Yii::t('app', 'Backend Menus'), 'url' =>  Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
+    ['label' => $this->title],
+];
 ?>
 <div class="row">
     <div class="col-sm-12">

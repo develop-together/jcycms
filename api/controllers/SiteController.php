@@ -11,7 +11,7 @@ namespace api\controllers;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
-use yii\web\Controller;
+use yii\rest\Controller;
 use api\models\Article;
 use backend\models\User;
 use api\components\SignatureFilter;
@@ -26,7 +26,8 @@ use yii\helpers\Json;
  */
 class SiteController extends Controller
 {
-    public $enableCsrfValidation = false;
+    
+    public $layout = false;
 
     public function init()
     {
@@ -37,7 +38,11 @@ class SiteController extends Controller
 
     public function behaviors()
     {
-        return ArrayHelper::merge(parent::behaviors(), [
+        $behaviors = parent::behaviors();
+        unset($behaviors['rateLimiter']);
+        unset($behaviors['contentNegotiator']);
+
+        return ArrayHelper::merge([
             'class' => SignatureFilter::className(),
             [
                 'class' => ApiCors::className(),
@@ -47,12 +52,14 @@ class SiteController extends Controller
                     'Access-Control-Allow-Headers' => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'AppKey', 'Nonce', 'SignatureString', 'RequetTime']
                 ]
             ]
-        ]);
+        ], $behaviors);
     }
 
     public function actionArticleList()
     {
-        $models = Article::find()->all();
+        $models = Article::find()
+         ->orderBy(['created_at' => SORT_DESC])
+         ->all();
         
         return ArrayHelper::toArray($models);
     }

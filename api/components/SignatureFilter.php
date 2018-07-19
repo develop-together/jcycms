@@ -37,11 +37,9 @@ class SignatureFilter extends ActionFilter
         if (Yii::$app->getRequest()->getMethod() === 'OPTIONS') {
             return true;
         }
- 
-        
+  
         $params = $this->getParams();
-/*        var_dump(!isset($params['_key']), !isset($params['_sign']), strlen($params['_nonce']) !== 32, !is_numeric($params['_time']), $params);
-        return true;*/
+
         // 参数完整性验证
         if (!isset($params['_key'])
             || !isset($params['_sign'])
@@ -51,14 +49,17 @@ class SignatureFilter extends ActionFilter
             || !is_numeric($params['_time'])
         ) {
             throw new BadRequestHttpException('请求参数不全, 或参数不规范');
+            // exit('请求参数不全, 或参数不规范');
         }
 
         if(Yii::$app->params['app_key'] !== $params['_key']) {
              throw new BadRequestHttpException('非法的app_key');
+             // exit('非法的app_key') ;
         }
 
         if (!isset($params['_time']) || $this->getIsTimeOut($params['_time'])) {
             throw new BadRequestHttpException('请求超时');
+            // exit('请求超时') ;
         }
 
         $requestSignature = $params['_sign'];
@@ -68,6 +69,7 @@ class SignatureFilter extends ActionFilter
         $signature = $this->getSignature($toSignString, Yii::$app->params['app_secret']);
         if ($requestSignature != $signature) {
             throw new BadRequestHttpException('签名错误' );
+            // exit('签名错误') ;
         }
 
         return true;

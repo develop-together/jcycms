@@ -13,13 +13,13 @@ return [
     'timeZone' => 'Asia/Shanghai',//默认时区
     'bootstrap' => ['log'],
     'components' => [
-        // 'user' => [
-        //     'class' => yii\web\User::className(),
-        //     'identityClass' => api\models\User::className(),
-        //     'enableAutoLogin' => false,
-        //     'enableSession' => false,
-        //     'loginUrl' => null,
-        // ],
+        'user' => [
+            'class' => yii\web\User::className(),
+            'identityClass' => null,
+            'enableAutoLogin' => false,
+            'enableSession' => false,
+            'loginUrl' => null,
+        ],
         'cache' => [
             'class' => yii\caching\FileCache::className(),
             'keyPrefix' => 'frontend',
@@ -47,7 +47,7 @@ return [
                 $data = preg_replace('@(?<=")\\\\\/uploads@', $website . '\/uploads', json_encode($response->data));
                 $data = json_decode($data, true);
                 $message = isset($data['message']) ? $data['message'] : $response->statusText;
-                if (isset($data['statusCode']) || (isset($data['status']) && isset($data['code']))) {
+                if (isset($data['statusCode']) || (isset($data['status']) && isset($data['code'])) || $response->getStatusCode() == 404) {
                     $data = '';
                 }
                 $response->data = [

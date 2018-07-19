@@ -12,7 +12,7 @@ return [
     'api_url' => 'http://api.jcycms.com.cn',
     'api_username' => 'admin',
     'api_password' => '$2y$13$eLoLOkmlHPzD4dchr2a4IOJjbJrFgN/1nBwUxFHjjxmt8drGPUUZy',
-    'web_site' => 'http://blog.yjcweb.tk',
+    'web_site' => 'http://www.yiibackend.com.cn',
     'app_key' => 'joBVVQxfMxDmhuxV20',
     'app_secret' => 'YJF5P8qCFJakF9Ve89ZcIstHKbkt4fVN',
 ];

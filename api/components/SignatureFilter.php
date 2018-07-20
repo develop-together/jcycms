@@ -91,11 +91,12 @@ class SignatureFilter extends ActionFilter
     public function getParams() {
         if (!$this->_params) {
             $request = Yii::$app->getRequest();
-            $this->_params = ArrayHelper::merge(
+            $this->_params = $this->getParamsToVue();
+/*            $this->_params = ArrayHelper::merge(
                 $request->getQueryParams(),
-                // $request->getBodyParams(),
+                $request->getBodyParams(),
                 $this->getParamsToVue()
-            );
+            );*/
         }
 
         return $this->_params;

@@ -19,7 +19,9 @@ use common\components\Utils;
 use yii\web\HttpException;
 use api\components\ApiCors;
 use yii\helpers\ArrayHelper;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
+use yii\filters\VerbFilter;
 
 /**
  * Site controller
@@ -41,27 +43,56 @@ class SiteController extends Controller
         $behaviors = parent::behaviors();
         unset($behaviors['rateLimiter']);
         unset($behaviors['contentNegotiator']);
-
+        
         return ArrayHelper::merge([
             'class' => SignatureFilter::className(),
             [
                 'class' => ApiCors::className(),
                 'cors' => [
-                    'Origin' => ['*'],
+                    'Origin' => [$_SERVER['HTTP_ORIGIN']],
                     'Access-Control-Allow-Credentials' => true,
                     'Access-Control-Allow-Headers' => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'AppKey', 'Nonce', 'SignatureString', 'RequetTime']
                 ]
-            ]
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['GET'],
+                    'logout' => ['GET'],
+                    'article-list' => ['GET']
+                ],
+            ],
         ], $behaviors);
     }
 
     public function actionArticleList()
     {
-        $models = Article::find()
-         ->orderBy(['created_at' => SORT_DESC])
-         ->all();
-        
-        return ArrayHelper::toArray($models);
+        $query = Article::find();
+        $getParams = Yii::$app->getRequest()->getQueryParams();
+        file_put_contents(Yii::getAlias('@api') . '/runtime/logs/vue_request_data.log', json_encode($getParams));
+        $pageSize = isset($getParams['pageSize']) ? $getParams['pageSize'] : 2;
+        $pageCurrent = isset($getParams['pageCurrent']) ? $getParams['pageCurrent'] - 1 : 0;
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => $pageSize,
+                'page' => $pageCurrent,
+            ],
+            'sort' =>[
+                'defaultOrder' =>[
+                    'created_at' => SORT_DESC,
+                ],
+            ],
+        ]);         
+        $totalCount = $dataProvider->getTotalCount();
+        // $pageCount = ceil($totalCount / $pageSize);
+
+        return ArrayHelper::toArray([
+            'totals' => $totalCount,
+            'pageCurrent' => $pageCurrent,
+            'pageSize' => $pageSize,
+            'da' => $dataProvider->getModels()
+        ]);
     }
 
     public function actionArticleCreate()

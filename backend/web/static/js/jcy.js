@@ -371,4 +371,30 @@ $(document).ready(function(){
             showPhotos(this, 3);
         });
     }
+
+    // pjax刷新
+    var container = $('.pjax-reload');
+    if (container.length) {
+        container.on('pjax:send',function(args){
+            layer.load(2);
+        });
+        container.on('pjax:complete',function(args){
+            layer.closeAll('loading');
+            $('table tr td a.title').bind('mouseover mouseout', function() {
+             showPhotos(this);
+            });
+        });
+    }
+
+    // 清空查询
+    $('.clear-search').on('click', function() {
+        // var csrfParam = $('meta[name="csrf-param"]').attr('content');
+        // var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        // $(this).closest('form').find('input, select').val('');
+        // $(this).closest('form').find('input[name="' + csrfParam + '"]').val(csrfToken);
+        // $(this).closest('form').submit();
+        var url = $(this).closest('form').attr('action');
+        window.location.href = url;
+    });
+
 })

@@ -48,7 +48,11 @@ class MenuSearch extends Menu
         $pageCurrent = 0;
         $field = $this->searchType == 2 ? 'sort' : 'id';
         $sort = SORT_ASC;
-
+        $getParams = Yii::$app->request->getQueryParams();
+        $pageCurrent = 0;
+        if (isset($getParams['page'])) {
+            $pageCurrent = $getParams['page'] - 1;
+        }
         // if (isset($params['pageSize'])) {
         //     $pageSize = $params['pageSize'];
 

@@ -37,7 +37,6 @@ class AdminUserController extends BackendController
         Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->post());
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

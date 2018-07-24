@@ -16,7 +16,8 @@ use yii\widgets\Pjax;
                     <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
                         <?= $this->render('_search', ['model' => $searchModel])?>
                     </div>
-                    <?= GridView::widget([
+                    <?php Pjax::begin(['id' => 'adminLog-pjax', 'enablePushState' => false, 'options' => ['class' => 'pjax-reload']]); ?>
+                        <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'columns' => [
                                 [
@@ -38,12 +39,26 @@ use yii\widgets\Pjax;
                                 ],
                             ]
                         ]); ?>
+                    <?php Pjax::end(); ?>
                 </div>
             <?php //Pjax::end(); ?>
         </div>
     </div>
-
-
 </div>
+<?php 
+//     $this->registerJs(<<<EOT
+//         var container = $('#adminLog-pjax');
+//         container.on('pjax:send',function(args){
+//             layer.load(2);
+//         });
+//         container.on('pjax:complete',function(args){
+//             layer.closeAll('loading');
+//             $('table tr td a.title').bind('mouseover mouseout', function() {
+//              showImage(this);
+//             });
+//         });
+// EOT
+//     );
+ ?>
 
 

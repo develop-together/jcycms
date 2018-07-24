@@ -42,6 +42,7 @@ return [
 	'previous' => '上一页',
 	'next' => '下一页',
 	'last' => '尾页',
+	'Each page' => '每页',
 	'No picture' => '无图',
 	'Realy to delete?' => '真的要删除吗？',
 	'Are you sure you want to delete this item?' => '确认要删除此项吗?',
@@ -357,5 +358,7 @@ return [
 	'Pixel' => '像素',
 	'Width' => '宽',
 	'Height' => '高',
-	'If you fill in the picture, it will be cut into that size. If you do not fill it, it will not be cut.' => '可不填，填写后图片将会裁剪成该尺寸，不填则不裁剪!'
+	'If you fill in the picture, it will be cut into that size. If you do not fill it, it will not be cut.' => '可不填，填写后图片将会裁剪成该尺寸，不填则不裁剪!',
+	'Display' => '显示',
+	'Bar' => '条',
 ];

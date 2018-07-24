@@ -54,6 +54,10 @@ class AdminLogSearch extends AdminLog
             $pageCurrent = $getParams['page'] - 1;
         }
         
+        if (isset($getParams['pageSize'])) {
+            $pageSize = $getParams['pageSize'];
+        }
+        
         $field = 'id';
         $sort = SORT_DESC;
 

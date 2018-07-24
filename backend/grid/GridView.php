@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
 use yii\widgets\LinkPager;
 use backend\assets\GridViewAsset;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\widgets\BaseListView;
 
 /**
@@ -26,7 +27,9 @@ class GridView extends \yii\grid\GridView
     public $tableOptions = ['class' => 'table table-hover table-bordered'];
 
     // public $layout = "{items}\n{pager}";
-    public $layout = "{items}\n<div class='row'><div class='col-sm-2' style='line-height: 567%'>{summary}</div><div class='col-sm-10'><div class='dataTables_paginate paging_simple_numbers'>{pager}</div></div></div>";
+    public $layout = "{items}\n<div class='row'><div class='pull-left' style='width:75%'><div class='col-sm-3' style='line-height: 567%'>{summary}</div><div class='col-sm-9'><div class='dataTables_paginate paging_simple_numbers'>{pager}</div></div></div>{changePage}</div>";
+
+    public $changePageOptions = [5, 10, 20, 50];
 
     public $pagerOptions = [
         'firstPageLabel' => '首页',
@@ -45,6 +48,25 @@ class GridView extends \yii\grid\GridView
      */
     public function init()
     {
+        $changePageHtml = '';
+        $params = Yii::$app->request->get();
+        $pageSize = isset($params['pageSize']) ? $params['pageSize'] : 10;
+        foreach ($this->changePageOptions as  $option) {
+            $selected = $pageSize == $option ? 'selected' : '';
+            $changePageHtml .= '<option value=\'' . $option . '\' ' . $selected . '>' . $option . '</option>';
+        }
+
+        $this->layout = str_replace('{changePage}', "<div class='pull-right' ><span>". Yii::t('app', 'Each page') . "" . Yii::t('app', 'Display') . "</span><select class='form-control change-page-size' style='width:100px;display:inline !important'>{$changePageHtml}</select><span>" . Yii::t('app', 'Bar') . "</span></div>", $this->layout);
+
+        $this->pagerOptions = [
+            'firstPageLabel' => Yii::t('app', 'first'),
+            'lastPageLabel' => Yii::t('app', 'last'),
+            'prevPageLabel' => Yii::t('app', 'previous'),
+            'nextPageLabel' => Yii::t('app', 'next'),
+            'options' => [
+                'class' => 'pagination',
+            ],
+        ];
         parent::init();
 
         $this->rowOptions = function ($model, $key, $index, $grid) {
@@ -94,6 +116,7 @@ class GridView extends \yii\grid\GridView
         return $class::widget($pager);
     }
 
+
     /**
      * @inheritdoc
      */
@@ -103,7 +126,35 @@ class GridView extends \yii\grid\GridView
         $options = Json::htmlEncode($this->getClientOptions());
         $view = $this->getView();
         GridViewAsset::register($view);
-        $view->registerJs("jQuery('#$id').yiiGridView($options);");
+        // $url = Url::current();
+        $view->registerJs(<<<JS
+            jQuery('#$id').yiiGridView($options);
+            jQuery('select.change-page-size').bind('change', function() {
+                var html = document.getElementsByTagName("html");
+                html[0].innerHTML = '';
+                var pageSize = parseInt($(this).val());
+                var url = window.location.href;
+                if (url.indexOf('?') > -1) {
+                    var query = url.split('?');
+                    url = query[0] + '?page=1&pageSize=' + pageSize;
+                } else {
+                    url += '?page=1&pageSize=' + pageSize;
+                }
+
+                // console.log(url);
+                // jQuery(document).pjax({url: url, container: '#adminLog-pjax'});
+                window.location.href = url;
+                // jQuery.ajax({
+                //     type: 'GET',
+                //     url: '',
+                //     data: {pageSize:pageSize, page: 1},
+                //     success: function(response) {
+                //         html[0].innerHTML = response;
+                //     }
+                // });
+            });
+JS
+        );
         BaseListView::run();
     }
 

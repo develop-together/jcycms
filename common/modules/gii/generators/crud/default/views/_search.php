@@ -41,7 +41,7 @@ foreach ($generator->getColumnNames() as $attribute) {
 ?>
     <div class="form-group" style="padding-bottom:10px;">
         <?= "<?= " ?>Html::submitButton('<?= Yii::t('app', 'Search') ?>', ['class' => 'btn btn-primary']) ?>
-        <?= "<?= " ?>Html::resetButton('<?= Yii::t('app', 'Reset') ?>', ['class' => 'btn btn-default']) ?>
+        <?= "<?= " ?>Html::resetButton('<i class="fa fa-undo"></i> <?= Yii::t('app', 'Clear Query') ?>', ['class' => 'btn btn-default clear-search']) ?>
     </div>
 
     <?= "<?php " ?>BAF::end(); ?>

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use backend\grid\GridView;
 use backend\grid\ActionColumn;
+use yii\widgets\Pjax;
 
 ?>
 
@@ -16,8 +17,8 @@ use backend\grid\ActionColumn;
                     <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
                         <?= (isset($searchModel)) ? $this->render('_search', ['model' => $searchModel]) : '' ?>
                     </div>     
-
-                    <?= GridView::widget([
+                    <?php Pjax::begin(['id' => 'rabc-pjax', 'enablePushState' => false, 'options' => ['class' => 'pjax-reload']]); ?>
+                        <?= GridView::widget([
                             'dataProvider' => $dataProvider,
                              'columns' => [
                                     [
@@ -53,7 +54,7 @@ use backend\grid\ActionColumn;
                                 ],
                             ]
                         ]); ?>
-
+                    <?php Pjax::end(); ?>
             </div>
 
             

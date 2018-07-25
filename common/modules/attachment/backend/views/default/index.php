@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use backend\grid\GridView;
 use backend\grid\ActionColumn;
+use yii\widgets\Pjax;
 
 ?>
 
@@ -12,7 +13,8 @@ use backend\grid\ActionColumn;
         <div class="ibox">
             <?php //echo $this->render('@backend/views/widgets/_ibox-index-title') ?>
             <div class="ibox-content">
-                <?= GridView::widget([
+                <?php Pjax::begin(['id' => 'attachment-pjax', 'enablePushState' => false, 'options' => ['class' => 'pjax-reload']]); ?>
+                    <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [
                             'id',
@@ -39,6 +41,7 @@ use backend\grid\ActionColumn;
                             ],
                         ]
                     ]); ?>
+                <?php Pjax::end(); ?>
             </div>
         </div>
     </div>

@@ -19,8 +19,8 @@ use yii\widgets\ActiveForm AS BAF;
     <?= $form->field($model, 'route') ?>
 
     <div class="form-group"  style="padding-bottom:10px;">
-        <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('<i class="fa fa-undo"></i>清空查询', ['class' => 'btn btn-default clear-search']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton('<i class="fa fa-undo"></i>' . Yii::t('app', 'Clear Query'), ['class' => 'btn btn-default clear-search']) ?>
     </div>
 
     <?php BAF::end(); ?>

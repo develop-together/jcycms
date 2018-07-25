@@ -71,4 +71,9 @@ class AuthItem extends \common\components\BaseModel
     {
         return $this->menu ? $this->menu->name : Yii::t('app', 'Other');
     }
+
+    public static function loadOtherAuth()
+    {
+        return self::find()->where(['menu_id' => null])->orderBy(['created_at' => SORT_DESC])->all();
+    }
 }

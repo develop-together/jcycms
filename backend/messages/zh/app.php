@@ -32,6 +32,7 @@ return [
 	'Error' => '失败',
 	'Add' => '新增',
 	'Search' => '搜索',
+	'Clear Query' => '清空查询',
 	'Users' => '用户',
 	'ID' => '序号',
 	'Nickname' => '昵称',
@@ -361,4 +362,5 @@ return [
 	'If you fill in the picture, it will be cut into that size. If you do not fill it, it will not be cut.' => '可不填，填写后图片将会裁剪成该尺寸，不填则不裁剪!',
 	'Display' => '显示',
 	'Bar' => '条',
+	'Representation of permissions' => '表示权限',
 ];

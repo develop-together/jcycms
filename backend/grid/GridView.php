@@ -116,7 +116,6 @@ class GridView extends \yii\grid\GridView
         return $class::widget($pager);
     }
 
-
     /**
      * @inheritdoc
      */

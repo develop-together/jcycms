@@ -116,9 +116,9 @@ class AdminRolesController extends BackendController
                 if ($postData['menuLists']) {
                     $menuLists = explode(',', $postData['menuLists']);
                     $delFlag = $this->deleteOldRolePermissions($id);
- /*                   if (!$delFlag) {
-                        Yii::$app->session->setFlash('error', "操作失败");
-                    }*/
+                    // if (!$delFlag) {
+                    //     Yii::$app->session->setFlash('error', "操作失败");
+                    // }
 
                     foreach ($menuLists as $value) {
                         $adminRolePermissionModel = $this->findAdminRolePermissionModel();
@@ -145,8 +145,12 @@ class AdminRolesController extends BackendController
 
         }
         
+        $adminRolePermissionLists = [];
+        $menuData = Menu::loadMenus($adminRolePermissionLists, $id);
+
         return $this->render('assign', [
             'model' => $model,
+            'menuData' => $menuData
         ]);
     }
 
@@ -174,11 +178,8 @@ class AdminRolesController extends BackendController
                 ->asArray()
                 ->all();
             $adminRolePermissionLists = !$adminRolePermissionLists ? [] : $adminRolePermissionLists;
-            $query = Menu::getBackendQuery();
-            $menuData =  Utils::tree_bulid($query->orderBy(['sort' => SORT_ASC])                       
-                        ->asArray()
-                        ->all(), 'id', 'parent_id');
-            $menuData = Menu::getMenuZtree($adminRolePermissionLists, $id, $menuData);
+
+            $menuData = Menu::loadMenus($adminRolePermissionLists, $id);
 
             return $menuData;
         }

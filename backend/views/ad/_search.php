@@ -35,8 +35,8 @@ use common\widgets\ActiveForm AS BAF;
     <?php // echo $form->field($model, 'updated_at') ?>
 
     <div class="form-group" style="padding-bottom:10px;">
-        <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton('<i class="fa fa-undo"></i>' . Yii::t('app', 'Clear Query'), ['class' => 'btn btn-default clear-search']) ?>
     </div>
 
     <?php BAF::end(); ?>

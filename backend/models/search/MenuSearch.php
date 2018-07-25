@@ -53,6 +53,10 @@ class MenuSearch extends Menu
         if (isset($getParams['page'])) {
             $pageCurrent = $getParams['page'] - 1;
         }
+        
+        if (isset($getParams['pageSize'])) {
+            $pageSize = $getParams['pageSize'];
+        }
         // if (isset($params['pageSize'])) {
         //     $pageSize = $params['pageSize'];
 

@@ -21,7 +21,7 @@ $menuTree = Utils::tree_bulid($lists, 'id', 'parent_id');
             <div class="ibox-content">
                 <?php $form = BAF::begin([]); ?>    
 
-                    <?php if (empty($pid)): ?>
+                    <?php if (empty($pid) && $model->isNewRecord): ?>
 
                         <?= $form->field($model, 'has_menu_id')->radioList(BaseConfig::getYesNoItems(), ['value' => 0]); ?>
                         <?php echo $form->field($model, 'menu_id', ['options' => ['class' => 'hide']])->dropDownList(Menu::getDrowDownList($menuTree), ['prompt' => '请选择']); ?>

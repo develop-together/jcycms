@@ -86,14 +86,24 @@ class Menu extends \common\models\Menu
 		}
 	}
 
-	public static function getMenuZtree($adminRolePermissionLists = [], $role_id = 0,&$tree = [], $url = '', $mode = 'roles')
+	public static function loadMenus($adminRolePermissionLists = [], $role_id)
+	{
+		$query = self::getBackendQuery();
+        $menuData =  Utils::tree_bulid($query->orderBy(['sort' => SORT_ASC])                       
+                    ->asArray()
+                    ->all(), 'id', 'parent_id');
+
+        return self::getMenuZtree($adminRolePermissionLists, $role_id, $menuData);
+	}
+
+	protected static function getMenuZtree($adminRolePermissionLists = [], $role_id = 0, &$tree = [], $url = '', $mode = 'roles')
 	{
         foreach ($tree as $key => $value) {
-            $value['data-url'] = isset($value['url']) && !empty($value['url']) ? $value['url'] : $url;
+            // $value['data-url'] = isset($value['url']) && !empty($value['url']) ? $value['url'] : $url;
             $value['url'] = 'javascript:;';
-            $value['open'] = false;
+            // $value['open'] = false;
             if ($mode == 'roles' && $role_id == AdminRoles::SUPER_ROLE_ID) {
-            	$value['chkDisabled'] = true;
+            	// $value['chkDisabled'] = true;
             	$value['checked'] = true;
             } elseif ($adminRolePermissionLists) {
             	foreach ($adminRolePermissionLists as $list) {
@@ -102,6 +112,7 @@ class Menu extends \common\models\Menu
             		}
             	}
             }
+            $value['roles'] = self::findOne($value['id'])->roles;
             if (isset($value['children'])) {
                 self::getMenuZtree($adminRolePermissionLists, $role_id, $value['children']);
             }  
@@ -123,6 +134,11 @@ class Menu extends \common\models\Menu
 		}
 
 		return rtrim($str, '，');
+	}
+
+	public function getRoles()
+	{
+		return $this->hasMany(AuthItem::className(), ['menu_id' => 'id']);
 	}
 
     public function afterSave($insert, $changedAttributes)

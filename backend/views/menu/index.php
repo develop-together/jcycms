@@ -17,6 +17,7 @@ use backend\grid\ActionColumn;
                 </div>
                    <?= GridView::widget([
                         'dataProvider' => $dataProvider,
+                        'layout' => '{items}',
                         'columns' => [
 								[
                                     'attribute' => 'name',

@@ -50,9 +50,15 @@ class UserSearch extends User
         $pageSize = 10;
         $pageCurrent = 0;
         $getParams = Yii::$app->request->getQueryParams();
+        $pageCurrent = 0;
         if (isset($getParams['page'])) {
             $pageCurrent = $getParams['page'] - 1;
         }
+        
+        if (isset($getParams['pageSize'])) {
+            $pageSize = $getParams['pageSize'];
+        }
+        
         $field = 'last_login_at';
         $sort = SORT_DESC;
 

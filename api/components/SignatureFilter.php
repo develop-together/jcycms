@@ -130,7 +130,7 @@ class SignatureFilter extends ActionFilter
         return implode("&", $normalized);
     }
 
-    function getSignature($str, $key)
+    public function getSignature($str, $key)
     {
         // return base64_encode(hash_hmac($this->algo, $str, $key, true));
         return hash_hmac($this->algo, $str, $key, false);

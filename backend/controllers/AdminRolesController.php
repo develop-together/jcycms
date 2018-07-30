@@ -12,6 +12,8 @@ use common\components\Utils;
 use yii\web\NotFoundHttpException;
 use backend\actions\DeleteAction;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 class AdminRolesController extends BackendController
 {
@@ -106,24 +108,48 @@ class AdminRolesController extends BackendController
         $model = $this->findModel($id);
         if (Yii::$app->request->isPost && $postData = Yii::$app->request->post()) {
             if ($model->id == AdminRoles::SUPER_ROLE_ID) {
-                Yii::$app->session->setFlash('error', "非法操作");
+                Yii::$app->session->setFlash('error', Yii::t('app', 'Illegal operation'));
                 return $this->redirect('index');
             }
-
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                
-                if ($postData['menuLists']) {
-                    $menuLists = explode(',', $postData['menuLists']);
-                    $delFlag = $this->deleteOldRolePermissions($id);
-                    // if (!$delFlag) {
-                    //     Yii::$app->session->setFlash('error', "操作失败");
-                    // }
+                // if ($postData['menuLists']) {
+                //     $menuLists = explode(',', $postData['menuLists']);
+                //     $delFlag = $this->deleteOldRolePermissions($id);
+                //     foreach ($menuLists as $value) {
+                //         $adminRolePermissionModel = $this->findAdminRolePermissionModel();
+                //         $adminRolePermissionModel->role_id = $id;
+                //         $adminRolePermissionModel->menu_id = $value;
+                //         if (!$adminRolePermissionModel->save()) {
+                //             $errors = [];
+                //             foreach ($adminRolePermissionModel->errors as $error) {
+                //                 $errors[] = $error[0];
+                //             }
 
-                    foreach ($menuLists as $value) {
-                        $adminRolePermissionModel = $this->findAdminRolePermissionModel();
-                        $adminRolePermissionModel->role_id = $id;
-                        $adminRolePermissionModel->menu_id = $value;
+                //             throw new \yii\web\BadRequestHttpException(implode(",", $errors));
+                //         }
+                //     }
+                // } 
+                if ($postData['rabcLists']) {
+                    $diffA = $diffB = [];
+                    $oldRabcLists = $postData['rabcLists'];
+                    $permissionsFormat = $model->getPermissionsFormat();
+                    $diffA = array_diff($postData['rabcLists'], $permissionsFormat);
+                    $diffB = array_diff($permissionsFormat, $postData['rabcLists']);
+                    if ($diffA && $diffB) {// 表示删除原来的同时新增
+                        $postData['rabcLists'] = $diffA;
+                        AdminRolePermission::deleteAll(['in', 'auth_id', $diffB]);                    
+                    } elseif ($diffA) {// 表示只新增
+                        $postData['rabcLists'] = $diffA;
+                    } elseif ($diffB) {// 表示只删除
+                        AdminRolePermission::deleteAll(['in', 'auth_id', $diffB]);
+                    }
+
+                    foreach ($postData['rabcLists'] as $key => $value) {
+                        // $value = Json::decode($json, false);
+                        $adminRolePermissionModel = $this->findAdminRolePermissionModel($value);
+                        $adminRolePermissionModel->auth_id = $value;
+                        $adminRolePermissionModel->role_id = $model->id;
                         if (!$adminRolePermissionModel->save()) {
                             $errors = [];
                             foreach ($adminRolePermissionModel->errors as $error) {
@@ -133,8 +159,9 @@ class AdminRolesController extends BackendController
                             throw new \yii\web\BadRequestHttpException(implode(",", $errors));
                         }
                     }
-                } 
-                Yii::$app->session->setFlash('success', "操作成功");
+                }     
+                Yii::$app->cache->set('_permission_list_' . $model->id, $oldRabcLists);           
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Success'));
                 $transaction->commit();
 
                 return $this->redirect(['assign', 'id' => $id]);
@@ -194,8 +221,9 @@ class AdminRolesController extends BackendController
         }
     }
 
-    protected function findAdminRolePermissionModel($id=0) {
-        if (($model = AdminRolePermission::findOne($id)) !== null) {
+    protected function findAdminRolePermissionModel($authId = null) 
+    {
+        if (($model = AdminRolePermission::find()->where(['auth_id' => $authId])->one()) !== null) {
             return $model;
         } else {
             return new AdminRolePermission();

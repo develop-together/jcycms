@@ -89,4 +89,32 @@ class AdminRoles extends \common\components\BaseModel
 
         return $roles;
     }
+
+    public function getPermissions()
+    {
+        return $this->hasMany(AdminRolePermission::className(), ['role_id' => 'id']);
+    }
+
+    public function getPermissionsFormat($refresh = false)
+    {
+        $data = [];
+        $cacheKey = '_permission_list_' . $this->id;
+        $cache = Yii::$app->cache;
+        if ($refresh) {
+            $cache->delete($cacheKey);
+        }
+
+        if ($cache->get($cacheKey)) {
+            return $cache->get($cacheKey);
+        }
+
+        if ($this->permissions) {
+            foreach ($this->permissions as $permission) {
+                $data[] = $permission->auth_id;
+            }
+        }
+        $cache->set($cacheKey, $data);
+
+        return $data;
+    }
 }

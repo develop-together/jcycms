@@ -304,6 +304,15 @@ ADD COLUMN `title`  varchar(255) NOT NULL COMMENT '名称' AFTER `input_type`;
 ALTER TABLE `byt_article`
 ADD COLUMN `original`  varchar(255) NULL COMMENT '原图地址' AFTER `summary`;
 
+#2018-07-27
+
+ALTER TABLE `byt_admin_role_permission`
+MODIFY COLUMN `menu_id`  int(11) UNSIGNED NULL COMMENT '菜单Id' AFTER `role_id`;
+
+#2018-07-30
+
+ALTER TABLE `byt_admin_role_permission`
+ADD COLUMN `auth_id`  int(11) NOT NULL DEFAULT 0 COMMENT '权限Id' AFTER `role_id`;
 
 
 

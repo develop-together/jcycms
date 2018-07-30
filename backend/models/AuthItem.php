@@ -35,7 +35,7 @@ class AuthItem extends \common\components\BaseModel
     public function rules()
     {
         return [
-            [['menu_id', 'created_at', 'updated_at', 'sort'], 'integer'],
+            [['menu_id', 'created_at', 'updated_at', 'sort', 'auth_id'], 'integer'],
             [['rule_name', 'method'], 'required'],
             [['description'], 'string'],
             [['rule_name', 'method'], 'string', 'max' => 64],
@@ -50,6 +50,7 @@ class AuthItem extends \common\components\BaseModel
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
             'id' => Yii::t('app', 'ID'),
+            'auth_id' => Yii::t('app', 'Permission'),
             'menu_id' => Yii::t('app', 'Related menus'),
             'rule_name' => Yii::t('app', 'Rule Name'),
             'rule_format' => Yii::t('app', 'Rule Name'),

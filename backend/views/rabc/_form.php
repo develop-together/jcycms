@@ -26,7 +26,7 @@ $menuTree = Utils::tree_bulid($lists, 'id', 'parent_id');
                         <?= $form->field($model, 'has_menu_id')->radioList(BaseConfig::getYesNoItems(), ['value' => 0]); ?>
                         <?php echo $form->field($model, 'menu_id', ['options' => ['class' => 'hide']])->dropDownList(Menu::getDrowDownList($menuTree), ['prompt' => '请选择']); ?>
                     <?php else: ?>
-                        <?= $form->field($model, 'menu_id', ['options' => ['class' => 'hide']])->hiddenInput(['value' => $pid]); ?>
+                        <?= $form->field($model, 'menu_id', ['options' => ['class' => 'hide']])->hiddenInput(['value' => $pid ? $pid : $model->menu_id]); ?>
                     <?php endif ?>
                     
                     <?= $form->field($model, 'rule_format', ['options' => ['class' => 'hide']])->hiddenInput(); ?>

@@ -11,6 +11,7 @@ $this->params['breadcrumbs'] = [
     ['label' => $this->title],
 ];
 $otherAuths = AuthItem::loadOtherAuth();
+$permissionsFormat = $model->getPermissionsFormat();
 
 ?>
 <style type="text/css">
@@ -47,21 +48,21 @@ $otherAuths = AuthItem::loadOtherAuth();
 					<?php foreach ($menuData as $key => $data): ?>
 				    <div class="form-group">
 						<div class="col-sm-1 text-left">
-                            <input type="checkbox"  value="<?= $data['id'] ?>"  id="menuList_<?= $data['id'] ?>_<?= Yii::$app->controller->_uniqid ?>"class="chooseAll" data-pid="<?= $data['parent_id'] ?>" data-url="<?= $data['url'] ?>">
+                            <input type="checkbox"  value="<?= $data['id'] ?>"  id="menuList_<?= $data['id'] ?>_<?= Yii::$app->controller->_uniqid ?>" class="chooseAll" data-pid="<?= $data['parent_id'] ?>" data-url="<?= $data['url'] ?>">
                             <label for="menuList_<?= $data['id'] ?>_<?= Yii::$app->controller->_uniqid ?>"><?= $data['name'] ?></label>
                         </div>
                         <?php if (isset($data['children']) && !empty($data['children'])): ?>
                         	<div class="col-sm-11">
 	                            <?php foreach ($data['children'] as $key2 => $value2): ?>
                                     <div class="col-sm-1 text-left">
-                                        <input type="checkbox"  value="<?= $value2['id'] ?>" id="menuList_<?= $value2['id'] ?>_<?= Yii::$app->controller->_uniqid ?>" data-pid="<?= $value2['parent_id'] ?>" data-url="<?= $value2['url'] ?>">
+                                        <input type="checkbox"  value="<?= $value2['id'] ?>" id="menuList_<?= $value2['id'] ?>_<?= Yii::$app->controller->_uniqid ?>" class="chooseAll" data-pid="<?= $value2['parent_id'] ?>" data-url="<?= $value2['url'] ?>">
                                         <label for="menuList_<?= $value2['id'] ?>_<?= Yii::$app->controller->_uniqid ?>"><?= $value2['name'] ?></label>  
                                     </div>
                                     <?php if ($value2['roles']): ?>
                                         <div class="col-sm-11">
                                             <?php foreach ($value2['roles'] as $role): ?>
                                                 <div style="display: inline;padding-left: 20px;" title="<?= $role->rule_name ?>">
-                                                    <input type="checkbox"  value="<?= $role->id ?>" id="roleList_<?= $role->id ?>_<?= Yii::$app->controller->_uniqid ?>" data-menuid="<?= $role->menu_id ?>" data-rule="<?= $role->rule_format ?>">
+                                                    <input type="checkbox" name="rabcLists[]" value='<?= $role->id ?>' id="roleList_<?= $role->id ?>_<?= Yii::$app->controller->_uniqid ?>" data-menuid="<?= $role->menu_id ?>" data-rule="<?= $role->rule_format ?>" <?php if (in_array($role->id, $permissionsFormat)): ?> checked <?php endif; ?>>
                                                     <label for="roleList_<?= $role->id ?>_<?= Yii::$app->controller->_uniqid ?>"  style="color:#ec7063"><?= $role->description ?></label>                                           
                                                 </div>
                                               <?php endforeach; ?>
@@ -73,7 +74,7 @@ $otherAuths = AuthItem::loadOtherAuth();
                         	<div class="col-sm-11">
 	                            <?php foreach ($data['roles'] as $role): ?>
 									<div style="display: inline;padding-left: 20px;" title="<?= $role->rule_name ?>">
-										<input type="checkbox"  value="<?= $role->id ?>" id="roleList_<?= $role->id ?>_<?= Yii::$app->controller->_uniqid ?>" data-menuid="<?= $role->menu_id ?>" data-rule="<?= $role->rule_format ?>">
+										<input type="checkbox"  name="rabcLists[]" value='<?= $role->id ?>' id="roleList_<?= $role->id ?>_<?= Yii::$app->controller->_uniqid ?>" data-menuid="<?= $role->menu_id ?>" data-rule="<?= $role->rule_format ?>" <?php if (in_array($role->id, $permissionsFormat)): ?> checked <?php endif; ?>>
 										<label for="roleList_<?= $role->id ?>_<?= Yii::$app->controller->_uniqid ?>"  style="color:#ec7063"><?= $role->description ?></label>	                            			
 									</div>
 	                              <?php endforeach; ?>
@@ -91,7 +92,7 @@ $otherAuths = AuthItem::loadOtherAuth();
                         <div class="col-sm-11">
                             <?php foreach ($otherAuths as $role): ?>
                                 <div style="display: inline;padding-left: 20px;" title="<?= $role->rule_name ?>">
-                                    <input type="checkbox"  value="<?= $role->id ?>" id="roleList_<?= $role->id ?>_<?= Yii::$app->controller->_uniqid ?>" data-menuid="<?= $role->menu_id ?>" data-rule="<?= $role->rule_format ?>">
+                                    <input type="checkbox"  name="rabcLists[]" value='<?= $role->id ?>' id="roleList_<?= $role->id ?>_<?= Yii::$app->controller->_uniqid ?>" data-menuid="<?= $role->menu_id ?>" data-rule="<?= $role->rule_format ?>" <?php if (in_array($role->id, $permissionsFormat)): ?> checked <?php endif; ?>>
                                     <label for="roleList_<?= $role->id ?>_<?= Yii::$app->controller->_uniqid ?>"  style="color:#ec7063"><?= $role->description ?></label>                                           
                                 </div>                              
                             <?php endforeach ?>
@@ -115,3 +116,18 @@ $otherAuths = AuthItem::loadOtherAuth();
         </div>
     </div>
 </div>
+<?php 
+    $this->registerJs(<<<JS
+        $("input.chooseAll").on('click', function() {
+            var checked = $(this).is(':checked');
+            var id = $(this).data('id');
+            var pid = $(this).data('pid');
+            if (checked) {
+                $(this).parent('div').next('div').find('input[type="checkbox"]').prop('checked', true);
+            } else {
+                $(this).parent('div').next('div').find('input[type="checkbox"]').prop('checked', false);
+            }
+        });
+JS
+    );
+ ?>

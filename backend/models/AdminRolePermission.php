@@ -32,8 +32,8 @@ class AdminRolePermission extends \common\components\BaseModel
     public function rules()
     {
         return [
-            [['role_id', 'menu_id'], 'required'],
-            [['role_id', 'opt_id', 'menu_id', 'created_at', 'updated_at'], 'integer'],
+            [['role_id'], 'required'],
+            [['role_id', 'opt_id', 'created_at', 'updated_at'], 'integer'],
         ];
     }
 
@@ -67,7 +67,7 @@ class AdminRolePermission extends \common\components\BaseModel
         }
 
         $this->isNewRecord && $this->opt_id = Yii::$app->user->id;
-
+        
         return true;
     }
 }

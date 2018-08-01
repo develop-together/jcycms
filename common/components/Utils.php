@@ -20,6 +20,18 @@ use yii\web\UploadedFile;
  */
 class Utils {
 
+    public static function mult_unique($array)
+    {
+      $return = [];
+      foreach ($array as $key => $v) {
+        if (!in_array($v, $return)) {
+            $return[] = $v;
+        }
+      }
+
+      return $return;
+    }
+
     public static function checkEncoding($string, $string_encoding)
     {
         $fs = $string_encoding == 'UTF-8' ? 'UTF-32' : $string_encoding;
@@ -231,7 +243,8 @@ class Utils {
      * 生成GUID
      * @return [type] [description]
      */
-    function guid() {
+    function guid() 
+    {
         if (function_exists('com_create_guid')) {
             return com_create_guid();
         } else {
@@ -252,7 +265,8 @@ class Utils {
     /**
      * 友好显示var_dump
      */
-    static public function dump( $var, $echo = true, $label = null, $strict = true ) {
+    static public function dump( $var, $echo = true, $label = null, $strict = true ) 
+    {
         $label = ( $label === null ) ? '' : rtrim( $label ) . ' ';
         if ( ! $strict ) {
             if ( ini_get( 'html_errors' ) ) {
@@ -280,7 +294,8 @@ class Utils {
     /**
      * 获取客户端IP地址
      */
-    static public function getClientIP() {
+    static public function getClientIP() 
+    {
         static $ip = NULL;
         if ( $ip !== NULL )
             return $ip;
@@ -303,7 +318,8 @@ class Utils {
     /**
      * 循环创建目录
      */
-    static public function mkdir( $dir, $mode = 0777 ) {
+    static public function mkdir( $dir, $mode = 0777 ) 
+    {
         if ( is_dir( $dir ) || @mkdir( $dir, $mode ) )
             return true;
         if ( ! mk_dir( dirname( $dir ), $mode ) )
@@ -314,7 +330,8 @@ class Utils {
     /**
      * 格式化单位
      */
-    static public function byteFormat( $size, $dec = 2 ) {
+    static public function byteFormat( $size, $dec = 2 ) 
+    {
         $a = array ( "B" , "KB" , "MB" , "GB" , "TB" , "PB" );
         $pos = 0;
         while ( $size >= 1024 ) {
@@ -333,7 +350,8 @@ class Utils {
      *            selected checked
      * @return string
      */
-    static public function selected( $string, $param = 1, $type = 'select' ) {
+    static public function selected( $string, $param = 1, $type = 'select' ) 
+    {
 
         $true = null;
         $return = null;
@@ -353,14 +371,16 @@ class Utils {
      *
      * @return unknown
      */
-    static public function method() {
+    static public function method() 
+    {
         return strtoupper( isset( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : 'GET' );
     }
 
     /**
      * 查询字符生成
      */
-    static public function buildCondition( array $getArray, array $keys = array() ) {
+    static public function buildCondition( array $getArray, array $keys = array() ) 
+    {
         $arr = array();
         if ( $getArray ) {
             foreach ( $getArray as $key => $value ) {
@@ -375,7 +395,8 @@ class Utils {
     /**
      * base64_encode
      */
-    static function b64encode( $string ) {
+    static function b64encode( $string ) 
+    {
         $data = base64_encode( $string );
         $data = str_replace( array ( '+' , '/' , '=' ), array ( '-' , '_' , '' ), $data );
         return $data;
@@ -384,7 +405,8 @@ class Utils {
     /**
      * base64_decode
      */
-    static function b64decode( $string ) {
+    static function b64decode( $string ) 
+    {
         $data = str_replace( array ( '-' , '_' ), array ( '+' , '/' ), $string );
         $mod4 = strlen( $data ) % 4;
         if ( $mod4 ) {
@@ -413,7 +435,8 @@ class Utils {
     /**
      * 验证邮箱
      */
-    public static function email( $str ) {
+    public static function email( $str ) 
+    {
         if ( empty( $str ) )
             return true;
         $chars = "/^([a-z0-9+_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z]{2,6}\$/i";
@@ -431,7 +454,8 @@ class Utils {
     /**
      * 验证手机号码
      */
-    public static function mobile( $str ) {
+    public static function mobile( $str ) 
+    {
         if ( empty( $str ) ) {
             return true;
         }
@@ -442,7 +466,8 @@ class Utils {
     /**
      * 验证固定电话
      */
-    public static function tel( $str ) {
+    public static function tel( $str )
+    {
         if ( empty( $str ) ) {
             return true;
         }
@@ -453,7 +478,8 @@ class Utils {
     /**
      * 验证qq号码
      */
-    public static function qq( $str ) {
+    public static function qq( $str ) 
+    {
         if ( empty( $str ) ) {
             return true;
         }
@@ -464,7 +490,8 @@ class Utils {
     /**
      * 验证邮政编码
      */
-    public static function zipCode( $str ) {
+    public static function zipCode( $str ) 
+    {
         if ( empty( $str ) ) {
             return true;
         }
@@ -475,7 +502,8 @@ class Utils {
     /**
      * 验证ip
      */
-    public static function ip( $str ) {
+    public static function ip( $str ) 
+    {
         if ( empty( $str ) )
             return true;
 
@@ -492,7 +520,8 @@ class Utils {
     /**
      * 验证身份证(中国)
      */
-    public static function idCard( $str ) {
+    public static function idCard( $str ) 
+    {
         $str = trim( $str );
         if ( empty( $str ) )
             return true;
@@ -506,7 +535,8 @@ class Utils {
     /**
      * 验证网址
      */
-    public static function url( $str ) {
+    public static function url( $str ) 
+    {
         if ( empty( $str ) )
             return true;
 
@@ -518,7 +548,8 @@ class Utils {
      * @param $ip
      * return :ip,beginip,endip,country,area
      */
-    public static function getlocation( $ip = '' ) {
+    public static function getlocation( $ip = '' ) 
+    {
         $ip = new XIp();
         $ipArr = $ip->getlocation( $ip );
         return $ipArr;
@@ -653,7 +684,8 @@ class Utils {
      * @param $length
      * @param $dot
      */
-    public static function cutstr( $string, $length, $dot = '...', $charset = 'utf-8' ) {
+    public static function cutstr( $string, $length, $dot = '...', $charset = 'utf-8' ) 
+    {
         if ( strlen( $string ) <= $length )
             return $string;
 
@@ -740,7 +772,8 @@ class Utils {
      *
      * @return unknown
      */
-    public static function isEnglist( $param ) {
+    public static function isEnglist( $param ) 
+    {
         if ( ! eregi( "^[A-Z0-9]{1,26}$", $param ) ) {
             return false;
         } else {
@@ -754,7 +787,8 @@ class Utils {
      * @param $http
      * @return  string
      */
-    public static function convertHttp( $url ) {
+    public static function convertHttp( $url ) 
+    {
         if ( $url == 'http://' || $url == '' )
             return '';
 
@@ -769,7 +803,8 @@ class Utils {
     /*
         标题样式格式化
     */
-    public static function titleStyle( $style ) {
+    public static function titleStyle( $style ) 
+    {
         $text = '';
         if ( $style['bold'] == 'Y' ) {
             $text .='font-weight:bold;';
@@ -823,7 +858,8 @@ class Utils {
     /*
         标题样式恢复
     */
-    public static function titleStyleRestore( $serialize, $scope = 'bold' ) {
+    public static function titleStyleRestore( $serialize, $scope = 'bold' ) 
+    {
         $unserialize = unserialize( $serialize );
         if ( $unserialize['bold'] =='Y' && $scope == 'bold' )
             return 'Y';
@@ -840,7 +876,8 @@ class Utils {
      * @param $dirname
      * @return unknown
      */
-    public static function getDir( $dirname ) {
+    public static function getDir( $dirname ) 
+    {
         $files = array();
         if ( is_dir( $dirname ) ) {
             $fileHander = opendir( $dirname );
@@ -865,7 +902,8 @@ class Utils {
      * @param $dirname
      * @return unknown
      */
-    public static function getFile( $dirname ) {
+    public static function getFile( $dirname ) 
+    {
         $files = array();
         if ( is_dir( $dirname ) ) {
             $fileHander = opendir( $dirname );
@@ -891,7 +929,8 @@ class Utils {
      *
      * @return [type] [description]
      */
-    public static function imageListSerialize( $data ) {
+    public static function imageListSerialize( $data ) 
+    {
         $var = array();
         foreach ( (array)$data['file'] as $key => $row ) {
             if ( $row ) {
@@ -909,7 +948,8 @@ class Utils {
      * @param  $string
      * @return string
      */
-    static function stripslashes($string) {
+    static function stripslashes($string) 
+    {
         if(is_array($string)) {
             foreach($string as $key => $val) {
                 $string[$key] = self::stripslashes($val);
@@ -926,7 +966,8 @@ class Utils {
      * @param  $force
      * @return string
      */
-   static function addslashes($string, $force = 1) {
+   static function addslashes($string, $force = 1) 
+   {
         if(is_array($string)) {
             foreach($string as $key => $val) {
                 $string[$key] = self::addslashes($val, $force);
@@ -940,7 +981,8 @@ class Utils {
     /**
      * 格式化内容
      */
-    static function formatHtml($content, $options = ''){
+    static function formatHtml($content, $options = '')
+    {
         $purifier = new HtmlPurifier();
         if($options != false)
             $purifier->options = $options;

@@ -47,11 +47,11 @@ class BackendController extends BaseController
 		/**
 		 * 权限检查
 		 * @var [type]
-		 */		
-		
+		 */	
 		try {
 			// in_array($action->id, ['index', 'create', 'update', 'delete', 'view']) && 
-			if (!UserAcl::hasAcl($this->id . '/' . $action->id)) {
+            $route = $this->route . ':' . strtoupper(Yii::$app->request->getMethod());
+			if (!UserAcl::hasAcl($route)) {
                 if (yii::$app->request->isAjax) {
                     yii::$app->getResponse()->content = json_encode(['code' => 1001, 'message' => Yii::t("app", "Permission denied")]);
                     yii::$app->getResponse()->send();	

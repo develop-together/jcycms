@@ -323,7 +323,7 @@ class User extends BaseModel implements IdentityInterface
         $aclLists = [];
         if ($roleAclLists) {
         	foreach ($roleAclLists as $list) {
-        		$aclLists[] = $list->menu ? $list->menu->url : '';
+        		$aclLists[] = ltrim($list->rabc ? $list->rabc->rule_format : '', '/');
         	}
         }
 

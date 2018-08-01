@@ -33,7 +33,7 @@ class AdminRolePermission extends \common\components\BaseModel
     {
         return [
             [['role_id'], 'required'],
-            [['role_id', 'opt_id', 'created_at', 'updated_at'], 'integer'],
+            [['role_id', 'opt_id', 'auth_id', 'created_at', 'updated_at'], 'integer'],
         ];
     }
 
@@ -46,6 +46,7 @@ class AdminRolePermission extends \common\components\BaseModel
             'id' => Yii::t('app', 'ID'),
             'role_id' => Yii::t('app', 'Role Id'),
             'menu_id' => Yii::t('app', 'Menu Id'),
+            'auth_id' => Yii::t('app', 'Permission'),
             'opt_id' => Yii::t('app', 'Use ID'),
             'name' => Yii::t('app', 'Name'),
             'url' => Yii::t('app', 'Url'),
@@ -58,6 +59,11 @@ class AdminRolePermission extends \common\components\BaseModel
     public function getMenu()
     {
         return $this->hasOne(Menu::ClassName(), ['id' => 'menu_id']);
+    }
+
+    public function getRabc()
+    {
+        return $this->hasOne(AuthItem::ClassName(), ['id' => 'auth_id']);
     }
 
     public function beforeSave($insert)

@@ -8,6 +8,7 @@ use common\components\UserAcl;
 IndexAsset::register($this);
 
 $this->title = Yii::t('app', 'Backend Manage System');
+
 ?>
 <?php $this->beginPage();?>
 <!DOCTYPE html>

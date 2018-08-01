@@ -5,6 +5,7 @@ namespace backend\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use common\components\Utils;
+use common\components\TreeHelper;
 use yii\helpers\Url;
 
 /**
@@ -36,30 +37,23 @@ class Menu extends \common\models\Menu
 
 	protected function chilrdenDatas($data, $parent_id, $lv = 0)
 	{
-		$result = [];
-		foreach ($data as $key => $value) {
-			if ($value['parent_id'] == $parent_id) {
-				$value['lv'] = $lv;
-				$result[] = $value;
-				$result = array_merge($result, $this->chilrdenDatas($data, $value['id'], $lv+1));
-			}
-		}
+		$tree = new TreeHelper($data, true, 2, [
+			'fpid' => $parent_id,
+			'root' => $lv
+		]);
 
-		return $result;
+		return $tree->getTree();
+
 	}
 
 	protected function chilrdenDatasToObject($object, $parent_id, $lv = 0)
 	{
-		$result = [];
-		foreach ($object as $obj) {
-			if ($obj->parent_id == $parent_id) {
-				$obj->lv = $lv;
-				$result[] = $obj;
-				$result = array_merge($result, $this->chilrdenDatas($object, $obj->id, $lv+1));
-			}
-		}
+		$tree = new TreeHelper($object, true, 3,  [
+			'fpid' => $parent_id,
+			'root' => $lv
+		]);
 
-		return $result;
+		return $tree->getTree();
 	}
 
 	public static function getBackendQuery($display=false)

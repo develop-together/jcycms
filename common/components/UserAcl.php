@@ -16,13 +16,15 @@ class UserAcl
 	public static function publicAclList()
 	{
 		return [
-			'site/index',
-			'site/desktop', 
-			'site/test',
-			'public/captcha',
-			'public/logout',
-			'public/login',
-			'admin-user/info',
+			'site/index:GET',
+			'site/desktop:GET', 
+			'site/test:GET',
+			'public/captcha:GET',
+			'public/logout:GET',
+			'public/login:GET',
+			'public/login:POST',
+			'admin-user/info:GET',
+			'admin-user/info:POST',
 		];
 	}	
 
@@ -63,17 +65,23 @@ class UserAcl
 		!$userId && $userId = Yii::$app->user->id;
 		$query = Menu::getBackendQuery(true);
 		$data = $query->orderBy(['sort' => SORT_ASC, 'id' => SORT_DESC])->asArray()->all();
+		$tree = new TreeHelper($data, true, 2);
 		if ($userId != User::SUPER_MANAGER && $data) {
 			$user = User::findOne($userId);
+			$newData = [];
 			foreach ($data as $key => $value) {
-				if (!$user->hasAcl($value['url'])) {
-					unset($data[$key]);
+				if (empty($value['url']) || (strpos($value['url'], 'javascript') !== false) || ($value['url'] === '/')) {
 					continue;
+				}
+				$route = $value['url'] . ':GET';
+				if ($user->hasAcl($route)) {
+					$parentTree = $tree->spanningParentTree($value['id'], $data);
+					$newData = array_merge($newData, $parentTree);
 				}
 			}
 		}
 
-       	return self::recurrenceCreateMenu(Utils::tree_bulid($data, 'id', 'parent_id'));
+       	return self::recurrenceCreateMenu(Utils::tree_bulid(Utils::mult_unique($newData), 'id', 'parent_id'));
 	}
 
 	private static function recurrenceCreateMenu($tree)

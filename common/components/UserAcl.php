@@ -79,9 +79,11 @@ class UserAcl
 					$newData = array_merge($newData, $parentTree);
 				}
 			}
+			$data = $newData;
+			unset($newData);
 		}
 
-       	return self::recurrenceCreateMenu(Utils::tree_bulid(Utils::mult_unique($newData), 'id', 'parent_id'));
+       	return self::recurrenceCreateMenu(Utils::tree_bulid(Utils::mult_unique($data), 'id', 'parent_id'));
 	}
 
 	private static function recurrenceCreateMenu($tree)

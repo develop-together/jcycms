@@ -20,9 +20,17 @@ return [
             'enableSession' => false,
             'loginUrl' => null,
         ],
+        'session' => [
+            'class'   => 'yii\redis\Session',
+            'timeout' => 86400 * 3,
+            'keyPrefix' => 'api_session',
+            'redis' => [
+                'database' => 10,
+            ],
+        ],
         'cache' => [
             'class' => yii\caching\FileCache::className(),
-            'keyPrefix' => 'frontend',
+            'keyPrefix' => 'api',
         ],
         'log' => [//此项具体详细配置，请访问http://wiki.feehi.com/index.php?title=Yii2_log
             'traceLevel' => YII_DEBUG ? 3 : 0,

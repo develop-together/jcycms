@@ -9,60 +9,25 @@
 namespace api\controllers;
 
 use Yii;
+use api\components\BaseApiController;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
-use yii\rest\Controller;
 use api\models\Article;
 use backend\models\User;
-use api\components\SignatureFilter;
 use common\components\Utils;
 use yii\web\HttpException;
-use api\components\ApiCors;
 use yii\helpers\ArrayHelper;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Json;
-use yii\filters\VerbFilter;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends BaseApiController
 {
-    
-    public $layout = false;
-
-    public function init()
-    {
-        parent::init();
-        // file_put_contents(Yii::getAlias('@api') . '/runtime/logs/vue_request_data.log', Json::encode(['time' => date('Y-m-d H:i:s'), 'method' => Yii::$app->getRequest()->getMethod(), 'data' => Utils::get_request_payload(), 'header' => Yii::$app->request->headers]). "\r\n-------\r\n", FILE_APPEND);
-        return true;
-    }
 
     public function behaviors()
     {
-        $behaviors = parent::behaviors();
-        unset($behaviors['rateLimiter']);
-        unset($behaviors['contentNegotiator']);
-        
-        return ArrayHelper::merge([
-            'class' => SignatureFilter::className(),
-            [
-                'class' => ApiCors::className(),
-                'cors' => [
-                    'Origin' => [$_SERVER['HTTP_ORIGIN']],
-                    'Access-Control-Allow-Credentials' => true,
-                    'Access-Control-Allow-Headers' => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'AppKey', 'Nonce', 'SignatureString', 'RequetTime']
-                ]
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['GET'],
-                    'logout' => ['GET'],
-                    'article-list' => ['GET']
-                ],
-            ],
-        ], $behaviors);
+        return parent::behaviors();
     }
 
     public function actionArticleList()

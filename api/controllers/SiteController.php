@@ -36,7 +36,7 @@ class SiteController extends BaseApiController
         $getParams = Yii::$app->getRequest()->getQueryParams();
         file_put_contents(Yii::getAlias('@api') . '/runtime/logs/vue_request_data.log', json_encode($getParams));
         $pageSize = isset($getParams['pageSize']) ? $getParams['pageSize'] : 2;
-        $pageCurrent = isset($getParams['pageCurrent']) ? $getParams['pageCurrent'] - 1 : 0;
+        $pageCurrent = isset($getParams['pageCurrent']) ? $getParams['pageCurrent'] : 0;// - 1
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [

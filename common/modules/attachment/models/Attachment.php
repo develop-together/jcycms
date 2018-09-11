@@ -90,11 +90,11 @@ class Attachment extends \common\components\BaseModel
     {
 
        if ($uploadData !== null) {
-            $this->uploadPath = Yii::getAlias('@backend') . '/web/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $path;  
+            $this->uploadPath = Yii::getAlias('@backend') . '/web/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $path;
             if (!FileHelper::createDirectory($this->uploadPath)) {
                 $this->addError('thumb', 'Create directory failed' . $this->uploadPath);
                 return false;
-            }      
+            }
             $relativeUploadPath = Yii::$app->params['uploadSaveFilePath'] . '/'. $path;
             $newName = $this->uniqidFilename($relativeUploadPath);
             $fullName = $this->uploadPath . '/' . $newName . '.' . $uploadData->extension;
@@ -125,7 +125,7 @@ class Attachment extends \common\components\BaseModel
 
             return $this->saveAttachments($uploadData);
 
-       } 
+       }
    }
 
    public function saveAttachments($uploadData, $filepath = '', $uploadPath = '')
@@ -151,14 +151,14 @@ class Attachment extends \common\components\BaseModel
             throw new Exception('上传失败(原因:' . implode("\n", $err). ')');
 
             return false;
-        } 
+        }
 
         return true;
    }
     // $this->uploadPath = Yii::getAlias('@backend') . '/web/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $path;
     // if(!is_dir($this->uploadPath)) {
     //     mkdir($this->uploadPath, 0777, true);
-    // }        
+    // }
     // var_dump($uploadData);exit;
     // $extArr = explode('/', trim($uploadData['fileType']));
     // $extension = end($extArr);
@@ -183,7 +183,7 @@ class Attachment extends \common\components\BaseModel
 
     // return true;
 
-    public function base64ToFile($base64String, $outputFile) 
+    public function base64ToFile($base64String, $outputFile)
     {
         $base64String = explode(',', $base64String); //data:image/jpeg;base64,
         $imgInfo = explode(';', $base64String[0]); //[data:image/jpeg,base64]
@@ -203,7 +203,7 @@ class Attachment extends \common\components\BaseModel
         $e = floor(log($this->filesize)/log(1024));
 
         return number_format(($this->filesize/pow(1024,floor($e))),2,'.','').' '.$arr[$e];
-    } 
+    }
 
     private function getbrowser()
     {
@@ -232,7 +232,7 @@ class Attachment extends \common\components\BaseModel
         }
 
         return $val;
-    }   
+    }
 
     private function uniqidFilename($path)
     {
@@ -243,7 +243,7 @@ class Attachment extends \common\components\BaseModel
         }
 
         return str_replace($path . '/', '', $filepath);
-    }  
+    }
 
     public function getPictureJson()
     {
@@ -253,7 +253,7 @@ class Attachment extends \common\components\BaseModel
             'src' => $this->filepath,
             'thumb' => $this->filepath,
         ];
-    }  
+    }
 
     public function getFileFormat()
     {
@@ -264,8 +264,8 @@ class Attachment extends \common\components\BaseModel
                 return Yii::t('common', 'The File Is Not Exists');
             }
 
-            return Html::a(Html::img($src, ['style' => 'width:70px;', 'alt' => $this->filename]), $src, ['title' => $this->filename, 'target' => '_blank']);
-        } 
+            return Html::img($src, ['style' => 'width:70px;', 'alt' => $this->filename]);
+        }
 
         return $this->filename;
     }
@@ -274,11 +274,11 @@ class Attachment extends \common\components\BaseModel
     {
         $info = explode('/', $this->filepath);
         $newName = end($info);
-        $saveDir = $info[0] . '/' . $info[1]; 
+        $saveDir = $info[0] . '/' . $info[1];
         if (empty($this->filepath)) {
             return '';
         }
-        
+
         return Html::tag('p', Yii::t('common', 'Old Name') . '：' . $this->filename) . Html::tag('p', Yii::t('common', 'Save Path') . '：' . $saveDir) . Html::tag('p', Yii::t('common', 'New Name') . '：' . $newName);
     }
 }

@@ -27,7 +27,7 @@ class AdminRolesController extends BackendController
             ],
         ];
     }
-    
+
     public function actionIndex()
     {
         Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
@@ -76,7 +76,7 @@ class AdminRolesController extends BackendController
 
         return $this->render('create', [
             'model' => $model,
-        ]);       
+        ]);
     }
 
     public function actionUpdate($id)
@@ -129,7 +129,7 @@ class AdminRolesController extends BackendController
                 //             throw new \yii\web\BadRequestHttpException(implode(",", $errors));
                 //         }
                 //     }
-                // } 
+                // }
                 if ($postData['rabcLists']) {
                     $diffA = $diffB = [];
                     $oldRabcLists = $postData['rabcLists'];
@@ -138,29 +138,32 @@ class AdminRolesController extends BackendController
                     $diffB = array_diff($permissionsFormat, $postData['rabcLists']);
                     if ($diffA && $diffB) {// 表示删除原来的同时新增
                         $postData['rabcLists'] = $diffA;
-                        AdminRolePermission::deleteAll(['in', 'auth_id', $diffB]);                    
+                        AdminRolePermission::deleteAll(['in', 'auth_id', $diffB]);
                     } elseif ($diffA) {// 表示只新增
                         $postData['rabcLists'] = $diffA;
                     } elseif ($diffB) {// 表示只删除
                         AdminRolePermission::deleteAll(['in', 'auth_id', $diffB]);
+                        $postData['rabcLists'] = [];
                     }
 
-                    foreach ($postData['rabcLists'] as $key => $value) {
-                        // $value = Json::decode($json, false);
-                        $adminRolePermissionModel = $this->findAdminRolePermissionModel($value);
-                        $adminRolePermissionModel->auth_id = $value;
-                        $adminRolePermissionModel->role_id = $model->id;
-                        if (!$adminRolePermissionModel->save()) {
-                            $errors = [];
-                            foreach ($adminRolePermissionModel->errors as $error) {
-                                $errors[] = $error[0];
-                            }
+                    if($postData['rabcLists']) {
+                        foreach ($postData['rabcLists'] as $key => $value) {
+                            // $value = Json::decode($json, false);
+                            $adminRolePermissionModel = $this->findAdminRolePermissionModel($value);
+                            $adminRolePermissionModel->auth_id = $value;
+                            $adminRolePermissionModel->role_id = $model->id;
+                            if (!$adminRolePermissionModel->save()) {
+                                $errors = [];
+                                foreach ($adminRolePermissionModel->errors as $error) {
+                                    $errors[] = $error[0];
+                                }
 
-                            throw new \yii\web\BadRequestHttpException(implode(",", $errors));
+                                throw new \yii\web\BadRequestHttpException(implode(",", $errors));
+                            }
                         }
                     }
-                }     
-                Yii::$app->cache->set('_permission_list_' . $model->id, $oldRabcLists);           
+                }
+                Yii::$app->cache->set('_permission_list_' . $model->id, $oldRabcLists);
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Success'));
                 $transaction->commit();
 
@@ -171,7 +174,7 @@ class AdminRolesController extends BackendController
             }
 
         }
-        
+
         $adminRolePermissionLists = [];
         $menuData = Menu::loadMenus($adminRolePermissionLists, $id);
 
@@ -221,12 +224,12 @@ class AdminRolesController extends BackendController
         }
     }
 
-    protected function findAdminRolePermissionModel($authId = null) 
+    protected function findAdminRolePermissionModel($authId = null)
     {
         if (($model = AdminRolePermission::find()->where(['auth_id' => $authId])->one()) !== null) {
             return $model;
         } else {
             return new AdminRolePermission();
-        }        
+        }
     }
 }

@@ -34,7 +34,7 @@ use yii\widgets\Pjax;
 							'created_at:datetime',
                             [
                                 'class' => 'backend\grid\ActionColumn',
-                                'template' => '{view}{delete}',
+                                'template' => '{delete}',
                             ],
                         ]
                     ]); ?>

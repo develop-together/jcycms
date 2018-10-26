@@ -85,7 +85,7 @@ $this->title = Yii::t('app', 'Backend Manage System');
                                     // echo UserAcl::getBackendMenus();
                                  ?>
                             <!--动态菜单配置结束-->
-                            <?php if (! YII_ENV_DEV): ?>
+                            <?php if (YII_ENV_DEV): ?>
                                 <li><a href="<?= Url::toRoute(['gii/default/index']) ?>" class="J_menuItem"><i class="fa fa-bolt"></i><span class="nav-label">GII</span></a></li>
                             <?php endif ?>
                         </ul>

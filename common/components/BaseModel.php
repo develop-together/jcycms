@@ -88,7 +88,12 @@ class BaseModel extends \yii\db\ActiveRecord
             return false;
         }
         
-        if (Yii::$app->id == 'app-backend' && $this->isNewRecord && $this->hasAttribute('user_id') && $this->formName() != 'AdminRoleUser') {
+        if (Yii::$app->id == 'app-backend' 
+            && $this->isNewRecord 
+            && $this->hasAttribute('user_id') 
+            && empty($this->user_id) 
+            && $this->formName() != 'AdminRoleUser'
+        ) {
             $this->user_id = Yii::$app->user->id;
         }
 

@@ -15,12 +15,16 @@ class AdminLog extends \yii\base\Object
     {
         if ($event->sender->className() !== AdminLogModel::className()) {
             $desc = '<br>';
+            $class = $event->sender->className();
             foreach ($event->sender->getAttributes() as $name => $value) {
-                $desc .= $event->sender->getAttributeLabel($name) . '(' . $name . ') => ' . $value . ',<br>';
+                if ($class::tableName() === '{{%article_content}}' && $name === 'content') {
+                    $desc .= $event->sender->getAttributeLabel($name) . '(' . $name . ') => 私密';
+                } else {
+                    $desc .= $event->sender->getAttributeLabel($name) . '(' . $name . ') => ' . $value . ',<br>';
+                }
             }
             $desc = substr($desc, 0, -5);
             $model = new AdminLogModel();
-            $class = $event->sender->className();
             $id_des = '';
             if (isset($event->sender->id)) {
                 $id_des = '{{%ID%}} ' . $event->sender->id;
@@ -45,11 +49,12 @@ class AdminLog extends \yii\base\Object
             $oldAttributes = $event->sender->oldAttributes;
             foreach ($event->changedAttributes as $name => $value) {
                 if( $oldAttributes[$name] == $value ) continue;
+                $class = $event->sender->className();
+                if ($class::tableName() === '{{%article_content}}' && $name === 'content') continue;
                 $desc .= $event->sender->getAttributeLabel($name) . '(' . $name . ') : ' . $value . '=>' . $event->sender->oldAttributes[$name] . ',<br>';
             }
             $desc = substr($desc, 0, -5);
             $model = new AdminLogModel();
-            $class = $event->sender->className();
             $id_des = '';
             if (isset($event->sender->id)) {
                 $id_des = '{{%ID%}} ' . $event->sender->id;

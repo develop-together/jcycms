@@ -13,6 +13,30 @@ $config = [
             'attachment' => [
                 'class' => 'common\modules\attachment\Module',
             ],
+            'gii' => [
+                    'class' => 'common\modules\gii\Module',
+                    'allowedIPs' => ['127.0.0.1', '::1'],
+                    'generators' => [
+                        'crud' => [
+                            'class' => 'yii\gii\generators\crud\Generator',
+                            'templates' => [
+                                'myCrud' => '@common/modules/gii/generators/crud/default',
+                            ],
+                        ],
+                        'model' => [
+                            'class' => 'yii\gii\generators\model\Generator',
+                            'templates' => [
+                                'myModel' => '@common/modules/gii/generators/model/default',
+                            ],
+                        ],
+                        'form' => [
+                            'class' => 'yii\gii\generators\form\Generator',
+                            'templates' => [
+                                'myForm' => '@common/modules/gii/generators/form/default',
+                            ],
+                        ],
+                    ],
+            ],
     ],
     // Yii2框架为我们自定义好的  controllers,Models,views,标准的MVC结构框架，但是有些时候我们写接口希望结构更加清晰而不希望与其他控制器放在一起，想自定义文件夹作为API的控制器类
     'controllerMap' => [

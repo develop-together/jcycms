@@ -2,8 +2,15 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\Url;
 
-$this->title = "Admin";
+$this->title = $model->username;
+
+$this->params['breadcrumbs'] = [
+    ['label' => Yii::t('app', 'Administrators'), 'url' =>  Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
+    ['label' => $this->title],
+];
+
 ?>
 <div class="row">
     <div class="col-sm-12">

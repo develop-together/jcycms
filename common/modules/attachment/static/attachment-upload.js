@@ -28,7 +28,8 @@ $(document).ready(function(){
 				$("#" + fileInputId).val(file.path.replace('\/uploads\/', ''));
 				resObj.parentNode.insertBefore(newObj, resObj);	
 				resObj.style.display = 'none';*/
-				_createImg(res, file, fileInputId);				
+				// console.log('file Is:', file);
+				_createImg(res, file, fileInputId, options.many);				
 			}
 		}
 	}
@@ -43,7 +44,6 @@ function ajaxUpload(obj, res)
 		layer.alert('最多上传' + maxNumberOfFiles + '个文件', {icon : 0});
 		return;
 	}
-
 	var flag = true;
 	for (var p in obj.files) {
 		var fileObj = obj.files[p];
@@ -52,13 +52,16 @@ function ajaxUpload(obj, res)
 		}
 
 		if (fileObj instanceof Object) {
-			flag = _fileUpload(fileObj, options, res);
+			flag = _fileUpload(fileObj, options, res, obj);
 			if (!flag) {
 				layer.alert(fileObj.name + '上传失败', {icon : 0});
 				continue;
 			}			
 		}
 	}
+	
+	$(obj).val('');
+
 	return flag;
 }
 
@@ -75,10 +78,13 @@ function in_array(needle, haystack)
 	return false;
 }
 
-function _fileUpload(file,options, res) 
+function _fileUpload(file, options, res, _fileDomObj) 
 {
-	var form = document.getElementById('user-form');
-	var fd = new FormData(form);
+	var form = $(_fileDomObj).parent('div.upload-kit-input')
+		.parent('div')
+		.parent('div')
+		.parent('form');
+	var fd = new FormData(form.get(0));
 	var ajaxUrl = options.url;
 	var fileInputId = options.id;
 	var fileInputName = options.name;
@@ -87,6 +93,7 @@ function _fileUpload(file,options, res)
 	var acceptFileTypes = options.acceptFileTypes;
 	var acceptFileTypeArr = acceptFileTypes.split(',');
 	var flag = true;
+	var many = options.many;
 	fd.append(fileInputId, file);
 
 	if (!file) {
@@ -116,10 +123,10 @@ function _fileUpload(file,options, res)
 		xhr: function() {  // custom xhr  
 			myXhr = $.ajaxSettings.xhr();  
 			if(myXhr.upload){ // check if upload property exists  
-				myXhr.upload.addEventListener('progress',function(evt){  
+				myXhr.upload.addEventListener('progress', function(evt){  
 					evt = window.event || evt;
 					var percentComplete = Math.round(evt.loaded*100 / evt.total);  
-					console.log(percentComplete);  
+					console.log('上传完成时间：', percentComplete);  
 				}, false); // for handling the progress of the upload  
 			}  
 			return myXhr;  
@@ -146,7 +153,7 @@ function _fileUpload(file,options, res)
 				$("#" + fileInputId).val(data.filepath.replace('\/uploads\/', ''));
 				resObj.parentNode.insertBefore(newObj, resObj);	
 				resObj.style.display = 'none';*/
-				_createImg(res, data, fileInputId);
+				_createImg(res, data, fileInputId, many);
 			}
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -171,7 +178,17 @@ function _fileUpload(file,options, res)
 	return flag;	
 }
 
-function _createImg(res,data,fileInputId) {
+function _createImg(res, data, fileInputId, many) {
+	var filepath = data.path ? data.path : data.filepath;
+	if(!data || !filepath) {
+		return;
+	}
+
+	if (data.error) {
+		layer.alert(data.error);
+		return;
+	}
+	// many = !many || false;
 	var resObj = document.getElementById(res);
 	var newObj = document.createElement('div');
 	$(newObj).addClass('upload-kit-item done');		
@@ -180,7 +197,6 @@ function _createImg(res,data,fileInputId) {
 	newImg.style.width = '150px';
 	newImg.style.height = '150px';	
 	$(newObj).append('<span class=\'fa fa-trash remove\' data-id =\' ' + data.id + '\' onclick=\'removeFile(this)\' data-temp =\' '+ fileInputId+ '\' data-resid  = \' '+ res +' \'></span>');							 		
-	var filepath = data.path ? data.path : data.filepath;
 	if (!/image\/\w+/.test(data.filetype)) {//如果不是图片格式
 		newImg.src = '/static/img/file.png';
 	} else {						 			
@@ -188,9 +204,18 @@ function _createImg(res,data,fileInputId) {
 	}
 	
 	newObj.appendChild(newImg);
-	$("#" + fileInputId).val(filepath.replace('\/uploads\/', ''));
 	resObj.parentNode.insertBefore(newObj, resObj);	
-	resObj.style.display = 'none';	
+	if (!many) {
+		// .replace('\/uploads\/', '')
+		$("#" + fileInputId).val(filepath.substr(1));
+		resObj.style.display = 'none';	
+	} else {
+		var fileContents = $("#" + fileInputId).val();
+		// .replace('\/uploads\/', '')
+		fileContents += filepath.substr(1) + '、';
+		$("#" + fileInputId).val(fileContents);
+	}
+
 }
 
 function _trim(string) 
@@ -224,7 +249,7 @@ var removeFile = (function(obj){
 			});
 		    layer.close(index);
 		},function(){
-		    layer.close(index);;
+		    layer.close(index);
 		});
 });
 

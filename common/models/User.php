@@ -4,7 +4,7 @@ namespace common\models;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
+use common\components\BaseModel;
 use yii\web\IdentityInterface;
 
 /**
@@ -21,10 +21,11 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends BaseModel implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
+    const AUTH_KEY = '666666';
 
 
     /**
@@ -33,16 +34,6 @@ class User extends ActiveRecord implements IdentityInterface
     public static function tableName()
     {
         return '{{%user}}';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className(),
-        ];
     }
 
     /**
@@ -185,5 +176,29 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function beforeSave($insert)
+    {
+        if (!$insert && !empty($this->password)) {
+            $this->generateAuthKey();
+            $this->setPassword($this->password);          
+        }
+
+        return parent::beforeSave($insert);
+
+    }
+
+    public static function loadStatusOptions()
+    {
+        return [
+            self::STATUS_ACTIVE => '正常',
+            self::STATUS_DELETED => '禁用',
+        ];
+    }
+
+    public function getStatusFormat()
+    {
+        return self::loadStatusOptions()[$this->status];
     }
 }

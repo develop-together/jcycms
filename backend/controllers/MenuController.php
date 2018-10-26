@@ -31,9 +31,9 @@ class MenuController extends BackendController
      */
     public function actionIndex()
     {
-        $searchModel = new MenuSearch(['scenario' => 'backend']);
-        $dataProvider = $searchModel->search(Yii::$app->request->post());
-
+        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
+        $searchModel = new MenuSearch();
+        $dataProvider = $searchModel->backendSearch(Yii::$app->request->post());
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -63,9 +63,18 @@ class MenuController extends BackendController
         $model->is_absolute_url = Menu::NOT_ABSOLUTE_URL;
         $model->is_display = Menu::DISPLAY_SHOW;
         $model->method = Menu::REQUEST_METHOD_ON_GET;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
-            return $this->redirect(['index']);
+        $model->scenario = 'backend';
+        $model->target = '';
+        if (Yii::$app->request->isPost) {
+            $params = Yii::$app->request->post();
+            if (empty($params['Menu']['parent_id']) && empty($params['Menu']['url'])) {
+                $params['Menu']['url'] = Menu::DEFAULT_URL;
+            }
+            $model->isAddRoute = $params['Menu']['isAddRoute'];
+            if ($model->load($params) && $model->save()) {
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
+                return $this->redirect(['index']);
+            }
         }
 
         return $this->render('create', [
@@ -82,12 +91,19 @@ class MenuController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+        $model->scenario = 'backend';
+        if (Yii::$app->request->isPost) {
+            $params = Yii::$app->request->post();
+            if (empty($params['Menu']['parent_id']) && empty($params['Menu']['url'])) {
+                $params['Menu']['url'] = Menu::DEFAULT_URL;
+            }
+            $model->isAddRoute = $params['Menu']['isAddRoute'];
+            if ($model->load($params) && $model->save()) {
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
+            }
         }
-
+        
         return $this->render('update', [
             'model' => $model,
         ]);

@@ -6,6 +6,9 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\base\Exception;
 use yii\helpers\FileHelper;
+use yii\helpers\Html;
+use backend\models\User;
+
 /**
  * This is the model class for table "{{%attachment}}".
  *
@@ -74,6 +77,7 @@ class Attachment extends \common\components\BaseModel
             'filesize' => Yii::t('common', 'Filesize'),
             'filesizecn' => Yii::t('common', 'Filesize'),
             'filepath' => Yii::t('common', 'Filepath'),
+            'fileinfo' => Yii::t('common', 'Fileinfo'),
             'ip' => 'Ip',
             'web' => 'Web',
             'downci' => Yii::t('common', 'Downci'),
@@ -86,19 +90,19 @@ class Attachment extends \common\components\BaseModel
     {
 
        if ($uploadData !== null) {
-            $this->uploadPath = Yii::getAlias('@backend') . '/web/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $path;  
+            $this->uploadPath = Yii::getAlias('@backend') . '/web/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $path;
             if (!FileHelper::createDirectory($this->uploadPath)) {
                 $this->addError('thumb', 'Create directory failed' . $this->uploadPath);
                 return false;
-            }      
-            $newName = $this->uniqidFilename($path);
+            }
+            $relativeUploadPath = Yii::$app->params['uploadSaveFilePath'] . '/'. $path;
+            $newName = $this->uniqidFilename($relativeUploadPath);
             $fullName = $this->uploadPath . '/' . $newName . '.' . $uploadData->extension;
             if (!$uploadData->saveAs($fullName)) {
-                $this->addError('avatar', yii::t('app', 'Upload {attribute} error: ' . $uploadData->error, ['attribute' => yii::t('app', 'Avatar')]) . ': ' . $fullName);
+                $this->addError('avatar', Yii::t('app', 'Upload {attribute} error: ' . $uploadData->error, ['attribute' => Yii::t('app', 'Avatar')]) . ': ' . $fullName);
                 return false;
             }
-
-            $this->user_id = Yii::$app->user->id;
+/*            $this->user_id = Yii::$app->user->id;
             $this->filename = $uploadData->name;
             $this->filetype = $uploadData->type;
             $this->extension = $uploadData->extension;
@@ -116,39 +120,71 @@ class Attachment extends \common\components\BaseModel
                 throw new Exception('上传失败(原因:' . implode("\n", $err). ')');
             }
 
-            return true;
-       } 
-        // $this->uploadPath = Yii::getAlias('@backend') . '/web/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $path;
-        // if(!is_dir($this->uploadPath)) {
-        //     mkdir($this->uploadPath, 0777, true);
-        // }        
-        // var_dump($uploadData);exit;
-        // $extArr = explode('/', trim($uploadData['fileType']));
-        // $extension = end($extArr);
-        // $fileNewName = md5(time());
-        // $this->user_id = Yii::$app->user->id;
-        // $this->filename = $uploadData['fileName'];
-        // $this->filetype = $uploadData['fileType'];
-        // $this->extension = $extension;
-        // $this->filesize = $uploadData['fileSize'];
-        // $this->filesizecn = $this->getFileSizeFormat();
-        // $this->filepath = $path . '/' . $this->base64ToFile($uploadData['base64Data'], $fileNewName);
-        // $this->ip = Yii::$app->request->userIP;
-        // $this->web = $this->getbrowser();
-        // if (!$this->save()) {
-        //     @unlink($this->uploadPath . '/' . $this->filepath);
-        //     $err = [];
-        //     foreach($this->getErrors() as $error) {
-        //         $err[] = $error[0];
-        //     }
-        //     throw new Exception('上传失败(原因:' . implode("\n", $err). ')');
-        // }
+            return true;*/
+            $this->filepath = $relativeUploadPath . '/' . $newName . '.' . $uploadData->extension;
 
-        // return true;
-    }
+            return $this->saveAttachments($uploadData);
 
-    public function base64ToFile($base64String, $outputFile) {
+       }
+   }
 
+   public function saveAttachments($uploadData, $filepath = '', $uploadPath = '')
+   {
+
+        $this->user_id = Yii::$app->id == 'app-backend' ? Yii::$app->user->id : User::SUPER_MANAGER;
+        $this->filename = $uploadData->name;
+        $this->filetype = $uploadData->type;
+        $this->extension = $uploadData->extension;
+        $this->filesize = $uploadData->size;
+        $this->filesizecn = $this->getFileSizeFormat();
+        $this->uploadPath = !$uploadPath ? $this->uploadPath : $uploadPath;
+        $this->filepath = !$filepath ? $this->filepath : $filepath;
+        $this->ip = Yii::$app->request->userIP;
+        $this->web = $this->getbrowser();
+        if (!$this->save()) {
+            @unlink($this->uploadPath . '/' . $this->filepath);
+            $err = [];
+            foreach($this->getErrors() as $error) {
+                $err[] = $error[0];
+            }
+
+            throw new Exception('上传失败(原因:' . implode("\n", $err). ')');
+
+            return false;
+        }
+
+        return true;
+   }
+    // $this->uploadPath = Yii::getAlias('@backend') . '/web/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $path;
+    // if(!is_dir($this->uploadPath)) {
+    //     mkdir($this->uploadPath, 0777, true);
+    // }
+    // var_dump($uploadData);exit;
+    // $extArr = explode('/', trim($uploadData['fileType']));
+    // $extension = end($extArr);
+    // $fileNewName = md5(time());
+    // $this->user_id = Yii::$app->user->id;
+    // $this->filename = $uploadData['fileName'];
+    // $this->filetype = $uploadData['fileType'];
+    // $this->extension = $extension;
+    // $this->filesize = $uploadData['fileSize'];
+    // $this->filesizecn = $this->getFileSizeFormat();
+    // $this->filepath = $path . '/' . $this->base64ToFile($uploadData['base64Data'], $fileNewName);
+    // $this->ip = Yii::$app->request->userIP;
+    // $this->web = $this->getbrowser();
+    // if (!$this->save()) {
+    //     @unlink($this->uploadPath . '/' . $this->filepath);
+    //     $err = [];
+    //     foreach($this->getErrors() as $error) {
+    //         $err[] = $error[0];
+    //     }
+    //     throw new Exception('上传失败(原因:' . implode("\n", $err). ')');
+    // }
+
+    // return true;
+
+    public function base64ToFile($base64String, $outputFile)
+    {
         $base64String = explode(',', $base64String); //data:image/jpeg;base64,
         $imgInfo = explode(';', $base64String[0]); //[data:image/jpeg,base64]
         $imgInfo = explode(':', $imgInfo[0]); //[data,image/jpeg]
@@ -164,10 +200,10 @@ class Attachment extends \common\components\BaseModel
     public function getFileSizeFormat()
     {
         $arr = ['Byte', 'KB', 'MB', 'GB', 'TB', 'PB'];
-        $e      = floor(log($this->filesize)/log(1024));
+        $e = floor(log($this->filesize)/log(1024));
 
         return number_format(($this->filesize/pow(1024,floor($e))),2,'.','').' '.$arr[$e];
-    } 
+    }
 
     private function getbrowser()
     {
@@ -196,7 +232,7 @@ class Attachment extends \common\components\BaseModel
         }
 
         return $val;
-    }   
+    }
 
     private function uniqidFilename($path)
     {
@@ -207,5 +243,42 @@ class Attachment extends \common\components\BaseModel
         }
 
         return str_replace($path . '/', '', $filepath);
-    }    
+    }
+
+    public function getPictureJson()
+    {
+        return [
+            'title' => $this->filename,
+            'pid' => $this->id,
+            'src' => $this->filepath,
+            'thumb' => $this->filepath,
+        ];
+    }
+
+    public function getFileFormat()
+    {
+        if (preg_match('/^images\/*$/', $this->filetype) !== false) {
+            $src = Yii::$app->request->baseUrl . '/' . $this->filepath;
+            $absoluteSrc = str_replace('uploads', '', Yii::getAlias('@uploads')) . $this->filepath;
+            if (!file_exists($absoluteSrc)) {
+                return Yii::t('common', 'The File Is Not Exists');
+            }
+
+            return Html::img($src, ['style' => 'width:70px;', 'alt' => $this->filename]);
+        }
+
+        return $this->filename;
+    }
+
+    public function getFileInfoFormat()
+    {
+        $info = explode('/', $this->filepath);
+        $newName = end($info);
+        $saveDir = $info[0] . '/' . $info[1];
+        if (empty($this->filepath)) {
+            return '';
+        }
+
+        return Html::tag('p', Yii::t('common', 'Old Name') . '：' . $this->filename) . Html::tag('p', Yii::t('common', 'Save Path') . '：' . $saveDir) . Html::tag('p', Yii::t('common', 'New Name') . '：' . $newName);
+    }
 }

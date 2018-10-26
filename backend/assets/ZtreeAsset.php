@@ -1,9 +1,12 @@
 <?php
+
 namespace backend\assets;
 use yii;
 
-class ZtreeAsset extends \yii\web\AssetBundle {
-	public function init() {
+class ZtreeAsset extends \yii\web\AssetBundle 
+{
+	public function init() 
+	{
 		parent::init();
 		if (yii::$app->getRequest()->getBaseUrl() !== "") {
 			$this->sourcePath = '@backend/web';
@@ -19,6 +22,6 @@ class ZtreeAsset extends \yii\web\AssetBundle {
 	];
 
 	public $depends = [
-		'backend\assets\IndexAsset',
+		'backend\assets\appAsset',
 	];
 }

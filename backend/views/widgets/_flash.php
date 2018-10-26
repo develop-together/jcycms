@@ -1,13 +1,7 @@
 <?php
-/**
- * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
- * Created at: 2017-03-15 21:16
- */
 
 if (Yii::$app->getSession()->hasFlash('success')) {
-    $successTitle = addslashes( yii::t('app', 'Success') );
+    $successTitle = addslashes( Yii::t('app', 'Success') );
     $info = addslashes( Yii::$app->getSession()->getFlash('success') );
     $str = <<<EOF
        toastr.options = {
@@ -16,9 +10,9 @@ if (Yii::$app->getSession()->hasFlash('success')) {
           "progressBar": true,
           "positionClass": "toast-top-center",
           "showDuration": "400",
-          "hideDuration": "1000",
-          "timeOut": "7000",
-          "extendedTimeOut": "1000",
+          "hideDuration": "500",
+          "timeOut": "500",
+          "extendedTimeOut": "500",
           "showEasing": "swing",
           "hideEasing": "linear",
           "showMethod": "fadeIn",
@@ -28,8 +22,9 @@ if (Yii::$app->getSession()->hasFlash('success')) {
 EOF;
     $this->registerJs($str);
 }
+
 if (Yii::$app->getSession()->hasFlash('error')) {
-    $errorTitle = addslashes( yii::t('app', 'Error') );
+    $errorTitle = addslashes( Yii::t('app', 'Error') );
     $info = addslashes( Yii::$app->getSession()->getFlash('error') );
     $str = <<<EOF
        toastr.options = {

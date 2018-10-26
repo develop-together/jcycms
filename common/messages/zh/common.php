@@ -1,10 +1,4 @@
 <?php
-/**
- * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
- * Created at: 2016-04-18 09:41
- */
 
 return [
 	/*public*/
@@ -42,6 +36,10 @@ return [
 	'Filetype' => '文件类型',
 	'Extension' => '后缀',
 	'Filepath' => '文件路径',
+	'Fileinfo' => '文件信息',
+	'Old Name' => '原始名称',
+	'Save Path' => '保存路径',
+	'New Name' => '当前名称',
 	'Downci' => '下载次数',
 	'Mime' => 'MIME类型',
 	'Preview' => '预览',
@@ -53,4 +51,42 @@ return [
 	'News' => '文章',
 	'Gallery' => '心情物语',
 	'Contact' => '联系我们',
+	'About Us' => '关于我们',
+	'Tel' => '电话',
+	'Email' => '电子邮件',
+	'Let Me Log In' => '点我登录',
+	'Please Log In' => '请登录',
+	'Register' => '注册',
+	'I sign up' => '点我注册',
+	'Password' => '密码',
+	'Duplicate Password' => '重复密码',
+	'Verify Code' => '验证码',
+	'Close' => '关闭',
+	'Reset' =>'重置',
+	'Submit' => '提交',
+	'This email address has already been taken!' => '该电子邮件已经被注册！',
+	'Verification code error.' => '验证码错误。',
+	'The value of the repeated password must be equal to the "password".' => '重复密码的值必须等于"密码"。',
+	'This username has already been taken!' => '该用户名已经被注册！',
+	'The following form is mistaken' => '以下表单填写有误',
+	'Login Failed' => '登录失败',
+	'Username' => '用户名',
+	'Password' => '密码',
+	'If you forgot your password you can' => '如果你忘记了密码，你可以',
+	'reset it' => '重置它',
+	'Follow the link below to reset your password' => '点击以下链接重置密码',
+	'Last Login IP' => '登录IP',
+	'Login Number' => '登录次数',
+	'Last Login Time' => '最后登录时间',
+	'Created At' => '创建时间',
+	'Updated At' => '最后更新',
+	'Status' => '状态',
+	'Avatar' => '头像',
+	'Position' => '位置',
+	'Name' => '名称',
+	'Active' => '是否开启',
+	'Description' => '描述',
+	'The File Is Not Exists' => '该文件不存在',
+	'Please select the picture file' => '请选择图片文件',
+	'Image List' => '图片列表',
 ];

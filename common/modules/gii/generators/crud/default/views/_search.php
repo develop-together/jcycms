@@ -10,11 +10,11 @@ echo "<?php\n";
 ?>
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm AS BAF;
+use common\widgets\ActiveForm AS BAF;
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->searchModelClass, '\\') ?> */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form common\widgets\ActiveForm */
 ?>
 
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-search">
@@ -23,6 +23,10 @@ use yii\widgets\ActiveForm AS BAF;
         'action' => ['index'],
         'method' => 'post',
         'options' => ['class' => 'form-inline'],
+        'fieldConfig' => [
+            'template' =>"{label}\n{input}\n{error}\n{hint}",
+            'labelOptions' => ['class' => 'control-label'],                          
+        ],
     ]); ?>
 
 <?php
@@ -35,9 +39,9 @@ foreach ($generator->getColumnNames() as $attribute) {
     }
 }
 ?>
-    <div class="form-group">
+    <div class="form-group" style="padding-bottom:10px;">
         <?= "<?= " ?>Html::submitButton('<?= Yii::t('app', 'Search') ?>', ['class' => 'btn btn-primary']) ?>
-        <?= "<?= " ?>Html::resetButton('<?= Yii::t('app', 'Reset') ?>', ['class' => 'btn btn-default']) ?>
+        <?= "<?= " ?>Html::resetButton('<i class="fa fa-undo"></i> <?= Yii::t('app', 'Clear Query') ?>', ['class' => 'btn btn-default clear-search']) ?>
     </div>
 
     <?= "<?php " ?>BAF::end(); ?>

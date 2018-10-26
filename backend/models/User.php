@@ -5,6 +5,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use common\components\BaseModel;
+use common\components\UserAcl;
 use yii\web\ForbiddenHttpException;
 //use AdminRoleUser;
 use yii\web\IdentityInterface;
@@ -13,13 +14,14 @@ class User extends BaseModel implements IdentityInterface
 {
 	const STATUS_DELETED = 0;
 	const STATUS_ACTIVE = 10;
+	const SUPER_MANAGER = 1;
 	const AUTH_KEY = '123456';
 
 	public $password;
 
-	public $repassword;
+	public $repeat_pwd;
 
-	public $old_password;
+	public $old_pwd;
 
 	/**
 	 * 返回数据表名
@@ -37,16 +39,27 @@ class User extends BaseModel implements IdentityInterface
 	public function rules() 
 	{
 		return [
-			[['username', 'auth_key', 'avatar', 'password', 'repassword', 'password_hash'], 'string'],
+			[['username', 'auth_key', 'avatar', 'password', 'repeat_pwd', 'password_hash'], 'string'],
 			['email', 'email'],
 			['email', 'unique'],
-			[['repassword'], 'compare', 'compareAttribute' => 'password'],
+			[['repeat_pwd'], 'compare', 'compareAttribute' => 'password'],
 			//[['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
 			[['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-			[['username', 'email', 'password', 'repassword'], 'required', 'on' => ['create']],
-			//[['username', 'email'], 'required', 'on' => ['update', 'self-update']],
+			[['username', 'email', 'password', 'avatar'], 'required', 'on' => ['create']],
+			[['email', 'avatar'], 'required', 'on' => ['updateSelf']],
+			[['last_login_at', 'login_count'], 'integer'],
+			// [['password'], 'checkOldAttribute','skipOnError' => false, 'skipOnEmpty' => false],
 		];
 	}
+
+/*	public function checkOldAttribute($attribute, $params)
+	{
+		if (!$this->hasError()) {
+			if($this->$attribute != $this->getOldAttribute('password')) {
+				$this->addError('password', Yii::t('app', 'The Old Password Is Error'));
+			}
+		}
+	}*/
 
 	public function scenarios()
 	{
@@ -55,6 +68,7 @@ class User extends BaseModel implements IdentityInterface
 			'default' => ['username', 'email'],
 			'create' => ['username', 'email', 'password', 'avatar', 'status'],
 			'update' => ['username', 'email', 'password', 'avatar', 'status'],
+			'updateSelf' => ['avatar', 'email', 'password'],
 		]);
 	}
 
@@ -64,23 +78,27 @@ class User extends BaseModel implements IdentityInterface
 	public function attributeLabels() 
 	{
 		return [
-			'username' => yii::t('app', 'Username'),
-			'email' => yii::t('app', 'Email'),
-			'old_password' => yii::t('app', 'Old Password'),
-			'password' => yii::t('app', 'Password'),
-			'repassword' => yii::t('app', 'Repeat Password'),
-			'avatar' => yii::t('app', 'Avatar'),
-			'status' => yii::t('app', 'Status'),
-			'created_at' => yii::t('app', 'Created At'),
-			'updated_at' => yii::t('app', 'Updated At'),
+			'username' => Yii::t('app', 'Username'),
+			'role_name' => Yii::t('app', 'Role'),
+			'email' => Yii::t('app', 'Email'),
+			'old_pwd' => Yii::t('app', 'Old Password'),
+			'password' => Yii::t('app', 'Password'),
+			'repeat_pwd' => Yii::t('app', 'Repeat Password'),
+			'avatar' => Yii::t('app', 'Avatar'),
+			'status' => Yii::t('app', 'Status'),
+			'last_login_ip' => Yii::t('common', 'Last Login IP'),
+			'login_count' => Yii::t('common', 'Login Number'),
+			'last_login_at' => Yii::t('common', 'Last Login Time'),
+			'created_at' => Yii::t('app', 'Created At'),
+			'updated_at' => Yii::t('app', 'Updated At'),
 		];
 	}
 
 	public static function getStatuses() 
 	{
 		return [
-			self::STATUS_ACTIVE => yii::t('app', 'Normal'),
-			self::STATUS_DELETED => yii::t('app', 'Disabled'),
+			self::STATUS_ACTIVE => Yii::t('app', 'Normal'),
+			self::STATUS_DELETED => Yii::t('app', 'Disabled'),
 		];
 	}
 
@@ -220,9 +238,9 @@ class User extends BaseModel implements IdentityInterface
 		if (!$this->validate()) {
 			return false;
 		}
-		$this->password = $this->password == null ? $this->getModule()->defaultPassword : $this->password;
-		$this->setPassword($this->password);
+		$this->password = $this->password == null ? self::AUTH_KEY : $this->password;
 		$this->generateAuthKey();
+		$this->setPassword($this->password);
 		if (!$this->save()) {
 			return false;
 		}
@@ -238,6 +256,11 @@ class User extends BaseModel implements IdentityInterface
 		];
 	}
 
+	public static function checkSuperManager()
+	{
+		return AdminRoleUser::find()->where(['user_id' => Yii::$app->user->id, 'role_id' => AdminRoles::SUPER_ROLE_ID]);
+	}
+
 	public function getStatusFormat()
 	{
 		$arr = self::loadStatusOptions();
@@ -249,30 +272,21 @@ class User extends BaseModel implements IdentityInterface
 		return $this->status;
 	}
 
-	public function getAvatarFormat()
-	{
-		if ($this->avatar) {
-			return Yii::$app->request->baseUrl . '/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $this->avatar;
-		}
-
-		return Yii::$app->request->baseUrl . '/static/img/noface.png';
-	}
-
 	public function beforeSave($insert)
 	{
-		if (!$insert) {
-			$this->password = $this->password ? $this->password : self::AUTH_KEY;
+		if (!$insert && !empty($this->password)) {
+			// $this->password = $this->password ? $this->password : self::AUTH_KEY;
+			$this->generateAuthKey();
+			$this->setPassword($this->password);
 		}
 		
-		$this->generateAuthKey();
-		$this->setPassword($this->password);
 		return parent::beforeSave($insert);
 
 	}
 
 	public function beforeDelete() {
-		if ($this->id == 3) {
-			throw new ForbiddenHttpException(yii::t('app', "Not allowed to delete {attribute}", ['attribute' => yii::t('app', 'default super administrator admin')]));
+		if (self::checkSuperManager()) {
+			throw new ForbiddenHttpException(Yii::t('app', "Not allowed to delete {attribute}", ['attribute' => Yii::t('app', 'default super administrator admin')]));
 		}
 		return true;
 	}
@@ -281,5 +295,38 @@ class User extends BaseModel implements IdentityInterface
 	public function getUserRole()
 	{
 		return $this->hasOne(AdminRoleUser::className(), ['user_id' => 'id']);
+	}
+
+    /**
+     * 判断用户是否拥有某个权限
+     * @param  string  $acl 权限名
+     * @return boolean  
+     */
+    public function hasAcl($acl='')
+    {
+        $route = explode('/', $acl);
+        $action = count($route) - 1;
+        // 特殊权限处理
+        if ($route[$action] == 'view') {
+            $route[$action] = 'index';
+            $acl = implode('/', $route);
+        }
+
+        return in_array($acl, $this->aclList);
+    }
+
+	public function getAclList()
+	{
+        $publicAclList = UserAcl::publicAclList();
+        $roleAclListModels = @$this->userRole->getRoleAclLists();
+        $roleAclLists = $roleAclListModels->all();
+        $aclLists = [];
+        if ($roleAclLists) {
+        	foreach ($roleAclLists as $list) {
+        		$aclLists[] = ltrim($list->rabc ? $list->rabc->rule_format : '', '/');
+        	}
+        }
+
+        return array_merge($publicAclList, $aclLists);		
 	}
 }

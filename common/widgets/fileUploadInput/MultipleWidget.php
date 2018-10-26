@@ -44,6 +44,8 @@
 
 		public $parentDivId;
 
+		public $many = false;
+
 		public function init()
 		{
 	        parent::init();
@@ -59,17 +61,20 @@
 	        if ($this->hasModel()) {
 	            $this->name = $this->name ? : Html::getInputName($this->model, $this->attribute);
 	            $this->attribute = Html::getAttributeName($this->attribute);
-	            $value = $this->model->{$this->attribute};
-	            $attachments = $this->multiple == true ? $value :[$value];
-	            $this->value = [];
-	            if ($attachments) {
-	                foreach ($attachments as $attachment) {
-	                    $value = $this->formatAttachment($attachment);
-	                    if ($value) {
-	                        $this->value[] = $value;
-	                    }
-	                }
-	            }
+	            // $this->value[] = $this->model->{$this->attribute};
+	            $value = $this->formatAttachment($this->model->{$this->attribute});
+	            $this->value[] = $value;
+	            // var_dump($this->value);
+	            // $attachments = $this->multiple == true ? $this->value : [$this->value];
+	            // $this->value = [];
+	            // if ($attachments) {
+	            //     foreach ($attachments as $attachment) {
+	            //         $value = $this->formatAttachment($attachment);
+	            //         if ($value) {
+	            //             $this->value[] = $value;
+	            //         }
+	            //     }
+	            // }
 
 	        }
 
@@ -89,6 +94,7 @@
 	            'maxFileSize' => $this->maxFileSize,
 	            'acceptFileTypes' => $this->acceptFileTypes,
 	            'files' => $this->value?:[],
+	            'many' => $this->many
 	        ]);
 		}
 
@@ -102,7 +108,7 @@
 					->where(['filepath' => $attachment])
 					->orderBy(['id' => SORT_DESC])
 					->One();
-				$attachment = Yii::$app->request->baseUrl . '/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $attachment;
+				$attachment = Yii::$app->request->baseUrl . '/' . $attachment;
 				$arr = [
 					'url' => $attachment,
 					'path' => $attachment,

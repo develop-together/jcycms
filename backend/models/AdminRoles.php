@@ -69,15 +69,17 @@ class AdminRoles extends \common\components\BaseModel
     public function beforeDelete()
     {
         if ($this->id == 1) {
-            throw new BadRequestHttpException(yii::t('app', 'Not allowed to delete {attribute}', ['attribute' => yii::t('app', 'super administrator roles')]));
+            throw new BadRequestHttpException(Yii::t('app', 'Not allowed to delete {attribute}', ['attribute' => Yii::t('app', 'super administrator roles')]));
         }
 
         return true;
     }
 
-    public static function loadRolesOptions()
+    public static function loadRolesOptions($super=false)
     {
-        $roleModels = self::find()->all();
+        $query = self::find();
+        $super && $query->where(['!=', 'id', self::SUPER_ROLE_ID]);
+        $roleModels = $query->all();
         $roles = [];
         if ($roleModels) {
             foreach ($roleModels as $roleModel) {
@@ -86,5 +88,33 @@ class AdminRoles extends \common\components\BaseModel
         }
 
         return $roles;
+    }
+
+    public function getPermissions()
+    {
+        return $this->hasMany(AdminRolePermission::className(), ['role_id' => 'id']);
+    }
+
+    public function getPermissionsFormat($refresh = false)
+    {
+        $data = [];
+        $cacheKey = '_permission_list_' . $this->id;
+        $cache = Yii::$app->cache;
+        if ($refresh) {
+            $cache->delete($cacheKey);
+        }
+
+        if ($cache->get($cacheKey)) {
+            return $cache->get($cacheKey);
+        }
+
+        if ($this->permissions) {
+            foreach ($this->permissions as $permission) {
+                $data[] = $permission->auth_id;
+            }
+        }
+        $cache->set($cacheKey, $data);
+
+        return $data;
     }
 }

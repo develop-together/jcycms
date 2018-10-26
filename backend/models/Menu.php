@@ -5,6 +5,7 @@ namespace backend\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use common\components\Utils;
+use common\components\TreeHelper;
 use yii\helpers\Url;
 
 /**
@@ -28,96 +29,46 @@ use yii\helpers\Url;
 class Menu extends \common\models\Menu
 {
 
-	public static function getDrowDownList($tree=[], &$result=[], $deep=0, $separator = "　　")
+	const DEFAULT_URL = 'javascript:;';
+
+	public $lv = 0;
+
+	public $isAddRoute = 0;
+
+	protected function chilrdenDatas($data, $parent_id, $lv = 0)
 	{
-		$deep++;
-		foreach ($tree as $list) {
+		$tree = new TreeHelper($data, true, 2, [
+			'fpid' => $parent_id,
+			'root' => $lv
+		]);
 
-			$result[$list['id']] = $deep == 1 ? str_repeat($separator, $deep-1) . $list['name'] : str_repeat($separator, $deep-1) . '├' . $list['name'];
-			if (isset($list['children'])) {
-				self::getDrowDownList($list['children'], $result, $deep);
-			}
-		}
+		return $tree->getTree();
 
-		return $result;
 	}
 
-	private function chilrdenDatas($data, $parent_id, $lv=0)
+	protected function chilrdenDatasToObject($object, $parent_id, $lv = 0)
 	{
-		$result = [];
-		foreach ($data as $key => $value) {
-			if ($value['parent_id'] == $parent_id) {
-				$value['lv'] = $lv;
-				$result[] = $value;
-				$result = array_merge($result, $this->chilrdenDatas($data, $value['id'], $lv+1));
-			}
-		}
+		$tree = new TreeHelper($object, true, 3,  [
+			'fpid' => $parent_id,
+			'root' => $lv
+		]);
 
-		return $result;
+		return $tree->getTree();
 	}
 
-	public function scenarios()
+	public static function getBackendQuery($display=false)
 	{
-		return parent::scenarios();
+		$where = $display ? ['is_display' => self::DISPLAY_SHOW, 'type' => Menu::MENU_TYPE_BACKEND] : ['type' => Menu::MENU_TYPE_BACKEND];
+		return self::find()->where($where);
 	}
 
-	public static function getBackendMenus()
+	public static function getFrontendQuery($display=false)
 	{
-		$data = self::find()
-			->where(['is_display' => self::DISPLAY_SHOW, 'type' => self::MENU_TYPE_BACKEND])
-			->orderBy(['id' => SORT_ASC, 'sort' => SORT_DESC])
-			->asArray()
-			->all();
-
-       return self::recurrenceCreateMenu(Utils::tree_bulid($data, 'id', 'parent_id'));
+		$where = $display ? ['is_display' => self::DISPLAY_SHOW, 'type' => Menu::MENU_TYPE_FRONTEND] : ['type' => Menu::MENU_TYPE_FRONTEND];
+		return self::find()->where($where);
 	}
 
-	private static function recurrenceCreateMenu($tree)
-	{
-		$listr = '';
-		foreach ($tree as $list) {
-			$childrenStr = '';
-			if ($list['parent_id'] > 0) {
-				continue;
-			}
-
-			$url = self::generateUrl($list['url'], $list['is_absolute_url']);
-			$listr .= '<li><a href=" '. $url . ' " class="J_menuItem"><i class="fa ' . $list['icon'] . '"></i><span class="nav-label">' . $list['name'] . '</span>';
-			if(isset($list['children'])) {
-				 $listr = str_replace($url, 'javascript:;', $listr);
-				 $listr .= '<span class="fa arrow"></span>';
-				 $childrenStr = self::recurrenceCreateSubMenu($list['children']);
-			}
-
-			$listr .= '</a>' . $childrenStr . '</li>';
-		}
-
-		return $listr;
-	}
-
-	private static function recurrenceCreateSubMenu($tree, $deep=2)
-	{
-		$childrenStr = '';
-		$levelArray = ['2' => 'second', '3' => 'third', '4' => 'fourth', '5' =>'fifth'];
-		$level = $levelArray[$deep];
-		$collapse = $deep > 2 ? 'collapse' : '';
-		$childrenStr .= '<ul class="nav nav-' . $level . '-level ' . $collapse . '">';
-		foreach ($tree as $value) {
-			$url = self::generateUrl($value['url'], $value['is_absolute_url']);
-			$childrenStr .= '<li><a class="J_menuItem" href="' . $url . '" data-index="' . $deep . '">' . $value['name'];
-			if(isset($value['children'])) {
-				$childrenStr = str_replace($url, 'javascript:;', $childrenStr);
-				$childrenStr .= '<span class="fa arrow"></span>';
-				$childrenStr .= '</a>' . self::recurrenceCreateSubMenu($value['children'], $deep+1) . '</li>';
-			} else {
-				$childrenStr .= '</a></li>';
-			}
-			
-		}
-		return $childrenStr .= '</ul>';
-	}
-
-	private static function generateUrl($url, $is_absolute_url=0)
+	public static function generateUrl($url, $is_absolute_url=0)
 	{
 		if($url == '')
 		{
@@ -129,19 +80,75 @@ class Menu extends \common\models\Menu
 		}
 	}
 
-	public static function getMenuZtree(&$tree = [], $url = '')
+	public static function loadMenus($adminRolePermissionLists = [], $role_id)
+	{
+		$query = self::getBackendQuery();
+        $menuData =  Utils::tree_bulid($query->orderBy(['sort' => SORT_ASC])                       
+                    ->asArray()
+                    ->all(), 'id', 'parent_id');
+
+        return self::getMenuZtree($adminRolePermissionLists, $role_id, $menuData);
+	}
+
+	protected static function getMenuZtree($adminRolePermissionLists = [], $role_id = 0, &$tree = [], $url = '', $mode = 'roles')
 	{
         foreach ($tree as $key => $value) {
-            $value['data-url'] = isset($value['url']) && !empty($value['url']) ? $value['url'] : $url;
+            // $value['data-url'] = isset($value['url']) && !empty($value['url']) ? $value['url'] : $url;
             $value['url'] = 'javascript:;';
-            $value['open'] = true;
+            // $value['open'] = false;
+            if ($mode == 'roles' && $role_id == AdminRoles::SUPER_ROLE_ID) {
+            	// $value['chkDisabled'] = true;
+            	$value['checked'] = true;
+            } elseif ($adminRolePermissionLists) {
+            	foreach ($adminRolePermissionLists as $list) {
+            		if ($list['menu_id'] == $value['id']) {
+            			$value['checked'] = true;
+            		}
+            	}
+            }
+            $value['roles'] = self::findOne($value['id'])->roles;
             if (isset($value['children'])) {
-                self::getMenuZtree($value['children']);
+                self::getMenuZtree($adminRolePermissionLists, $role_id, $value['children']);
             }  
-
+            unset($value['icon']);
             $tree[$key] = $value;        
         }
 
         return $tree;
 	}
+
+	public function getSubMenus_format()
+	{
+		$datas = Yii::$app->db->createCommand("SELECT id,name,url FROM {{%menu}} WHERE is_display = '" . self::NOT_DISPLAY_SHOW . "' AND url like '" . $this->url . "/%'")->queryAll();
+		$str = '';
+		if ($datas) {
+			foreach($datas as $data) {
+				$str .= '<span style="cursor: pointer;"  title="' . $data['url'] . '">' . $data['name'] . '</span>，';
+			}
+		}
+
+		return rtrim($str, '，');
+	}
+
+	public function getRoles()
+	{
+		return $this->hasMany(AuthItem::className(), ['menu_id' => 'id']);
+	}
+
+    public function afterSave($insert, $changedAttributes)
+    {
+
+        if ($this->isAddRoute && !$this->isCorrect) {
+            $rabcModel = AuthItem::findOne(['menu_id' => $this->id]);
+            $rabcModel = $rabcModel ? $rabcModel : new AuthItem();
+            $rabcModel->menu_id = $this->id;
+            $rabcModel->rule_name = Url::toRoute($this->url);
+            $rabcModel->method = strtoupper($this->methodFormat);
+            $rabcModel->rule_format = $rabcModel->rule_name  . ':' . $rabcModel->method;
+            $rabcModel->description = $this->name . '(查看)';
+            $rabcModel->save();
+        }        
+
+        parent::afterSave($insert, $changedAttributes);
+    }
 }

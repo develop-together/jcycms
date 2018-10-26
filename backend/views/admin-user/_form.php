@@ -36,12 +36,14 @@ $this->title = "Admin";
                 <?= $form->field($model, 'avatar')->widget(FileUploadInputWidget::className(),[
                     'type' => 'image'
                 ]); ?>
-
+                
+                <div class="hr-line-dashed"></div>
+                
                 <?= $form->field($model, 'email')->textInput(['maxlength' => 64]) ?>
 
                 <div class="hr-line-dashed"></div>
 
-                <?= $form->field($model, 'password')->passwordInput(['maxlength' => 512]) ?>
+                <?= $form->field($model, 'password')->passwordInput(['value' => '', 'maxlength' => 512, 'placeHolder' => $model->isNewRecord ? '' : Yii::t('app', 'Not to fill, by default do not modify')]) ?>
 
                 <div class="hr-line-dashed"></div>
 
@@ -51,7 +53,7 @@ $this->title = "Admin";
                 
                 <?= $form->field($rolesModel, 'role_id', [
                     'labelOptions' => [
-                        'label' => yii::t('app', 'Roles'),
+                        'label' => Yii::t('app', 'Roles'),
                     ]
                 ])->radioList(AdminRoles::loadRolesOptions()) ?>
 

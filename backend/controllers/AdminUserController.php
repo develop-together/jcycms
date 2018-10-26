@@ -10,6 +10,7 @@ use backend\models\AdminRoles;
 use common\components\BackendController;
 use yii\web\NotFoundHttpException;
 use backend\actions\DeleteAction;
+use yii\helpers\Url;
 
 /**
  * AdminUserController implements the CRUD actions for User model.
@@ -33,9 +34,9 @@ class AdminUserController extends BackendController
      */
     public function actionIndex()
     {
+        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->post());
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -65,12 +66,12 @@ class AdminUserController extends BackendController
         $model->setScenario('create');
         $model->status = User::STATUS_ACTIVE;
         $rolesModel = new AdminRoleUser();
-        $post = Yii::$app->request->post();
         if (Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
             if ($model->load($post) && $model->validate()  && $model->save()) {
                 $rolesModel->user_id = $model->id;
                 if ($rolesModel->load($post) && $rolesModel->validate() && $rolesModel->save()) {
-                    Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                    Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                     return $this->redirect(['index']);
                 }
             } else {
@@ -86,12 +87,12 @@ class AdminUserController extends BackendController
                 }      
                 Yii::$app->getSession()->setFlash('error', $err);  
             }
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                'rolesModel' => $rolesModel,
-            ]);
-        }
+        } 
+
+        return $this->render('create', [
+            'model' => $model,
+            'rolesModel' => $rolesModel,
+        ]);
     }
 
     /**
@@ -110,14 +111,15 @@ class AdminUserController extends BackendController
             $rolesModel->user_id = $id;
         }
 
-        if (Yii::$app->request->post()) {
-            if ($model->load(Yii::$app->request->post()) 
+        if (Yii::$app->request->isPost) {
+            $parmas = Yii::$app->request->post();
+            if ($model->load($parmas) 
                 && $model->validate() 
-                && $rolesModel->load(Yii::$app->request->post()) 
+                && $rolesModel->load($parmas) 
                 && $model->save()  
                 && $rolesModel->validate() 
                 && $rolesModel->save()) {
-                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
             } else {
                 $errors = $model->getErrors();
@@ -176,7 +178,30 @@ class AdminUserController extends BackendController
     	}
 
         $model = $this->findModel($id);
-        $roleLists = AdminRoles::loadRolesOptions();
+        $roleLists = AdminRoles::loadRolesOptions(true);
+        
         return $this->render('assignment', ['model' => $model, 'roleLists' => $roleLists]);        
+    }
+
+    public function actionUpdateSelf()
+    {
+        $userModel = User::findOne(Yii::$app->user->id);
+        $userModel->scenario = 'updateSelf';
+        if (Yii::$app->request->isPost) {
+            if($userModel->load(Yii::$app->request->post()) && $userModel->save()) {
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
+
+                return $this->redirect(['admin-user/update-self']);            
+            } else {
+                $errors = $userModel->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+                Yii::$app->getSession()->setFlash('error', $err); 
+            }
+        }
+
+        return $this->render('update-self', ['model' => $userModel]);
     }
 }

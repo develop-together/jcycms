@@ -36,6 +36,32 @@ class AdminLog extends \common\components\BaseModel
         ];
     }
 
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function afterFind()
+    {
+        $this->description = str_replace([
+            '{{%ADMIN_USER%}}',
+            '{{%BY%}}',
+            '{{%CREATED%}}',
+            '{{%UPDATED%}}',
+            '{{%DELETED%}}',
+            '{{%ID%}}',
+            '{{%RECORD%}}'            
+        ], [
+            Yii::t('app', 'Admin user'),
+            Yii::t('app', 'through'),
+            Yii::t('app', 'created'),
+            Yii::t('app', 'updated'),
+            Yii::t('app', 'deleted'),
+            Yii::t('app', 'id'),
+            Yii::t('app', 'record')
+        ], $this->description);
+    }
+
     /**
      * @inheritdoc
      */
@@ -43,11 +69,10 @@ class AdminLog extends \common\components\BaseModel
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
-            'route' => 'Route',
-            'description' => 'Description',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'route' => Yii::t('app', 'Route'),
+            'description' => Yii::t('app', 'Description'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'user_id' => Yii::t('app', 'User'),
         ];
     }
 }

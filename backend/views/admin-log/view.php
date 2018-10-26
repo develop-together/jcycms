@@ -13,14 +13,10 @@ use yii\widgets\DetailView;
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
-                        'id',
-            'user_id',
-            'route',
-            'description:ntext',
-            'created_at',
-            'updated_at',
+                        'description:raw',
                     ],
-]) ?>  
+                    'template' => '<tr><td colspan="2" text-align="center">{value}</td></tr>',
+                ]) ?>  
             </div>
         </div>
     </div>

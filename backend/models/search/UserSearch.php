@@ -42,19 +42,39 @@ class UserSearch extends User
     public function search($params)
     {
         $query = User::find();
+
+        $this->load($params);
+
+        $pageSize = 10;
+        $pageCurrent = 0;
+        $field = 'id';
+        $sort = SORT_DESC;
+        $getParams = Yii::$app->request->getQueryParams();
+        $pageCurrent = 0;
+        if (isset($getParams['page'])) {
+            $pageCurrent = $getParams['page'] - 1;
+        }
+        
+        if (isset($getParams['pageSize'])) {
+            $pageSize = $getParams['pageSize'];
+        }
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => [
-                'defaultOrder' => [
-                    'created_at' => SORT_ASC,
-                    'id' => SORT_DESC,
-                ]
+            'pagination' => [
+                'pageSize' => $pageSize,
+                'page' => $pageCurrent,
+            ],
+            'sort' =>[
+                'defaultOrder' =>[
+                    $field => $sort,
+                ],
             ],
             'pagination' => [
                 'pageSize' => 10,
-            ],            
+            ]
         ]);
-        $this->load($params);
+
         if (!$this->validate()) {
             return $dataProvider;
         }
@@ -63,6 +83,7 @@ class UserSearch extends User
             'id' => $this->id,
             'status' => $this->status,
         ]);
+
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'avatar', $this->avatar]);
 

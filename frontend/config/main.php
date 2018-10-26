@@ -36,14 +36,30 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
+        'i18n' => [
+            'translations' => [
+                'common*' => [
+                    'class' => yii\i18n\PhpMessageSource::className(),
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'app' => 'common.php',
+                        'app/error' => 'error.php',
+
+                    ],
+                ],
+                'front*' => [
+                    'class' => yii\i18n\PhpMessageSource::className(),
+                    'basePath' => '@frontend/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'frontend' => 'frontend.php',
+                        'app/error' => 'error.php',
+
+                    ],
+                ],
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

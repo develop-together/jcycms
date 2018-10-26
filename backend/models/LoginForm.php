@@ -3,6 +3,7 @@ namespace backend\models;
 
 use Yii;
 use yii\base\Model;
+use common\components\Utils;
 
 /**
  * Login form
@@ -28,8 +29,8 @@ class LoginForm extends Model {
 			[
 				'verifyCode',
 				'captcha',
-				'captchaAction' => '/site/captcha',
-				'message' => yii::t('app', 'Verification code error.'),
+				'captchaAction' => 'public/captcha',
+				'message' => Yii::t('app', 'Verification code error.'),
 			],
 			///注意这里，在百度中查到很多教程，这里写的都不一样，最 简单的写法就像我这种写法，当然还有其它各种写法
 		];
@@ -46,7 +47,7 @@ class LoginForm extends Model {
 		if (!$this->hasErrors()) {
 			$user = $this->getUser();
 			if (!$user || !$user->validatePassword($this->password)) {
-				$this->addError($attribute, yii::t('app', 'Incorrect username or password.'));
+				$this->addError($attribute, Yii::t('app', 'Incorrect username or password.'));
 			}
 		}
 	}
@@ -58,7 +59,17 @@ class LoginForm extends Model {
 	 */
 	public function login() {
 		if ($this->validate()) {
-			return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+			
+			$loginResult = Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+			if ($loginResult) {
+		        $this->user->updateAttributes([
+		        	'last_login_ip' => Utils::getClientIP(),
+		        	'last_login_at' => time(),
+		        	'login_count' => $this->user->login_count + 1
+		        ]);				
+			}
+
+			return $loginResult;
 		}
 
 		return false;
@@ -79,9 +90,10 @@ class LoginForm extends Model {
 
 	public function attributeLabels() {
 		return [
-			'username' => yii::t('app', 'Username'),
-			'password' => yii::t('app', 'Password'),
-			'rememberMe' => yii::t('app', 'rememberMe'),
+			'username' => Yii::t('app', 'Username'),
+			'password' => Yii::t('app', 'Password'),
+			'rememberMe' => Yii::t('app', 'rememberMe'),
+			'verifyCode' => Yii::t('app', 'Captcha'),
 		];
 	}
 }

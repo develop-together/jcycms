@@ -9,7 +9,7 @@ use yii\helpers\Url;
 
 $this->title = 'Admin';
 $assignment = function ($url, $model) {
-    return @$model->userRole->role_id != AdminRoles::SUPER_ROLE_ID  ? Html::a('<i class="fa fa-tablet"></i> ' . yii::t('app', 'Assign Roles'), 'javacript:;', [
+    return @$model->userRole->role_id != AdminRoles::SUPER_ROLE_ID  ? Html::a('<i class="fa fa-tablet"></i> ' . Yii::t('app', 'Assign Roles'), 'javacript:;', [
         'title' => 'assignment',
         'class' => 'btn btn-white btn-sm',
         'onclick' => 'assignRole(this)',
@@ -46,24 +46,46 @@ $assignment = function ($url, $model) {
                             [
                                 'attribute' => 'username',
                                 'filter' => '',
+                                'enableSorting' => false,
                             ],
                             [
                                 'attribute' => 'email',
                                 'format' => 'email',
                                 'filter' => '',
+                                'enableSorting' => false,
                             ],
                             [
-                                    'attribute' => 'status',
-                                    'filter' => '',//User::loadStatusOptions()
-                                    'value' => function ($model) {
-                                        return $model->statusFormat;
-                                    },
-                                    'enableSorting' => true,
+                                'attribute' => 'status',
+                                'filter' => '',//User::loadStatusOptions()
+                                'value' => function ($model) {
+                                    return $model->statusFormat;
+                                },
+                                'enableSorting' => true,
                             ],
                             [
-                                    'attribute' => 'created_at',
-                                    'format' => 'datetime',
-                                    'filter' => '',
+                                'attribute' => 'role_name',
+                                'filter' => '',
+                                'value' => function($model) {
+                                    return @$model->userRole->role->role_name;
+                                }
+                            ],
+                            [
+                                'attribute' => 'last_login_ip',
+                                'filter' => '',
+                                'enableSorting' => false,
+                            ],
+                            'login_count',
+                            [
+                                'attribute' => 'last_login_at',
+                                'filter' => '',
+                                'value' => function($model) {
+                                    return $model->last_login_at ? date('Y-m-d H:i:s', $model->last_login_at) : '';
+                                }
+                            ],
+                            [
+                                'attribute' => 'created_at',
+                                'format' => 'datetime',
+                                'filter' => '',
                             ],
 
                             [

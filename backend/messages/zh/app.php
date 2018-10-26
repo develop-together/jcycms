@@ -1,10 +1,4 @@
 <?php
-/**
- * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
- * Created at: 2016-04-18 09:41
- */
 
 return [
 	/*public*/
@@ -36,8 +30,10 @@ return [
 	'Avatar' => '头像',
 	'Success' => '成功',
 	'Error' => '失败',
+	'Illegal operation' => '非法操作',
 	'Add' => '新增',
 	'Search' => '搜索',
+	'Clear Query' => '清空查询',
 	'Users' => '用户',
 	'ID' => '序号',
 	'Nickname' => '昵称',
@@ -48,6 +44,7 @@ return [
 	'previous' => '上一页',
 	'next' => '下一页',
 	'last' => '尾页',
+	'Each page' => '每页',
 	'No picture' => '无图',
 	'Realy to delete?' => '真的要删除吗？',
 	'Are you sure you want to delete this item?' => '确认要删除此项吗?',
@@ -91,12 +88,14 @@ return [
 	'Login' => '登陆',
 	/*public*/
 	/*Article*/
+	'Article' => '文章',
 	'Category Id' => '分类ID',
 	'Category' => '分类',
 	'Title' => '标题',
 	'Sub Title' => '副标题',
 	'Summary' => '概述',
 	'Content' => '正文内容',
+	'Original' => '原图',
 	'Thumb' => '缩略图',
 	'Seo Title' => 'seo标题',
 	'Seo Keyword' => 'seo关键字',
@@ -151,6 +150,7 @@ return [
 	'Website Language' => '站点语言',
 	'Icp Sn' => 'ICP备案号',
 	'Statics Script' => '统计代码',
+	'Statistical Chart' => '统计图',
 	'Website Status' => '站点状态',
 	'Website Timezone' => '时区设置',
 	'Open Comment' => '开启评论',
@@ -172,7 +172,9 @@ return [
 	'Sender' => '发件人',
 	'Encryption' => '连接类型',
 	'SMTP Setting' => 'SMTP设置',
+	'Send Test' => '发送测试',
 	'Test' => '测试',
+	'Fill In The Mail Box' => '填写收件邮箱',
 	/*setting*/
 
 	/*Log*/
@@ -197,6 +199,7 @@ return [
 	'Close All Tab' => '关闭全部选项卡',
 	'Close Other Tab' => '关闭其他选项卡',
 	'Logout' => '退出',
+	'step out' => '暂时离开',
 	'Refresh' => '刷新',
 	'Support' => '帮助',
 	'Theme' => '主题',
@@ -237,6 +240,7 @@ return [
 	'Backend Menus' => '后台菜单',
 	'Frontend Menus' => '前台菜单',
 	'Administrators' => '管理员',
+	'Frontend Users' => '前台用户',
 	'Roles' => '角色',
 	'Friendly Links' => '友情链接',
 	'Environment' => '环境',
@@ -312,4 +316,53 @@ return [
 	'Follow the link below to reset your password' => '点击以下链接重置密码',
 	'rememberMe' => '记住密码',
 	/*mail*/
+	'Opreator' => '操作人',
+	'System Name' => '系统名称',
+	'Company Name' => '公司名称',
+	'Company Url' => '公司网址',
+	'System Logo' => '网站logo',
+	'Web Templates' => '网站模板',
+	'Please Enter The Correct Mailbox Format' => '请输入正确的邮箱格式',
+	'Send a failure, please confirm whether the mailbox exists!' => '发送失败，请确认邮箱是否存在！',
+	'A test email numbered {number} has been sent to mailbox {email}. Please check it.' => '已向邮箱({email})发送了一封编号为 {number} 的测试邮件，请查收',
+	'Test Email({email})' => '测试邮件({email})',
+	'Test Number:{number} .This is a test mail. When you receive this mail, it indicates that your sending mailbox is configured correctly.' => '测试编号: {number}<br><br>这是一封测试邮件，当您收到此邮件，则表明您的发件邮箱已配置正确。',
+	'Can not delete the home page' => '不能删除首页',
+	'The Old Password Is Error' => '旧密码输入不对',
+	'Not to fill, by default do not modify' => '不填，默认不修改',
+	'Time Tips' => '时间小贴士',
+	'Click On The List Last Week' => '上周点击排行榜',
+	"Last week's Comments On The List" => '上周评论排行榜',
+	'New Quantity Statistical Chart' => '新增数量统计图',
+	'Photo Album' => '相册图片',
+	'Photos' => '相册',
+	'Tel' => '电话',
+	'System Description' => '系统描述',
+	'Last Login IP' => '登录IP',
+	'Login Number' => '登录次数',
+	'Last Login Time' => '最后登录时间',
+	'Account exception' => '账号异常',
+	'Related menus' => '相关菜单',
+	'Entry' => '进入',
+	'Permission' => '权限',
+	'Permission Manage' => '权限管理',
+	'Internal address external access' => '内部地址外部访问',
+	'Rule Name' => '路由',
+	'Add to permissions' => '添加到权限',
+	'Top menu links can not be filled' => '顶级菜单链接可不填',
+	'Top-level menu links can be entered' => '顶级菜单链接可填写',
+	'Association Menu' => '关联菜单',
+	'Banner' => 'Banner管理',
+	'AD' => '广告',
+	'Advertisement Name' => '广告名称',
+	'Advertisement Type' => '广告类型',
+	'Advertisement Flag' => '广告标识',
+	'Size' => '尺寸',
+	'Pixel' => '像素',
+	'Width' => '宽',
+	'Height' => '高',
+	'If you fill in the picture, it will be cut into that size. If you do not fill it, it will not be cut.' => '可不填，填写后图片将会裁剪成该尺寸，不填则不裁剪!',
+	'Display' => '显示',
+	'Bar' => '条',
+	'Representation of permissions' => '表示权限',
 ];

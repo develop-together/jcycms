@@ -73,20 +73,24 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
         $pageCurrent = 0;
         $field = 'id';
         $sort = SORT_DESC;
-
-        if (isset($params['pageSize'])) {
+        $getParams = Yii::$app->request->getQueryParams();
+        $pageCurrent = 0;
+        if (isset($getParams['page'])) {
+            $pageCurrent = $getParams['page'] - 1;
+        }
+        /*if (isset($params['pageSize'])) {
             $pageSize = $params['pageSize'];
 
             $pageCurrent = $params['pageCurrent']-1;
 
-            if (in_array(($params['orderField']), ['id', 'create_time', 'update_time', 'create_time_format', 'update_time_format'])) {
+            if (in_array(($params['orderField']), ['id', 'created_at', 'updated_at', 'created_at_format', 'created_at_format'])) {
                 $field = $params['orderField'];
             }
 
             if (strtolower($params['orderDirection']) == 'asc') {
                 $sort = SORT_ASC;
             }
-        }
+        }*/
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

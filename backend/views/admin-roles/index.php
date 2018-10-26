@@ -3,14 +3,19 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use backend\grid\GridView;
+use backend\models\AdminRoles;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = yii::t('app', 'Roles');
+$this->title = Yii::t('app', 'Roles');
 $assign = function ($url, $model) {
+    if ($model->id == AdminRoles::SUPER_ROLE_ID) {
+        return '';
+    }
+
     $url = !empty($url) ? $url : Url::toRoute(['admin-roles/assign', 'id' => $model['id']]);
-    return Html::a('<i class="fa fa-tablet"></i> ' . yii::t('app', 'Assign Permission'), $url, [
+    return Html::a('<i class="fa fa-tablet"></i> ' . Yii::t('app', 'Assign Permission'), $url, [
         'title' => 'assign',
         'class' => 'btn btn-white btn-sm',
     ]);

@@ -1,12 +1,24 @@
 <?php
 
-/* @var $this yii\web\View */
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
+    use frontend\assets\CaptchaAsset;
+    use frontend\components\Captcha;
+    
+    CaptchaAsset::register($this);
 
-$this->title = 'jcycms frontend index';
+    $this->title = Yii::t('common', 'Home');
+    if (Yii::$app->getSession()->getFlash('error')) {
+        echo '<script>alert("' . Yii::$app->getSession()->getFlash('error') . '")</script>';
+    }
+
+    if (Yii::$app->getSession()->getFlash('success')) {
+        echo '<script>alert("' . Yii::$app->getSession()->getFlash('success') . '")</script>';
+    }
 ?>
-   <div class="row">
+    <div class="row">
         <div class="tm-intro">
-
             <section id="tm-section-1">                        
                 <div class="tm-container text-xs-center tm-section-1-inner">
                     <img src="<?= Yii::$app->request->baseUrl ?>/static/img/tm-lumino-logo.png" alt="Logo" class="tm-logo">
@@ -15,10 +27,8 @@ $this->title = 'jcycms frontend index';
                     <a href="#tm-section-2" class="tm-intro-link">Begin</a>    
                 </div>                                               
            </section>
-
         </div>
     </div>
-
     <div class="row gray-bg">
         
         <div id="tm-section-2" class="tm-section">
@@ -64,8 +74,7 @@ $this->title = 'jcycms frontend index';
             </div>                    
        </div>
 
-   </div> <!-- row -->
-
+    </div> <!-- row -->
     <div class="row">
 
         <section id="tm-section-3" class="tm-section">
@@ -141,41 +150,127 @@ $this->title = 'jcycms frontend index';
         </section>
 
     </div> <!-- row -->
-
     <div class="row gray-bg">
 
         <section id="tm-section-4" class="tm-section">
             <div class="tm-container">
 
-                <h2 class="blue-text tm-title text-xs-center">Contact Us</h2>
-              
-                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
-                    <form action="index.html" method="post" class="tm-contact-form">                                
-                        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 tm-form-group-left">
-                            <input type="text" id="contact_name" name="contact_name" class="form-control" placeholder="Name"  required/>
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 tm-form-group-right">
-                            <input type="email" id="contact_email" name="contact_email" class="form-control" placeholder="Email"  required/>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="contact_subject" name="contact_subject" class="form-control" placeholder="Subject"  required/>
-                        </div>
-                        <div class="form-group">
-                            <textarea id="contact_message" name="contact_message" class="form-control" rows="6" placeholder="Message" required></textarea>
-                        </div>
-                    
-                        <button type="submit" class="btn tm-light-blue-bordered-btn pull-xs-right">Submit</button>                          
-                    </form>   
-                </div> <!-- col -->
-                
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 margin-top-xs-50">
-                    <h3 class="light-blue-text tm-subtitle">Etiam at rhoncus nisl</h3>
-                    <p>Nunc rutrum ac ante euismod cursus. Suspendisse imperdiet feugiat massa nec iaculis</p>
+                <h2 class="blue-text tm-title text-xs-center"><?= Yii::t('frontend', 'About us') ?></h2>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 ">
+                    <p><?= $configData['system_notes'] ?></p>
                     <p>
-                        Tel: <a href="tel:0100200340">010-020-0340</a><br>
-                        Email: <a href="mailto:info@company.com">info@company.com</a>
+                        <?= Yii::t('frontend', 'Tel') ?>: <a href="tel:<?= $configData['tel'] ?>"><?= $configData['tel'] ?></a><br>
+                        <?= Yii::t('frontend', 'Email') ?>: <span><?= $configData['email'] ?></span>
                     </p>
                 </div>
             </div>                    
         </section>
     </div> <!-- row -->
+    <!-- 登录模态框 start -->
+    <div class="modal fade " id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myLoginModal">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <?php 
+                    $loginForm = ActiveForm::begin([
+                        'id' => 'login-form',
+                        'action' => Url::toRoute(['site/login']),
+                    ]);
+                ?>
+                    <?= $loginForm->field($loginModel, 'username')->textInput(['autofocus' => true]) ?>
+                    
+                    <?= $loginForm->field($loginModel, 'password')->passwordInput() ?>
+
+                    <?= $loginForm->field($loginModel, 'rememberMe')->checkbox() ?>
+
+                    <div style="color:#999;margin:1em 0">
+                        <?= Yii::t('common', 'If you forgot your password you can') ?> <?= Html::a(Yii::t('common', 'reset it'), 'javascript:;', ['id' => 'reset_passwod_link']) ?>.
+                    </div>
+            </div>
+             <div class="modal-footer">
+                <?= Html::submitButton(Yii::t('common', 'Submit'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                <button type="button" class="btn btn-default btn-danger" data-dismiss="modal"><?= Yii::t('common', 'Close')?></button>
+                
+            </div>
+            <?php ActiveForm::end(); ?>
+        </div>
+      </div>
+    </div>
+    <!-- 登录模态框 end -->
+    <!-- 注册模态框 start -->
+    <div class="modal fade " id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myRegisterModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    说明：带 * 为必填项
+                </div>
+            <?php 
+                $form = ActiveForm::begin([
+                    'action' => Url::toRoute(['site/signup']),
+                    'options' => ['id' => 'form-signup',]
+                ]); 
+            ?>
+
+                <?= $form->field($signupModel, 'username')->textInput(['autofocus' => true]) ?>
+
+                <?= $form->field($signupModel, 'email') ?>
+
+                <?= $form->field($signupModel, 'password')->passwordInput() ?>
+                <?= $form->field($signupModel, 'repeat_pwd')->passwordInput() ?>
+                <?= $form->field($signupModel, 'verifyCode')->widget(Captcha::className(), [
+                    'captchaAction' => 'site/captcha',
+                    'imageOptions' => ['alt' => '点击换图', 'title' => '点击换图', 'style' => 'cursor:pointer'],
+                    'options' => ['size' => 50, 'class' => 'form-control'],
+                    'template' => '<div class="form-inline">{input}{image}</div>',
+                ]) ?>
+            </div>
+             <div class="modal-footer">
+                <p>我已注册，现在就<button type="button" id="go_login" class="btn btn-default" >登录</button></p>
+                <?= Html::submitButton(Yii::t('common', 'Submit'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                <button type="reset" class="btn btn-default btn-success"><?= Yii::t('common', 'Reset')?></button>
+                <button type="button" class="btn btn-default btn-danger" data-dismiss="modal"><?= Yii::t('common', 'Close')?></button>
+              </div>
+              <?php ActiveForm::end(); ?>
+        </div>
+      </div>
+    </div>
+    <!-- 注册模态框 end -->
+    <!-- 重置密码模态框 start -->
+    <div div class="modal fade " id="resetPwdModal" tabindex="-1" role="dialog" aria-labelledby="myResetModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p><?= Yii::t('frontend', 'Please fill out your email. A link to reset password will be sent there.') ?></p>
+                </div>
+                <div class="modal-body">
+                    <?php $form = ActiveForm::begin(['id' => 'reset-password-form', 'action' => Url::toRoute(['site/request-password-reset'])]); ?>
+                    <?= $form->field($resetModel, 'email')->textInput(['autofocus' => true]) ?> 
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <?= Html::submitButton(Yii::t('common', 'Submit'), ['class' => 'btn btn-primary']) ?>
+                        <button type="button" class="btn btn-default btn-danger" data-dismiss="modal"><?= Yii::t('common', 'Close')?></button>
+                    </div>                
+                </div>            
+            </div>
+            <?php ActiveForm::end(); ?>  
+        </div>     
+    </div>
+    <!-- 重置密码模态框 end -->
+    <?php 
+        $this->registerJs(<<<EOT
+            $("#go_login").bind('click', function() {
+                $('#registerModal').modal('hide');
+                setTimeout(function() {
+                    $('#loginModal').modal('show');
+                }, 200)
+            });
+
+            $("#reset_passwod_link").bind('click', function() {
+                $('#loginModal').modal('hide');
+                $('#resetPwdModal').modal('show');
+            });
+EOT
+          );
+     ?>

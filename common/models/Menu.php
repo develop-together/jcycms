@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use backend\models\AuthItem;
 
 /**
  * This is the model class for table "{{%menu}}".
@@ -36,7 +37,6 @@ class Menu extends \common\components\BaseModel
     const REQUEST_METHOD_ON_GET = 1;
     const REQUEST_METHOD_ON_POST = 2;
 
-
     /**
      * @inheritdoc
      */
@@ -51,7 +51,7 @@ class Menu extends \common\components\BaseModel
     public function rules()
     {
         return [
-            [['type', 'parent_id', 'sort', 'is_absolute_url', 'is_display', 'method', 'created_at', 'updated_at'], 'integer'],
+            [['type', 'parent_id', 'sort', 'is_absolute_url', 'is_display', 'method', 'created_at', 'updated_at', 'isAddRoute'], 'integer'],
             [['name', 'url'], 'required'],
             [['name', 'url', 'icon'], 'string', 'max' => 255],
             [['target'], 'string', 'max' => 45],
@@ -77,6 +77,8 @@ class Menu extends \common\components\BaseModel
             'is_display' => Yii::t('app', 'Is Display'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+            'subMenus_format' => Yii::t('app', 'Related menus'),
+            'isAddRoute' => Yii::t('app', 'Add to permissions'),
         ]);
     }
 
@@ -104,8 +106,8 @@ class Menu extends \common\components\BaseModel
     public static function loadDisplayOptions()
     {
         return [
-            self::DISPLAY_SHOW => yii::t('app', 'Yes'),
-            self::NOT_DISPLAY_SHOW => yii::t('app', 'No'),
+            self::DISPLAY_SHOW => Yii::t('app', 'Yes'),
+            self::NOT_DISPLAY_SHOW => Yii::t('app', 'No'),
         ];
     }
 
@@ -121,8 +123,8 @@ class Menu extends \common\components\BaseModel
     public static function loadAbsoluteOptions()
     {
         return [
-            self::ABSOLUTE_URL => yii::t('app', 'Yes'),
-            self::NOT_ABSOLUTE_URL => yii::t('app', 'No'),
+            self::ABSOLUTE_URL => Yii::t('app', 'Yes'),
+            self::NOT_ABSOLUTE_URL => Yii::t('app', 'No'),
         ];
     }
 
@@ -159,7 +161,20 @@ class Menu extends \common\components\BaseModel
 
     public function getUrlFormat()
     {
-        return $this->url ? Url::toRoute([$this->url]) : '';
+        if (empty($this->url)) {
+            return '';
+        }
+
+        if ($this->isCorrect) {
+            return $this->url;
+        }
+
+        return Url::toRoute([$this->url]);
+    }
+
+    public function getIsCorrect()
+    {
+        return in_array(strtolower($this->url), ['/', '#', 'javascript:;']);
     }
 
     /**
@@ -171,15 +186,41 @@ class Menu extends \common\components\BaseModel
 
         return array_merge($parentScenarios, [
             'backend' => ['parent_id', 'name', 'url', 'icon', 'type', 'is_absolute_url', 'target', 'sort', 'is_display', 'method'],
-            'frontend' => ['parent_id', 'name', 'url', 'icon', 'type', 'is_absolute_url', 'target', 'sort', 'is_display'],
+            'frontend' => ['parent_id', 'name', 'url', 'type', 'is_absolute_url', 'target', 'sort', 'is_display'],
         ]);
+    }
+
+    public function beforeSave($insert) 
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        
+        if ($this->sort == null) {
+            $this->sort = 0;
+        }
+
+        if ($this->parent_id == null) {
+            $this->parent_id = 0;
+        }
+
+        if ($this->isNewRecord) {
+            $this->getScenario() == 'frontend' && $this->type = self::MENU_TYPE_FRONTEND;
+        }
+
+        return true;
     }
 
     public function beforeDelete()
     {
         if ($this->children) {
-            $this->addError('id', yii::t('app', 'Sub Menu exists, cannot be deleted'));
+            $this->addError('id', Yii::t('app', 'Sub Menu exists, cannot be deleted'));
             return false;
+        }
+
+        if($this->name === '首页') {
+            $this->addError('id', Yii::t('app', 'Can not delete the home page'));
+            return false;            
         }
 
         return true;

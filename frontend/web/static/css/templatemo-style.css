@@ -321,13 +321,13 @@ button:focus { outline: none; }
 	float: left;
 }
 
-.form-control { 
+/*.form-control { 
 	border-color: rgba(0,0,0,0);
 	border-radius: 0;
     font-size: 1.2rem;
     padding: .75rem;
 }
-.form-group { margin-bottom: 1.8rem; }
+.form-group { margin-bottom: 1.8rem; }*/
 
 .tm-form-group-left { padding-left: 0; }
 .tm-form-group-right { padding-right: 0; }
@@ -506,4 +506,26 @@ body.page-2 { padding-top: 80px; }
 		height: 100vh;
 		min-height: 600px;
 	}
+}
+
+#header-container {
+	position: absolute;
+	z-index: 2000;
+}
+
+#header-container div.nav-login {
+    padding-bottom:10px;
+    font-size: 12px;
+}
+#header-container div.nav-login a {
+    color:#fff;
+}
+#header-container div.nav-login a:hover {
+	color: #f69;
+	font-size:14px;
+	cursor: pointer;
+}
+div.required label.control-label:after {
+    content: " *";
+    color: red;
 }

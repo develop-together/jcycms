@@ -4,8 +4,9 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use backend\models\Menu;
 use common\components\Utils;
+use common\components\BaseConfig;
 use yii\widgets\ActiveForm AS BAF;
-$lists = $model::find()->where(['type' => Menu::MENU_TYPE_BACKEND])->asArray()->all();
+$lists = Menu::getBackendQuery()->asArray()->all();
 $menuTree = Utils::tree_bulid($lists, 'id', 'parent_id');
 /* @var $this yii\web\View */
 /* @var $model backend\models\Menu */
@@ -28,30 +29,30 @@ $menuTree = Utils::tree_bulid($lists, 'id', 'parent_id');
                             'options' => ['class' => 'form-horizontal'],
                 ]); ?>    
                         <?= $form->field($model, 'parent_id')->dropDownList(Menu::getDrowDownList($menuTree), ['prompt' => '请选择']); ?>
-                        
+                        <div class="hr-line-dashed"></div>                        
                         <?= $form->field($model, 'name')->textInput(['maxlength' => true]); ?>
-                        
+                        <div class="hr-line-dashed"></div>                        
                         <?= $form->field($model, 'is_absolute_url')->radioList(Menu::loadAbsoluteOptions()); ?>
-
-                        <?= $form->field($model, 'url')->textInput(); ?>
-                        
+                        <div class="hr-line-dashed"></div>
+                        <?= $form->field($model, 'url')->textInput(['placeholder' => Yii::t('app', 'Top-level menu links can be entered') . '#']); ?>
+                        <div class="hr-line-dashed"></div>                       
                         <?= $form->field($model, 'method')->dropDownList(Menu::loadMethodOptions(), ['prompt' => '请选择']); ?>
-                        
+                        <div class="hr-line-dashed"></div>                       
                         <?= $form->field($model, 'icon')->widget(\backend\widgets\iconpicker\IconPickerWidget::className()) ?>
-                        
-                        <?= $form->field($model, 'target')->textInput(['maxlength' => true]); ?>
-                        
-                        <?= $form->field($model, 'sort')->textInput(['maxlength' => true, 'type' => 'number', 'min' => 0, 'value' => 0]); ?>
-                        
+                        <div class="hr-line-dashed"></div>                       
+                        <?= $form->field($model, 'sort')->textInput(['maxlength' => true, 'type' => 'number', 'min' => 0]); ?>
+                        <div class="hr-line-dashed"></div>                       
                         <?= $form->field($model, 'is_display')->radioList(Menu::loadDisplayOptions()); ?>
-                        
-                <div class="form-group">
-                    <div class="col-sm-4 col-sm-offset-2">
-                        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                        <div class="hr-line-dashed"></div>                       
+                        <?= $form->field($model, 'isAddRoute')->radioList(BaseConfig::getYesNoItems()); ?>
+                        <div class="hr-line-dashed"></div>                       
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 
-                        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']);?>                        
-                    </div>
-                </div>
+                                <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']);?>                        
+                            </div>
+                        </div>
                 <?php  BAF::end(); ?>            
             </div>
         </div>

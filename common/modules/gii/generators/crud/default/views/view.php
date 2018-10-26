@@ -15,6 +15,12 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 
+$this->title = $model->id;
+$this->params['breadcrumbs'] = [
+    ['label' => Yii::t('app', '<?=Inflector::camel2words(StringHelper::basename($generator->modelClass))?>'), 'url' =>  Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
+    ['label' => $this->title],
+];
+
 ?>
 <div class="row">
     <div class="col-sm-12">

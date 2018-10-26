@@ -12,10 +12,11 @@ namespace common\modules\attachment;
 use common\modules\attachment\actions\UploadController;
 use yii\base\BootstrapInterface;
 
-class Module extends \yii\base\Module implements BootstrapInterface
+class Module extends \common\modules\Module
 {
     public function init()
     {
         parent::init();
+
     }
 }

@@ -2,8 +2,9 @@
  namespace common\components;
  
  use yii\helpers\Json;
+ 
 /**
-* 借口类
+* 接口类
 * @author atuxe <atuxe@boyuntong.com>
 */
  class BaseApi 

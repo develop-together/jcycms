@@ -37,7 +37,7 @@ $this->title = Yii::t('app', 'Backend Manage System');
                                      <a data-toggle="dropdown" class="dropdown-toggle" href="#" data-target="#" role="button" aria-haspopup="true" aria-expanded="false">
                                             <span class="clear">
                                                 <span class="block m-t-xs">
-                                                    <strong class="font-bold">超级管理员</strong>
+                                                    <strong class="font-bold"><?= @\yii::$app->getUser()->getIdentity()->userRole->role->role_name ?></strong>
                                                 </span>
                                                 <span class="text-muted text-xs block">
                                                     <?= \yii::$app->getUser()->getIdentity()->username ?>

@@ -10,8 +10,7 @@ class DeleteAction extends \yii\base\Action
 	public $modelClass;
 
 	public function run($id)
-	{
-		
+	{	
 		if (Yii::$app->request->isAjax) {
 			Yii::$app->getResponse()->format = Response::FORMAT_JSON;
 			if (!$id) {
@@ -50,6 +49,8 @@ class DeleteAction extends \yii\base\Action
 			yii::$app->getSession()->setFlash('success', Yii::t('app', 'Delete Success'));
 		}
 
-		return $this->controller->redirect(yii::$app->request->headers['referer']);
+		$referer = yii::$app->request->headers['referer'] ? yii::$app->request->headers['referer'] : ['index'];
+
+		return $this->controller->redirect($referer);
 	}
 }

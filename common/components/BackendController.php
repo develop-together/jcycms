@@ -117,7 +117,7 @@ class BackendController extends BaseController
 
     public function redirect($url, $statusCode = 302)
     {
-        $route = (in_array('index', $url) && $this->page > 1) ? Url::to(array_merge($url, ['page' => $this->page])) : Url::to($url);
+        $route = (is_array($url) && in_array('index', $url) && $this->page > 1) ? Url::to(array_merge($url, ['page' => $this->page])) : Url::to($url);
         return Yii::$app->getResponse()->redirect($route, $statusCode);
     }
 }

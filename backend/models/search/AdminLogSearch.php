@@ -58,7 +58,7 @@ class AdminLogSearch extends AdminLog
             $pageSize = $getParams['pageSize'];
         }
         
-        $field = 'id';
+        $field = 'created_at';
         $sort = SORT_DESC;
 
         // if (isset($params['pageSize'])) {

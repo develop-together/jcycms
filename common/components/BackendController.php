@@ -22,9 +22,9 @@ class BackendController extends BaseController
 	{
 		parent::init();
 
-		if (Yii::$app->user->isGuest) {
-			return $this->redirect(['/public/login']);
-		}
+		// if (Yii::$app->user->isGuest) {
+		// 	return $this->redirect(['/public/login']);
+		// }
 
         $this->page = Yii::$app->request->get('page');
 	}

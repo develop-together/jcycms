@@ -15,7 +15,7 @@ use yii\widgets\Pjax;
                 <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
                     <?= $this->render('_search', ['model' => $searchModel])?>
                 </div>
-                <?php Pjax::begin(['id' => 'adminLog-pjax', 'enablePushState' => false, 'options' => ['class' => 'pjax-reload']]); ?>
+                <?php //Pjax::begin(['id' => 'adminLog-pjax', 'enablePushState' => false, 'options' => ['class' => 'pjax-reload']]); ?>
                     <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [
@@ -38,7 +38,7 @@ use yii\widgets\Pjax;
                             ],
                         ]
                     ]); ?>
-                <?php Pjax::end(); ?>
+                <?php //Pjax::end(); ?>
             </div>
         </div>
     </div>

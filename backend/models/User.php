@@ -314,7 +314,7 @@ class User extends BaseModel implements IdentityInterface
             $route[$action] = 'index';
             $acl = implode('/', $route);
         }
-
+        
         return in_array($acl, $this->aclList);
     }
 

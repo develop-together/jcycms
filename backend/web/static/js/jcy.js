@@ -129,7 +129,7 @@ yii.confirm = function(message, ok, cancel) {
     var url = $(this).attr('href');
     var if_pjax = $(this).attr('data-pjax') ? $(this).attr('data-pjax') : 0;
     var type = $(this).attr('data-method') ? $(this).attr('data-method') : "get";
-    $(this).attr('href', 'javascript:;');
+    !url && $(this).attr('href', 'javascript:;');
     swal({
         title: message,
         text: tips.realyToDo,

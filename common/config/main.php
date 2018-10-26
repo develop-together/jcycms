@@ -15,7 +15,7 @@ $config = [
             ],
             'gii' => [
                     'class' => 'common\modules\gii\Module',
-                    'allowedIPs' => ['127.0.0.1', '::1', '47.52.59.232'],
+                    'allowedIPs' => ['*'],//'127.0.0.1', '::1'
                     'generators' => [
                         'crud' => [
                             'class' => 'yii\gii\generators\crud\Generator',

@@ -16,6 +16,7 @@ $config = [
             'gii' => [
                     'class' => 'common\modules\gii\Module',
                     'allowedIPs' => ['127.0.0.1', '::1', '47.52.59.232'],
+                    'ipFilters' => ['47.52.59.232'],//You are not allowed to access this page
                     'generators' => [
                         'crud' => [
                             'class' => 'yii\gii\generators\crud\Generator',

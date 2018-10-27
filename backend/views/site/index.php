@@ -3,6 +3,7 @@
 use backend\assets\IndexAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use backend\models\User;
 use common\components\UserAcl;
 
 IndexAsset::register($this);
@@ -36,7 +37,7 @@ $this->title = Yii::t('app', 'Backend Manage System');
                                      <a data-toggle="dropdown" class="dropdown-toggle" href="#" data-target="#" role="button" aria-haspopup="true" aria-expanded="false">
                                             <span class="clear">
                                                 <span class="block m-t-xs">
-                                                    <strong class="font-bold">超级管理员</strong>
+                                                    <strong class="font-bold"><?= @\yii::$app->getUser()->getIdentity()->userRole->role->role_name ?></strong>
                                                 </span>
                                                 <span class="text-muted text-xs block">
                                                     <?= \yii::$app->getUser()->getIdentity()->username ?>
@@ -85,7 +86,9 @@ $this->title = Yii::t('app', 'Backend Manage System');
                                     // echo UserAcl::getBackendMenus();
                                  ?>
                             <!--动态菜单配置结束-->
-                        <li><a href="<?= Url::toRoute(['gii/default/index']) ?>" class="J_menuItem"><i class="fa fa-bolt"></i><span class="nav-label">GII</span></a></li>
+                            <?php if (YII_ENV_DEV && User::checkSuperManager()): ?>
+                                <li><a href="<?= Url::toRoute(['gii/default/index']) ?>" class="J_menuItem"><i class="fa fa-bolt"></i><span class="nav-label">GII</span></a></li>
+                            <?php endif ?>
                         </ul>
                     </div>
                 </nav>
@@ -138,7 +141,7 @@ $this->title = Yii::t('app', 'Backend Manage System');
                         </nav>
                         <button class="roll-nav roll-right J_tabRight" style="right:140px;"><i class="fa fa-forward"></i>
                         </button>
-                        <a href="javascript:;" class="roll-nav roll-right J_tabExit" style="width:80px;right: 60px;"><i class="fa fa-lock"></i>  <?= Yii::t('app', 'step out') ?></a>  
+                        <a href="javascript:;" id="stepOut" class="roll-nav roll-right J_tabExit" style="width:80px;right: 60px;"><i class="fa fa-lock"></i>  <?= Yii::t('app', 'step out') ?></a>  
                         <a href="<?=Url::toRoute(['public/logout'])?>" class="roll-nav roll-right J_tabExit"><i class="fa fa-sign-out"></i> <?= Yii::t('app', 'Logout') ?></a>                        
 <!--                         <div class="btn-group roll-nav roll-right">
                             <button class="dropdown J_tabClose" data-toggle="dropdown">
@@ -261,11 +264,62 @@ $this->title = Yii::t('app', 'Backend Manage System');
         }
     </style>
     <script>
+        var global_pass = '';
         function reloadIframe() {
             var current_iframe = $("iframe:visible");
             current_iframe[0].contentWindow.location.reload();
             return false;
-        }         
+        } 
+        (function(){
+            //数字0-9，大写字母，小写字母，ASCII或UNICODE编码（十进制），共62个
+            var charCodeIndex = [[48,57],[65,90],[97,122]];
+            var charCodeArr = [];
+
+            function getBetweenRound(min,max){
+                return Math.floor(min+Math.random()*(max-min));
+            };
+
+            function getCharCode(){
+                for(var i=0,len=3;i<len;i++){
+                    var thisArr = charCodeIndex[i];
+                    for(var j=thisArr[0],thisLen=thisArr[1];j<=thisLen;j++){
+                        charCodeArr.push(j);
+                    }
+                }
+            }
+
+            function ranStr(slen){
+                slen = slen || 20;
+                charCodeArr.length<62 && getCharCode();
+
+                var res = [];
+                for(var i=0;i<slen;i++){
+                    var index = getBetweenRound(0,61);
+                    res.push(String.fromCharCode(charCodeArr[index]));
+                }
+                return res.join('');
+            };
+
+            this.ranStr = ranStr;
+        })();
+        
+        $("#stepOut").bind('click', function() {
+            var randstr = ranStr(6);
+            layer.prompt({
+                title: '输入口令<span style="color:red">' + randstr + '</span>，并确认', 
+                formType: 1, 
+                cancel: function(index){
+                    if (global_pass !== randstr) {
+                        return false;
+                    }
+                }
+            }, function(pass, index, elem){
+                if (pass === randstr) {
+                    global_pass = pass;
+                    layer.close(index);
+                }
+            });
+        })
     </script>
 </html>
 <?php $this->endPage();?>

@@ -15,7 +15,7 @@
 		                <span class="label label-primary pull-right"><?= Yii::t('app', $data['type']) ?></span>
 		                <h5><?= $data['countName'] ?></h5>
 		            </div>
-		            <div class="ibox-content openContab" href="<?= $data['url'] ?>" title="<?= $data['countName'] ?>" style="cursor: pointer">
+		            <div class="ibox-content <?= ($data['url'] != 'javascript:;' || empty($data['url'])) ? 'openContab' : '' ?>" href="<?= $data['url'] ?>" title="<?= $data['countName'] ?>" style="cursor: pointer">
 		                <h1 class="no-margins"><?= $data['countNumber'] ?></h1>
 		                <?php if($data['countName'] == Yii::t('app', 'Articles')): ?>
 			                <div class="stat-percent font-bold text-success"><?= $data['proportion'] ?>% <i class="fa fa-bolt"></i>

@@ -256,9 +256,12 @@ class User extends BaseModel implements IdentityInterface
 		];
 	}
 
-	public static function checkSuperManager()
+	public static function checkSuperManager($id = null)
 	{
-		return AdminRoleUser::find()->where(['user_id' => Yii::$app->user->id, 'role_id' => AdminRoles::SUPER_ROLE_ID]);
+		$user_id = !$id ? Yii::$app->user->id : $id;
+		$res = AdminRoleUser::find()->where(['user_id' => $user_id, 'role_id' => AdminRoles::SUPER_ROLE_ID])->count();
+
+		return $res;
 	}
 
 	public function getStatusFormat()
@@ -274,18 +277,18 @@ class User extends BaseModel implements IdentityInterface
 
 	public function beforeSave($insert)
 	{
-		if (!$insert && !empty($this->password)) {
-			// $this->password = $this->password ? $this->password : self::AUTH_KEY;
+		if ($insert || (! $insert && ! empty($this->password))) {
+			// $this->password = $this->password ? $this->password : self::AUTH_KEY;	
 			$this->generateAuthKey();
-			$this->setPassword($this->password);
+			$this->setPassword($this->password);			
 		}
-		
+
 		return parent::beforeSave($insert);
 
 	}
 
 	public function beforeDelete() {
-		if (self::checkSuperManager()) {
+		if (self::checkSuperManager($this->id)) {
 			throw new ForbiddenHttpException(Yii::t('app', "Not allowed to delete {attribute}", ['attribute' => Yii::t('app', 'default super administrator admin')]));
 		}
 		return true;
@@ -311,7 +314,7 @@ class User extends BaseModel implements IdentityInterface
             $route[$action] = 'index';
             $acl = implode('/', $route);
         }
-
+        
         return in_array($acl, $this->aclList);
     }
 

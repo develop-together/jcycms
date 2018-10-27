@@ -4,7 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Article;
-use backend\models\Search\ArticleSearch;
+use backend\models\search\ArticleSearch;
 use common\components\BackendController;
 use backend\actions\DeleteAction;
 use yii\web\NotFoundHttpException;

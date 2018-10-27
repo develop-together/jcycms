@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm AS BAF;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Search\ArticleSearch */
+/* @var $model backend\models\search\ArticleSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

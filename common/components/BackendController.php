@@ -22,9 +22,9 @@ class BackendController extends BaseController
 	{
 		parent::init();
 
-		if (Yii::$app->user->isGuest) {
-			return $this->redirect(['/public/login']);
-		}
+		// if (Yii::$app->user->isGuest) {
+		// 	return $this->redirect(['/public/login']);
+		// }
 
         $this->page = Yii::$app->request->get('page');
 	}
@@ -51,10 +51,11 @@ class BackendController extends BaseController
 		try {
 			// in_array($action->id, ['index', 'create', 'update', 'delete', 'view']) && 
             $route = $this->route . ':' . strtoupper(Yii::$app->request->getMethod());
+ 
 			if (!UserAcl::hasAcl($route)) {
                 if (yii::$app->request->isAjax) {
                     yii::$app->getResponse()->content = json_encode(['code' => 1001, 'message' => Yii::t("app", "Permission denied")]);
-                    yii::$app->getResponse()->send();	
+                    return yii::$app->getResponse()->send();	
                 } else {
                 	$error = '<div class="ibox-title"><strong>' . Yii::t("app", "Permission denied") . '</strong>';
                 	if ($action->id != 'assignment') {
@@ -117,7 +118,7 @@ class BackendController extends BaseController
 
     public function redirect($url, $statusCode = 302)
     {
-        $route = (in_array('index', $url) && $this->page > 1) ? Url::to(array_merge($url, ['page' => $this->page])) : Url::to($url);
+        $route = (is_array($url) && in_array('index', $url) && $this->page > 1) ? Url::to(array_merge($url, ['page' => $this->page])) : Url::to($url);
         return Yii::$app->getResponse()->redirect($route, $statusCode);
     }
 }

@@ -17,7 +17,7 @@ class UserAcl
 	{
 		return [
 			'site/index:GET',
-			'site/desktop:GET', 
+			'site/desktop:GET',  
 			'site/test:GET',
 			'public/captcha:GET',
 			'public/logout:GET',

@@ -15,7 +15,7 @@ class Module extends \yii\base\Module
 
 		if (Yii::$app->id = 'app-backend') {
 			$this->controllerNamespace = $class->getNamespaceName() . '\\backend\\controllers';
-			$this->viewPath = $this->basePath . '/backend\views';
+			$this->viewPath = $this->basePath . '/backend/views';
 		}
 	}
 }

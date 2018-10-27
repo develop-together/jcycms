@@ -54,11 +54,11 @@ class UserSearch extends User
         if (isset($getParams['page'])) {
             $pageCurrent = $getParams['page'] - 1;
         }
-        
+
         if (isset($getParams['pageSize'])) {
             $pageSize = $getParams['pageSize'];
         }
-        
+
         $field = 'last_login_at';
         $sort = SORT_DESC;
 
@@ -87,9 +87,6 @@ class UserSearch extends User
                     'created_at' => SORT_DESC,
                     $field => $sort,
                 ],
-            ],
-            'pagination' => [
-                'pageSize' => 10,
             ]
         ]);
 

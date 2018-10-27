@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace backend\actions;
 
 use Yii;
@@ -11,7 +11,7 @@ class DeleteAction extends \yii\base\Action
 
 	public function run($id)
 	{
-		
+
 		if (Yii::$app->request->isAjax) {
 			Yii::$app->getResponse()->format = Response::FORMAT_JSON;
 			if (!$id) {
@@ -37,7 +37,7 @@ class DeleteAction extends \yii\base\Action
 
 				return ['code' => 300, 'message' => implode(',', $errorIds) . implode('<br>', $err)];
 			}
-			
+
 			return ['code' => 200, 'message' => Yii::t('app', 'Success')];
 		}
 

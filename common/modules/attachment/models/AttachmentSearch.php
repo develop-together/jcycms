@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace common\modules\attachment\models;
 
@@ -46,9 +46,6 @@ class AttachmentSearch extends Attachment
                 'defaultOrder' =>[
                     $field => $sort,
                 ],
-            ],
-            'pagination' => [
-                'pageSize' => 10,
             ]
         ]);
 
@@ -64,5 +61,5 @@ class AttachmentSearch extends Attachment
         ]);
 
         return $dataProvider;
-    }	
+    }
 }

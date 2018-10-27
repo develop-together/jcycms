@@ -56,7 +56,7 @@ class AuthItemSearch extends AuthItem
         if (isset($getParams['page'])) {
             $pageCurrent = $getParams['page'] - 1;
         }
-        
+
         if (isset($getParams['pageSize'])) {
             $pageSize = $getParams['pageSize'];
         }
@@ -84,9 +84,6 @@ class AuthItemSearch extends AuthItem
                 'defaultOrder' =>[
                     $field => $sort,
                 ],
-            ],
-            'pagination' => [
-                'pageSize' => 10,
             ]
         ]);
 
@@ -111,7 +108,7 @@ class AuthItemSearch extends AuthItem
         if ($menuId) {
             $query->andFilterWhere(['menu_id' => $menuId]);
         }
-        
+
         return $dataProvider;
     }
 }

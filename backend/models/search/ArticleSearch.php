@@ -36,7 +36,7 @@ class ArticleSearch extends Article
         $scenarios = parent::scenarios();
         $scenarios['article'] = array_merge($scenarios['article'], [
             'create_start_at',
-            'create_end_at',            
+            'create_end_at',
         ]);
 
         return $scenarios;
@@ -66,7 +66,7 @@ class ArticleSearch extends Article
         if (isset($getParams['page'])) {
             $pageCurrent = $getParams['page'] - 1;
         }
-        
+
         if (isset($getParams['pageSize'])) {
             $pageSize = $getParams['pageSize'];
         }
@@ -94,9 +94,6 @@ class ArticleSearch extends Article
                 'defaultOrder' =>[
                     $field => $sort,
                 ],
-            ],
-            'pagination' => [
-                'pageSize' => 10,
             ]
         ]);
 

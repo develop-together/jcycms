@@ -56,7 +56,7 @@ class CarouselSearch extends Carousel
         if (isset($getParams['page'])) {
             $pageCurrent = $getParams['page'] - 1;
         }
-        
+
         if (isset($getParams['pageSize'])) {
             $pageSize = $getParams['pageSize'];
         }
@@ -84,9 +84,6 @@ class CarouselSearch extends Carousel
                 'defaultOrder' =>[
                     $field => $sort,
                 ],
-            ],
-            'pagination' => [
-                'pageSize' => 10,
             ]
         ]);
 

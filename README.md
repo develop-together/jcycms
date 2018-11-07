@@ -1,5 +1,5 @@
 <p align="center">
-    <h1 align="center">杨捷成后台管理系统(可用于CMS/ERP/SHOP....)</h1>
+    <h1 align="center">JCYCMS(可用于CMS/ERP/SHOP....)</h1>
     <br>
     目前在制作中，预计18年上半年会出来第一版，都是抽空写的
 </p>

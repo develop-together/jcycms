@@ -153,6 +153,7 @@ class SiteController extends BackendController
 	    $echartsData['legends'] = Json::encode(array_values($echartsData['legend']));;
 	    $series = $articleCount = $userCount = [];
 		$nWeek = date('w');
+		$nWeek > 0 && $nWeek -= 1;
 		for ($i = 0 ; $i <= $nWeek; $i++) {
 			$day = $i  == 0 ? '日' : Utils::numberToChinese($i);
 			$xAxis[] = '周' . $day;

@@ -187,11 +187,18 @@ class AdminUserController extends BackendController
     {
         $userModel = User::findOne(Yii::$app->user->id);
         $userModel->scenario = 'updateSelf';
+        $old_password_hash = $userModel->password_hash;
         if (Yii::$app->request->isPost) {
-            if($userModel->load(Yii::$app->request->post()) && $userModel->save()) {
-                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
+            $params = Yii::$app->request->post();
+            if ($userModel->load($params) && $userModel->save()) {
+                if ($userModel->password && !Yii::$app->getSecurity()->validatePassword($userModel->password, $old_password_hash)) {
+                    Yii::$app->user->logout();
+                    
+                    return $this->goHome();// exit("<script>top.location.href='" . Yii::$app->getHomeUrl() ."'</script>");
+                }
 
-                return $this->redirect(['admin-user/update-self']);            
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
+                return $this->redirect(['admin-user/update-self']);                         
             } else {
                 $errors = $userModel->getErrors();
                 $err = '';

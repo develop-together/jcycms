@@ -4,6 +4,7 @@ namespace common\components;
 
 use Yii;
 use backend\models\User;
+use backend\models\AdminRoles;
 use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
 use yii\base\Event;
@@ -40,9 +41,13 @@ class BackendController extends BaseController
 			// return false;
 		}
 
-		if (Yii::$app->user->id == User::SUPER_MANAGER) {
-			return true;
-		}
+        $user = Yii::$app->user->identity;
+        if ((int)$user->userRole->role->id === AdminRoles::SUPER_ROLE_ID) {
+            return true;
+        }
+		// if (Yii::$app->user->id == User::SUPER_MANAGER) {
+		// 	return true;
+		// }
 
 		/**
 		 * 权限检查

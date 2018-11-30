@@ -69,11 +69,17 @@ class BaseModel extends \yii\db\ActiveRecord
     {
     	if ($this->hasErrors()) {
     		$message = '<strong>' . Yii::t('common', 'The following form is mistaken') . ':</strong><br>';
+            $errors = '';
 			foreach ($this->getErrors() as $value) {
-				$message .= implode(",", $value) . '<br>';
+				$errors .= implode(",", $value) . '<br>';
 			}
 
-			Yii::$app->getSession()->setFlash('error', $message);  
+            if (Yii::$app->id != 'app-console') {
+                Yii::$app->getSession()->setFlash('error', $message . $errors);  
+            } else {
+                exit(str_replace('<br>', '|', $errors));
+            }
+			
 
     	}
     }

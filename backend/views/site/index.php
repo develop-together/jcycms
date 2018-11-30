@@ -21,7 +21,7 @@ $this->title = Yii::t('app', 'Backend Manage System');
 	    <?=Html::csrfMetaTags()?>
 	    <title><?=Html::encode($this->title)?></title>
 	    <?php $this->head()?>
-	    <link rel="icon" href="<?=yii::$app->getRequest()->hostInfo?>/favicon.ico" type="image/x-icon"/>
+	    <link rel="icon" href="<?=Yii::$app->getRequest()->hostInfo?>/favicon.ico" type="image/x-icon"/>
 	</head>
     <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
     	<?php $this->beginBody();?>
@@ -32,31 +32,31 @@ $this->title = Yii::t('app', 'Backend Manage System');
                     <div class="sidebar-collapse">
                         <ul class="nav" id="side-menu">
                             <li class="nav-header">
-                                <div class="dropdown profile-element">
+                                <div id="dropdown-control" class="dropdown profile-element">
                                     <span><img alt="image" class="img-circle" src="<?= Yii::$app->getUser()->getIdentity()->avatar ?  Yii::$app->request->baseUrl . '/' . Yii::$app->getUser()->getIdentity()->avatar : 'static/img/profile_small.jpg' ?>" width="64" height="64"/></span>
-                                     <a data-toggle="dropdown" class="dropdown-toggle" href="#" data-target="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                     <a id="control-btn" data-toggle="dropdown" class="dropdown-toggle" href="#" data-target="#" role="button" aria-haspopup="true" aria-expanded="false">
                                             <span class="clear">
                                                 <span class="block m-t-xs">
-                                                    <strong class="font-bold"><?= @\yii::$app->getUser()->getIdentity()->userRole->role->role_name ?></strong>
+                                                    <strong class="font-bold"><?= @\Yii::$app->getUser()->getIdentity()->userRole->role->role_name ?></strong>
                                                 </span>
                                                 <span class="text-muted text-xs block">
-                                                    <?= \yii::$app->getUser()->getIdentity()->username ?>
+                                                    <?= \Yii::$app->getUser()->getIdentity()->username ?>
                                                     <b class="caret"></b>
                                                 </span>
                                             </span>
                                     </a>
                                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                        <li><a class="J_menuItem"
+                                        <li><a class="self-click J_menuItem"
                                                href="<?= Url::toRoute(['admin-user/update-self']) ?>"><?=Yii::t('app', 'Profile')?></a>
                                         </li>
-                                        <li><a class="J_menuItem"
+                                        <li><a class="self-click J_menuItem"
                                                href="<?= Url::toRoute(['article/index']) ?>"><?=Yii::t('app', 'Articles')?></a>
                                         </li>
                                         <li><a target="_blank"
-                                               href="javascript:;"><?=Yii::t('app', 'Frontend')?></a>
+                                               href="<?= Yii::$app->params['site']['url'] ?>"><?=Yii::t('app', 'Frontend')?></a>
                                         </li>
                                         <li class="divider"></li>
-                                        <li><a href="<?=Url::toRoute(['public/logout'])?>"><?=Yii::t('app', 'Logout')?></a>
+                                        <li><a class="self-click" href="<?=Url::toRoute(['public/logout'])?>"><?=Yii::t('app', 'Logout')?></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -66,7 +66,7 @@ $this->title = Yii::t('app', 'Backend Manage System');
                             <!--动态菜单配置开始-->
                                 <?php 
                                     // 设置缓存依赖（重新缓存取决于它是否被修改过）
-                                    $cacheDependencyObject = yii::createObject([
+                                    $cacheDependencyObject = Yii::createObject([
                                         'class' => 'common\components\FileDependencyHelper',
                                         'fileName' => 'backend_menu.log',
                                     ]);
@@ -111,7 +111,7 @@ $this->title = Yii::t('app', 'Backend Manage System');
                                     </a>
                                 </li>
                                 <li class="hidden-xs">
-                                    <a href="<?=yii::$app->params['site']['url']?>" target='_blank'><i
+                                    <a href="<?=Yii::$app->params['site']['url']?>" target='_blank'><i
                                                 class="fa fa-internet-explorer"></i> <?=Yii::t('app', 'Frontend')?></a>
                                 </li>
                                 <li class="hidden-xs">
@@ -319,6 +319,11 @@ $this->title = Yii::t('app', 'Backend Manage System');
                     layer.close(index);
                 }
             });
+        })
+
+        $("a.self-click").bind('click', function(event) { 
+            $("#dropdown-control").removeClass('open');
+            $("#control-btn").attr('aria-expanded', false);
         })
     </script>
 </html>

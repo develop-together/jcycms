@@ -3,6 +3,7 @@ namespace common\components;
 use Yii;
 use backend\models\User;
 use backend\models\AdminRoleUser;
+use backend\models\AdminRoles;
 use backend\models\Menu;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -28,12 +29,16 @@ class UserAcl
 		];
 	}	
 
-	public static function hasAcl($acl, $userId=0)
+	public static function hasAcl($acl, $userId = 0)
 	{
-		empty($userId) && $userId = Yii::$app->user->id;
-		if (Yii::$app->user->id == User::SUPER_MANAGER) {
-			return true;
-		}		
+        $user = Yii::$app->user->identity;
+		empty($userId) && $userId = $user->id;
+		// if (Yii::$app->user->id == User::SUPER_MANAGER) {
+		// 	return true;
+		// }	
+        if ((int)$user->userRole->role->id === AdminRoles::SUPER_ROLE_ID) {
+            return true;
+        }
 
 		$user = User::findOne($userId);
 
@@ -62,11 +67,12 @@ class UserAcl
 
 	public static function getBackendMenus($userId=0)
 	{
-		!$userId && $userId = Yii::$app->user->id;
+		$user = Yii::$app->user->identity;
+		!$userId && $userId = $user->id;
 		$query = Menu::getBackendQuery(true);
 		$data = $query->orderBy(['sort' => SORT_ASC, 'id' => SORT_DESC])->asArray()->all();
 		$tree = new TreeHelper($data, true, 2);
-		if ($userId != User::SUPER_MANAGER && $data) {
+		if ((int)$user->userRole->role->id !== AdminRoles::SUPER_ROLE_ID && $data) {//$userId != User::SUPER_MANAGER && $data)
 			$user = User::findOne($userId);
 			$newData = [];
 			foreach ($data as $key => $value) {

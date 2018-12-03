@@ -22,19 +22,13 @@ class AttachmentSearch extends Attachment
         $field = 'id';
         $sort = SORT_DESC;
 
-        // if (isset($params['pageSize'])) {
-        //     $pageSize = $params['pageSize'];
+        if (isset($getParams['page'])) {
+            $pageCurrent = $getParams['page'] - 1;
+        }
 
-        //     $pageCurrent = $params['pageCurrent']-1;
-
-        //     if (in_array(($params['orderField']), ['id', 'created_at', 'updated_at', 'created_at_format', 'created_at_format'])) {
-        //         $field = $params['orderField'];
-        //     }
-
-        //     if (strtolower($params['orderDirection']) == 'asc') {
-        //         $sort = SORT_ASC;
-        //     }
-        // }
+        if (isset($getParams['pageSize'])) {
+            $pageSize = $getParams['pageSize'];
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

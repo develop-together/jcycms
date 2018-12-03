@@ -23,7 +23,7 @@ class IndexAsset extends \yii\web\AssetBundle
 		"static/js/plugins/slimscroll/jquery.slimscroll.min.js",
 		"static/js/plugins/layer2.0/layer.min.js",
 		"static/js/hplus.min.js?v=4.1.0",
-		"static/js/contabs.min.js",
+		"static/js/contabs.all.js",
 		"static/js/plugins/pace/pace.min.js",
 		'static/js/plugins/imgView/jquery-imgview.js',
 		'static/js/jcy.js',

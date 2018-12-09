@@ -111,6 +111,7 @@ class AdminRolesController extends BackendController
                 Yii::$app->session->setFlash('error', Yii::t('app', 'Illegal operation'));
                 return $this->redirect('index');
             }
+
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 // if ($postData['menuLists']) {

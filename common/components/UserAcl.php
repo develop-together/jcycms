@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace common\components;
 use Yii;
 use backend\models\User;
@@ -11,13 +11,13 @@ class UserAcl
 {
 	/**
 	 * 公共权限
-	 * @return array 
+	 * @return array
 	 */
 	public static function publicAclList()
 	{
 		return [
 			'site/index:GET',
-			'site/desktop:GET',  
+			'site/desktop:GET',
 			'site/test:GET',
 			'public/captcha:GET',
 			'public/logout:GET',
@@ -26,14 +26,14 @@ class UserAcl
 			'admin-user/info:GET',
 			'admin-user/info:POST',
 		];
-	}	
+	}
 
 	public static function hasAcl($acl, $userId=0)
 	{
 		empty($userId) && $userId = Yii::$app->user->id;
 		if (Yii::$app->user->id == User::SUPER_MANAGER) {
 			return true;
-		}		
+		}
 
 		$user = User::findOne($userId);
 
@@ -41,7 +41,7 @@ class UserAcl
 	}
 
 	/**
-	 * 当前登录用户拥有的权限列表 
+	 * 当前登录用户拥有的权限列表
 	 * @return [type] [description]
 	 */
 	public static function filterAclist($userId=0)
@@ -51,10 +51,10 @@ class UserAcl
 	}
 
 	/**
-	 * 当前登录用户拥有的权限列表----格式化 
+	 * 当前登录用户拥有的权限列表----格式化
 	 * @return [type] [description]
 	 */
-	public static function filterAclListFormat($userId=0) 
+	public static function filterAclListFormat($userId=0)
 	{
 		$user = User::findOne($userId);
 		return $user->aclList;
@@ -77,17 +77,22 @@ class UserAcl
 				if ($user->hasAcl($route)) {
 					$parentTree = $tree->spanningParentTree($value['id'], $data);
 					$newData = array_merge($newData, $parentTree);
+				} else {
+					var_dump($route);
 				}
 			}
 			$data = $newData;
 			unset($newData);
 		}
-
+		exit;
+		var_dump($data);exit;
        	return self::recurrenceCreateMenu(Utils::tree_bulid(Utils::mult_unique($data), 'id', 'parent_id'));
 	}
 
 	private static function recurrenceCreateMenu($tree)
 	{
+		var_dump($tree);
+		exit;
 		$str = '';
 		foreach ($tree as $list) {
 			$childrenStr = $listr = '';
@@ -128,7 +133,7 @@ class UserAcl
 			} else {
 				$childrenStr .= '</a></li>';
 			}
-			
+
 		}
 		return $childrenStr .= '</ul>';
 	}

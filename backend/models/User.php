@@ -10,7 +10,7 @@ use yii\web\ForbiddenHttpException;
 //use AdminRoleUser;
 use yii\web\IdentityInterface;
 
-class User extends BaseModel implements IdentityInterface 
+class User extends BaseModel implements IdentityInterface
 {
 	const STATUS_DELETED = 0;
 	const STATUS_ACTIVE = 10;
@@ -28,7 +28,7 @@ class User extends BaseModel implements IdentityInterface
 	 *
 	 * @return string
 	 */
-	public static function tableName() 
+	public static function tableName()
 	{
 		return '{{%admin_user}}';
 	}
@@ -36,7 +36,7 @@ class User extends BaseModel implements IdentityInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function rules() 
+	public function rules()
 	{
 		return [
 			[['username', 'auth_key', 'avatar', 'password', 'repeat_pwd', 'password_hash'], 'string'],
@@ -75,7 +75,7 @@ class User extends BaseModel implements IdentityInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function attributeLabels() 
+	public function attributeLabels()
 	{
 		return [
 			'username' => Yii::t('app', 'Username'),
@@ -94,7 +94,7 @@ class User extends BaseModel implements IdentityInterface
 		];
 	}
 
-	public static function getStatuses() 
+	public static function getStatuses()
 	{
 		return [
 			self::STATUS_ACTIVE => Yii::t('app', 'Normal'),
@@ -105,7 +105,7 @@ class User extends BaseModel implements IdentityInterface
 	/**
 	 * @inheritdoc
 	 */
-	public static function findIdentity($id) 
+	public static function findIdentity($id)
 	{
 		return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
 	}
@@ -113,7 +113,7 @@ class User extends BaseModel implements IdentityInterface
 	/**
 	 * @inheritdoc
 	 */
-	public static function findIdentityByAccessToken($token, $type = null) 
+	public static function findIdentityByAccessToken($token, $type = null)
 	{
 		throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
 	}
@@ -124,7 +124,7 @@ class User extends BaseModel implements IdentityInterface
 	 * @param string $username
 	 * @return static|null
 	 */
-	public static function findByUsername($username) 
+	public static function findByUsername($username)
 	{
 		return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
 	}
@@ -135,7 +135,7 @@ class User extends BaseModel implements IdentityInterface
 	 * @param string $token password reset token
 	 * @return static|null
 	 */
-	public static function findByPasswordResetToken($token) 
+	public static function findByPasswordResetToken($token)
 	{
 		if (!static::isPasswordResetTokenValid($token)) {
 			return null;
@@ -153,7 +153,7 @@ class User extends BaseModel implements IdentityInterface
 	 * @param string $token password reset token
 	 * @return boolean
 	 */
-	public static function isPasswordResetTokenValid($token) 
+	public static function isPasswordResetTokenValid($token)
 	{
 		if (empty($token)) {
 			return false;
@@ -167,7 +167,7 @@ class User extends BaseModel implements IdentityInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function getId() 
+	public function getId()
 	{
 		return $this->getPrimaryKey();
 	}
@@ -175,7 +175,7 @@ class User extends BaseModel implements IdentityInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function getAuthKey() 
+	public function getAuthKey()
 	{
 		return $this->auth_key;
 	}
@@ -183,7 +183,7 @@ class User extends BaseModel implements IdentityInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function validateAuthKey($authKey) 
+	public function validateAuthKey($authKey)
 	{
 		return $this->getAuthKey() === $authKey;
 	}
@@ -194,7 +194,7 @@ class User extends BaseModel implements IdentityInterface
 	 * @param string $password password to validate
 	 * @return boolean if password provided is valid for current user
 	 */
-	public function validatePassword($password) 
+	public function validatePassword($password)
 	{
 		return Yii::$app->security->validatePassword($password, $this->password_hash);
 	}
@@ -204,7 +204,7 @@ class User extends BaseModel implements IdentityInterface
 	 *
 	 * @param string $password
 	 */
-	public function setPassword($password) 
+	public function setPassword($password)
 	{
 		$this->password_hash = Yii::$app->security->generatePasswordHash($password);
 	}
@@ -212,7 +212,7 @@ class User extends BaseModel implements IdentityInterface
 	/**
 	 * Generates "remember me" authentication key
 	 */
-	public function generateAuthKey() 
+	public function generateAuthKey()
 	{
 		$this->auth_key = Yii::$app->security->generateRandomString();
 	}
@@ -220,7 +220,7 @@ class User extends BaseModel implements IdentityInterface
 	/**
 	 * Generates new password reset token
 	 */
-	public function generatePasswordResetToken() 
+	public function generatePasswordResetToken()
 	{
 		$this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
 	}
@@ -228,12 +228,12 @@ class User extends BaseModel implements IdentityInterface
 	/**
 	 * Removes password reset token
 	 */
-	public function removePasswordResetToken() 
+	public function removePasswordResetToken()
 	{
 		$this->password_reset_token = null;
 	}
 
-	public function signUp() 
+	public function signUp()
 	{
 		if (!$this->validate()) {
 			return false;
@@ -278,9 +278,9 @@ class User extends BaseModel implements IdentityInterface
 	public function beforeSave($insert)
 	{
 		if ($insert || (! $insert && ! empty($this->password))) {
-			// $this->password = $this->password ? $this->password : self::AUTH_KEY;	
+			// $this->password = $this->password ? $this->password : self::AUTH_KEY;
 			$this->generateAuthKey();
-			$this->setPassword($this->password);			
+			$this->setPassword($this->password);
 		}
 
 		return parent::beforeSave($insert);
@@ -303,7 +303,7 @@ class User extends BaseModel implements IdentityInterface
     /**
      * 判断用户是否拥有某个权限
      * @param  string  $acl 权限名
-     * @return boolean  
+     * @return boolean
      */
     public function hasAcl($acl='')
     {
@@ -314,7 +314,7 @@ class User extends BaseModel implements IdentityInterface
             $route[$action] = 'index';
             $acl = implode('/', $route);
         }
-        
+
         return in_array($acl, $this->aclList);
     }
 
@@ -330,6 +330,6 @@ class User extends BaseModel implements IdentityInterface
         	}
         }
 
-        return array_merge($publicAclList, $aclLists);		
+        return array_merge($publicAclList, $aclLists);
 	}
 }

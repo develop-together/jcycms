@@ -64,26 +64,26 @@ $this->title = Yii::t('app', 'Backend Manage System');
                                 </div>
                             </li>
                             <!--动态菜单配置开始-->
-                                <?php 
+                                <?php
                                     // 设置缓存依赖（重新缓存取决于它是否被修改过）
-                                    $cacheDependencyObject = yii::createObject([
-                                        'class' => 'common\components\FileDependencyHelper',
-                                        'fileName' => 'backend_menu.log',
-                                    ]);
-                                    $dependency = [
-                                        'class' => 'yii\caching\FileDependency',
-                                        'fileName' => $cacheDependencyObject->createFile(),
-                                    ];
-                                    if ($this->beginCache('backend_menu', [
-                                        'variations' => [
-                                            Yii::$app->language,
-                                            UserAcl::getRoleId(),
-                                        ],                                
-                                    ])) {
-                                        echo UserAcl::getBackendMenus();
-                                        $this->endCache();
-                                    }
-                                    // echo UserAcl::getBackendMenus();
+                                    // $cacheDependencyObject = yii::createObject([
+                                    //     'class' => 'common\components\FileDependencyHelper',
+                                    //     'fileName' => 'backend_menu.log',
+                                    // ]);
+                                    // $dependency = [
+                                    //     'class' => 'yii\caching\FileDependency',
+                                    //     'fileName' => $cacheDependencyObject->createFile(),
+                                    // ];
+                                    // if ($this->beginCache('backend_menu', [
+                                    //     'variations' => [
+                                    //         Yii::$app->language,
+                                    //         UserAcl::getRoleId(),
+                                    //     ],
+                                    // ])) {
+                                    //     echo UserAcl::getBackendMenus();
+                                    //     $this->endCache();
+                                    // }
+                                    echo UserAcl::getBackendMenus();
                                  ?>
                             <!--动态菜单配置结束-->
                             <?php if (YII_ENV_DEV && User::checkSuperManager()): ?>
@@ -141,8 +141,8 @@ $this->title = Yii::t('app', 'Backend Manage System');
                         </nav>
                         <button class="roll-nav roll-right J_tabRight" style="right:140px;"><i class="fa fa-forward"></i>
                         </button>
-                        <a href="javascript:;" id="stepOut" class="roll-nav roll-right J_tabExit" style="width:80px;right: 60px;"><i class="fa fa-lock"></i>  <?= Yii::t('app', 'step out') ?></a>  
-                        <a href="<?=Url::toRoute(['public/logout'])?>" class="roll-nav roll-right J_tabExit"><i class="fa fa-sign-out"></i> <?= Yii::t('app', 'Logout') ?></a>                        
+                        <a href="javascript:;" id="stepOut" class="roll-nav roll-right J_tabExit" style="width:80px;right: 60px;"><i class="fa fa-lock"></i>  <?= Yii::t('app', 'step out') ?></a>
+                        <a href="<?=Url::toRoute(['public/logout'])?>" class="roll-nav roll-right J_tabExit"><i class="fa fa-sign-out"></i> <?= Yii::t('app', 'Logout') ?></a>
 <!--                         <div class="btn-group roll-nav roll-right">
                             <button class="dropdown J_tabClose" data-toggle="dropdown">
                                 <?php //echo Yii::t('app', 'Close') ?><span class="caret"></span>
@@ -159,7 +159,7 @@ $this->title = Yii::t('app', 'Backend Manage System');
                                     <a><?php //echo Yii::t('app', 'Close Other Tab') ?></a>
                                 </li>
                             </ul>
-                        </div>  -->               
+                        </div>  -->
                     </div>
                     <!--Tab面板结束-->
                     <div class="row J_mainContent" id="content-main">
@@ -269,7 +269,7 @@ $this->title = Yii::t('app', 'Backend Manage System');
             var current_iframe = $("iframe:visible");
             current_iframe[0].contentWindow.location.reload();
             return false;
-        } 
+        }
         (function(){
             //数字0-9，大写字母，小写字母，ASCII或UNICODE编码（十进制），共62个
             var charCodeIndex = [[48,57],[65,90],[97,122]];
@@ -302,12 +302,12 @@ $this->title = Yii::t('app', 'Backend Manage System');
 
             this.ranStr = ranStr;
         })();
-        
+
         $("#stepOut").bind('click', function() {
             var randstr = ranStr(6);
             layer.prompt({
-                title: '输入口令<span style="color:red">' + randstr + '</span>，并确认', 
-                formType: 1, 
+                title: '输入口令<span style="color:red">' + randstr + '</span>，并确认',
+                formType: 1,
                 cancel: function(index){
                     if (global_pass !== randstr) {
                         return false;

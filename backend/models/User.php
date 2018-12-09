@@ -45,7 +45,9 @@ class User extends BaseModel implements IdentityInterface
 			[['repeat_pwd'], 'compare', 'compareAttribute' => 'password'],
 			//[['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
 			[['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+			['username', 'unique', 'on' => ['create', 'console_create']],
 			[['username', 'email', 'password', 'avatar'], 'required', 'on' => ['create']],
+			[['username', 'email', 'password'], 'required', 'on' => ['console_create']],
 			[['email', 'avatar'], 'required', 'on' => ['updateSelf']],
 			[['last_login_at', 'login_count'], 'integer'],
 			// [['password'], 'checkOldAttribute','skipOnError' => false, 'skipOnEmpty' => false],
@@ -67,6 +69,7 @@ class User extends BaseModel implements IdentityInterface
 		return array_merge($parentScenarios, [
 			'default' => ['username', 'email'],
 			'create' => ['username', 'email', 'password', 'avatar', 'status'],
+			'console_create' => ['username', 'email', 'password', 'status'],
 			'update' => ['username', 'email', 'password', 'avatar', 'status'],
 			'updateSelf' => ['avatar', 'email', 'password'],
 		]);
@@ -239,8 +242,8 @@ class User extends BaseModel implements IdentityInterface
 			return false;
 		}
 		$this->password = $this->password == null ? self::AUTH_KEY : $this->password;
-		$this->generateAuthKey();
-		$this->setPassword($this->password);
+		// $this->generateAuthKey();
+		// $this->setPassword($this->password);
 		if (!$this->save()) {
 			return false;
 		}
@@ -278,7 +281,6 @@ class User extends BaseModel implements IdentityInterface
 	public function beforeSave($insert)
 	{
 		if ($insert || (! $insert && ! empty($this->password))) {
-			// $this->password = $this->password ? $this->password : self::AUTH_KEY;
 			$this->generateAuthKey();
 			$this->setPassword($this->password);
 		}

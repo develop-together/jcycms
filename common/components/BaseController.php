@@ -56,7 +56,7 @@ class BaseController extends Controller
                 'class' => 'yii\web\ErrorAction',
             ],
             'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
+                'class' => 'common\widgets\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
                 'backColor' => 0x66b3ff, //背景颜色
                 'maxLength' => 4, //最大显示个数
@@ -68,17 +68,6 @@ class BaseController extends Controller
                 'offset' => 13, //设置字符偏移量
                 //'controller'=>'login',        //拥有这个动作的controller
             ],
-            // 'captcha' => [
-            //     'class' => 'yii\captcha\CaptchaAction',
-            //     'backColor' => 0xffffff,
-            //     'foreColor' => 0x105C9A,
-            //     'transparent' => true,
-            //     'maxLength' => 4,
-            //     'minLength' => 4,
-            //     'offset' => 1,
-            //     'height' => 33,
-            //     'width' => 80,
-            // ],
         ];
     }
 

@@ -33,7 +33,7 @@ class DefaultController extends BackendController
     {
         $searchModel = new AttachmentSearch();
 
-        $dataProvider = $searchModel->search(Yii::$app->request->post());
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         return $this->render('index', [
             'searchModel' => $searchModel,

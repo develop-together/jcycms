@@ -28,6 +28,15 @@ $this->title = $configData['system_name'];
     <meta name="description" content="<?= $configData['seo_description']?>">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?60f3353ae7e11b1a627fb56ad4072c54";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
     <?php $this->head() ?>
 </head>
 <body id="top_<?= Yii::$app->controller->_uniqid ?>" class="home">

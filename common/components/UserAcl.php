@@ -31,21 +31,14 @@ class UserAcl
 
 	public static function hasAcl($acl, $userId = 0)
 	{
-<<<<<<< HEAD
-		empty($userId) && $userId = Yii::$app->user->id;
-		if (Yii::$app->user->id == User::SUPER_MANAGER) {
-			return true;
-		}
-=======
         $user = Yii::$app->user->identity;
 		empty($userId) && $userId = $user->id;
 		// if (Yii::$app->user->id == User::SUPER_MANAGER) {
 		// 	return true;
-		// }	
+		// }
         if ((int)$user->userRole->role->id === AdminRoles::SUPER_ROLE_ID) {
             return true;
         }
->>>>>>> 8184343e6067e2c15ce0f57970cd8fbd7bcbdda8
 
 		$user = User::findOne($userId);
 
@@ -91,21 +84,20 @@ class UserAcl
 					$parentTree = $tree->spanningParentTree($value['id'], $data);
 					$newData = array_merge($newData, $parentTree);
 				} else {
-					var_dump($route);
+					// var_dump($route);
 				}
 			}
 			$data = $newData;
 			unset($newData);
 		}
-		exit;
-		var_dump($data);exit;
+
+		// var_dump($data);exit;
        	return self::recurrenceCreateMenu(Utils::tree_bulid(Utils::mult_unique($data), 'id', 'parent_id'));
 	}
 
 	private static function recurrenceCreateMenu($tree)
 	{
-		var_dump($tree);
-		exit;
+		// var_dump($tree);exit;
 		$str = '';
 		foreach ($tree as $list) {
 			$childrenStr = $listr = '';

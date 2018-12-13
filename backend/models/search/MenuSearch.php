@@ -19,7 +19,7 @@ class MenuSearch extends Menu
 
     /**
      * @inheritdoc
-     */ 
+     */
     public function rules()
     {
         return [
@@ -53,7 +53,7 @@ class MenuSearch extends Menu
         if (isset($getParams['page'])) {
             $pageCurrent = $getParams['page'] - 1;
         }
-        
+
         if (isset($getParams['pageSize'])) {
             $pageSize = $getParams['pageSize'];
         }
@@ -79,7 +79,9 @@ class MenuSearch extends Menu
             ],
             'sort' =>[
                 'defaultOrder' =>[
-                    $field => $sort,
+                    // $field => $sort,
+                    'sort' => SORT_ASC,
+                    'id' => SORT_DESC
                 ],
             ],
             'pagination' => [
@@ -131,17 +133,17 @@ class MenuSearch extends Menu
         if ($this->url) {
             $query->andFilterWhere(['like', 'url', $this->url]);
         }
-        
+
         $query->orderBy(['sort' => SORT_ASC]);
         $lists = $query->all();
-        $menuTree = ArrayHelper::index($this->chilrdenDatasToObject($lists, 0), 'id'); 
+        $menuTree = ArrayHelper::index($this->chilrdenDatasToObject($lists, 0), 'id');
 
         $dataProvider = new ArrayDataProvider([
             'allModels' => $menuTree,
             'pagination' => [
                 'pageSize' => -1,
             ],
-        ]);        
-        return $dataProvider;       
+        ]);
+        return $dataProvider;
     }
 }

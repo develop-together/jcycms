@@ -66,8 +66,7 @@ $this->title = Yii::t('app', 'Backend Manage System');
                             <!--动态菜单配置开始-->
                                 <?php
                                     // 设置缓存依赖（重新缓存取决于它是否被修改过）
-<<<<<<< HEAD
-                                    // $cacheDependencyObject = yii::createObject([
+                                    // $cacheDependencyObject = Yii::createObject([
                                     //     'class' => 'common\components\FileDependencyHelper',
                                     //     'fileName' => 'backend_menu.log',
                                     // ]);
@@ -85,26 +84,6 @@ $this->title = Yii::t('app', 'Backend Manage System');
                                     //     $this->endCache();
                                     // }
                                     echo UserAcl::getBackendMenus();
-=======
-                                    $cacheDependencyObject = Yii::createObject([
-                                        'class' => 'common\components\FileDependencyHelper',
-                                        'fileName' => 'backend_menu.log',
-                                    ]);
-                                    $dependency = [
-                                        'class' => 'yii\caching\FileDependency',
-                                        'fileName' => $cacheDependencyObject->createFile(),
-                                    ];
-                                    if ($this->beginCache('backend_menu', [
-                                        'variations' => [
-                                            Yii::$app->language,
-                                            UserAcl::getRoleId(),
-                                        ],                                
-                                    ])) {
-                                        echo UserAcl::getBackendMenus();
-                                        $this->endCache();
-                                    }
-                                    // echo UserAcl::getBackendMenus();
->>>>>>> 8184343e6067e2c15ce0f57970cd8fbd7bcbdda8
                                  ?>
                             <!--动态菜单配置结束-->
                             <?php if (YII_ENV_DEV && User::checkSuperManager()): ?>
@@ -342,7 +321,7 @@ $this->title = Yii::t('app', 'Backend Manage System');
             });
         })
 
-        $("a.self-click").bind('click', function(event) { 
+        $("a.self-click").bind('click', function(event) {
             $("#dropdown-control").removeClass('open');
             $("#control-btn").attr('aria-expanded', false);
         })

@@ -6,7 +6,7 @@ use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use common\components\FrontendController;
 use frontend\models\LoginForm;
-use common\models\Config;
+use common\components\BaseConfig;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -24,16 +24,23 @@ class SiteController extends FrontendController
      */
     public function actionIndex()
     {
-        $configData = Config::loadData();
-        $signupModel = new SignupForm();
-        $loginModel = new LoginForm();
-        $resetModel = new PasswordResetRequestForm();
-        return $this->render('index', [
-            'configData' => $configData,
-            'signupModel' => $signupModel,
-            'loginModel' => $loginModel,
-            'resetModel' => $resetModel
-        ]);
+        $renderParams = ['configData' => $this->configData];
+        if ($this->_themeId === BaseConfig::WEB_TEMPLATE_BASE) {
+            $signupModel = new SignupForm();
+            $loginModel = new LoginForm();
+            $resetModel = new PasswordResetRequestForm();
+            $renderParams = array_merge($renderParams, [
+                'signupModel' => $signupModel,
+                'loginModel' => $loginModel,
+                'resetModel' => $resetModel
+            ]);
+        } elseif ($this->_themeId === BaseConfig::WEB_TEMPLATE_ONE) {
+
+        } elseif ($this->_themeId === BaseConfig::WEB_TEMPLATE_TWO) {
+
+        }
+
+        return $this->render('index', $renderParams);
     }
 
     /**

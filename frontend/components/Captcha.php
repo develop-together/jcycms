@@ -2,7 +2,7 @@
 
 namespace frontend\components;
 
-use frontend\assets\CaptchaAsset;
+use frontend\themes\basic\assets\CaptchaAsset;
 use yii\helpers\Json;
 
 class Captcha extends \yii\captcha\Captcha {

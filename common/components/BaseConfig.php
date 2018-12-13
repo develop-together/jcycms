@@ -43,7 +43,9 @@ class BaseConfig
     // const LANGUAGE_ZN_TW = 'ZN_TW';
     const LANGUAGE_EN_US = 'en-US'; 
 
+    const WEB_TEMPLATE_BASE = 'basic';
     const WEB_TEMPLATE_ONE = 'template1';
+    const WEB_TEMPLATE_TWO = 'template2';
 
     const HTTP_METHOD_GET = 'GET';
     const HTTP_METHOD_POST = 'POST';
@@ -164,10 +166,39 @@ class BaseConfig
     public static function getWebTemplateItems($key = null) 
     {
         $items = [
-            self::WEB_TEMPLATE_ONE => '模板一',
+            self::WEB_TEMPLATE_BASE => Yii::t('app', 'Basic blog'),
+            self::WEB_TEMPLATE_ONE => Yii::t('app', 'Small fresh topic blog'),
+            self::WEB_TEMPLATE_TWO => Yii::t('app', 'Classical style theme blog'),
         ];
 
         return self::getItems($items, $key);        
+    }
+
+    public static function getDataImgSrc($key = null) 
+    {
+        $items = [
+            self::WEB_TEMPLATE_BASE => ['data-img-src' => Yii::$app->request->getBaseUrl() . '/static/img/theme/basic.png', 'data-img-class' => 'picker200'],
+            self::WEB_TEMPLATE_ONE => ['data-img-src' => Yii::$app->request->getBaseUrl() . '/static/img/theme/qingxin.png', 'data-img-class' => 'picker200'],
+            self::WEB_TEMPLATE_TWO => ['data-img-src' => Yii::$app->request->getBaseUrl() . '/static/img/theme/gudian.png', 'data-img-class' => 'picker200'],
+        ];
+
+        return self::getItems($items, $key);       
+    }
+
+    public static function loadThemes($key = null)
+    {
+        if (! $key) {
+            $configData = \common\models\Config::loadData();
+            $key = $configData['web_templates'];
+        }
+
+        $items = [
+            self::WEB_TEMPLATE_BASE => '@app/themes/' . self::WEB_TEMPLATE_BASE,
+            self::WEB_TEMPLATE_ONE => '@app/themes/' . self::WEB_TEMPLATE_ONE,
+            self::WEB_TEMPLATE_TWO => '@app/themes/' . self::WEB_TEMPLATE_TWO,
+        ];
+
+        return self::getItems($items, $key);
     }
 
     public static function getHttpMethods($key = null)

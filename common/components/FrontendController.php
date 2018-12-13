@@ -5,11 +5,18 @@ namespace common\components;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
+use common\models\Config;
 
 class FrontendController extends BaseController
 {
+    public $_themeId = 'basic';
+    public $configData = [];
+
 	public function init()
 	{
+        $config = Config::loadData();
+        isset($config['web_templates']) && $this->_themeId = $config['web_templates'];
+        $this->configData = $config;
 		parent::init();
 	}
 

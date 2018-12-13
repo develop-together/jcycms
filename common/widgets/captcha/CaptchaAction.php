@@ -23,7 +23,7 @@
         $length = mt_rand($this->minLength, $this->maxLength);
 
         $letters = '23456789bcdfghjklmnpqrstvwxyz';
-        $vowels = 'aeiou';
+        $vowels = 'aeiu';
         $code = '';
         for ($i = 0; $i < $length; ++$i) {
             if ($i % 2 && mt_rand(0, 10) > 2 || !($i % 2) && mt_rand(0, 10) > 9) {

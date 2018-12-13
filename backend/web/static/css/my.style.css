@@ -43,3 +43,8 @@ img.img-center-block {
 .photos_list{position: relative;}
 .photos_list:hover{cursor:pointer;}
 .photos_list_count{position: absolute; bottom: 0; left: 150px; color: #1ab394;font-weight: bold;}
+.picker200 {
+    width: 200px !important;
+    height: 200px !important;
+    max-height: 200px !important;
+}

@@ -60,6 +60,25 @@ return [
                 ],
             ],
         ],
+        'assetManager' => [
+            'linkAssets' => false,
+        ],
+        'view' => [
+            'theme' => 'common\\components\\ThemeManager'
+        ],
+        // 'view' => [
+        //     'theme' => [
+        //         // 'basePath' => '@app/themes/basic',
+        //         // 'baseUrl' => '@web/themes/basic',
+        //         'pathMap' => [
+        //             '@app/views' => [
+        //                 '@app/themes/template2',
+        //                 '@app/themes/template1',
+        //                 '@app/themes/basic',
+        //             ],
+        //         ],
+        //     ],
+        // ],
     ],
     'params' => $params,
 ];

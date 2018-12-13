@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use backend\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm AS BAF;
 use common\components\BaseConfig;
@@ -106,7 +106,12 @@ $this->title = Yii::t('app', 'Website Setting');
                 <div class="form-group">
                     <?= Html::label(Yii::t('app', 'Web Templates'), null, ['class' => 'col-sm-2 control-label']) ?>
                     <div class="col-sm-10">                        
-                        <?= Html::dropDownList('Config[web_templates]', isset($config['web_templates']) ? $config['web_templates'] : null, BaseConfig::getWebTemplateItems(), ['class' => 'form-control', 'style' => 'width:120px;'])?>
+                        <?= Html::imagePicker('Config[web_templates]', 
+                            isset($config['web_templates']) ? $config['web_templates'] : null, 
+                            BaseConfig::getWebTemplateItems(), 
+                            ['class' => 'form-control', 'style' => 'width:120px;', 'id' => 'Config_web_templates'],
+                            BaseConfig::getDataImgSrc()
+                        )?>
                     </div>
                 </div>  
                 <div class="hr-line-dashed"></div>              
@@ -126,5 +131,14 @@ $this->title = Yii::t('app', 'Website Setting');
         </div>
     </div>
 </div>
+<?php 
+    $this->registerJs(<<<JS
+        $('#Config_web_templates').imagepicker({
+            hide_select : true,
+            show_label : true
+        });   
+JS
+    );
+ ?>
 
 

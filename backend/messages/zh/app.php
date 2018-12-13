@@ -365,4 +365,11 @@ return [
 	'Display' => '显示',
 	'Bar' => '条',
 	'Representation of permissions' => '表示权限',
+	'Small fresh topic blog' => '小清新主题博客',
+	'Classical style theme blog' => '古典风主题博客',
+	'Basic blog' => '基础主题博客',
+	'Collect Task' => '采集任务',
+	'Collect Url' => '采集网址',
+	'Rule' => '规则',
+	'Created by' => '创建人'
 ];

@@ -315,6 +315,20 @@ ALTER TABLE `byt_admin_role_permission`
 ADD COLUMN `auth_id`  int(11) NOT NULL DEFAULT 0 COMMENT '权限Id' AFTER `role_id`;
 
 
+#2018-12-13
+
+CREATE TABLE `byt_collect_task` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `user_id` INT(10) NOT NULL DEFAULT 0 COMMENT '创建人',
+  `name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '任务名称',
+  `status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '状态（1：启用，2：禁用）',
+  `url` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '采集地址',
+  `rule` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '采集规则【主要是正则】',
+  `created_at` INT(11) NOT NULL DEFAULT 0,
+  `updated_at` INT(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`))
+COMMENT = '内容采集任务表';
+
 
 
 

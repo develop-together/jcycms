@@ -31,8 +31,6 @@ class Menu extends \common\models\Menu
 
 	const DEFAULT_URL = 'javascript:;';
 
-	public $lv = 0;
-
 	public $isAddRoute = 0;
 
 	protected function chilrdenDatas($data, $parent_id, $lv = 0)

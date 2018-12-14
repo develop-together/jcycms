@@ -27,7 +27,7 @@
         $code = '';
         for ($i = 0; $i < $length; ++$i) {
             if ($i % 2 && mt_rand(0, 10) > 2 || !($i % 2) && mt_rand(0, 10) > 9) {
-                $code .= $vowels[mt_rand(0, 4)];
+                $code .= $vowels[mt_rand(0, 3)];
             } else {
                 $code .= $letters[mt_rand(0, 20)];
             }

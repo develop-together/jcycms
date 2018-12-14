@@ -70,7 +70,7 @@ class UserAcl
 		$user = Yii::$app->user->identity;
 		!$userId && $userId = $user->id;
 		$query = Menu::getBackendQuery(true);
-		$data = $query->orderBy(['sort' => SORT_ASC, 'id' => SORT_DESC])->asArray()->all();
+		$data = $query->orderBy(['sort' => SORT_ASC])->asArray()->all();
 		$tree = new TreeHelper($data, true, 2);
 		if ((int)$user->userRole->role->id !== AdminRoles::SUPER_ROLE_ID && $data) {//$userId != User::SUPER_MANAGER && $data)
 			$user = User::findOne($userId);

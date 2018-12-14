@@ -183,6 +183,9 @@ class User extends BaseModel implements IdentityInterface
         if (!$insert && !empty($this->password)) {
             $this->generateAuthKey();
             $this->setPassword($this->password);          
+        } else if ($insert) {
+            $this->generateAuthKey();
+            $this->setPassword($this->password);    
         }
 
         return parent::beforeSave($insert);

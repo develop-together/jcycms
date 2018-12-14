@@ -4,6 +4,7 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Article;
 use backend\models\User;
+use frontend\models\User AS FrontendUser;
 use common\models\FriendLink;
 use common\components\ServerInfo;
 use yii\filters\AccessControl;
@@ -163,8 +164,8 @@ class SiteController extends BackendController
 				->where(['type' => ARTICLE])
 				->andWhere(['between', 'created_at', $startTime, $endTime])
 				->count();
-			$userCount[] = $i + mt_rand(0, 10);
-
+			// $userCount[] = $i + mt_rand(0, 10);
+			$userCount[] = FrontendUser::find()->where(['between', 'created_at', $startTime, $endTime])->count();
 		}
 
 		$series[0] = [

@@ -37,6 +37,8 @@ class Menu extends \common\components\BaseModel
     const REQUEST_METHOD_ON_GET = 1;
     const REQUEST_METHOD_ON_POST = 2;
 
+    public $lv = 0;
+
     /**
      * @inheritdoc
      */
@@ -151,7 +153,7 @@ class Menu extends \common\components\BaseModel
 
     public function getNameFormat()
     {
-        return $this->parent_id ? '　├' . $this->name : $this->name;
+        return $this->parent_id ? str_repeat('&nbsp;&nbsp;', $this->lv + 1) . '├' . $this->name : $this->name;
     }
 
     public function getIconFormat()

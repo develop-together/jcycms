@@ -371,5 +371,8 @@ return [
 	'Collect Task' => '采集任务',
 	'Collect Url' => '采集网址',
 	'Rule' => '规则',
-	'Created by' => '创建人'
+	'Created by' => '创建人',
+	'Content Setting' => '内容设置',
+	'Clipping Article Image' => '是否裁剪文章图片',
+	'watermark' => '水印'
 ];

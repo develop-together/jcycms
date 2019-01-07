@@ -20,9 +20,9 @@ $this->title = Yii::t('app', 'Website Setting');
                             'fieldConfig' => [
                                 'template' =>"{label}\n<div class=\"col-sm-10\">{input}\n{error}</div>\n{hint}",
                                 'labelOptions' => ['class' => 'col-sm-2 control-label'],
-                                'options' => ['class' => 'form-group'],    
+                                'options' => ['class' => 'form-group'],
                                 'inputOptions' => ['class' => 'form-control'],
-                                'errorOptions' => ['class' => 'help-block m-b-none'],                            
+                                'errorOptions' => ['class' => 'help-block m-b-none'],
                             ],
                             'options' => ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data'],
                 ]); ?>
@@ -83,13 +83,6 @@ $this->title = Yii::t('app', 'Website Setting');
                 </div>
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
-                    <?= Html::label(Yii::t('app', 'Open Comment'), null, ['class' => 'col-sm-2 control-label']) ?>
-                    <div class="col-sm-10">
-                        <?= Html::radioList('Config[open_comment]', isset($config['open_comment']) ? $config['open_comment'] : null, BaseConfig::getYesNoItems())?>
-                    </div>
-                </div>
-                <div class="hr-line-dashed"></div>
-                <div class="form-group">
                     <?= Html::label(Yii::t('app', 'Internal address external access'), null, ['class' => 'col-sm-2 control-label']) ?>
                     <div class="col-sm-10">
                         <?= Html::radioList('Config[deny_external_access]', isset($config['deny_external_access']) ? $config['deny_external_access'] : null, BaseConfig::getYesNoItems())?>
@@ -97,24 +90,17 @@ $this->title = Yii::t('app', 'Website Setting');
                 </div>
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
-                    <?= Html::label(Yii::t('app', 'Open Comment Verify'), null, ['class' => 'col-sm-2 control-label']) ?>
-                    <div class="col-sm-10">
-                        <?= Html::radioList('Config[open_comment_verify]', isset($config['open_comment_verify']) ? $config['open_comment_verify'] : null, BaseConfig::getYesNoItems())?>
-                    </div>
-                </div>
-                <div class="hr-line-dashed"></div>
-                <div class="form-group">
                     <?= Html::label(Yii::t('app', 'Web Templates'), null, ['class' => 'col-sm-2 control-label']) ?>
-                    <div class="col-sm-10">                        
-                        <?= Html::imagePicker('Config[web_templates]', 
-                            isset($config['web_templates']) ? $config['web_templates'] : null, 
-                            BaseConfig::getWebTemplateItems(), 
+                    <div class="col-sm-10">
+                        <?= Html::imagePicker('Config[web_templates]',
+                            isset($config['web_templates']) ? $config['web_templates'] : null,
+                            BaseConfig::getWebTemplateItems(),
                             ['class' => 'form-control', 'style' => 'width:120px;', 'id' => 'Config_web_templates'],
                             BaseConfig::getDataImgSrc()
                         )?>
                     </div>
-                </div>  
-                <div class="hr-line-dashed"></div>              
+                </div>
+                <div class="hr-line-dashed"></div>
                 <?= $form->field($logo, 'system_logo')->widget(FileUploadInputWidget::className(),[
                     'type' => 'image'
                 ]); ?>
@@ -122,21 +108,21 @@ $this->title = Yii::t('app', 'Website Setting');
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">
                         <?= Html::submitButton(Yii::t('app', 'Save') , ['class' => 'btn btn-success']) ?>
-                        
-                        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']);?>                        
+
+                        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']);?>
                     </div>
                 </div>
-                <?php  BAF::end(); ?> 
+                <?php  BAF::end(); ?>
             </div>
         </div>
     </div>
 </div>
-<?php 
+<?php
     $this->registerJs(<<<JS
         $('#Config_web_templates').imagepicker({
             hide_select : true,
             show_label : true
-        });   
+        });
 JS
     );
  ?>

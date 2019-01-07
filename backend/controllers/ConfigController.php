@@ -31,10 +31,28 @@ class ConfigController extends BackendController
 
         $config = Config::loadData(true);
         $logo = Config::findOne(['variable' => 'system_logo', 'scope' => 'base']);
-        
+
         return $this->render('index', [
             'config' => $config,
             'logo' => $logo,
+        ]);
+    }
+
+    public function actionContent()
+    {
+        if (Yii::$app->request->isPost) {
+            if (Config::updateData()) {
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
+                return $this->redirect(['config/content']);
+            } else {
+                Yii::$app->getSession()->setFlash('error', Yii::t('app', 'Error'));
+            }
+        }
+
+        $config = Config::loadData(true);
+
+        return $this->render('content', [
+            'config' => $config,
         ]);
     }
 
@@ -47,13 +65,13 @@ class ConfigController extends BackendController
             } else {
                 Yii::$app->getSession()->setFlash('error', Yii::t('app', 'Error'));
             }
-        }   
+        }
 
-        $config = Config::loadData(true); 
+        $config = Config::loadData(true);
 
         return $this->render('smtp', [
             'config' => $config,
-        ]);    
+        ]);
     }
 
     public function actionTestEmail()

@@ -24,7 +24,7 @@ class MenuController extends BackendController
             ],
         ];
     }
-    
+
     /**
      * Lists all Menu models.
      * @return mixed
@@ -103,7 +103,7 @@ class MenuController extends BackendController
                 return $this->redirect(['index']);
             }
         }
-        
+
         return $this->render('update', [
             'model' => $model,
         ]);

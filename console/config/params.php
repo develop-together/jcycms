@@ -20,6 +20,8 @@ return [
         'system_notes',
         'tel',
         'email',
-        'deny_external_access'
+        'deny_external_access',
+        'clipping_img',
+        'watermark'
     ]
 ];

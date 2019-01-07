@@ -192,12 +192,12 @@ class Menu extends \common\components\BaseModel
         ]);
     }
 
-    public function beforeSave($insert) 
+    public function beforeSave($insert)
     {
         if (!parent::beforeSave($insert)) {
             return false;
         }
-        
+
         if ($this->sort == null) {
             $this->sort = 0;
         }
@@ -206,6 +206,7 @@ class Menu extends \common\components\BaseModel
             $this->parent_id = 0;
         }
 
+        $this->sort = (int) $this->sort;
         if ($this->isNewRecord) {
             $this->getScenario() == 'frontend' && $this->type = self::MENU_TYPE_FRONTEND;
         }
@@ -222,7 +223,7 @@ class Menu extends \common\components\BaseModel
 
         if($this->name === '首页') {
             $this->addError('id', Yii::t('app', 'Can not delete the home page'));
-            return false;            
+            return false;
         }
 
         return true;

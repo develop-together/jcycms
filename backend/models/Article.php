@@ -9,6 +9,10 @@ use common\components\Utils;
 class Article extends \common\models\Article
 {
 
+    public $width = 160;
+    
+    public $height = 220;
+
     /**
      * @inheritdoc
      */

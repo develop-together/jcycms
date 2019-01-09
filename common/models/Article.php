@@ -221,6 +221,14 @@ class Article extends \common\components\BaseModel
         return Yii::$app->params['site']['url'] . '/page/' . $this->sub_title;
     }
 
+    public function getCateName()
+    {
+        if ($this->category) 
+            return $this->category->name;
+
+        return Yii::t('app', 'No classification');
+    }
+
     /**
      * @inheritdoc
      */

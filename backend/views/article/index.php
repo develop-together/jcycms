@@ -32,7 +32,7 @@ $this->title = Yii::t('app', 'Article');
 										'attribute' => 'category_id',
 										'enableSorting' => false,
 										'value' => function($model) {
-											return  $model->category->name;
+											return  $model->catename;
 										},
 									],
 									[

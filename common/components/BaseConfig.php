@@ -52,6 +52,11 @@ class BaseConfig
     const HTTP_METHOD_PUT = 'PUT';
     const HTTP_METHOD_DELETE = 'DELETE';
 
+    const UPPER_LEFT = 'uLeft';
+    const UPPER_RIGHT = 'uRight';
+    const LOWER_LEFT = 'lLeft';
+    const LOWER_RIGHT = 'lRight';
+
     public static function getYesNoItems($key = null)
     {
         $items = [
@@ -208,6 +213,18 @@ class BaseConfig
             self::HTTP_METHOD_POST => self::HTTP_METHOD_POST,
             self::HTTP_METHOD_PUT => self::HTTP_METHOD_PUT,
             self::HTTP_METHOD_DELETE => self::HTTP_METHOD_DELETE,
+        ];
+
+        return self::getItems($items, $key);
+    }
+
+    public static function getWatermarkLocation($key = null)
+    {
+        $items = [
+            self::UPPER_LEFT => Yii::t('app', 'upper left'),
+            self::UPPER_RIGHT => Yii::t('app', 'upper right'), 
+            self::LOWER_LEFT => Yii::t('app', 'lower left'),
+            self::LOWER_RIGHT => Yii::t('app', 'lower right'),
         ];
 
         return self::getItems($items, $key);

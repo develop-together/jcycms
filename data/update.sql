@@ -330,6 +330,27 @@ CREATE TABLE `byt_collect_task` (
 COMMENT = '内容采集任务表';
 
 
+#2019-01-09
+
+CREATE TABLE `byt_article_meta` (
+  `id` int(10) UNSIGNED NOT NULL COMMENT '自增id',
+  `aid` int(11) UNSIGNED NOT NULL COMMENT '文章id',
+  `key` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'tag名',
+  `value` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'tag值',
+  `created_at` int(11) UNSIGNED NOT NULL COMMENT '创建时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `byt_article_meta`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `index_aid` (`aid`),
+  ADD KEY `index_key` (`key`);
+
+ALTER TABLE `byt_article_meta`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id';
+
+ALTER TABLE `byt_article_meta`
+  ADD CONSTRAINT `fk_byt_article_meta_aid` FOREIGN KEY (`aid`) REFERENCES `byt_article` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 
 
 

@@ -101,7 +101,7 @@ class Ad extends \common\models\Options
                 $this->thumbUrl = '';
             }
 
-            if((!empty($this->width) && $this->width != $this->getOldAttribute('width')) || (!empty($this->height) && $this->height != $this->getOldAttribute('height'))) {
+            if ((!empty($this->width) && $this->width != $this->getOldAttribute('width')) || (!empty($this->height) && $this->height != $this->getOldAttribute('height'))) {
                 $imageHelper = new ImageHelper();
                 $this->thumbUrl = $imageHelper->thumbnail($imgPath, $this->width, $this->height); 
             }

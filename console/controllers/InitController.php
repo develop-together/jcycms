@@ -14,7 +14,7 @@ class InitController extends \yii\console\Controller
 	public function actionCreateAdministrator() 
 	{
 		// header("content-type:text/html;charset=GB2312");
-		echo "创建一个新用户 ...\n"; // 提示当前操作
+		echo "创建一个新管理员 ...\n"; // 提示当前操作
 		$username = $this->prompt('User Name:'); // 接收用户名
 		$email = $this->prompt('Email:'); // 接收Email
 		$password = $this->prompt('Password:'); // 接收密码
@@ -48,14 +48,16 @@ class InitController extends \yii\console\Controller
 	 */
 	public function actionCreateConfig($scope='base')
 	{
-		echo "创建config表必须字段...\n";
+		echo "The fields required to create the config table...\n";
 		$fieldLists = Yii::$app->params['configFileds'];
-		if ($fieldLists) {
-			foreach ($fieldLists as $filed) {
+		$alreadVariables = array_keys(Config::loadData(true));
+		$diffList = array_diff($fieldLists, $alreadVariables);
+		if ($diffList) {
+			foreach ($diffList as $filed) {
 				$model = new Config();
 				$model->scope = $scope;
 				$model->variable = $filed;
-				if(!$model->save()) {
+				if (! $model->save()) {
 					$errs = [];
 					foreach ($model->errors as $error) {
 						$errs[] = $error[0];
@@ -67,9 +69,12 @@ class InitController extends \yii\console\Controller
 				}
 			}
 
-			$this->stderr('成功');
+			$this->stderr('Success');
 			return 0;
 		}
+
+		$this->stderr('There is no need to build a new!');
+		return 0;
 	}
 
 	public function actionTest()

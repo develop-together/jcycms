@@ -1,21 +1,17 @@
 {
-    "name": "yiisoft/yii2-app-advanced",
-    "description": "Yii 2 Advanced Project Template",
+    "name": "jcycms/yii2",
+    "description": "Open source project jcycms to yii2",
     "keywords": [
         "yii2",
         "framework",
         "advanced",
-        "project template"
+        "jcycms"
     ],
-    "homepage": "http://www.yiiframework.com/",
+    "homepage": "http://www.boomyang.cn/",
     "type": "project",
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
-        "forum": "http://www.yiiframework.com/forum/",
-        "wiki": "http://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/yiisoft/yii2"
+        "source": "https://github.com/jiechengyang/jcycms"
     },
     "minimum-stability": "stable",
     "require": {

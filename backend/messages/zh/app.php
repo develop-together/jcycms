@@ -374,5 +374,11 @@ return [
 	'Created by' => '创建人',
 	'Content Setting' => '内容设置',
 	'Clipping Article Image' => '是否裁剪文章图片',
-	'watermark' => '水印'
+	'watermark' => '水印',
+	'watermark location' => '水印位置',
+	'upper left' => '左上角',
+	'upper right' => '右上角',
+	'lower right' => '右下角',
+	'lower left' => '左下角',
+	'No classification' => '暂无分类',
 ];

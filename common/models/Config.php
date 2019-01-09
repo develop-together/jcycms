@@ -97,6 +97,17 @@ class Config extends \common\components\BaseModel
         return $logo ? $logo->value : '';
     }
 
+    public static function loadContentData()
+    {
+        $data = [];
+        $lists = self::find()->where(['in', 'variable', ['water_img', 'water_location', 'clipping_img']])->all();
+        foreach ($lists as $key => $value) {
+            $data[$value->variable] = $value->value;
+        }
+
+        return $data;
+    }
+
     /**
      * @inheritdoc
      */

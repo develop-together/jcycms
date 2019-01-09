@@ -22,6 +22,7 @@ return [
         'email',
         'deny_external_access',
         'clipping_img',
-        'watermark'
+        'watermark_img',
+        'watermark_location'
     ]
 ];

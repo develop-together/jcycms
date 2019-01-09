@@ -41,6 +41,13 @@ $this->title = Yii::t('app', 'Content Setting');
                 </div>
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
+                    <?= Html::label(Yii::t('app', 'watermark location'), null, ['class' => 'col-sm-2 control-label']) ?>
+                    <div class="col-sm-10">
+                        <?= Html::radioList('Config[watermark_location]', isset($config['watermark_location']) ? $config['watermark_location'] : null, BaseConfig::getWatermarkLocation())?>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
                     <?= Html::label(Yii::t('app', 'Open Comment'), null, ['class' => 'col-sm-2 control-label']) ?>
                     <div class="col-sm-10">
                         <?= Html::radioList('Config[open_comment]', isset($config['open_comment']) ? $config['open_comment'] : null, BaseConfig::getYesNoItems())?>

@@ -9,8 +9,8 @@ use yii\helpers\FileHelper;
 
 class ImageHelper extends Object
 {
-    const DEFAULT_WIDTH = 10240;
-    const DEFAULT_HEIGHT = 10240;
+    const DEFAULT_WIDTH = 100;
+    const DEFAULT_HEIGHT = 100;
 
 	public function thumbnail($imgPath, $width, $height)
 	{
@@ -33,10 +33,9 @@ class ImageHelper extends Object
 		if ($height && !$width) {
 			$width = self::DEFAULT_WIDTH;
 		}
-		
-		Image::thumbnail($imgPath, $width, $height)->save($cropPath);
-		
-		return mb_convert_encoding(str_replace($oldFilename. '.' . $info['extension'], '', str_replace(yii::getAlias('@backend/web/'), '', $imgPath)) . 'thumb/' . $filename, 'UTF-8', 'GBK');
+
+		Image::text(Image::thumbnail($imgPath, $width, $height), 'JCYCMS', '@fontFile/FZSTK.TTF', [0, 0], ['color' => '#f69'])->save($cropPath);
+		return mb_convert_encoding(str_replace($oldFilename . '.' . $info['extension'], '', Utils::getRelativePath($imgPath)) . 'thumb/' . $filename, 'UTF-8', 'GBK');
 	}
 
 	public function crop($path, $width, $height, array $start = [0, 0])

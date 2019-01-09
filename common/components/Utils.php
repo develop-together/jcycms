@@ -1263,6 +1263,14 @@ class Utils {
 
         return array_key_exists($key, $arr) ? $arr[$key] : '';
     }
+
+    public static function getRelativePath(string $absolutePath, string $needle = 'uploads')
+    {
+        if (false !== $fIndex = stripos($absolutePath, $needle)) 
+            return substr($absolutePath, $fIndex);
+
+        return false;
+    }
 }
 
 ?>

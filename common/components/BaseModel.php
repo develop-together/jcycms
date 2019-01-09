@@ -156,7 +156,6 @@ class BaseModel extends \yii\db\ActiveRecord
 
     public function uploadOpreate($field='thumb', $uploadAlias='@original/', $attribute='Thumb', $UploadedFile= null)
     {
-        
         if (Yii::$app->id == 'app-api') {
             $upload = UploadedFile::getInstanceByName($field);
         } else {
@@ -186,14 +185,17 @@ class BaseModel extends \yii\db\ActiveRecord
             }
 
             $attachmentModel = new Attachment();
-            $relativePath = str_replace(yii::getAlias('@backend/web/'), '', $filename);
+            // $relativePath = str_replace(Yii::getAlias('@backend/web/'), '', $filename);
+            $relativePath = Utils::getRelativePath($filename);
             if (!$attachmentModel->saveAttachments($upload, $relativePath, $uploadPath)) {
                 $this->addError($field, Yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => Yii::t('app', $attribute)]) . ': ' . $filename);
 
                 return false; 
             }
 
+            $configData = \common\models\Config::loadContentData(true);
             // 给需要裁剪的地方加入裁剪(两种情况：1、系统开启图片裁剪并设置裁剪尺寸2、对于广告设置了宽高)
+            // 重点：删除原图
             if ($this->formName() === 'Ad') {
                 if (!empty($this->width) && !empty($this->height)) {
                     $imageTools = new ImageHelper();
@@ -201,13 +203,26 @@ class BaseModel extends \yii\db\ActiveRecord
                 }
             }
 
-            if(Yii::$app->id == 'app-api' || !$UploadedFile) {
+            if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb') && intval($configData['clipping_img']) === 1) {
+                $imageTools = new ImageHelper();
+                $relativePath = $imageTools->thumbnail($fullName, $this->width, $this->height);
+                file_exists($fullName) && @unlink($fullName);
+            }
+
+            if (! $this->isNewRecord) {
+                if ($this->getOldAttribute($field) != $relativePath) {
+                    $oldFile = str_replace("\\", '/', str_replace('uploads', '', Yii::getAlias('@uploads')) . $this->getOldAttribute($field));;
+                    file_exists($oldFile) && @unlink($oldFile);
+                }
+            }
+
+            if (Yii::$app->id == 'app-api' || !$UploadedFile) {
                 return $relativePath;
             } 
 
             return $attachmentModel->id;
         }
-    
+
         return !$this->isNewRecord ? $this->getOldAttribute($field) : '';
     }
 

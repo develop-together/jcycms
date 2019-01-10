@@ -23,6 +23,7 @@ return [
         'deny_external_access',
         'clipping_img',
         'watermark_img',
-        'watermark_location'
+        'watermark_location',
+        'watermark_style',
     ]
 ];

@@ -97,15 +97,11 @@ class Config extends \common\components\BaseModel
         return $logo ? $logo->value : '';
     }
 
-    public static function loadContentData()
+    public static function getClippingImg(): int
     {
-        $data = [];
-        $lists = self::find()->where(['in', 'variable', ['water_img', 'water_location', 'clipping_img']])->all();
-        foreach ($lists as $key => $value) {
-            $data[$value->variable] = $value->value;
-        }
+        $valve = self::findOne(['variable' => 'clipping_img', 'scope' => 'base']);
 
-        return $data;
+        return $valve ? (int)$valve->value : 0;
     }
 
     /**

@@ -41,6 +41,13 @@ $this->title = Yii::t('app', 'Content Setting');
                 </div>
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
+                    <?= Html::label(Yii::t('app', 'watermark style'), null, ['class' => 'col-sm-2 control-label']) ?>
+                    <div class="col-sm-10">
+                        <?= Html::radioList('Config[watermark_style]', isset($config['watermark_style']) ? $config['watermark_style'] : null, BaseConfig::getWatermarkStyle())?>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
                     <?= Html::label(Yii::t('app', 'watermark location'), null, ['class' => 'col-sm-2 control-label']) ?>
                     <div class="col-sm-10">
                         <?= Html::radioList('Config[watermark_location]', isset($config['watermark_location']) ? $config['watermark_location'] : null, BaseConfig::getWatermarkLocation())?>

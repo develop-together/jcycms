@@ -54,8 +54,11 @@ class BaseConfig
 
     const UPPER_LEFT = 'uLeft';
     const UPPER_RIGHT = 'uRight';
-    const LOWER_LEFT = 'lLeft';
-    const LOWER_RIGHT = 'lRight';
+    const LOWER_LEFT = 'oLeft';
+    const LOWER_RIGHT = 'oRight';
+
+    const WATERMARK_STYLE_TEXT = 1;
+    const WATERMARK_STYLE_IMG = 2;
 
     public static function getYesNoItems($key = null)
     {
@@ -225,6 +228,16 @@ class BaseConfig
             self::UPPER_RIGHT => Yii::t('app', 'upper right'), 
             self::LOWER_LEFT => Yii::t('app', 'lower left'),
             self::LOWER_RIGHT => Yii::t('app', 'lower right'),
+        ];
+
+        return self::getItems($items, $key);
+    }
+
+    public static function getWatermarkStyle($key = null)
+    {
+        $items = [
+            self::WATERMARK_STYLE_TEXT => Yii::t('app', 'Text'),
+            self::WATERMARK_STYLE_IMG => Yii::t('app', 'Image')
         ];
 
         return self::getItems($items, $key);

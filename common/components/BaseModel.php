@@ -192,20 +192,18 @@ class BaseModel extends \yii\db\ActiveRecord
 
                 return false; 
             }
-
-            $configData = \common\models\Config::loadContentData(true);
+            
             // 给需要裁剪的地方加入裁剪(两种情况：1、系统开启图片裁剪并设置裁剪尺寸2、对于广告设置了宽高)
             // 重点：删除原图
             if ($this->formName() === 'Ad') {
                 if (!empty($this->width) && !empty($this->height)) {
-                    $imageTools = new ImageHelper();
-                    $this->thumbUrl = $imageTools->thumbnail($fullName, $this->width, $this->height);
+                    $this->thumbUrl = ImageHelper::thumbnail($fullName, $this->width, $this->height);
                 }
             }
-
-            if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb') && intval($configData['clipping_img']) === 1) {
-                $imageTools = new ImageHelper();
-                $relativePath = $imageTools->thumbnail($fullName, $this->width, $this->height);
+            
+            $clipping_img = \common\models\Config::getClippingImg();
+            if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb') && $clipping_img === 1) {
+                $relativePath = ImageHelper::thumbnail($fullName, $this->width, $this->height);
                 file_exists($fullName) && @unlink($fullName);
             }
 

@@ -9,7 +9,7 @@ use common\models\Config;
  */
  class BaseMail 
  {
- 	private $_instance = null;
+ 	private static $_instance = null;
 
  	public static function Instance()
  	{
@@ -28,13 +28,13 @@ use common\models\Config;
         }
 
         Yii::$app->set('mailer', [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => yii\swiftmailer\Mailer::className(),
             'viewPath' => '@common/mail',
-                'messageConfig' => [
+            'messageConfig' => [
                 'charset' => 'UTF-8',
                 'from' => $config['smtp_sender']
             ],
-            'useFileTransport' => false,
+            'useFileTransport' => false,// false,//false发送邮件，true只是生成邮件在runtime文件夹下，不发邮件
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host' => $config['smtp_server'],

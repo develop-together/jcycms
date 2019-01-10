@@ -1,6 +1,6 @@
 <?php
 $config = [
-    'name' => 'Jcy CMS',
+    'name' => 'JCYCMS',
     'version' => '1.0.0',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -12,33 +12,8 @@ $config = [
     'modules' => [
             'attachment' => [
                 'class' => 'common\modules\attachment\Module',
-            ],
-            'gii' => [
-                    'class' => 'common\modules\gii\Module',
-                    'allowedIPs' => ['127.0.0.1', '::1'],
-                    'generators' => [
-                        'crud' => [
-                            'class' => 'yii\gii\generators\crud\Generator',
-                            'templates' => [
-                                'myCrud' => '@common/modules/gii/generators/crud/default',
-                            ],
-                        ],
-                        'model' => [
-                            'class' => 'yii\gii\generators\model\Generator',
-                            'templates' => [
-                                'myModel' => '@common/modules/gii/generators/model/default',
-                            ],
-                        ],
-                        'form' => [
-                            'class' => 'yii\gii\generators\form\Generator',
-                            'templates' => [
-                                'myForm' => '@common/modules/gii/generators/form/default',
-                            ],
-                        ],
-                    ],
-            ],
+            ]
     ],
-    // Yii2框架为我们自定义好的  controllers,Models,views,标准的MVC结构框架，但是有些时候我们写接口希望结构更加清晰而不希望与其他控制器放在一起，想自定义文件夹作为API的控制器类
     'controllerMap' => [
             'upload' => [
                 'class' => 'common\modules\attachment\actions\UploadController',
@@ -66,23 +41,6 @@ $config = [
             'currencyCode' => 'CHY',
             'nullDisplay' => '-',
         ],
-/*        'mailer' => [
-            'class' => yii\swiftmailer\Mailer::className(),
-            'viewPath' => '@common/mail',
-            'useFileTransport' => false,//false发送邮件，true只是生成邮件在runtime文件夹下，不发邮件
-            'transport' => [
-                'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.feehi.com',  //每种邮箱的host配置不一样
-                'username' => 'admin@feehi.com',
-                'password' => 'password',
-                'port' => '586',
-                'encryption' => 'tls',
-            ],
-            'messageConfig' => [
-                'charset' => 'UTF-8',
-                'from' => ['admin@feehi.com' => 'Feehi CMS robot ']
-            ],
-        ],*/
         'i18n' => [
             'translations' => [ //多语言包设置
                 '*' => [

@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use common\components\ImageHelper;
 
 /**
  * This is the model class for table "{{%article_content}}".
@@ -55,5 +56,20 @@ class ArticleContent extends \common\components\BaseModel
     public function getArticle()
     {
         return $this->hasOne(Article::className(), ['id' => 'article_id']);
+    }
+
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) 
+            return false;
+        preg_match('/<\s*img\s+[^>]*?src\s*=\s*(\'|\")(.*?)\\1[^>]*?\/?\s*>/i', $this->content, $match);
+        $src = $match[2];
+        $configData = Config::loadData();
+        if ($configData['watermark_img']) {
+            $imgInfo = ImageHelper::imgInfo(Yii::getAlias('@backend/web/') . $src);
+            ImageHelper::watermark($src, str_replace("\\", '/', Yii::getAlias('@backend/web/') . $configData['system_logo']), $configData['watermark_style'], [$imgInfo['width'], $imgInfo['height'], $configData['watermark_location']]);
+        }
+
+        return true;
     }
 }

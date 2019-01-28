@@ -98,7 +98,7 @@ $this->title = Yii::t('app', 'Articles');
                                 </div>                                
                             </div>
                         </div>
-                        <?= $form->field($model, 'tag')->textInput(); ?>
+                        <?= $form->field($model, 'tag')->textInput(['placeholder' => Yii::t('app', 'Multiple keywords separated by "," up to a maximum of 10')]); ?>
                         <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'sort')->textInput(['type' => 'number', 'min' => 0]); ?>
                         <div class="hr-line-dashed"></div>

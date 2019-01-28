@@ -383,4 +383,5 @@ return [
 	'lower left' => '左下角',
 	'No classification' => '暂无分类',
 	'Text' => '文字',
+	'Multiple keywords separated by "," up to a maximum of 10' => '多个关键字之间用“,”分隔，最多不超过10个'
 ];

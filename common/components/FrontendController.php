@@ -2,6 +2,7 @@
 
 namespace common\components;
 
+use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -14,10 +15,8 @@ class FrontendController extends BaseController
 
 	public function init()
 	{
-        $config = Config::loadData();
-        isset($config['web_templates']) && $this->_themeId = $config['web_templates'];
-        $this->configData = $config;
 		parent::init();
+        !empty(Yii::$app->jcore->web_templates) && $this->_themeId = Yii::$app->jcore->web_templates;
 	}
 
     public function behaviors()
@@ -47,17 +46,4 @@ class FrontendController extends BaseController
             ],
         ]); 
     }
-
-/*    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
-        ];
-    }*/
 }

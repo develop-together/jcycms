@@ -48,7 +48,7 @@
                 closeLayer && statusCode == 200 && setTimeout(function () {
                     // parent.layer.closeAll();
                     layer.close(alertIndex);
-                }, 1500);
+                }, 1000);
             });
         },
 

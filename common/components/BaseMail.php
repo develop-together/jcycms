@@ -48,7 +48,7 @@ use common\models\Config;
 
  	public static function send($email, $subject, $message, $compose = [])
  	{
- 		self::init();
+ 		// self::init();
  		$mailer = Yii::$app->mailer;
         $view = null;
         $params = [];

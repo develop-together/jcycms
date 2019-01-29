@@ -14,16 +14,37 @@ header { width: 1000px; margin: auto; height: 80px; position: relative; overflow
 nav { float: right; width: 100%; margin: 30px 0 0 0; text-align: right }
 nav a { position: relative; display: inline-block; font-size: 18px; font-family: "微软雅黑", Arial, Helvetica, sans-serif; }
 nav a:hover { text-decoration: none }
+.topnav ul > li {display: inline;}
 .topnav a { margin: 0 5px; padding: 0 8px; }
 .topnav a span:first-child { z-index: 2; display: block; }
 .topnav a span:last-child { z-index: 1; display: block; color: #999; font: 12px Georgia, serif; opacity: 0; -webkit-transition: -webkit-transform 0.3s, opacity 0.3s; -moz-transition: -moz-transform 0.3s, opacity 0.3s; transition: transform 0.3s, opacity 0.3s; -webkit-transform: translateY(-100%); -moz-transform: translateY(-100%); transform: translateY(-100%); text-align: center }
 .topnav a:hover span:last-child, .topnav a:focus span:last-child { opacity: 1; -webkit-transform: translateY(0%); -moz-transform: translateY(0%); transform: translateY(0%); }
 #topnav_current { color: #e15782; }
+.topnav_current { color: #e15782; }
 .en { color: #999; font-size: 12px; z-index: 1; display: block; }/* ie */
 article { width: 1000px; margin: 20px auto; overflow: hidden }
 aside { width: 250px; }
 footer { text-align: center; line-height: 40px; border-top: #E8E8E8 1px solid ; width:1000px; margin:auto}
+.rollto {
+	position: fixed;
+    bottom: 8rem;
+    right: 1rem;
+    border-radius: 50%;
+    display: none;
+    z-index: 999;
+    cursor: pointer;
+    font-size: 2rem;
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    background: rgba(0,0,0,0.35);
+}
+.rollto span {
+	color: #fff;
+}
 
-
+.rollto .fa {
+	width: auto !important;
+}
 
 

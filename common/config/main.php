@@ -41,9 +41,12 @@ $config = [
             'currencyCode' => 'CHY',
             'nullDisplay' => '-',
         ],
+        'jcore' => [
+            'class' => jcore\components\Jcore::className()
+        ],
         'i18n' => [
             'translations' => [ //多语言包设置
-                '*' => [
+                'common*' => [
                     'class' => yii\i18n\PhpMessageSource::className(),
                     'basePath' => '@common/messages',
                     'fileMap' => [

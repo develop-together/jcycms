@@ -24,7 +24,7 @@ class SiteController extends FrontendController
      */
     public function actionIndex()
     {
-        $renderParams = ['configData' => $this->configData];
+        $renderParams = [];
         if ($this->_themeId === BaseConfig::WEB_TEMPLATE_BASE) {
             $signupModel = new SignupForm();
             $loginModel = new LoginForm();

@@ -68,21 +68,19 @@ return [
 					'sourceLanguage' => 'en-US',
 					'fileMap' => [
 						'app' => 'app.php',
-						'app/error' => 'error.php',
 					],
 				],
-				'menu' => [
-					'class' => yii\i18n\PhpMessageSource::className(),
-					'basePath' => '@backend/messages',
-					'sourceLanguage' => 'zh-CN',
-					'fileMap' => [
-						'app' => 'menu.php',
-						'app/error' => 'error.php',
-					],
-				],
+				// 'menu' => [
+				// 	'class' => yii\i18n\PhpMessageSource::className(),
+				// 	'basePath' => '@backend/messages',
+				// 	'sourceLanguage' => 'zh-CN',
+				// 	'fileMap' => [
+				// 		'app' => 'menu.php',
+				// 	],
+				// ],
 			],
 		],
 	],
-	'on beforeRequest' => [common\components\BaseRequest::className(), 'backendInit'],
+	'on beforeRequest' => [jcore\components\jCore::className(), 'backendInit'],
 	'params' => $params,
 ];

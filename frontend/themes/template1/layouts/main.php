@@ -2,12 +2,11 @@
 
 use yii\helpers\Html;
 use frontend\themes\template1\assets\AppAsset;
-use common\models\Config;
+use frontend\widgets\MenuView;
 use yii\helpers\Url;
 
 AppAsset::register($this);
-$configData = Yii::$app->controller->configData;
-$this->title = $configData['system_name'];
+$this->title = Yii::$app->jcore->system_name;
 
 ?>
 
@@ -16,11 +15,13 @@ $this->title = $configData['system_name'];
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="<?= $configData['seo_keyword']?>">
-    <meta name="description" content="<?= $configData['seo_description']?>">
+    <meta http-equiv="X-UA-Compatible" content="IE=10,IE=9,IE=8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="keywords" content="<?= Yii::$app->jcore->seo_keyword ?>">
+    <meta name="description" content="<?= Yii::$app->jcore->seo_description ?>">
     <?= Html::csrfMetaTags() ?>
+    <style type="text/css" media="screen">
+    </style>
     <title><?= Html::encode($this->title) ?></title>
     <script>
 	    var _hmt = _hmt || [];
@@ -35,22 +36,41 @@ $this->title = $configData['system_name'];
 </head>
 <body>
 	<?php $this->beginBody() ?>
-	<header>
+	<header id="header">
 	  <div id="logo"><a href="/"></a></div>
-	  <nav class="topnav" id="topnav">
-	  	<a href="index.html"><span>首页</span><span class="en">Protal</span></a>
-	  	<a href="about.html"><span>关于我</span><span class="en">About</span></a>
-	  	<a href="newlist.html"><span>慢生活</span><span class="en">Life</span></a>
-	  	<a href="moodlist.html"><span>碎言碎语</span><span class="en">Doing</span></a>
-	  	<a href="share.html"><span>模板分享</span><span class="en">Share</span></a>
-	  	<a href="knowledge.html"><span>学无止境</span><span class="en">Learn</span></a>
-	  	<a href="book.html"><span>留言版</span><span class="en">Gustbook</span></a></nav>
-	  </nav>
+	  <?= MenuView::widget([]);?>
 	</header>
 	<?= $content ?>
 	<footer>
-	  <p><?= $configData['icp']?>&nbsp;Copyright &copy; <?= date('Y') ?> <?= $this->title ?> </p>
+	  <p><?= Yii::$app->jcore->icp ?>&nbsp;Copyright &copy; <?= date('Y') ?> <?= $this->title ?> </p>
 	</footer>
+	<div class="rollto" id="rolltoBtn" style="display: none;" title="回到顶部">
+    	<span><i class="fa fa-arrow-up"></i></span>
+	</div>
 	<?php $this->endBody() ?>
+	<script>
+		(function(){
+			window.onscroll = function(event) {
+				var e = e || window.event;
+				var scrolltop = document.documentElement.scrollTop || document.body.scrollTop;
+				var header = document.getElementById('header');
+				var rolltoBtn = document.getElementById('rolltoBtn');
+				if (scrolltop > header.offsetHeight) {
+					rolltoBtn.style.display = 'block';
+				} else {
+					rolltoBtn.style.display = 'none';
+				}
+			}
+
+			document.getElementById('rolltoBtn').onclick = function(event) {
+				var scrolltop = document.documentElement.scrollTop || document.body.scrollTop;
+				if (scrolltop != 0) {
+					setTimeout(function() {
+						document.body.scrollTop = document.documentElement.scrollTop = 0;
+					}, 300)
+				}
+			}
+		})()
+	</script>
 </body>
 <?php $this->endPage() ?>

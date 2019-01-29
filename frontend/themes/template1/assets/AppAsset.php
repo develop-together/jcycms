@@ -11,10 +11,16 @@ class AppAsset extends AssetBundle
 	public $css = [
 		'a' => 'css/base.css',
 		'b' => 'css/index.css',
+		'c' => 'css/style.css'
 	];
 
 	public $js = [
 		'a' => 'js/silder.js',
 		'b' => ['js/modernizr.js', 'condition' => 'lte IE9']
+	];
+
+	public $depends = [
+		'frontend\\assets\\FontsAsset',
+		'frontend\\assets\\JqueryAsset'
 	];
 } 

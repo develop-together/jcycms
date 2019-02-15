@@ -228,7 +228,7 @@ class BaseModel extends \yii\db\ActiveRecord
     {
         return [
             self::TARGET_BLANK => '新窗口中打开被链接文档(_blank)',
-            self::TARGET_SELF => '相同的框架中打开被链接文档(_slef)',
+            self::TARGET_SELF => '相同的框架中打开被链接文档(_self)',
             self::TAGET_PARENT => '父框架集中打开被链接文档(_parent)',
             self::TAGET_TOP => '整个窗口中打开被链接文档(_top)',
         ];

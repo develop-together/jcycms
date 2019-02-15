@@ -31,7 +31,7 @@ footer { text-align: center; line-height: 40px; border-top: #E8E8E8 1px solid ; 
     right: 1rem;
     border-radius: 50%;
     display: none;
-    z-index: 999;
+    z-index: 10000;
     cursor: pointer;
     font-size: 2rem;
     width: 48px;

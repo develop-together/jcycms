@@ -11,6 +11,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use common\models\FrontendMenu;
 
 class MenuView extends \yii\widgets\Menu
 {	
@@ -22,6 +23,18 @@ class MenuView extends \yii\widgets\Menu
 	{
 		parent::init();
 		if (empty($this->items)) {
+			$menus = FrontendMenu::find()
+				->select(['parent_id', 'id', 'name', 'url', 'target', 'is_absolute_url'])
+				->show()
+				->orderBy("sort asc, parent_id asc")
+				->all();
+			$items = [];
+			foreach ($menus as $menu) {
+					if (! $menu->is_absolute_url) {
+						$url = Url::toRoute($menu->url);
+					}
+			}
+
 			$this->items = [
 				['label' => '首页', 'url' => ['/']],
 				['label' => '关于我', 'url' => ['/about.html']],

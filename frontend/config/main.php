@@ -20,9 +20,14 @@ return [
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
+        'urlManager' => [
+            'rules' => [
+                'article/index/<cat:\w+>' => 'article/index',
+            ],
+        ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
-            'name' => 'advanced-frontend',
+            'name' => 'jcore-frontend',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

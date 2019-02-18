@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * @Authors jiechengyang (2064320087@qq.com)
  * @Link    http://www.boomyang.cn
  * @addTime    2019-01-29 16:18:39
@@ -14,10 +14,10 @@ use yii\helpers\Url;
 use common\models\FrontendMenu;
 
 class MenuView extends \yii\widgets\Menu
-{	
+{
 	public $template = '<nav class="topnav" id="topnav"><ul>{items}</ul></nav>';
 
-	public $linkTemplate = '<a href="{url}"><span>{label}</span><span class="en">{labelEn}</span></a>';
+	public $linkTemplate = '<a href="{url}" target="{target}"><span>{label}</span><span class="en">{labelEn}</span></a>';
 
 	public function init()
 	{
@@ -31,19 +31,24 @@ class MenuView extends \yii\widgets\Menu
 			$items = [];
 			foreach ($menus as $menu) {
 					if (! $menu->is_absolute_url) {
-						$url = Url::toRoute($menu->url);
+						// $index = strripos($menu->url, '/');
+						if (strpos(strtolower($menu->url), 'article')) {
+							// $cat = substr($menu->url, $index + 1);
+							// $url = substr($menu->url, 0, $index);
+							// $url = Url::toRoute([$url, 'cat' => $cat]);
+							$url = $menu->url;
+						} else {
+							$url = Url::toRoute($menu->url);
+						}
+
+					} else {
+						$url = $menu->url;
 					}
+
+					array_push($items, ['label' => $menu->name, 'target' => $menu->target, 'url' => $url]);
 			}
 
-			$this->items = [
-				['label' => '首页', 'url' => ['/']],
-				['label' => '关于我', 'url' => ['/about.html']],
-				['label' => '慢生活', 'url' => ['/lift.html']],
-				['label' => '碎言碎语', 'url' => ['/doing.html']],
-				['label' => '模板分享', 'url' => ['/share.html']],
-				['label' => '学无止境', 'url' => ['/learn.html']],
-				['label' => '留言版', 'url' => ['/book.html']],
-			];
+			$this->items = $items;
 		}
 
 		if (Yii::$app->jcore->web_templates === 'template1')
@@ -88,7 +93,8 @@ class MenuView extends \yii\widgets\Menu
         if (isset($item['url'])) {
             $template = ArrayHelper::getValue($item, 'template', $this->linkTemplate);
             return strtr($template, [
-                '{url}' => Html::encode(Url::to($item['url'])),
+                '{url}' => Html::encode($item['url']),
+                '{target}' => $item['target'],
                 '{label}' => $item['label'],
                 '{labelEn}' => self::t('menu', $item['label'])
             ]);

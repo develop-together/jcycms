@@ -66,6 +66,11 @@ class Category extends \common\components\BaseModel
         return $this->hasOne(self::className(), ['id' => 'parent_id']);
     }
 
+    public static function findCate($name)
+    {
+        return self::findOne(['name' => $name]);
+    }
+
     public function beforeSave($insert)
     {
         if (!parent::beforeSave($insert)) {

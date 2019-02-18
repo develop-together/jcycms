@@ -18,7 +18,7 @@ $config = [
             'upload' => [
                 'class' => 'common\modules\attachment\actions\UploadController',
             ],
-    ],    
+    ],
     'components' => [
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -54,7 +54,7 @@ $config = [
                     ],
                 ],
             ],
-        ],                          
+        ],
     ],
 ];
 

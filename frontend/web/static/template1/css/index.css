@@ -223,7 +223,11 @@ a.readmore { background: #fd8a61; color: #fff; padding: 5px 10px; float: right; 
 .weixin { background: url(../images/weixin.jpg) no-repeat; width: 100%; display: inline-block; height: 274px; overflow: hidden; margin: 10px 0; clear: both }
 @media screen and (max-width: 1350px) {
 	.dateview {
-		background-position: 7px center !important;
+		background-position: 5px center !important;
 	}
 }
-
+@media screen and (min-width: 1800px) and (  max-width: 1920px){
+	.dateview {
+		background-position: 5px center !important;
+	}
+}

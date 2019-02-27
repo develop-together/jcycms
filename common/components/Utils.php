@@ -10,12 +10,12 @@ use yii\web\UploadedFile;
 
 /**
  * 系统助手类
- * 
+ *
  * @author        Atuxe Young [atuxe@atuxe.com]
  * @copyright     Copyright (c) 2006-2015 JCYCMS Inc. All rights reserved.
- * @link          
+ * @link
  * @package       JCYCMS.Tools
- * @license       
+ * @license
  * @version       1.0.0
  */
 class Utils {
@@ -37,7 +37,7 @@ class Utils {
         $fs = $string_encoding == 'UTF-8' ? 'UTF-32' : $string_encoding;
         $ts = $string_encoding == 'UTF-32' ? 'UTF-8' : $string_encoding;
 
-        return $string === mb_convert_encoding ( mb_convert_encoding ( $string, $fs, $ts ), $ts, $fs );       
+        return $string === mb_convert_encoding ( mb_convert_encoding ( $string, $fs, $ts ), $ts, $fs );
     }
 
     /*
@@ -67,14 +67,22 @@ class Utils {
         return $r;
     }
 
+    public static function isTimestamp($timestamp) {
+        if (strtotime(date('m-d-Y H:i:s', $timestamp)) === $timestamp) {
+            return $timestamp;
+        }
+
+        return false;
+    }
+
     public static function tranDateTime($datetime)
     {
-        $time = strtotime($datetime);
+        $time = self::isTimestamp($datetime) ? $datetime : strtotime($datetime);
         $rtime = date("m-d H:i",$time);
         $htime = date("H:i",$time);
-               
+
         $time = time() - $time;
-               
+
         if ($time < 60)
         {
             $str = '刚刚';
@@ -102,7 +110,7 @@ class Utils {
             $str = $rtime;
         }
         return $str;
-    }  
+    }
 
     /**
      * 资源文件的根地址
@@ -123,7 +131,7 @@ class Utils {
     /**
      * 转换图片URL
      * @param  string $path 图片地址
-     * @return string       
+     * @return string
      */
     public static function photoUrl($path='')
     {
@@ -133,18 +141,18 @@ class Utils {
         // 绝对地址
         if (self::url($path)) {
             return $path;
-        } 
+        }
         // 本系统
         elseif (strpos($path, 'uploads/') !== false) {
             return self::baseUrl('uploads') . '/' . $path;
-        } 
+        }
         return $path;
     }
 
     /**
      * 判断设备类型
      * @param  string $value 设备特征 [iPod|iPhone|iPad|Android|webOS|Windows|Mac]
-     * @return bool 
+     * @return bool
      */
     public static function deviceIs($value='')
     {
@@ -179,12 +187,12 @@ class Utils {
     public static function callback($json=array(), $status='ok')
     {
         $config = array(
-            'ok'=>array(200, '操作成功'), 
-            'error'=>array(300, '操作失败'), 
+            'ok'=>array(200, '操作成功'),
+            'error'=>array(300, '操作失败'),
             'timeout'=>array(301, '操作超时'),
         );
         $json['statusCode'] = $config[$status][0];
-        
+
         if (!isset($json['message'])) {
             $json['message'] = $config[$status][1];
         }
@@ -222,7 +230,7 @@ class Utils {
     public static function getZero($count=0)
     {
         $zero = '';
-        for ($i=0; $i < $count; $i++) { 
+        for ($i=0; $i < $count; $i++) {
             $zero .= '0';
         }
         return $zero;
@@ -243,7 +251,7 @@ class Utils {
      * 生成GUID
      * @return [type] [description]
      */
-    function guid() 
+    function guid()
     {
         if (function_exists('com_create_guid')) {
             return com_create_guid();
@@ -265,7 +273,7 @@ class Utils {
     /**
      * 友好显示var_dump
      */
-    static public function dump( $var, $echo = true, $label = null, $strict = true ) 
+    static public function dump( $var, $echo = true, $label = null, $strict = true )
     {
         $label = ( $label === null ) ? '' : rtrim( $label ) . ' ';
         if ( ! $strict ) {
@@ -294,7 +302,7 @@ class Utils {
     /**
      * 获取客户端IP地址
      */
-    static public function getClientIP() 
+    static public function getClientIP()
     {
         static $ip = NULL;
         if ( $ip !== NULL )
@@ -318,7 +326,7 @@ class Utils {
     /**
      * 循环创建目录
      */
-    static public function mkdir( $dir, $mode = 0777 ) 
+    static public function mkdir( $dir, $mode = 0777 )
     {
         if ( is_dir( $dir ) || @mkdir( $dir, $mode ) )
             return true;
@@ -330,7 +338,7 @@ class Utils {
     /**
      * 格式化单位
      */
-    static public function byteFormat( $size, $dec = 2 ) 
+    static public function byteFormat( $size, $dec = 2 )
     {
         $a = array ( "B" , "KB" , "MB" , "GB" , "TB" , "PB" );
         $pos = 0;
@@ -350,7 +358,7 @@ class Utils {
      *            selected checked
      * @return string
      */
-    static public function selected( $string, $param = 1, $type = 'select' ) 
+    static public function selected( $string, $param = 1, $type = 'select' )
     {
 
         $true = null;
@@ -371,7 +379,7 @@ class Utils {
      *
      * @return unknown
      */
-    static public function method() 
+    static public function method()
     {
         return strtoupper( isset( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : 'GET' );
     }
@@ -379,7 +387,7 @@ class Utils {
     /**
      * 查询字符生成
      */
-    static public function buildCondition( array $getArray, array $keys = array() ) 
+    static public function buildCondition( array $getArray, array $keys = array() )
     {
         $arr = array();
         if ( $getArray ) {
@@ -395,7 +403,7 @@ class Utils {
     /**
      * base64_encode
      */
-    static function b64encode( $string ) 
+    static function b64encode( $string )
     {
         $data = base64_encode( $string );
         $data = str_replace( array ( '+' , '/' , '=' ), array ( '-' , '_' , '' ), $data );
@@ -405,7 +413,7 @@ class Utils {
     /**
      * base64_decode
      */
-    static function b64decode( $string ) 
+    static function b64decode( $string )
     {
         $data = str_replace( array ( '-' , '_' ), array ( '+' , '/' ), $string );
         $mod4 = strlen( $data ) % 4;
@@ -416,7 +424,7 @@ class Utils {
     }
 
     /**
-     * 验证是否含有中文 
+     * 验证是否含有中文
      */
     public static function chinese($string)
     {
@@ -435,7 +443,7 @@ class Utils {
     /**
      * 验证邮箱
      */
-    public static function email( $str ) 
+    public static function email( $str )
     {
         if ( empty( $str ) )
             return true;
@@ -450,11 +458,11 @@ class Utils {
             return false;
         }
     }
-    
+
     /**
      * 验证手机号码
      */
-    public static function mobile( $str ) 
+    public static function mobile( $str )
     {
         if ( empty( $str ) ) {
             return true;
@@ -462,7 +470,7 @@ class Utils {
 
         return preg_match( '#^13[\d]{9}$|14^[0-9]\d{8}|^15[0-9]\d{8}$|^18[0-9]\d{8}$#', $str );
     }
-    
+
     /**
      * 验证固定电话
      */
@@ -474,11 +482,11 @@ class Utils {
         return preg_match( '/^((\(\d{2,3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7}(\-\d{1,4})?$/', trim( $str ) );
 
     }
-    
+
     /**
      * 验证qq号码
      */
-    public static function qq( $str ) 
+    public static function qq( $str )
     {
         if ( empty( $str ) ) {
             return true;
@@ -490,7 +498,7 @@ class Utils {
     /**
      * 验证邮政编码
      */
-    public static function zipCode( $str ) 
+    public static function zipCode( $str )
     {
         if ( empty( $str ) ) {
             return true;
@@ -498,11 +506,11 @@ class Utils {
 
         return preg_match( '/^[1-9]\d{5}$/', trim( $str ) );
     }
-    
+
     /**
      * 验证ip
      */
-    public static function ip( $str ) 
+    public static function ip( $str )
     {
         if ( empty( $str ) )
             return true;
@@ -520,7 +528,7 @@ class Utils {
     /**
      * 验证身份证(中国)
      */
-    public static function idCard( $str ) 
+    public static function idCard( $str )
     {
         $str = trim( $str );
         if ( empty( $str ) )
@@ -535,7 +543,7 @@ class Utils {
     /**
      * 验证网址
      */
-    public static function url( $str ) 
+    public static function url( $str )
     {
         if ( empty( $str ) )
             return true;
@@ -548,7 +556,7 @@ class Utils {
      * @param $ip
      * return :ip,beginip,endip,country,area
      */
-    public static function getlocation( $ip = '' ) 
+    public static function getlocation( $ip = '' )
     {
         $ip = new XIp();
         $ipArr = $ip->getlocation( $ip );
@@ -684,7 +692,7 @@ class Utils {
      * @param $length
      * @param $dot
      */
-    public static function cutstr( $string, $length, $dot = '...', $charset = 'utf-8' ) 
+    public static function cutstr( $string, $length, $dot = '...', $charset = 'utf-8' )
     {
         if ( strlen( $string ) <= $length )
             return $string;
@@ -772,7 +780,7 @@ class Utils {
      *
      * @return unknown
      */
-    public static function isEnglist( $param ) 
+    public static function isEnglist( $param )
     {
         if ( ! eregi( "^[A-Z0-9]{1,26}$", $param ) ) {
             return false;
@@ -787,7 +795,7 @@ class Utils {
      * @param $http
      * @return  string
      */
-    public static function convertHttp( $url ) 
+    public static function convertHttp( $url )
     {
         if ( $url == 'http://' || $url == '' )
             return '';
@@ -803,7 +811,7 @@ class Utils {
     /*
         标题样式格式化
     */
-    public static function titleStyle( $style ) 
+    public static function titleStyle( $style )
     {
         $text = '';
         if ( $style['bold'] == 'Y' ) {
@@ -858,7 +866,7 @@ class Utils {
     /*
         标题样式恢复
     */
-    public static function titleStyleRestore( $serialize, $scope = 'bold' ) 
+    public static function titleStyleRestore( $serialize, $scope = 'bold' )
     {
         $unserialize = unserialize( $serialize );
         if ( $unserialize['bold'] =='Y' && $scope == 'bold' )
@@ -876,7 +884,7 @@ class Utils {
      * @param $dirname
      * @return unknown
      */
-    public static function getDir( $dirname ) 
+    public static function getDir( $dirname )
     {
         $files = array();
         if ( is_dir( $dirname ) ) {
@@ -902,7 +910,7 @@ class Utils {
      * @param $dirname
      * @return unknown
      */
-    public static function getFile( $dirname ) 
+    public static function getFile( $dirname )
     {
         $files = array();
         if ( is_dir( $dirname ) ) {
@@ -929,7 +937,7 @@ class Utils {
      *
      * @return [type] [description]
      */
-    public static function imageListSerialize( $data ) 
+    public static function imageListSerialize( $data )
     {
         $var = array();
         foreach ( (array)$data['file'] as $key => $row ) {
@@ -948,7 +956,7 @@ class Utils {
      * @param  $string
      * @return string
      */
-    static function stripslashes($string) 
+    static function stripslashes($string)
     {
         if(is_array($string)) {
             foreach($string as $key => $val) {
@@ -959,14 +967,14 @@ class Utils {
         }
         return $string;
     }
-    
+
     /**
      * 引用字符串
      * @param  $string
      * @param  $force
      * @return string
      */
-   static function addslashes($string, $force = 1) 
+   static function addslashes($string, $force = 1)
    {
         if(is_array($string)) {
             foreach($string as $key => $val) {
@@ -991,7 +999,7 @@ class Utils {
     /**
      * 获取字符串首字母
      */
-    public static function getFirstLetter($str) 
+    public static function getFirstLetter($str)
     {
 
         $fchar = ord($str{0});
@@ -1111,7 +1119,7 @@ class Utils {
 
     }
 
-    public static function shortSpell($zh) 
+    public static function shortSpell($zh)
     {
 
         $ret = "";
@@ -1168,13 +1176,13 @@ class Utils {
         $writer->save($filename . '.xlsx');
     }
 
-    public static function downloadFile($filePath = '', $title = '') 
-    { 
+    public static function downloadFile($filePath = '', $title = '')
+    {
         if (empty($filePath)) {
             return false;
         }
 
-        $fileName = basename($filePath); 
+        $fileName = basename($filePath);
         if (!empty($title)) {
             $ext = UploadedFile::getExtension($filePath);
             $fileName = $title . '.' . $ext;
@@ -1185,18 +1193,18 @@ class Utils {
             $contentDispositionField = sprintf('Content-Disposition: attachment; filename="%s"', $fileName);
         }
 
-        $mime = 'application/force-download'; 
+        $mime = 'application/force-download';
         // $mime = CFileHelper::getMimeType($filePath);
-        header('Pragma: public'); // required 
-        header('Expires: 0'); // no cache 
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0'); 
-        header('Cache-Control: private',false); 
-        header('Content-Type: '. $mime); 
-        header($contentDispositionField); 
-        header('Content-Transfer-Encoding: binary'); 
-        header('Connection: close'); 
-        readfile($filePath); 
-        exit(); 
+        header('Pragma: public'); // required
+        header('Expires: 0'); // no cache
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Cache-Control: private',false);
+        header('Content-Type: '. $mime);
+        header($contentDispositionField);
+        header('Content-Transfer-Encoding: binary');
+        header('Connection: close');
+        readfile($filePath);
+        exit();
     }
 
     /**
@@ -1233,7 +1241,7 @@ class Utils {
             }
         }
 
-        return $tree;        
+        return $tree;
     }
 
     public static function get_request_payload()
@@ -1250,7 +1258,7 @@ class Utils {
             } else
                 $xml .= "<" . $key . "><![CDATA[" . $val . "]]></" . $key . ">";
         }
-        
+
         $xml .= "</xml>";
         file_put_contents(Yii::getAlias('@frontend/runtime/logs/') . '/sendDataToXml.txt',$xml);
 
@@ -1266,7 +1274,7 @@ class Utils {
 
     public static function getRelativePath(string $absolutePath, string $needle = 'uploads')
     {
-        if (false !== $fIndex = stripos($absolutePath, $needle)) 
+        if (false !== $fIndex = stripos($absolutePath, $needle))
             return substr($absolutePath, $fIndex);
 
         return false;

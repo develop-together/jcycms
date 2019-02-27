@@ -46,9 +46,9 @@ class Article extends \common\components\BaseModel
     const PHOTOS_PAGE = 3;/*相册*/
     const ARTICLE_PUBLISHED = 1;
     const ARTICLE_DRAFT = 0;
-    
+
     public $content = '';
-    
+
     /**
      * @inheritdoc
      */
@@ -66,8 +66,8 @@ class Article extends \common\components\BaseModel
             [['title', 'status'], 'required'],
             [['id', 'category_id', 'type', 'status', 'sort', 'user_id', 'scan_count', 'can_comment', 'visibility', 'flag_headline', 'flag_recommend', 'flag_slide_show', 'flag_special_recommend', 'flag_roll', 'flag_bold', 'flag_picture', 'created_at', 'updated_at'], 'integer'],
             [['title', 'sub_title', 'summary', 'seo_title', 'seo_keywords', 'seo_description', 'tag'], 'string', 'max' => 255],
-             // [['file'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png',],  
-             // [['file'], 'file', 'maxFiles' => 10,'extensions'=>'jpg,png,gif'], 
+             // [['file'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png',],
+             // [['file'], 'file', 'maxFiles' => 10,'extensions'=>'jpg,png,gif'],
             [['content'], 'string'],
             [['thumb', 'original', 'photo_file_ids'], 'safe'],
             [
@@ -95,7 +95,7 @@ class Article extends \common\components\BaseModel
     public function scenarios()
     {
         $parentScenarios = parent::scenarios();
-        
+
         return array_merge($parentScenarios, [
             'article' => [
                 'category_id',
@@ -223,7 +223,7 @@ class Article extends \common\components\BaseModel
 
     public function getCateName()
     {
-        if ($this->category) 
+        if ($this->category)
             return $this->category->name;
 
         return Yii::t('app', 'No classification');
@@ -277,7 +277,7 @@ class Article extends \common\components\BaseModel
     }
 
     public function beforeSave($insert)
-    {   
+    {
         if(!parent::beforeSave($insert)) {
             return false;
         }

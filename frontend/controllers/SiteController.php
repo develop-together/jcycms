@@ -2,8 +2,6 @@
 namespace frontend\controllers;
 
 use Yii;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
 use common\components\FrontendController;
 use frontend\models\LoginForm;
 use common\components\BaseConfig;
@@ -11,12 +9,19 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use frontend\models\search\ArticleSearch;
+use yii\base\InvalidParamException;
+use yii\web\BadRequestHttpException;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use yii\web\HttpException;
 
 /**
  * Site controller
  */
 class SiteController extends FrontendController
 {
+
     /**
      * Displays homepage.
      *
@@ -25,6 +30,9 @@ class SiteController extends FrontendController
     public function actionIndex()
     {
         $renderParams = [];
+        $serarchModel = new ArticleSearch();
+        $dataProvider = $serarchModel->search(Yii::$app->request->getQueryParams());
+        $renderParams['dataProvider'] = $dataProvider;
         if ($this->_themeId === BaseConfig::WEB_TEMPLATE_BASE) {
             $signupModel = new SignupForm();
             $loginModel = new LoginForm();
@@ -62,7 +70,7 @@ class SiteController extends FrontendController
                     $errs .= $error[0] . ',';
                 }
                 $errs = rtrim($errs, ',');
-            } 
+            }
             Yii::$app->session->setFlash('error', Yii::t('common', 'Login Failed') . '(' . $errs . ')');
         }
 

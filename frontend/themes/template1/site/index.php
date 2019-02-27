@@ -1,4 +1,8 @@
 <?php
+
+  use yii\helpers\Url;
+  use frontend\widgets\ArticleListView;
+
 ?>
 
 <div class="banner">
@@ -25,11 +29,12 @@
   </div>
 </div>
 <article>
-  <h2 class="title_tj">
-    <p>文章<span>推荐</span></p>
-  </h2>
-  <div class="bloglist left">
-    <div class="newlist">
+    <?= ArticleListView::widget([
+        'titler' => '<h2 class="title_tj"><p>文章<span>推荐</span></p></h2>',
+        'dataProvider' => $dataProvider
+      ]);
+    ?>
+<!--     <div class="newlist">
       <div class="item">
         <h3>程序员请放下你的技术情节，与你的同伴一起进步</h3>
         <figure><img src="<?= Yii::$app->request->baseUrl ?>static/template1/images/001.png"></figure>
@@ -55,7 +60,7 @@
           <p>如果说掌握一门赖以生计的技术是技术人员要学会的第一课的话， 那么我觉得技术人员要真正学会的第二课，不是技术，而是业务、交流与协作，学会关心其他工作伙伴的工作情况和进展...</p>
           <a title="/" href="/" target="_blank" class="readmore">阅读全文>></a>
         </ul>
-        <p class="dateview"><span>2013-11-04</span><span>作者：杨青</span><span>个人博客：[<a href="/news/life/">程序人生</a>]</span></p>      
+        <p class="dateview"><span>2013-11-04</span><span>作者：杨青</span><span>个人博客：[<a href="/news/life/">程序人生</a>]</span></p>
       </div>
       <div class="item">
         <h3>程序员请放下你的技术情节，与你的同伴一起进步</h3>
@@ -64,7 +69,7 @@
           <p>如果说掌握一门赖以生计的技术是技术人员要学会的第一课的话， 那么我觉得技术人员要真正学会的第二课，不是技术，而是业务、交流与协作，学会关心其他工作伙伴的工作情况和进展...</p>
           <a title="/" href="/" target="_blank" class="readmore">阅读全文>></a>
         </ul>
-        <p class="dateview"><span>2013-11-04</span><span>作者：杨青</span><span>个人博客：[<a href="/news/life/">程序人生</a>]</span></p>      
+        <p class="dateview"><span>2013-11-04</span><span>作者：杨青</span><span>个人博客：[<a href="/news/life/">程序人生</a>]</span></p>
       </div>
       <div class="item">
         <h3>程序员请放下你的技术情节，与你的同伴一起进步</h3>
@@ -73,17 +78,16 @@
           <p>如果说掌握一门赖以生计的技术是技术人员要学会的第一课的话， 那么我觉得技术人员要真正学会的第二课，不是技术，而是业务、交流与协作，学会关心其他工作伙伴的工作情况和进展...</p>
           <a title="/" href="/" target="_blank" class="readmore">阅读全文>></a>
         </ul>
-        <p class="dateview"><span>2013-11-04</span><span>作者：杨青</span><span>个人博客：[<a href="/news/life/">程序人生</a>]</span></p>      
+        <p class="dateview"><span>2013-11-04</span><span>作者：杨青</span><span>个人博客：[<a href="/news/life/">程序人生</a>]</span></p>
       </div>
-    </div>
-    <div class="page">
+    </div> -->
+<!--     <div class="page">
       <a title="Total record"><b>41</b></a>
       <b>1</b>
       <a href="/news/s/index_2.html">2</a>
       <a href="/news/s/index_2.html">&gt;</a>
       <a href="/news/s/index_2.html">&gt;&gt;</a>
-    </div>
-  </div>
+    </div> -->
   <aside class="right">
     <div class="weather">
       <iframe width="250" scrolling="no" height="60" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=12&icon=1&num=1"></iframe>
@@ -120,15 +124,15 @@
       <li><a href="/">谢泽文个人博客</a></li>
       <li><a href="/">3DST技术网</a></li>
       <li><a href="/">思衡网络</a></li>
-    </ul> 
-    </div>  
+    </ul>
+    </div>
     <!-- Baidu Button BEGIN -->
     <div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare"><a class="bds_tsina"></a><a class="bds_qzone"></a><a class="bds_tqq"></a><a class="bds_renren"></a><span class="bds_more"></span><a class="shareCount"></a></div>
-    <script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6574585" ></script> 
-    <script type="text/javascript" id="bdshell_js"></script> 
+    <script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6574585" ></script>
+    <script type="text/javascript" id="bdshell_js"></script>
     <script type="text/javascript">
         document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
-    </script> 
-    <!-- Baidu Button END -->   
+    </script>
+    <!-- Baidu Button END -->
     <a href="/" class="weixin"> </a></aside>
 </article>

@@ -33,7 +33,7 @@ CREATE TABLE `byt_menu` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
-ALTER TABLE `byt_menu` 
+ALTER TABLE `byt_menu`
 CHANGE COLUMN `type` `type` TINYINT(2) UNSIGNED NULL DEFAULT '0' COMMENT '类型' ,
 CHANGE COLUMN `name` `name` VARCHAR(255) NOT NULL COMMENT '名称' ,
 CHANGE COLUMN `url` `url` VARCHAR(255) NOT NULL COMMENT '地址' ,
@@ -44,7 +44,7 @@ CHANGE COLUMN `is_absolute_url` `is_absolute_url` SMALLINT(6) UNSIGNED NULL DEFA
 CHANGE COLUMN `is_display` `is_display` SMALLINT(6) UNSIGNED NULL DEFAULT '1' COMMENT '是否显示' ,
 CHANGE COLUMN `method` `method` SMALLINT(6) UNSIGNED NULL DEFAULT '1' COMMENT '请求方式' ;
 
-ALTER TABLE `byt_menu` 
+ALTER TABLE `byt_menu`
 DROP COLUMN `byt_menucol`;
 
 #2018-03-28
@@ -99,7 +99,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COMMENT = '内容表';
 
-ALTER TABLE `byt_article` 
+ALTER TABLE `byt_article`
 CHANGE COLUMN `flag_recommend` `flag_recommend` SMALLINT(6) UNSIGNED NULL DEFAULT '0' COMMENT '推荐' ,
 CHANGE COLUMN `flag_slide_show` `flag_slide_show` SMALLINT(6) UNSIGNED NULL DEFAULT '0' COMMENT '幻灯' ,
 CHANGE COLUMN `flag_special_recommend` `flag_special_recommend` SMALLINT(6) UNSIGNED NULL DEFAULT '0' COMMENT '特别推荐' ,
@@ -134,18 +134,18 @@ CREATE TABLE `byt_article_content` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
-ALTER TABLE `byt_category` 
+ALTER TABLE `byt_category`
 DROP COLUMN `alias`;
 
-ALTER TABLE `byt_category` 
+ALTER TABLE `byt_category`
 CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ;
 
 #2018-04-12
 
-ALTER TABLE `byt_article` 
+ALTER TABLE `byt_article`
 CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ;
 
-ALTER TABLE `byt_article_content` 
+ALTER TABLE `byt_article_content`
 DROP FOREIGN KEY `fk_aid`;
 
 #2018-04-15
@@ -198,11 +198,11 @@ CREATE TABLE IF NOT EXISTS `byt_config` (
 
 #2018-04-18
 
-ALTER TABLE `byt_config` 
+ALTER TABLE `byt_config`
 ADD UNIQUE INDEX `variable_UNIQUE` (`variable` ASC);
 
 #2018-05-07
-ALTER TABLE  `byt_article` 
+ALTER TABLE  `byt_article`
 ADD  `photo_file_ids` CHAR( 16 ) NULL DEFAULT NULL COMMENT  '相册文件' AFTER  `tag`
 
 #2018-06-02
@@ -270,7 +270,7 @@ CREATE TABLE `byt_auth_item` (
 `created_at`  int(11) NULL DEFAULT 0 ,
 `updated_at`  int(11) NULL DEFAULT 0 ,
 PRIMARY KEY (`id`),
-UNIQUE INDEX `rule_unqiue` (`rule_name`) USING BTREE 
+UNIQUE INDEX `rule_unqiue` (`rule_name`) USING BTREE
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8
@@ -350,6 +350,10 @@ ALTER TABLE `byt_article_meta`
 
 ALTER TABLE `byt_article_meta`
   ADD CONSTRAINT `fk_byt_article_meta_aid` FOREIGN KEY (`aid`) REFERENCES `byt_article` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `byt_admin_user`
+ADD COLUMN `penname` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' AFTER `username`,
+COMMENT = '笔名';
 
 
 

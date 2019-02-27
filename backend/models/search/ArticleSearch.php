@@ -51,7 +51,7 @@ class ArticleSearch extends Article
      */
     public function search($params, $type = self::ARTICLE)
     {
-        $query = Article::find()->where(['type' => $type]);
+        $query = Article::find()->where(['type' => $type])->with('category');
 
         // add conditions that should always apply here
 

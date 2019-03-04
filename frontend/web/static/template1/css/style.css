@@ -38,11 +38,16 @@ a.readmore { background: #f90; color: #fff; padding: 5px 10px; float: right; mar
 aside .rnav ul li a:hover { background: rgba(255,255,255,0.2); -webkit-transform: rotate(360deg); -moz-transform: rotate(360deg); -o-transform: rotate(360deg); transform: rotate(360deg); }
 .ad{ width:100%; margin:10px auto;}
 .page{ margin:20px 0 0 0; text-align:center; width:100%;overflow: hidden;}
-.page a b {color: #999;}
-.page>b,.page a {margin: 0 2px;height: 26px;line-height: 26px;border-radius: 50%;width: 26px;text-align: center;display: inline-block}
-.page a {margin: 0 2px;height: 26px;line-height: 26px;border-radius: 50%;width: 26px;text-align: center;display: inline-block}/* 针对IE6 */
-.page>b,.page a:hover{background: #333;color: #FFF;}
-.page a {color: #F33;border: #999 1px solid;}
+.page li  b {color: #999;}
+.page>b,.page li {margin: 0 2px;height: 26px;line-height: 26px;border-radius: 50%;width: 26px;text-align: center;display: inline-block}
+.page li {margin: 0 2px;height: 26px;line-height: 26px;border-radius: 50%;width: 26px;text-align: center;display: inline-block}/* 针对IE6 */
+
+.page li {border: #999 1px solid;}
+.page>b, .page li:hover{background: #333 !important;color: #FFF !important;}
+.page li.active {
+	background: #333 !important;color: #FFF !important;
+}
+.page a {color: #F33;}
 
 
 

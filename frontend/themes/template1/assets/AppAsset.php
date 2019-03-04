@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace frontend\themes\template1\assets;
 
@@ -21,6 +21,7 @@ class AppAsset extends AssetBundle
 
 	public $depends = [
 		'frontend\\assets\\FontsAsset',
-		'frontend\\assets\\JqueryAsset'
+		'frontend\\assets\\JqueryAsset',
+		'frontend\\assets\\PjaxAsset',
 	];
-} 
+}

@@ -2,7 +2,7 @@
 
   use yii\helpers\Url;
   use frontend\widgets\ArticleListView;
-
+  use frontend\widgets\Pjax;
 ?>
 
 <div class="banner">
@@ -19,17 +19,21 @@
   <div class="box">
     <h3><p><span>推荐博客</span>模板 Templates</p></h3>
     <ul>
-      <li><a href="<?= Yii::$app->params['templateUrl'] ?>"  target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>static/template1/images/01.jpg"></a><span>仿新浪博客风格·梅——古典个人博客模板</span></li>
-      <li><a href="<?= Yii::$app->params['templateUrl'] ?>" target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>static/template1/images/02.jpg"></a><span>黑色质感时间轴html5个人博客模板</span></li>
-      <li><a href="<?= Yii::$app->params['templateUrl'] ?>"  target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>static/template1/images/03.jpg"></a><span>Green绿色小清新的夏天-个人博客模板</span></li>
-      <li><a href="<?= Yii::$app->params['templateUrl'] ?>" target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>static/template1/images/04.jpg"></a><span>女生清新个人博客网站模板</span></li>
-      <li><a href="<?= Yii::$app->params['templateUrl'] ?>"  target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>static/template1/images/02.jpg"></a><span>黑色质感时间轴html5个人博客模板</span></li>
-      <li><a href="<?= Yii::$app->params['templateUrl'] ?>"  target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>static/template1/images/03.jpg"></a><span>Green绿色小清新的夏天-个人博客模板</span></li>
+      <li><a href="<?= Yii::$app->params['templateUrl'] ?>"  target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>/static/template1/images/01.jpg"></a><span>仿新浪博客风格·梅——古典个人博客模板</span></li>
+      <li><a href="<?= Yii::$app->params['templateUrl'] ?>" target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>/static/template1/images/02.jpg"></a><span>黑色质感时间轴html5个人博客模板</span></li>
+      <li><a href="<?= Yii::$app->params['templateUrl'] ?>"  target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>/static/template1/images/03.jpg"></a><span>Green绿色小清新的夏天-个人博客模板</span></li>
+      <li><a href="<?= Yii::$app->params['templateUrl'] ?>" target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>/static/template1/images/04.jpg"></a><span>女生清新个人博客网站模板</span></li>
+      <li><a href="<?= Yii::$app->params['templateUrl'] ?>"  target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>/static/template1/images/02.jpg"></a><span>黑色质感时间轴html5个人博客模板</span></li>
+      <li><a href="<?= Yii::$app->params['templateUrl'] ?>"  target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>/static/template1/images/03.jpg"></a><span>Green绿色小清新的夏天-个人博客模板</span></li>
     </ul>
   </div>
 </div>
+<?php
+  Pjax::begin(['id' => 'countries-article']);
+ ?>
 <article>
-    <?= ArticleListView::widget([
+    <?php
+      echo ArticleListView::widget([
         'titler' => '<h2 class="title_tj"><p>文章<span>推荐</span></p></h2>',
         'dataProvider' => $dataProvider
       ]);
@@ -136,3 +140,6 @@
     <!-- Baidu Button END -->
     <a href="/" class="weixin"> </a></aside>
 </article>
+<?php
+  Pjax::end();
+ ?>

@@ -29,12 +29,14 @@ class ArticleSearch extends Article
 			->joinWith('articleContents');
 		$this->load($params);
 
-		$pageSize = isset($params['pageSize']) ? intval($params['pageSize']) : 10;
+		$pageSize = isset($params['pageSize']) ? intval($params['pageSize']) : 5;
 		$pageCurrent = isset($params['pageCurrent']) ? intval($params['pageCurrent']) - 1 : 0;
 
 		$dataProvider = new ActiveDataProvider([
 			'query' => $query,
 			'pagination' => [
+				'pageParam' => 'pageCurrent',
+				'pageSizeParam' => 'pageSize',
 				'pageSize' => $pageSize,
 				'page' => $pageCurrent
 			],

@@ -65,6 +65,12 @@ return [
         ],
         'assetManager' => [
             'linkAssets' => false,
+            'bundles' => [
+                'yii\web\YiiAsset' => [
+                    'js' => [],
+                    'sourcePath' => null
+                ]
+            ]
         ],
         'view' => [
             'theme' => 'common\\components\\ThemeManager'

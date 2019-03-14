@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Author: yjc to lf
  * Blog: http://blog.yjcweb.tk
@@ -20,11 +20,6 @@ use common\modules\attachment\models\Attachment;
 
 class FeehiWidget extends InputWidget
 {
-		
-	public $wrapperOptions = [];
-
-	public $inputId = '';
-
 	//允许上传最大限制
 	public $maxFileSize;
 
@@ -33,11 +28,15 @@ class FeehiWidget extends InputWidget
 
 	public $parentDivId;
 
-	public $onlyUrl = false;
+	public $wrapperOptions = [];
 
-	public $multiple = false;
+	public $inputId        = '';
 
-	public $placeHolder = '';
+	public $onlyUrl        = false;
+
+	public $multiple       = false;
+
+	public $placeHolder    = '';
 
 	public function init()
 	{
@@ -49,21 +48,10 @@ class FeehiWidget extends InputWidget
             if ($this->attribute === 'photo_file_ids') {
             	$value = $this->model->{$this->attribute};
             	$this->value = $this->model->getPictures();
-/*            	$attachmentModels = Attachment::find()
-            		->where(['in', 'id', explode(',', $value)])
-            		->all();
-            	$data = [];
-            	if ($attachmentModels) {
-            		foreach ($attachmentModels as $attachmentModel) {
-            			$data[$attachmentModel->id] = $attachmentModel;
-            		}
-            	}
-
-            	$this->value = $data;*/
             } else {
             	$this->value = $this->model->{$this->attribute};
             }
-            
+
         }
 
         $this->acceptFileTypes = 'image/png, image/jpg, image/jpeg, image/gif, image/bmp';
@@ -73,7 +61,8 @@ class FeehiWidget extends InputWidget
 
 	public function run()
 	{
-		$imgHtml = $inputValue = '';
+		$imgHtml = '';
+		$inputValue = $this->value;
 		$maxWidth = $maxHeight = '200px';
 
 		if (isset($this->wrapperOptions['max-width'])) {
@@ -85,21 +74,20 @@ class FeehiWidget extends InputWidget
 		}
 
 		if (is_array($this->value)) {
-			foreach ($this->value as $key => $value) {
+			array_walk(function($value) {
 				$src = Yii::$app->request->baseUrl . (!empty($value->filepath) ? '/' . $value->filepath : '/static/img/none.jpg');
 				$imgHtml .=  '<img src="' . $src . '" alt="" style="max-width:' . $maxWidth . ';max-height:' . $maxHeight . ';    display: block;float: left;padding-right: 5px;" class="mutil_image" data-file-id="' . $key . '">';
 				$inputValue .= $value->filename . '、';
-			}
+			}, $this->value);
 		} else {
 			$src = Yii::$app->request->baseUrl . (!empty($this->value) ? '/' . $this->value : '/static/img/none.jpg');
 			$imgHtml = '<img src="' . $src . '" alt="" style="max-width:' . $maxWidth . ';max-height:' . $maxHeight . '" class="none_image">';
 		}
 
 		$content = '';
-		// $content = Html::hiddenInput($this->name, null, $this->options);
 		$this->wrapperOptions = ArrayHelper::merge(['id' => $this->parentDivId, 'class' => 'image'], $this->wrapperOptions);
 		$content .= Html::beginTag('div', $this->wrapperOptions);
-		$content .= Html::fileInput($this->name, null,[
+		$content .= Html::fileInput($this->name, $inputValue,[
 			'id' => $this->inputId,
 			'class' => 'feehi_html5_upload',
 			'accept' => $this->acceptFileTypes,

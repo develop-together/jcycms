@@ -1,4 +1,4 @@
-<?php 
+<?php
  return [
 	/*frontentd*/
 	'Intro' => '简介',
@@ -105,4 +105,10 @@
     'Password reset token cannot be blank.' => '密码重置令牌不能为空。',
     /*error*/
     'Account exception' => '账号异常',
+    'Recommended blog Templates' => '推荐博客模板',
+    'Newest' => '最新',
+    'click' => '点击',
+    'Ranking' => '排行',
+    'Friendship' => '友情',
+    'Link' => '链接'
 ];

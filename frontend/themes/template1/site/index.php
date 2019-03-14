@@ -3,6 +3,10 @@
   use yii\helpers\Url;
   use frontend\widgets\ArticleListView;
   use frontend\widgets\Pjax;
+  use frontend\models\Carousel;
+  use frontend\models\Article;
+  use frontend\models\FriendLink;
+  use yii\data\ArrayDataProvider;
 ?>
 
 <div class="banner">
@@ -17,15 +21,17 @@
 </div>
 <div class="template">
   <div class="box">
-    <h3><p><span>推荐博客</span>模板 Templates</p></h3>
-    <ul>
-      <li><a href="<?= Yii::$app->params['templateUrl'] ?>"  target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>/static/template1/images/01.jpg"></a><span>仿新浪博客风格·梅——古典个人博客模板</span></li>
-      <li><a href="<?= Yii::$app->params['templateUrl'] ?>" target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>/static/template1/images/02.jpg"></a><span>黑色质感时间轴html5个人博客模板</span></li>
-      <li><a href="<?= Yii::$app->params['templateUrl'] ?>"  target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>/static/template1/images/03.jpg"></a><span>Green绿色小清新的夏天-个人博客模板</span></li>
-      <li><a href="<?= Yii::$app->params['templateUrl'] ?>" target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>/static/template1/images/04.jpg"></a><span>女生清新个人博客网站模板</span></li>
-      <li><a href="<?= Yii::$app->params['templateUrl'] ?>"  target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>/static/template1/images/02.jpg"></a><span>黑色质感时间轴html5个人博客模板</span></li>
-      <li><a href="<?= Yii::$app->params['templateUrl'] ?>"  target="_blank"><img src="<?= Yii::$app->request->baseUrl ?>/static/template1/images/03.jpg"></a><span>Green绿色小清新的夏天-个人博客模板</span></li>
-    </ul>
+    <h3><p><span><?= Yii::t('frontend', 'Recommended blog Templates') ?></span> </p></h3>
+    <?php
+        $templates = Carousel::getTeamplates();
+        if ($templates) {
+          echo '<ul>';
+          foreach ($templates as $teamplate) {
+            echo "<li><a href='" . $teamplate->url . "'  target='_blank'><img src='" . $teamplate->image . "'></a><span>" . $teamplate->caption . "</span></li>";
+          }
+          echo '</ul>';
+        }
+     ?>
   </div>
 </div>
 <?php
@@ -38,97 +44,41 @@
         'dataProvider' => $dataProvider
       ]);
     ?>
-<!--     <div class="newlist">
-      <div class="item">
-        <h3>程序员请放下你的技术情节，与你的同伴一起进步</h3>
-        <figure><img src="<?= Yii::$app->request->baseUrl ?>static/template1/images/001.png"></figure>
-        <ul>
-          <p>如果说掌握一门赖以生计的技术是技术人员要学会的第一课的话， 那么我觉得技术人员要真正学会的第二课，不是技术，而是业务、交流与协作，学会关心其他工作伙伴的工作情况和进展...</p>
-          <a title="/" href="/" target="_blank" class="readmore">阅读全文>></a>
-        </ul>
-        <p class="dateview"><span>2013-11-04</span><span>作者：杨青</span><span>个人博客：[<a href="/news/life/">程序人生</a>]</span></p>
-      </div>
-      <div class="item">
-        <h3>程序员请放下你的技术情节，与你的同伴一起进步</h3>
-        <figure><img src="<?= Yii::$app->request->baseUrl ?>static/template1/images/001.png"></figure>
-        <ul>
-          <p>如果说掌握一门赖以生计的技术是技术人员要学会的第一课的话， 那么我觉得技术人员要真正学会的第二课，不是技术，而是业务、交流与协作，学会关心其他工作伙伴的工作情况和进展...</p>
-          <a title="/" href="/" target="_blank" class="readmore">阅读全文>></a>
-        </ul>
-        <p class="dateview"><span>2013-11-04</span><span>作者：杨青</span><span>个人博客：[<a href="/news/life/">程序人生</a>]</span></p>
-      </div>
-      <div class="item">
-        <h3>程序员请放下你的技术情节，与你的同伴一起进步</h3>
-        <figure><img src="<?= Yii::$app->request->baseUrl ?>static/template1/images/001.png"></figure>
-        <ul>
-          <p>如果说掌握一门赖以生计的技术是技术人员要学会的第一课的话， 那么我觉得技术人员要真正学会的第二课，不是技术，而是业务、交流与协作，学会关心其他工作伙伴的工作情况和进展...</p>
-          <a title="/" href="/" target="_blank" class="readmore">阅读全文>></a>
-        </ul>
-        <p class="dateview"><span>2013-11-04</span><span>作者：杨青</span><span>个人博客：[<a href="/news/life/">程序人生</a>]</span></p>
-      </div>
-      <div class="item">
-        <h3>程序员请放下你的技术情节，与你的同伴一起进步</h3>
-        <figure><img src="<?= Yii::$app->request->baseUrl ?>static/template1/images/001.png"></figure>
-        <ul>
-          <p>如果说掌握一门赖以生计的技术是技术人员要学会的第一课的话， 那么我觉得技术人员要真正学会的第二课，不是技术，而是业务、交流与协作，学会关心其他工作伙伴的工作情况和进展...</p>
-          <a title="/" href="/" target="_blank" class="readmore">阅读全文>></a>
-        </ul>
-        <p class="dateview"><span>2013-11-04</span><span>作者：杨青</span><span>个人博客：[<a href="/news/life/">程序人生</a>]</span></p>
-      </div>
-      <div class="item">
-        <h3>程序员请放下你的技术情节，与你的同伴一起进步</h3>
-        <figure><img src="<?= Yii::$app->request->baseUrl ?>static/template1/images/001.png"></figure>
-        <ul>
-          <p>如果说掌握一门赖以生计的技术是技术人员要学会的第一课的话， 那么我觉得技术人员要真正学会的第二课，不是技术，而是业务、交流与协作，学会关心其他工作伙伴的工作情况和进展...</p>
-          <a title="/" href="/" target="_blank" class="readmore">阅读全文>></a>
-        </ul>
-        <p class="dateview"><span>2013-11-04</span><span>作者：杨青</span><span>个人博客：[<a href="/news/life/">程序人生</a>]</span></p>
-      </div>
-    </div> -->
-<!--     <div class="page">
-      <a title="Total record"><b>41</b></a>
-      <b>1</b>
-      <a href="/news/s/index_2.html">2</a>
-      <a href="/news/s/index_2.html">&gt;</a>
-      <a href="/news/s/index_2.html">&gt;&gt;</a>
-    </div> -->
   <aside class="right">
     <div class="weather">
       <iframe width="250" scrolling="no" height="60" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=12&icon=1&num=1"></iframe>
     </div>
     <div class="news">
-    <h3>
-      <p>最新<span>文章</span></p>
-    </h3>
-    <ul class="rank">
-      <li><a href="/" title="Column 三栏布局 个人网站模板" target="_blank">Column 三栏布局 个人网站模板</a></li>
-      <li><a href="/" title="with love for you 个人网站模板" target="_blank">with love for you 个人网站模板</a></li>
-      <li><a href="/" title="免费收录网站搜索引擎登录口大全" target="_blank">免费收录网站搜索引擎登录口大全</a></li>
-      <li><a href="/" title="做网站到底需要什么?" target="_blank">做网站到底需要什么?</a></li>
-      <li><a href="/" title="企业做网站具体流程步骤" target="_blank">企业做网站具体流程步骤</a></li>
-      <li><a href="/" title="建站流程篇——教你如何快速学会做网站" target="_blank">建站流程篇——教你如何快速学会做网站</a></li>
-      <li><a href="/" title="box-shadow 阴影右下脚折边效果" target="_blank">box-shadow 阴影右下脚折边效果</a></li>
-      <li><a href="/" title="打雷时室内、户外应该需要注意什么" target="_blank">打雷时室内、户外应该需要注意什么</a></li>
-    </ul>
-    <h3 class="ph">
-      <p>点击<span>排行</span></p>
-    </h3>
-    <ul class="paih">
-      <li><a href="/" title="Column 三栏布局 个人网站模板" target="_blank">Column 三栏布局 个人网站模板</a></li>
-      <li><a href="/" title="withlove for you 个人网站模板" target="_blank">with love for you 个人网站模板</a></li>
-      <li><a href="/" title="免费收录网站搜索引擎登录口大全" target="_blank">免费收录网站搜索引擎登录口大全</a></li>
-      <li><a href="/" title="做网站到底需要什么?" target="_blank">做网站到底需要什么?</a></li>
-      <li><a href="/" title="企业做网站具体流程步骤" target="_blank">企业做网站具体流程步骤</a></li>
-    </ul>
+    <?= ArticleListView::widget([
+        'dataProvider' => new ArrayDataProvider([
+            'allModels' => Article::find()->where(['type' => Article::ARTICLE])->limit(8)->orderBy(['created_at' => SORT_DESC])->all(),
+         ]),
+        'layout' => '<h3><p>' . Yii::t('frontend', 'Newest') . '<span>' . Yii::t('frontend', 'Article') . '</span></p></h3><ul class="rank">{items}</ul>',
+        'template' => '<a href="{article_url}" title="{title}">{title}</a>',
+        'itemOptions' => ['tag'=>'li'],
+    ]) ?>
+    <?= ArticleListView::widget([
+        'dataProvider' => new ArrayDataProvider([
+            'allModels' => Article::find()->where(['type' => Article::ARTICLE])->limit(6)->orderBy(['scan_count' => SORT_DESC])->all(),
+         ]),
+        'layout' => '<h3 class="ph"><p>' . Yii::t('frontend', 'click') . '<span>' . Yii::t('frontend', 'Ranking') . '</span></p></h3><ul class="paih">{items}</ul>',
+        'template' => '<a href="{article_url}" title="{title}">{title}</a>',
+        'itemOptions' => ['tag'=>'li'],
+    ]) ?>
     <h3 class="links">
-      <p>友情<span>链接</span></p>
+      <p><?= Yii::t('frontend', 'Friendship') ?><span><?= Yii::t('frontend', 'Link') ?></span></p>
     </h3>
-    <ul class="website">
-      <li><a href="/">个人博客</a></li>
-      <li><a href="/">谢泽文个人博客</a></li>
-      <li><a href="/">3DST技术网</a></li>
-      <li><a href="/">思衡网络</a></li>
-    </ul>
+    <?php
+        $links = FriendLink::find()->where(['status' => FriendLink::DISPLAY_YES])->limit(4)->orderBy(['id' => SORT_DESC])->all();
+        if ( $links ) {
+          echo '<ul class="website">';
+          foreach ($links as  $link) {
+            echo "<li><a href=\"{$link->url}\">{$link->name}</a></li>";
+          }
+          echo '</ul>';
+        }
+
+     ?>
     </div>
     <!-- Baidu Button BEGIN -->
     <div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare"><a class="bds_tsina"></a><a class="bds_qzone"></a><a class="bds_tqq"></a><a class="bds_renren"></a><span class="bds_more"></span><a class="shareCount"></a></div>

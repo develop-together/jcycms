@@ -38,7 +38,7 @@ class CarouselItem extends \common\components\BaseModel
     public function rules()
     {
         return [
-            [['carousel_id', 'url', 'status', 'image'], 'required'],
+            [['carousel_id', 'url', 'status'], 'required'],
             [['carousel_id', 'status', 'sort', 'created_at', 'updated_at'], 'integer'],
             [['url', 'caption'], 'string', 'max' => 255],
             [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,gif,bmp,png', 'message' => Yii::t('common', 'Please select the picture file')],
@@ -79,18 +79,18 @@ class CarouselItem extends \common\components\BaseModel
 
     public function beforeValidate()
     {
-        $this->image = $this->uploadOpreate('image', '@banner/', 'Image');
+        $this->image = empty($this->image) ? $this->uploadOpreate('image', '@banner/', 'Image') : $this->image;
 
         return parent::beforeValidate();
     }
 
-    // public function beforeSave($insert) 
+    // public function beforeSave($insert)
     // {
     //     if (!parent::beforeSave($insert)) {
     //         return false;
     //     }
 
-        
+
 
     //     return true;
     // }

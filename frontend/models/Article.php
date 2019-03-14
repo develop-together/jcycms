@@ -16,6 +16,7 @@ class Article extends \common\models\Article
         if (empty($this->thumb))
         	return $this->thumb = '/static/common/images/none.jpg';
 
-        return Yii::$app->params['backendUrl'] . '/' . $this->thumb;
+        // return Yii::$app->params['backendUrl'] . '/' . $this->thumb;
+       	return $this->thumb;
     }
 }

@@ -89,4 +89,6 @@ return [
 	'The File Is Not Exists' => '该文件不存在',
 	'Please select the picture file' => '请选择图片文件',
 	'Image List' => '图片列表',
+
+
 ];

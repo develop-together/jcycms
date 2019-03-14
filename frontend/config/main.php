@@ -43,15 +43,6 @@ return [
         ],
         'i18n' => [
             'translations' => [
-                // 'common*' => [
-                //     'class' => yii\i18n\PhpMessageSource::className(),
-                //     'basePath' => '@common/messages',
-                //     'sourceLanguage' => 'en-US',
-                //     'fileMap' => [
-                //         'app' => 'common.php',
-
-                //     ],
-                // ],
                 'front*' => [
                     'class' => yii\i18n\PhpMessageSource::className(),
                     'basePath' => '@frontend/messages',
@@ -71,6 +62,13 @@ return [
                     'sourcePath' => null
                 ]
             ]
+        ],
+        'response' => [
+            'class' => 'yii\web\Response',
+            'on beforeSend' => function ($event) {
+                $response = $event->sender;
+                $response->data = preg_replace('/uploads/i', Yii::$app->params['backendUrl'] . '\/uploads', $response->data);
+            },
         ],
         'view' => [
             'theme' => 'common\\components\\ThemeManager'

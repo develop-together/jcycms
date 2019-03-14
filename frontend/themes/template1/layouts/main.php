@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use yii\helpers\Html;
 use frontend\themes\template1\assets\AppAsset;
@@ -28,7 +28,7 @@ $this->title = Yii::$app->jcore->system_name;
 	    (function() {
 	      var hm = document.createElement("script");
 	      hm.src = "https://hm.baidu.com/hm.js?60f3353ae7e11b1a627fb56ad4072c54";
-	      var s = document.getElementsByTagName("script")[0]; 
+	      var s = document.getElementsByTagName("script")[0];
 	      s.parentNode.insertBefore(hm, s);
 	    })();
     </script>
@@ -64,11 +64,16 @@ $this->title = Yii::$app->jcore->system_name;
 
 			document.getElementById('rolltoBtn').onclick = function(event) {
 				var scrolltop = document.documentElement.scrollTop || document.body.scrollTop;
-				if (scrolltop != 0) {
-					setTimeout(function() {
-						document.body.scrollTop = document.documentElement.scrollTop = 0;
-					}, 300)
-				}
+				var speed = 500;
+				var timer = null;
+				timer = setInterval(function() {
+					  if ( scrolltop <= 0 ) {
+					  	 clearInterval(timer);
+					  } else {
+					  	 scrolltop -= speed;
+					  	 document.body.scrollTop = document.documentElement.scrollTop = scrolltop;
+					  }
+				}, 300);
 			}
 		})()
 	</script>

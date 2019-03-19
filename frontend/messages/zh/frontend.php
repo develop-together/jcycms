@@ -110,5 +110,6 @@
     'click' => '点击',
     'Ranking' => '排行',
     'Friendship' => '友情',
-    'Link' => '链接'
+    'Link' => '链接',
+    'Sorry, there are no classified articles yet.' => '抱歉，暂无该文章分类！'
 ];

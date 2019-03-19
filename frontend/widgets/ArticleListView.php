@@ -45,7 +45,7 @@ class ArticleListView extends ListView
 	];
 
 	public $template = '<h3>{title}</h3><figure><img src="{thumbUrl}"></figure><ul>
-          <p>{summary}</p><a title="{title}" href="{viewUrl}" target="_blank" class="readmore">阅读全文>></a></ul><p class="dateview"><span>{create_time}</span><span>作者：{author}</span><span>个人博客：[<a href="{categoryUrl}">{categoryName}</a>]</span></p>';
+          <p>{summary}</p><a title="{title}" href="{viewUrl}" target="_self" class="readmore">阅读全文>></a></ul><p class="dateview"><span>{create_time}</span><span>作者：{author}</span><span>个人博客：[<a href="{categoryUrl}" target="_self">{categoryName}</a>]</span></p>';
 
 	public function init()
 	{

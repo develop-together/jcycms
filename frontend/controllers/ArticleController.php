@@ -6,9 +6,11 @@ use Yii;
 use frontend\models\Article;
 use common\models\Category as FrontendCatetory;
 use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 use common\components\FrontendController;
 use yii\helpers\Url;
 use yii\filters\HttpCache;
+use frontend\models\search\ArticleSearch;
 
 class ArticleController extends FrontendController
 {
@@ -31,15 +33,29 @@ class ArticleController extends FrontendController
         ];
     }
 
-	public function actionIndex($cat = '')
+	public function actionIndex($cat)
 	{
 		// Url::remember('/category/' . $model->type . '.html', 'BackDynamic');
-		if(! $cat) {
-			$cate = FrontendCatetory::findCate($cat);
+        $cate = FrontendCatetory::findCate($cat);
+		if (! $cate) {
+            throw new NotFoundHttpException(Yii::t('frontend', 'Sorry, there are no classified articles yet.'));
 		}
 
+        $serarchModel = new ArticleSearch();
+        $dataProvider = $serarchModel->search(Yii::$app->request->getQueryParams(), $cate->id);
 		return $this->render('list', [
-
+            'serarchModel' => $serarchModel,
+            'cate' => $cate,
+            'dataProvider' => $dataProvider
 		]);
 	}
+
+    public function actionView($id)
+    {
+        $model = Article::findOne(['id' => $id]);
+
+        return $this->render('view', [
+            'model' => $model
+        ]);
+    }
 }

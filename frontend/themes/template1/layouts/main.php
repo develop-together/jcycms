@@ -15,7 +15,8 @@ $this->title = Yii::$app->jcore->system_name;
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
-    <meta http-equiv="X-UA-Compatible" content="IE=10,IE=9,IE=8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=10,IE=9,IE=8"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="keywords" content="<?= Yii::$app->jcore->seo_keyword ?>">
     <meta name="description" content="<?= Yii::$app->jcore->seo_description ?>">

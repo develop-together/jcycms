@@ -17,11 +17,12 @@ class ArticleSearch extends Article
 	public function rules()
 	{
 		return [
-			['title', 'string', 'length' => 255]
+			['title', 'string', 'length' => 255],
+			['category_id', 'integer']
 		];
 	}
 
-	public function search($params)
+	public function search($params, $cat = '')
 	{
 		$query = self::find()
 			->where(['type' => self::ARTICLE])
@@ -50,6 +51,10 @@ class ArticleSearch extends Article
 
 		if (! $this->validate()) {
 			return $dataProvider;
+		}
+
+		if (!empty($cat)) {
+			$query->andWhere(['category_id' => $cat]);
 		}
 
 		if(isset($params['flag_recommend']))

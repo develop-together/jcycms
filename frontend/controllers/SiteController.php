@@ -12,6 +12,7 @@ use frontend\models\ContactForm;
 use frontend\models\search\ArticleSearch;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\HttpException;
@@ -194,5 +195,32 @@ class SiteController extends FrontendController
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+
+    public function actionError()
+    {
+        $exception = Yii::$app->getErrorHandler()->exception;
+        if ( $exception === null ) {
+            $exception = new NotFoundHttpException(Yii::t('yii', 'Page not found.'), 404);
+        }
+
+        if ($exception instanceof NotFoundHttpException) {
+            $code = 404;
+        } else {
+            $code = $exception->statusCode;
+        }
+
+        $name = $exception->getName();
+        $message = $exception->getMessage;
+        if (Yii::$app->request->isAjax) {
+            return "{$name}:{$message}";
+        }
+
+        return $this->render('error', [
+            'name' => $name,
+            'message' => $message,
+            'exception' => $exception
+        ]);
+
     }
 }

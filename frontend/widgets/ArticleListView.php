@@ -72,7 +72,7 @@ class ArticleListView extends ListView
 					$thumbUrl,
 					$summary,
 					Url::toRoute(['article/view', 'id' => $model->id]),
-					Utils::tranDateTime($model->created_at),
+					$model->created_at,
 					$model->user->penname,
 					$categoryUrl,
 					$categoryName

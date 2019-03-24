@@ -48,7 +48,7 @@ class SiteController extends BaseApiController
                     'created_at' => SORT_DESC,
                 ],
             ],
-        ]);         
+        ]);
         $totalCount = $dataProvider->getTotalCount();
         // $pageCount = ceil($totalCount / $pageSize);
 
@@ -74,25 +74,25 @@ class SiteController extends BaseApiController
                 if (!$model->save()) {
                     $errors = [];
                     foreach ($model->errors as $error) {
-                        $errors[] = $error[0]; 
+                        $errors[] = $error[0];
                     }
                     throw new \yii\web\BadRequestHttpException(implode(",", $errors));
-                }  
+                }
                 $transaction->commit();
-                
-                return ['message' => '操作成功']; 
+
+                return ['message' => '操作成功'];
             } catch(\Expression $e) {
                 $transaction->rollBack();
                 Yii::$app->getResponse()->statusCode = 400;
-                return ['message' => $e->getMessage()]; 
+                return ['message' => $e->getMessage()];
             }
-         
+
         }
 
         Yii::$app->getResponse()->statusCode = 500;
 
         return yii::$app->getResponse()->send();
-     
+
     }
 
     /**
@@ -105,34 +105,6 @@ class SiteController extends BaseApiController
         Yii::$app->getResponse()->statusCode = 503;
         Yii::$app->getResponse()->content = "sorry, the site is temporary unserviceable";
         Yii::$app->getResponse()->send();
-    }
-
-
-    /**
-     * 切换网站视图
-     * 请开发其他网站视图模版，并参照yii2文档配置
-     *
-     */
-    public function actionView()
-    {
-        $view = Yii::$app->getRequest()->get('type');
-        if (isset($view)) {
-            Yii::$app->session['view'] = $view;
-        }
-        $this->goBack( Yii::$app->getRequest()->getHeaders()->get('referer') );
-    }
-
-    /**
-     * 切换语言版本
-     *
-     */
-    public function actionLanguage()
-    {
-        $language = Yii::$app->getRequest()->get('lang');
-        if (isset($language)) {
-            Yii::$app->session['language'] = $language;
-        }
-        $this->redirect( Yii::$app->getRequest()->getHeaders()->get('referer') );
     }
 
     /**
@@ -160,17 +132,7 @@ class SiteController extends BaseApiController
 
         $message = $exception->getMessage();
 
-        $statusCode = $exception->statusCode ? $exception->statusCode : 500;
-        if (Yii::$app->getRequest()->getIsAjax()) {
-            return "$name: $message";
-        } else {
-            return $this->render('error', [
-                'code' => $statusCode,
-                'name' => $name,
-                'message' => $message,
-                'exception' => $exception,
-            ]);
-        }
+        return "$name: $message";
     }
 
 }

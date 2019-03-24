@@ -46,6 +46,7 @@ class Article extends \common\components\BaseModel
     const PHOTOS_PAGE = 3;/*相册*/
     const ARTICLE_PUBLISHED = 1;
     const ARTICLE_DRAFT = 0;
+    const MAX_CACHE_COUNT = 100;/*文章最大缓存阅读量*/
 
     public $content = '';
 
@@ -227,6 +228,14 @@ class Article extends \common\components\BaseModel
             return $this->category->name;
 
         return Yii::t('app', 'No classification');
+    }
+
+    public function getScan_count()
+    {
+        $key = 'article_scan_count_' . $this->id;
+        $cacheCount = intval(Yii::$app->cache->get($key));
+
+        return $this->scan_count + $cacheCount;
     }
 
     /**

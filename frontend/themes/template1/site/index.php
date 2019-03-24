@@ -51,18 +51,18 @@
     <div class="news">
     <?= ArticleListView::widget([
         'dataProvider' => new ArrayDataProvider([
-            'allModels' => Article::find()->where(['type' => Article::ARTICLE])->limit(8)->orderBy(['created_at' => SORT_DESC])->all(),
+            'allModels' => Article::find()->limit(8)->orderBy(['created_at' => SORT_DESC])->all(),
          ]),
         'layout' => '<h3><p>' . Yii::t('frontend', 'Newest') . '<span>' . Yii::t('frontend', 'Article') . '</span></p></h3><ul class="rank">{items}</ul>',
-        'template' => '<a href="{article_url}" title="{title}">{title}</a>',
+        'template' => '<a href="{viewUrl}" title="{title}">{title}</a>',
         'itemOptions' => ['tag'=>'li'],
     ]) ?>
     <?= ArticleListView::widget([
         'dataProvider' => new ArrayDataProvider([
-            'allModels' => Article::find()->where(['type' => Article::ARTICLE])->limit(6)->orderBy(['scan_count' => SORT_DESC])->all(),
+            'allModels' => Article::find()->limit(6)->orderBy(['scan_count' => SORT_DESC])->all(),
          ]),
         'layout' => '<h3 class="ph"><p>' . Yii::t('frontend', 'click') . '<span>' . Yii::t('frontend', 'Ranking') . '</span></p></h3><ul class="paih">{items}</ul>',
-        'template' => '<a href="{article_url}" title="{title}">{title}</a>',
+        'template' => '<a href="{viewUrl}" title="{title}">{title}</a>',
         'itemOptions' => ['tag'=>'li'],
     ]) ?>
     <h3 class="links">

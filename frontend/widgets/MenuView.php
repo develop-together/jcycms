@@ -15,6 +15,8 @@ use common\models\FrontendMenu;
 
 class MenuView extends \yii\widgets\Menu
 {
+	public $maxFirstMenuCount = 8;
+	public $submenuTemplate = "\n<ul class='sub'>\n{items}\n</ul>\n";
 	public $template = '<nav class="topnav" id="topnav"><ul>{items}</ul></nav>';
 
 	public $linkTemplate = '<a href="{url}" target="{target}"><span>{label}</span><span class="en">{labelEn}</span></a>';
@@ -84,7 +86,18 @@ class MenuView extends \yii\widgets\Menu
         }
         $items = $this->normalizeItems($this->items, $hasActiveChild);
         if (!empty($items)) {
-           return str_replace('{items}', $this->renderItems($items), $this->template);
+			$counts = count($items);
+			if ($this->maxFirstMenuCount < $counts) {
+				$dvalue = $counts - $this->maxFirstMenuCount;
+				$ditems = array_slice($items, '-' . $dvalue);
+				$item = ['label' => Yii::t('frontend', 'More'), 'url' => 'javascript:;', 'items' => $ditems, 'active' => false, 'target' => '_blank',  'options' => ['class' => 'menu']];
+				// $items = array_diff($items, $ditems);
+				$items = array_filter($items, function($value) use ($ditems) {
+					return !in_array($value, $ditems);
+				});
+				$items[] = $item;
+			}
+			return str_replace('{items}', $this->renderItems($items), $this->template);
         }
 	}
 

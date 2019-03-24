@@ -13,9 +13,9 @@ use frontend\models\search\ArticleSearch;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
+use yii\helpers\Url;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use yii\web\HttpException;
 
 /**
  * Site controller

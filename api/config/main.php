@@ -44,7 +44,7 @@ return [
         'response' => [
             'class' => 'yii\web\Response',
             'on beforeSend' => function ($event) {
-                /*防止跨域*/      
+                /*防止跨域*/
                 // header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
                 // header('Access-Control-Allow-Credentials: true');
                 // header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -83,16 +83,6 @@ return [
                     'sourceLanguage' => 'en-US',
                     'fileMap' => [
                         'app' => 'app.php',
-                        'app/error' => 'error.php',
-
-                    ],
-                ],
-                'front*' => [
-                    'class' => yii\i18n\PhpMessageSource::className(),
-                    'basePath' => '@frontend/messages',
-                    'sourceLanguage' => 'en-US',
-                    'fileMap' => [
-                        'frontend' => 'frontend.php',
                         'app/error' => 'error.php',
 
                     ],

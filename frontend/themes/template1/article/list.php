@@ -6,20 +6,23 @@
   use frontend\models\Article;
   use frontend\models\FriendLink;
   use yii\data\ArrayDataProvider;
+  $this->title = $cate->name;
+  $this->params['breadcrumbs'] = [
+    [
+      'label' => Yii::t('frontend', 'Home'),
+      'url' =>  '/',
+      'class' => 'n1'
+    ],
+    ['label' => $this->title],
+  ];
  ?>
-
+<?php Pjax::begin(['id' => 'countries-article-list']); ?>
  <article class="blogs">
- 	<h1 class="t_nav">
- 		<span>“慢生活”不是懒惰，放慢速度不是拖延时间，而是让我们在生活中寻找到平衡。</span>
- 		<a href="/" class="n1">网站首页</a><a href="/" class="n2">慢生活</a>
- 	</h1>
-     <?php
-      echo ArticleListView::widget([
+     <?= $this->render('/widgets/_navigation') ?>
+     <?= ArticleListView::widget([
         'titler' => '<h2 class="title_tj"><p>' . $cate->name . '</p></h2>',
         'dataProvider' => $dataProvider
-      ]);
-
-    ?>
+      ]); ?>
   <aside class="right">
     <div class="rnav">
       <ul>
@@ -32,10 +35,10 @@
     <div class="news">
 	    <?= ArticleListView::widget([
 	        'dataProvider' => new ArrayDataProvider([
-	            'allModels' => Article::find()->where(['type' => Article::ARTICLE])->limit(6)->orderBy(['scan_count' => SORT_DESC])->all(),
+	            'allModels' => Article::find()->limit(6)->orderBy(['scan_count' => SORT_DESC])->all(),
 	         ]),
 	        'layout' => '<h3 class="ph"><p>' . Yii::t('frontend', 'click') . '<span>' . Yii::t('frontend', 'Ranking') . '</span></p></h3><ul class="paih">{items}</ul>',
-	        'template' => '<a href="{article_url}" title="{title}">{title}</a>',
+	        'template' => '<a href="{viewUrl}" title="{title}">{title}</a>',
 	        'itemOptions' => ['tag'=>'li'],
 	    ]) ?>
 	    <div class="visitors">
@@ -48,3 +51,4 @@
     </div>
 	</aside>
  </article>
+ <?php Pjax::end(); ?>

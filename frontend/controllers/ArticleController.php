@@ -11,6 +11,7 @@ use common\components\FrontendController;
 use yii\helpers\Url;
 use yii\filters\HttpCache;
 use frontend\models\search\ArticleSearch;
+use common\components\BaseConfig;
 
 class ArticleController extends FrontendController
 {
@@ -22,12 +23,10 @@ class ArticleController extends FrontendController
                 'class' => HttpCache::className(),
                 'only' => ['view'],
                 'lastModified' => function ($action, $params) {
-                    $id = yii::$app->getRequest()->get('id');
-                    // , 'type' => Article::ARTICLE, 'status' => Article::ARTICLE_PUBLISHED
-                    $model = Article::findOne(['id' => $id]);
-                    if( $model === null ) throw new NotFoundHttpException(yii::t("frontend", "Article id {id} is not exists", ['id' => $id]));
-                    // Article::updateAllCounters(['scan_count' => 1], ['id' => $id]);
-                    // if($model->visibility == Constants::ARTICLE_VISIBILITY_PUBLIC) return $model->updated_at;
+                    $id = Yii::$app->getRequest()->get('id');
+                    $model = $this->findModel($id);
+                    $model->updateScanCount();
+                    if ($model->visibility === BaseConfig::ARTICLE_VISIBILITY_PUBLIC) return $model->updated_at;
                 },
             ],
         ];
@@ -35,7 +34,6 @@ class ArticleController extends FrontendController
 
 	public function actionIndex($cat)
 	{
-		// Url::remember('/category/' . $model->type . '.html', 'BackDynamic');
         $cate = FrontendCatetory::findCate($cat);
 		if (! $cate) {
             throw new NotFoundHttpException(Yii::t('frontend', 'Sorry, there are no classified articles yet.'));
@@ -52,10 +50,43 @@ class ArticleController extends FrontendController
 
     public function actionView($id)
     {
-        $model = Article::findOne(['id' => $id]);
-
+        $model = Article::find()->with(['category', 'user'])->where(['id' => $id])->one();
+        $prevModel = Article::find()
+            ->with(['category', 'user'])
+            ->where(['<', 'id', $id])
+            ->orderBy("sort asc,created_at desc,id desc")
+            ->limit(1)
+            ->one();
+        $nextModel = Article::find()
+            ->with(['category', 'user'])
+            ->where(['>', 'id', $id])
+            ->orderBy("sort asc,created_at desc,id desc")
+            ->limit(1)
+            ->one();
         return $this->render('view', [
-            'model' => $model
+            'model' => $model,
+            'prevModel' => $prevModel,
+            'nextModel' => $nextModel
         ]);
+    }
+
+    public function actionViewAjax($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = $this->findModel($id);
+
+        return [
+            'scan_count' => $model->getScan_count()
+        ];
+
+    }
+
+    private function findModel($id)
+    {
+        if (($model = Article::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException(Yii::t("frontend", "Article id {id} is not exists"));
+        }
     }
 }

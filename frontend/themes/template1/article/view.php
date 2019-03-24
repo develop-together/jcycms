@@ -1,40 +1,59 @@
 <?php
 	use yii\helpers\Html;
+	use yii\helpers\Url;
+	use frontend\widgets\ArticleListView;
+	use frontend\models\Article;
+	use yii\data\ArrayDataProvider;
+
+	$this->title = $model->title;
+	$this->params['breadcrumbs'] = [
+	    [
+	      'label' => Yii::t('frontend', 'Home'),
+	      'url' => '/',
+	      'class' => 'n1'
+	    ],
+	    [
+	      'label' => $model->category->name,
+	      'url' => 'article/index/' . $model->category->name,
+	      'class' => 'n1'
+	    ],
+	    ['label' => $this->title],
+	  ];
 ?>
 
 <article class="blogs">
- 	<h1 class="t_nav">
- 		<span>“慢生活”不是懒惰，放慢速度不是拖延时间，而是让我们在生活中寻找到平衡。</span>
- 		<a href="/" class="n1">网站首页</a><a href="/" class="n2">慢生活</a>
- 	</h1>
+	<?= $this->render('/widgets/_navigation') ?>
  	<div class="index_about">
-		<h2 class="c_titile">爱情不容有错，即使错了那就重来</h2>
+		<h2 class="c_titile"><?= $model->title ?></h2>
 		<p class="box_c">
-			<span class="d_time">发布时间：2013-09-08</span>
-			<span>编辑：杨青</span>
-			<span>互动QQ群：<a href="http://wp.qq.com/wpa/qunwpa?idkey=d4d4a26952d46d564ee5bf7782743a70d5a8c405f4f9a33a60b0eec380743c64">280998807</a></span>
+			<span class="d_time"><?= Yii::t('frontend', 'Created At') ?>：<?= $model->created_at ?></span>
+			<span><?= Yii::t('frontend', 'Author') ?>：<?= $model->user->penname ?></span>
+			<span><?= Yii::t('frontend', 'View count')?>：<b id="scan_count" style="display: none"><?= $model->getScan_count() ?></b></span>
 		</p>
 		<div class="infos">
 			<?= $model->content ?>
 		</div>
 	    <div class="keybq">
-	    	<p><span>关键字词</span>：爱情,犯错,原谅,分手</p>
+	    	<p><span><?= Yii::t('frontend', 'Keywords') ?></span>：<?= $model->tag ?></p>
 	    </div>
 	    <div class="ad"> </div>
 		<div class="nextinfo">
-			<p>上一篇：<a href="/news/s/2013-09-04/606.html">程序员应该如何高效的工作学习</a></p>
-			<p>下一篇：<a href="/news/s/2013-10-21/616.html">柴米油盐的生活才是真实</a></p>
+			<?php if ($prevModel): ?>
+				<p><?= Yii::t('frontend', 'previous') ?>：<?= Html::a($prevModel->title, Url::to(['acticle/view', 'id' => $prevModel->id]), ['title' => $prevModel->sub_title, 'target' => '_self']) ?></p>
+			<?php endif ?>
+			<?php if ($nextModel): ?>
+			<p><?= Yii::t('frontend', 'next') ?>：<?= Html::a($nextModel->title, Url::to(['acticle/view', 'id' => $nextModel->id]), ['title' => $nextModel->sub_title, 'target' => '_self']) ?></p>
+			<?php endif ?>
 		</div>
 		<div class="otherlink">
-			<h2>相关文章</h2>
-			<ul>
-				<li><a href="/news/s/2013-07-25/524.html" title="现在，我相信爱情！">现在，我相信爱情！</a></li>
-				<li><a href="/newstalk/mood/2013-07-24/518.html" title="我希望我的爱情是这样的">我希望我的爱情是这样的</a></li>
-				<li><a href="/newstalk/mood/2013-07-02/335.html" title="有种情谊，不是爱情，也算不得友情">有种情谊，不是爱情，也算不得友情</a></li>
-				<li><a href="/newstalk/mood/2013-07-01/329.html" title="世上最美好的爱情">世上最美好的爱情</a></li>
-				<li><a href="/news/read/2013-06-11/213.html" title="爱情没有永远，地老天荒也走不完">爱情没有永远，地老天荒也走不完</a></li>
-				<li><a href="/news/s/2013-06-06/24.html" title="爱情的背叛者">爱情的背叛者</a></li>
-			</ul>
+		    <?= ArticleListView::widget([
+		        'dataProvider' => new ArrayDataProvider([
+		            'allModels' => Article::find()->where(['category_id' => $model->category_id])->limit(6)->all(),
+		         ]),
+		        'layout' => '<h2>' . Yii::t('frontend', 'About Articles') . '</h2><ul>{items}</ul>',
+		        'template' => '<a href="{viewUrl}" title="{title}">{title}</a>',
+		        'itemOptions' => ['tag'=>'li'],
+		    ]) ?>
 		</div>
  	</div>
 	<aside class="right">
@@ -48,29 +67,22 @@
 	<!-- Baidu Button END -->
 	<div class="blank"></div>
 	<div class="news">
-	  <h3>
-	    <p>栏目<span>最新</span></p>
-	  </h3>
-	  <ul class="rank">
-	    <li><a href="/" title="Column 三栏布局 个人网站模板" target="_blank">Column 三栏布局 个人网站模板</a></li>
-	    <li><a href="/" title="with love for you 个人网站模板" target="_blank">with love for you 个人网站模板</a></li>
-	    <li><a href="/" title="免费收录网站搜索引擎登录口大全" target="_blank">免费收录网站搜索引擎登录口大全</a></li>
-	    <li><a href="/" title="做网站到底需要什么?" target="_blank">做网站到底需要什么?</a></li>
-	    <li><a href="/" title="企业做网站具体流程步骤" target="_blank">企业做网站具体流程步骤</a></li>
-	    <li><a href="/" title="建站流程篇――教你如何快速学会做网站" target="_blank">建站流程篇――教你如何快速学会做网站</a></li>
-	    <li><a href="/" title="box-shadow 阴影右下脚折边效果" target="_blank">box-shadow 阴影右下脚折边效果</a></li>
-	    <li><a href="/" title="打雷时室内、户外应该需要注意什么" target="_blank">打雷时室内、户外应该需要注意什么</a></li>
-	  </ul>
-	  <h3 class="ph">
-	    <p>点击<span>排行</span></p>
-	  </h3>
-	  <ul class="paih">
-	    <li><a href="/" title="Column 三栏布局 个人网站模板" target="_blank">Column 三栏布局 个人网站模板</a></li>
-	    <li><a href="/" title="withlove for you 个人网站模板" target="_blank">with love for you 个人网站模板</a></li>
-	    <li><a href="/" title="免费收录网站搜索引擎登录口大全" target="_blank">免费收录网站搜索引擎登录口大全</a></li>
-	    <li><a href="/" title="做网站到底需要什么?" target="_blank">做网站到底需要什么?</a></li>
-	    <li><a href="/" title="企业做网站具体流程步骤" target="_blank">企业做网站具体流程步骤</a></li>
-	  </ul>
+	    <?= ArticleListView::widget([
+	        'dataProvider' => new ArrayDataProvider([
+	            'allModels' => Article::find()->limit(8)->orderBy(['created_at' => SORT_DESC])->all(),
+	         ]),
+	        'layout' => '<h3><p>' . Yii::t('frontend', 'Newest') . '<span>' . Yii::t('frontend', 'Article') . '</span></p></h3><ul class="rank">{items}</ul>',
+	        'template' => '<a href="{viewUrl}" title="{title}">{title}</a>',
+	        'itemOptions' => ['tag'=>'li'],
+	    ]) ?>
+	    <?= ArticleListView::widget([
+	        'dataProvider' => new ArrayDataProvider([
+	            'allModels' => Article::find()->limit(6)->orderBy(['scan_count' => SORT_DESC])->all(),
+	         ]),
+	        'layout' => '<h3 class="ph"><p>' . Yii::t('frontend', 'click') . '<span>' . Yii::t('frontend', 'Ranking') . '</span></p></h3><ul class="paih">{items}</ul>',
+	        'template' => '<a href="{viewUrl}" title="{title}">{title}</a>',
+	        'itemOptions' => ['tag'=>'li'],
+	    ]) ?>
 	</div>
 	<div class="visitors">
 	  <h3>
@@ -81,3 +93,19 @@
 	</div>
 	</aside>
 </article>
+<?php
+	$ajaxurl = Url::to(['article/view-ajax']);
+	$this->registerJs(<<<JS
+		$(document).ready(function() {
+			$("#scan_count").show()
+			$.ajax({
+				url: "$ajaxurl",
+				data: {id: $model->id},
+				success: function(res) {
+					$("#scan_count").text(res.scan_count)
+				}
+			})
+		})
+JS
+);
+?>

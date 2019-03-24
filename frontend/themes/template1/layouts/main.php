@@ -18,6 +18,18 @@ $this->title = Yii::$app->jcore->system_name;
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- <meta http-equiv="X-UA-Compatible" content="IE=10,IE=9,IE=8"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <!-- <meta name="author" content="soulteary@gmail.com"> -->
+    <!-- <meta name="robots" content="index, follow"> -->
+    <!-- <meta property="og:title" content=""> -->
+    <!-- <meta property="og:description" content=""> -->
+    <!-- <meta property="og:type" content="article"> -->
+    <!-- <meta property="og:url" content=""> -->
+    <!-- <meta property="article:published_time" content="2019-02-28T00:00:00+00:00"> -->
+    <!-- <meta property="article:modified_time" content="2019-02-28T00:00:00+00:00"> -->
+    <meta property="og:image" content="图片地址" /> <!-- facebook -->
+    <!-- <meta name="twitter:card" content="summary"> -->
+    <!-- <meta name="twitter:description" content=""> -->
+	<meta name="twitter:image" content="图片地址" /> <!-- twitter -->
     <meta name="keywords" content="<?= Yii::$app->jcore->seo_keyword ?>">
     <meta name="description" content="<?= Yii::$app->jcore->seo_description ?>">
     <?= Html::csrfMetaTags() ?>
@@ -38,8 +50,11 @@ $this->title = Yii::$app->jcore->system_name;
 <body>
 	<?php $this->beginBody() ?>
 	<header id="header">
-	  <div id="logo"><a href="/"></a></div>
-	  <?= MenuView::widget([]);?>
+		<div class="navbox">
+			<div id="logo" class='logo'><a href="/"></a></div>
+			<?= MenuView::widget([]);?>
+			<div style="clear: both;"></div>
+		</div>
 	</header>
 	<?= $content ?>
 	<footer>

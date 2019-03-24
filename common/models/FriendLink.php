@@ -85,10 +85,16 @@ class FriendLink extends \common\components\BaseModel
             $data = self::find()
                 ->where(['in', 'id', [2, 3]])
                 ->asArray()
-                ->all();   
+                ->all();
             Yii::$app->cache->set($cacheId, $data);
-        } 
+        }
 
         return $data;
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+        $this->image = Yii::$app->request->baseUrl . '/' . $this->image;
     }
 }

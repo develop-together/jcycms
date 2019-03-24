@@ -111,5 +111,14 @@
     'Ranking' => '排行',
     'Friendship' => '友情',
     'Link' => '链接',
-    'Sorry, there are no classified articles yet.' => '抱歉，暂无该文章分类！'
+    'Sorry, there are no classified articles yet.' => '抱歉，暂无该文章分类！',
+    'Home' => '网站首页',
+    'Created At' => '发布时间',
+    'Author' => '编辑',
+    'Keywords' => '关键字词',
+    'View count' => '阅读量',
+    'previous' => '上一篇',
+    'next' => '下一篇',
+    'About Articles' => '相关文章',
+    'More' => '更多'
 ];

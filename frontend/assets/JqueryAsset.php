@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * @Authors jiechengyang (2064320087@qq.com)
  * @Link    http://www.boomyang.cn
  * @addTime    2019-01-29 15:54:29
@@ -13,7 +13,9 @@
 
  	public $css = [];
 
- 	public $js = [
- 		'j' => 'jquery/jquery.min.js'
- 	]; 
+ 	// public $js = [
+ 	// 	'j' => 'jquery/jquery.min.js'
+ 	// ];
+
+ 	public $depends = [];
  }

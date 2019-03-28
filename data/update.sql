@@ -355,6 +355,31 @@ ALTER TABLE `byt_admin_user`
 ADD COLUMN `penname` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' AFTER `username`,
 COMMENT = '笔名';
 
+#2019 03-28
+/*show create table tableName*/
+CREATE TABLE `byt_comment` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL DEFAULT '0',
+  `article_id` int(10) NOT NULL DEFAULT '0',
+  `parent_id` int(10) NOT NULL DEFAULT '0' COMMENT '回复的评论id，默认回复文章的评论为0',
+  `nickname` varchar(32) NOT NULL DEFAULT '' COMMENT '回复人名称',
+  `admin_id` int(10) NOT NULL DEFAULT '0' COMMENT '管理员回复id',
+  `ip` varchar(32) NOT NULL DEFAULT '' COMMENT '回复者ip',
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '1:yes,2:no',
+  `like_count` int(10) NOT NULL DEFAULT '0',
+  `repeat_count` int(10) DEFAULT '0' COMMENT '转发量',
+  `contents` varchar(255) NOT NULL DEFAULT '',
+  `created_at` int(11) NOT NULL DEFAULT '0',
+  `updated_at` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='评论表'
+
+ALTER TABLE `byt_comment`
+MODIFY COLUMN `parent_id` int(10) NOT NULL DEFAULT 0 COMMENT '回复的评论id，默认回复文章的评论为0' AFTER `article_id`,
+ADD COLUMN `nickname` varchar(32) NOT NULL DEFAULT '' COMMENT '回复人名称' AFTER `parent_id`,
+ADD COLUMN `admin_id` int(10) NOT NULL DEFAULT 0 COMMENT '管理员回复id' AFTER `nickname`,
+ADD COLUMN `ip` varchar(32) NOT NULL DEFAULT '' COMMENT '回复者ip' AFTER `admin_id`;
+
 
 
 

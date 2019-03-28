@@ -13,25 +13,25 @@ use common\modules\attachment\models\Attachment;
 /**
  * base model
  */
-class BaseModel extends \yii\db\ActiveRecord 
+class BaseModel extends \yii\db\ActiveRecord
 {
     const TARGET_BLANK = '_blank';
     const TARGET_SELF = '_self';
     const TAGET_PARENT = '_parent';
     const TAGET_TOP = '_top';
-    
+
 	public static function getDb()
 	{
 		return Yii::$app->get('db');
 	}
 
-	public function behaviors() 
+	public function behaviors()
     {
 		$behaviors = [];
 		if ($this->hasAttribute('created_at') && $this->hasAttribute('updated_at')) {
 			$behaviors[] = TimestampBehavior::className();
 		}
-        
+
 		return $behaviors;
 	}
 
@@ -53,8 +53,8 @@ class BaseModel extends \yii\db\ActiveRecord
 
     /**
      * 系统上传的图片、文件地址
-     * @param  string $attribute 
-     * @return string            
+     * @param  string $attribute
+     * @return string
      */
     public function path($attribute = '')
     {
@@ -75,11 +75,11 @@ class BaseModel extends \yii\db\ActiveRecord
 			}
 
             if (Yii::$app->id != 'app-console') {
-                Yii::$app->getSession()->setFlash('error', $message . $errors);  
+                Yii::$app->getSession()->setFlash('error', $message . $errors);
             } else {
                 exit(str_replace('<br>', '|', $errors));
             }
-			
+
 
     	}
     }
@@ -88,16 +88,16 @@ class BaseModel extends \yii\db\ActiveRecord
      * 保存数据前统一处理
      * @return boolean true为可保存， false不可保存
      */
-    public function beforeSave($insert) 
+    public function beforeSave($insert)
     {
         if (!parent::beforeSave($insert)) {
             return false;
         }
-        
-        if (Yii::$app->id == 'app-backend' 
-            && $this->isNewRecord 
-            && $this->hasAttribute('user_id') 
-            && empty($this->user_id) 
+
+        if (Yii::$app->id == 'app-backend'
+            && $this->isNewRecord
+            && $this->hasAttribute('user_id')
+            && empty($this->user_id)
             && $this->formName() != 'AdminRoleUser'
         ) {
             $this->user_id = Yii::$app->user->id;
@@ -112,13 +112,13 @@ class BaseModel extends \yii\db\ActiveRecord
         if ($this->hasAttribute('status')) {
             return $statusOption[$this->status];
         }
-    }	
+    }
 
     public function getAvatarFormat()
     {
         if ($this->hasAttribute('avatar') && $this->avatar) {
             if(strpos($this->avatar, Yii::$app->params['uploadSaveFilePath']) !== false) {
-                return Yii::$app->request->baseUrl  . '/' . $this->avatar;              
+                return Yii::$app->request->baseUrl  . '/' . $this->avatar;
             }
 
             return Yii::$app->request->baseUrl . '/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $this->avatar;
@@ -159,12 +159,12 @@ class BaseModel extends \yii\db\ActiveRecord
         if (Yii::$app->id == 'app-api') {
             $upload = UploadedFile::getInstanceByName($field);
         } else {
-            $upload = $UploadedFile === null ? UploadedFile::getInstance($this, $field) : $UploadedFile;  
+            $upload = $UploadedFile === null ? UploadedFile::getInstance($this, $field) : $UploadedFile;
         }
 
         if ($upload !== null) {
             $uploadPath = yii::getAlias($uploadAlias);
-            if (! FileHelper::createDirectory($uploadPath)) { 
+            if (! FileHelper::createDirectory($uploadPath)) {
                 $this->addError($field, "Create directory failed " . $uploadPath);
                 return false;
             }
@@ -181,7 +181,7 @@ class BaseModel extends \yii\db\ActiveRecord
             if(! $upload->saveAs($fullName)) {
                 $this->addError($field, Yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => Yii::t('app', $attribute)]) . ': ' . $filename);
 
-                return false;                
+                return false;
             }
 
             $attachmentModel = new Attachment();
@@ -190,9 +190,9 @@ class BaseModel extends \yii\db\ActiveRecord
             if (!$attachmentModel->saveAttachments($upload, $relativePath, $uploadPath)) {
                 $this->addError($field, Yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => Yii::t('app', $attribute)]) . ': ' . $filename);
 
-                return false; 
+                return false;
             }
-            
+
             // 给需要裁剪的地方加入裁剪(两种情况：1、系统开启图片裁剪并设置裁剪尺寸2、对于广告设置了宽高)
             // 重点：删除原图
             if ($this->formName() === 'Ad') {
@@ -200,7 +200,7 @@ class BaseModel extends \yii\db\ActiveRecord
                     $this->thumbUrl = ImageHelper::thumbnail($fullName, $this->width, $this->height);
                 }
             }
-            
+
             $clipping_img = \common\models\Config::getClippingImg();
             if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb') && $clipping_img === 1) {
                 $relativePath = ImageHelper::thumbnail($fullName, $this->width, $this->height);
@@ -216,7 +216,7 @@ class BaseModel extends \yii\db\ActiveRecord
 
             if (Yii::$app->id == 'app-api' || !$UploadedFile) {
                 return $relativePath;
-            } 
+            }
 
             return $attachmentModel->id;
         }

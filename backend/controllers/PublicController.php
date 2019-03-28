@@ -1,11 +1,11 @@
-<?php 
+<?php
  namespace backend\controllers;
- 
+
  use Yii;
  use backend\models\LoginForm;
- use common\components\FrontendController;
+ use common\components\BaseController;
 
- class PublicController extends FrontendController
+ class PublicController extends BaseController
  {
 
     public function actionIndex()
@@ -18,7 +18,7 @@
 	 *
 	 * @return string
 	 */
-	public function actionLogin() 
+	public function actionLogin()
 	{
 		$this->layout = false;
 		if (!Yii::$app->user->isGuest) {
@@ -41,15 +41,15 @@
 
 		return $this->render('login', [
 			'model' => $model,
-		]);		
-	} 	
+		]);
+	}
 
 	/**
 	 * Logout action.
 	 *
 	 * @return string
 	 */
-	public function actionLogout() 
+	public function actionLogout()
 	{
 		Yii::$app->user->logout();
 

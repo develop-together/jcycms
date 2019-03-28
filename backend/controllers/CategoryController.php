@@ -5,7 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\Category;
 use backend\models\search\CategorySearch;
-use yii\web\Controller;
+use common\components\BackendController;
 use backend\actions\DeleteAction;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Url;
@@ -13,7 +13,7 @@ use yii\helpers\Url;
 /**
  * CategoryController implements the CRUD actions for Category model.
  */
-class CategoryController extends Controller
+class CategoryController extends BackendController
 {
     public function actions()
     {
@@ -24,7 +24,7 @@ class CategoryController extends Controller
             ],
         ];
     }
-    
+
     /**
      * Lists all Category models.
      * @return mixed

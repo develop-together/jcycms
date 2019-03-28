@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace common\components;
 
@@ -12,7 +12,7 @@ use yii\base\Event;
 /**
 * @author yjc <2064320087@qq.com>
 * @copyright Copyright (c) JcyCms Inc. All rights reserved.
-* @link https://www.cnblogs.com/YangJieCheng/ 
+* @link https://www.cnblogs.com/YangJieCheng/
 * @version 1.0.0
 */
 class BackendController extends BaseController
@@ -52,24 +52,24 @@ class BackendController extends BaseController
 		/**
 		 * 权限检查
 		 * @var [type]
-		 */	
+		 */
 		try {
-			// in_array($action->id, ['index', 'create', 'update', 'delete', 'view']) && 
+			// in_array($action->id, ['index', 'create', 'update', 'delete', 'view']) &&
             $route = $this->route . ':' . strtoupper(Yii::$app->request->getMethod());
- 
+
 			if (!UserAcl::hasAcl($route)) {
                 if (yii::$app->request->isAjax) {
                     yii::$app->getResponse()->content = json_encode(['code' => 1001, 'message' => Yii::t("app", "Permission denied")]);
-                    return yii::$app->getResponse()->send();	
+                    return yii::$app->getResponse()->send();
                 } else {
                 	$error = '<div class="ibox-title"><strong>' . Yii::t("app", "Permission denied") . '</strong>';
                 	if ($action->id != 'assignment') {
                 		$error .= '<<<a style="text-decoration: none;cursor:pointer;color:#1ab394" href="'. Url::toRoute([Yii::$app->controller->id . '/index']) .'">返回</a>>>';
                 	}
-                	 
+
                 	throw new ForbiddenHttpException($error . '</div>');
                 }
-				
+
 			}
 		} catch(\Exception $ex) {
 			exit($ex->getMessage());

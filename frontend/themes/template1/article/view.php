@@ -25,7 +25,7 @@
 	    ],
 	    [
 	      'label' => $model->category->name,
-	      'url' => 'article/index/' . $model->category->name,
+	      'url' => '/article/index/' . $model->category->name,
 	      'class' => 'n1'
 	    ],
 	    ['label' => $this->title],

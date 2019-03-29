@@ -372,7 +372,7 @@ CREATE TABLE `byt_comment` (
   `created_at` int(11) NOT NULL DEFAULT '0',
   `updated_at` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='评论表'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='评论表';
 
 ALTER TABLE `byt_comment`
 MODIFY COLUMN `parent_id` int(10) NOT NULL DEFAULT 0 COMMENT '回复的评论id，默认回复文章的评论为0' AFTER `article_id`,

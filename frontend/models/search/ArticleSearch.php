@@ -24,14 +24,14 @@ class ArticleSearch extends Article
 
 	public function search($params, $cat = '')
 	{
+
+		// ->joinWith('articleContents')
 		$query = self::find()
-			->with(['category', 'user'])
-			->joinWith('articleContents');
+			->with(['category', 'user', 'articleContents']);
 		$this->load($params);
 
 		$pageSize = isset($params['pageSize']) ? intval($params['pageSize']) : 5;
 		$pageCurrent = isset($params['pageCurrent']) ? intval($params['pageCurrent']) - 1 : 0;
-
 		$dataProvider = new ActiveDataProvider([
 			'query' => $query,
 			'pagination' => [
@@ -63,7 +63,6 @@ class ArticleSearch extends Article
 			$query->andWhere(['flag_special_recommend' => $params['flag_special_recommend']]);
 
 		$query->andFilterWhere(['like', 'title', $this->title]);
-
 		return $dataProvider;
 
 	}

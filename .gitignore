@@ -23,3 +23,4 @@ npm-debug.log
 /frontend/web/index.php
 /console/config/main-local.php
 yii
+package.lock

@@ -40,7 +40,7 @@ class Jcore extends Component
 	private static function mailInit()
 	{
         Yii::$app->set('mailer', [
-            'class' => yii\swiftmailer\Mailer::className(),
+            'class' => \yii\swiftmailer\Mailer::className(),
             'viewPath' => '@common/mail',
             'messageConfig' => [
                 'charset' => 'UTF-8',

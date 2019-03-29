@@ -27,7 +27,12 @@ class Carousel extends \common\components\BaseModel
     {
         return '{{%carousel}}';
     }
+    
+    public function behaviors()
+    {
 
+    }
+    
     /**
      * @inheritdoc
      */

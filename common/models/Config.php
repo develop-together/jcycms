@@ -24,6 +24,11 @@ class Config extends \common\components\BaseModel
         return '{{%config}}';
     }
 
+    public function behaviors()
+    {
+
+    }
+    
     /**
      * @inheritdoc
      */

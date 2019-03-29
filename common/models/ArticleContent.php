@@ -26,6 +26,9 @@ class ArticleContent extends \common\components\BaseModel
         return '{{%article_content}}';
     }
 
+    public function behaviors()
+    {
+    }
     /**
      * @inheritdoc
      */

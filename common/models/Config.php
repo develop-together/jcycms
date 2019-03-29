@@ -26,9 +26,15 @@ class Config extends \common\components\BaseModel
 
     public function behaviors()
     {
-
+        return [
+            [
+                'class' => \yii\behaviors\TimestampBehavior::className(),
+                'createdAtAttribute' => false,
+                'updatedAtAttribute' => false
+            ]
+        ];
     }
-    
+
     /**
      * @inheritdoc
      */

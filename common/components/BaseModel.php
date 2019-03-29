@@ -26,17 +26,17 @@ class BaseModel extends \yii\db\ActiveRecord
 	}
 
 	public function behaviors()
-        {
-                return [
-                  [
-                         'class' => TimestampBehavior::className(),
-                         'attributes' => [
-                            ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                            ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
-                          ]
-                  ]
-               ];
-	}
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    self::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    self::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ]
+            ]
+        ];
+    }
 
 	public function attributeLabels()
 	{

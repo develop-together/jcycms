@@ -43,21 +43,45 @@ $(document).ready(function(){
 	});
 });
 // 测试本地解析
-function out(inputNode, showNode) {
-    var inputText = $(inputNode).val();
-    $(showNode).append(reply(AnalyticEmotion(inputText)));
+function commentOut(showNode, data, i18ns) {
+    if ($(showNode).children('li').length > 0 ) {
+        $(showNode).prepend(reply(data, i18ns));
+    } else {
+        $(showNode).append(reply(data, i18ns));
+    }
+
 }
-// var html;
-function reply(content) {
-    var html  = '<li style=" width: 100%;height: auto;padding: 10px 0 20px 0;border-bottom: 1px dashed #c0c0c0;float: left;">';
-    html += '<div class="head-face" style="width: 10%;float: left;text-align: center;">';
-    html += '<img src="/static/common/images/none.jpg" / style="width: 50px;height: 50px;border-radius: 50%;box-shadow: 0 0 8px #c0c0c0;">';
+
+function reply(data, i18ns) {
+    // id username, avator, content create_time like_count zf_count
+    data.username = data.username || '游客';
+    data.avator = data.avator || '/static/common/images/face.jpg';
+    data.like_count = data.like_count || 0;
+    data.zf_count = data.zf_count || 0;
+    data.id = data.id || 0;
+    data.aid = data.aid || 0;
+    data.content = AnalyticEmotion(data.content);
+    var html  = '<li>';
+    html += '<div class="head-face">';
+    html += '<img src="' + data.avator + '" >';
     html += '</div>';
-    html += '<div class="reply-cont" style="width: 89%; padding-right: 1%;float: right;">';
-    html += '<p class="username">小小红色飞机</p>';
-    html += '<p class="comment-body">'+content+'</p>';
-    html += '<p class="comment-footer">2016年10月5日　回复　点赞54　转发12</p>';
+    html += '<div class="reply-cont" >';
+    html += '<p class="username">' + data.username + '</p>';
+    html += '<p class="comment-body">' + data.content + '</p>';
+    html += '<p class="comment-footer"><div style="float:left;padding-right: 5px;">' + data.create_time + '</div><div style="float:left;padding-right: 5px;cursor: pointer;" class="comment-hf hf-con-block" data-aid="' + data.aid + '" data-id="' + data.id + '">' + i18ns[0] +'</div><div style="float:left;padding-right: 5px;" class="date-dz-z"><i class="date-dz-z-click-red"></i>' + i18ns[1] + ' (<i class="z-num">' + data.like_count + '</i>)</div><div style="float:left;">' + i18ns[2] + '' + data.zf_count + '</div></p>';
     html += '</div>';
     html += '</li>';
     return html;
 }
+
+function checkCommentkeyUP(t, maxLen) {
+    maxLen = maxLen || 139
+    var len = $(t).val().length;
+    if(len > maxLen){
+        $(t).val($(t).val().substring(0, maxLen + 1));
+        return false;
+    }
+
+    return true
+}
+

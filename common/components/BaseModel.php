@@ -64,6 +64,16 @@ class BaseModel extends \yii\db\ActiveRecord
         return Utils::photoUrl($this->$attribute);
     }
 
+    public function getErrorFormat()
+    {
+        $errors = [];
+        foreach ($this->errors as $err) {
+            $errors[] = $err[0];
+        }
+
+        return $errors;
+    }
+
 	/**
      * 验证有错误时输出给前端回调函数
      * @return [type] [description]
@@ -72,6 +82,10 @@ class BaseModel extends \yii\db\ActiveRecord
     {
     	if ($this->hasErrors()) {
     		$message = '<strong>' . Yii::t('common', 'The following form is mistaken') . ':</strong><br>';
+            if(Yii::$app->request->isAjax) {
+                exit(Json::encode(['code' => 10001, 'message' => implode('<br>', $this->getErrorFormat())]));
+            }
+
             $errors = '';
 			foreach ($this->getErrors() as $value) {
 				$errors .= implode(",", $value) . '<br>';

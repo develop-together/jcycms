@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * @description: 树相关操作助手类
@@ -16,7 +16,7 @@ use yii\helpers\ArrayHelper;
 
 class TreeHelper
 {
-	
+
 	private $_array = [];
 	private $_create = true;
 	private $_createMode = 1;
@@ -80,6 +80,8 @@ class TreeHelper
 			return $this->spanningTree($this->_array, $options['fpid'], $options['root']);
 		} elseif ($this->_createMode === 3) {
 			return $this->spanningObjectTree($this->_array, $options['fpid'], $options['root']);
+		} elseif ($this->_createMode === 4) {
+			return $this->createObjectTree($this->_array, $options['fpid'], $options['root']);
 		}
 
 		return [];
@@ -97,14 +99,14 @@ class TreeHelper
 		$result = [];
 		// $pidKey = isset($this->options['pidKey']) ? $this->options['pidKey'] 'parent_id';
 		foreach ($data as $key => $value) {
-			if ($value['parent_id'] == $parent_id) {
+			if ($value[$this->_options['pidKey']] == $parent_id) {
 				$value['lv'] = $lv;
 				$result[] = $value;
 				$result = array_merge($result, $this->spanningTree($data, $value['id'], $lv+1));
 			}
 		}
 
-		return $result;		
+		return $result;
 	}
 
 	/**
@@ -114,7 +116,7 @@ class TreeHelper
 	 * @param  integer $lv        [排序]
 	 * @return [Array Object]             [对象数组]
 	 */
-	public function spanningObjectTree($object, $parent_id, $lv = 0) 
+	public function spanningObjectTree($object, $parent_id, $lv = 0)
 	{
 		$result = [];
 		foreach ($object as $obj) {
@@ -122,6 +124,27 @@ class TreeHelper
 				$obj->lv = $lv;
 				$result[] = $obj;
 				$result = array_merge($result, $this->spanningObjectTree($object, $obj->id, $lv+1));
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * [递归创建子孙树-对象 2]
+	 * @param  [type] $object    [数据源]
+	 * @param  [type] $parent_id [默认从最远的根开始]
+	 * @param  [type] $lv        [排序]
+	 * @return [type]            [对象数组]
+	 */
+	public function createObjectTree($object, $parent_id, $lv)
+	{
+		$result = [];
+		foreach ($object as $obj) {
+			if ($obj->parent_id == $parent_id) {
+				$obj->lv = $lv;
+				$result[] = $obj;
+				$obj->childrens = $this->createObjectTree($object, $obj->id, $lv+1);
 			}
 		}
 

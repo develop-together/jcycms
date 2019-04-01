@@ -68,7 +68,7 @@ class Utils {
     }
 
     public static function isTimestamp($timestamp) {
-        if (strtotime(date('m-d-Y H:i:s', $timestamp)) === $timestamp) {
+        if (strtotime(date('Y-m-d H:i:s', $timestamp)) === (int)$timestamp) {
             return $timestamp;
         }
 
@@ -78,7 +78,7 @@ class Utils {
     public static function tranDateTime($datetime)
     {
         $time = self::isTimestamp($datetime) ? $datetime : strtotime($datetime);
-        $rtime = date("m-d H:i",$time);
+        $rtime = date("m-d H:i", $time);
         $htime = date("H:i",$time);
 
         $time = time() - $time;
@@ -187,11 +187,11 @@ class Utils {
     public static function callback($json=array(), $status='ok')
     {
         $config = array(
-            'ok'=>array(200, '操作成功'),
-            'error'=>array(300, '操作失败'),
-            'timeout'=>array(301, '操作超时'),
+            'ok'=>array(10002, '操作成功'),
+            'error'=>array(10001, '操作失败'),
+            'timeout'=>array(10003, '操作超时'),
         );
-        $json['statusCode'] = $config[$status][0];
+        $json['code'] = $config[$status][0];
 
         if (!isset($json['message'])) {
             $json['message'] = $config[$status][1];

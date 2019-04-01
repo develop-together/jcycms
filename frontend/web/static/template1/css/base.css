@@ -3,6 +3,7 @@
 * { margin: 0; padding: 0 }
 body { font: 12px "Microsoft YaHei", Arial, Helvetica, sans-serif; color: #756F71;background: #E9EAED; }
 img { border: 0; display: block;max-width: 100%;height: auto;vertical-align: middle }
+.hide {display: none;}
 ul { list-style: none; }
 .clearfix {clear: both}
 a:link, a:visited {text-decoration: none; color: #333;}
@@ -103,7 +104,7 @@ footer { text-align: center; line-height: 40px; border-top: #E8E8E8 1px solid ; 
     *zoom: 1;
 }
 
-textarea,
+/*textarea,
 .flex-text-wrap {
     outline: 0;
     margin: 0;
@@ -129,11 +130,9 @@ textarea,
     left: 0;
     height: 100%;
     width: 100%;
-    /*resize: none;*/
-    /* IE7 box-sizing fudge factor */
     *height: 94%;
     *width: 94%;
-}
+}*/
 .flex-text-wrap pre {
     display: block;
     visibility: hidden;
@@ -152,7 +151,7 @@ pre {
 .comment-input {
     min-height: 30px;
 }
-textarea, .flex-text-wrap pre {
+/*textarea, .flex-text-wrap pre {
     margin-bottom: 25px;
     line-height: 1.7;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -188,7 +187,7 @@ textarea, .flex-text-wrap pre {
     -o-transition-property: border-color, box-shadow;
     -ms-transition-property: border-color, box-shadow;
     transition-property: border-color, box-shadow;
-}
+}*/
 .fork-link {
     display: block;
     position: absolute;
@@ -366,7 +365,7 @@ textarea, .flex-text-wrap pre {
 .red {
     background-position: -6px -119px !important;
 }
-.hf-pl {
+/*.hf-pl {
     width: 70px;
     height: 30px;
     line-height: 30px;
@@ -392,7 +391,7 @@ textarea, .flex-text-wrap pre {
     font-size: 12px;
     color: #339b53;
 }
-.hfpl-text{margin-top: 0;}
+.hfpl-text{margin-top: 0;}*/
 .date-dz:hover .removeBlock {
     opacity: 1;
 }

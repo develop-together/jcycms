@@ -27,7 +27,7 @@ class ArticleSearch extends Article
 
 		// ->joinWith('articleContents')
 		$query = self::find()
-			->with(['category', 'user', 'articleContents']);
+			->with(['category', 'user', 'articleContent']);
 		$this->load($params);
 
 		$pageSize = isset($params['pageSize']) ? intval($params['pageSize']) : 5;

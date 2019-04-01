@@ -67,7 +67,9 @@ return [
             'class' => 'yii\web\Response',
             'on beforeSend' => function ($event) {
                 $response = $event->sender;
-                $response->data = preg_replace('/uploads/i', Yii::$app->params['backendUrl'] . '\/uploads', $response->data);
+                if (is_string($response->data)) {
+                    $response->data = preg_replace('/uploads/i', Yii::$app->params['backendUrl'] . '\/uploads', $response->data);
+                }
             },
         ],
         'view' => [

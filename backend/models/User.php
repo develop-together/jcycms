@@ -67,7 +67,7 @@ class User extends BaseModel implements IdentityInterface
 	{
 		$parentScenarios = parent::scenarios();
 		return array_merge($parentScenarios, [
-			'default' => ['username', 'email'],
+			'default' => ['username', 'email', 'penname'],
 			'create' => ['username', 'email', 'password', 'avatar', 'status'],
 			'console_create' => ['username', 'email', 'password', 'status'],
 			'update' => ['username', 'email', 'password', 'avatar', 'status'],

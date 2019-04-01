@@ -202,9 +202,14 @@ class Article extends \common\components\BaseModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getArticleContents()
+    public function getArticleContent()
     {
-        return $this->hasMany(ArticleContent::className(), ['article_id' => 'id']);
+        return $this->hasOne(ArticleContent::className(), ['article_id' => 'id']);
+    }
+
+    public function getArticleMetas()
+    {
+        return $this->hasMany(ArticleMeta::class, ['aid' => 'id']);
     }
 
     public function getCategory()
@@ -215,6 +220,17 @@ class Article extends \common\components\BaseModel
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getComments()
+    {
+        // ->where(['parent_id' => 0])
+        return $this->hasMany(Comment::class, ['article_id' => 'id'])->orderBy('id DESC');
+    }
+
+    public function getAuthor_name()
+    {
+        return $this->user ? $this->user->penname : '';
     }
 
     public function getLinkUrl()
@@ -256,7 +272,7 @@ class Article extends \common\components\BaseModel
     public function afterFind()
     {
         parent::afterFind();
-        $this->content = ArticleContent::findOne(['article_id' => $this->id])['content'];
+        $this->content = $this->articleContent->content;
     }
 
     public function saveArticle()

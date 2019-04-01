@@ -12,7 +12,8 @@
  	public $sourcePath = '@frontend/web/static/common';
 
  	public $css = [
- 		'em' => 'css/sinaEmoji.css'
+ 		'em' => 'css/sinaEmoji.css',
+ 		'cos' => 'css/comment.css'
  	];
 
  	public $js = [

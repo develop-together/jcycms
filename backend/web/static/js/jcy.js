@@ -3,7 +3,7 @@
         var self = this;
         this.ajax = function(type, url, data, dataType, callback, async) {
             if (type.toLowerCase() == 'post') {
-               data._csrf_backend = $("meta[name='csrf-token']").attr('content'); 
+               data._csrf_backend = $("meta[name='csrf-token']").attr('content');
             }
 
             jQuery.ajax({
@@ -19,7 +19,7 @@
                         callback(response);
                    }
                 },
-                error: function(qXHR, textStatus, errorThrown) {
+                error: function(jqXHR, textStatus, errorThrown) {
                      swal(tips.error + ': ' + jqXHR.responseJSON.message, tips.operatingFailed + '.', "error");
                 }
             });
@@ -41,7 +41,7 @@
 
                 statusCode = config[p].statusCode;
                 message = this._null(message) || config[p].message;
-            }  
+            }
             var icon = statusCode == 200 ? 1 : 2;
             console.log('正确返回后是否关闭layer', closeLayer && statusCode == 200);
             var alertIndex = layer.alert(message, {icon: icon}, function(){
@@ -68,7 +68,7 @@
                         options.url += '&keyword=%QUERY%';
                     } else {
                         options.url += '?keyword=%QUERY%';
-                    }                   
+                    }
                 }
                 console.log('options.displayKey', options.displayKey);
                 var params = {
@@ -88,7 +88,7 @@
                     queryTokenizer: Bloodhound.tokenizers.whitespace,
                     local: options.data,
                     identify: function(obj) { return obj[options.valueKey]; },
-                });             
+                });
             }
 
             this.datum.initialize();
@@ -98,7 +98,7 @@
                 highlight: true
             } , {
                 name: options.name,
-                displayKey: options.displayKey, 
+                displayKey: options.displayKey,
                 limit: parseInt(options.limit),
                 // async: true,
                 source: baseUtil.nflTeamsWithDefaults,/*.ttAdapter()*/
@@ -191,7 +191,7 @@ function viewLayer(type, url, obj, cssoption)
     });
 }
 
-function close_tab() 
+function close_tab()
 {
     $(".J_menuTab", parent.document).each(function (index) {
         if ($(this).hasClass("active")) {
@@ -207,7 +207,7 @@ function close_tab()
     });
 }
 
-function showPhotos(obj, shift) 
+function showPhotos(obj, shift)
 {
     shift = shift || 5;
     var json =  JSON.parse($(obj).attr('data'));

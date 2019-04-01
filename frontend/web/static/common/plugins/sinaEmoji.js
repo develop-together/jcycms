@@ -17,7 +17,7 @@ function Hashtable() {
     this.remove = function(key) { delete this._hash[key]; }
     this.size = function() { var i = 0; for (var k in this._hash) { i++; } return i; }
     this.get = function(key) { return this._hash[key]; }
-    this.containsKey = function(key) { return typeof (this._hash[key]) != "undefined"; }
+    this.containsKey = function(key) {return typeof (this._hash[key]) != "undefined"; }
     this.clear = function() { for (var k in this._hash) { delete this._hash[k]; } }
 }
 
@@ -57,7 +57,7 @@ function AnalyticEmotion(s) {
 	if(typeof (s) != "undefined") {
 		var sArr = s.match(/\[.*?\]/g);
 		if(null!=sArr && '' != sArr){
-			for(var i = 0; i < sArr.length; i++){
+			for(var i = 0; i < sArr.length; i++) {
 				if(uSinaEmotionsHt.containsKey(sArr[i])) {
 					var reStr = "<img src=\"" + uSinaEmotionsHt.get(sArr[i]) + "\" height=\"22\" width=\"22\" />";
 					s = s.replace(sArr[i], reStr);

@@ -24,8 +24,6 @@
 	'Username' => '用户名',
 	'Password' => '密码',
 	'rememberMe' => '记住密码',
-	'If you forgot your password you can' => '如果你忘记了密码，你可以',
-    'Hi, Log in' => 'Hi, 请登录',
     'Log out' => '退出登陆',
     'Sign up' => '注册',
     'About us' => '关于我们',
@@ -33,20 +31,14 @@
     'Search' => '搜索',
     'Baidu' => '百度',
     'Please input keywords' => '请输入关键字',
-    'Effective,Professional,Conform to SEO' => '高效，专业，符合SEO',
     'Copyright, all rights reserved' => '版权所有，保留一切权利',
     'If you forgot your password you can' => '忘记密码您可以',
     'reset it' => '重置',
     'Remember Me' => '记住登陆',
-    'Well-choosen' => '精选导读',
     'Latest Articles' => '最新发布',
     'Related Recommends' => '相关推荐',
-    'Reproduced please indicate the source' => '转载请注明',
     'Post my comment' => '发表我的评论',
-    'Change account' => '换个身份',
     'Cancel comment' => '取消评论',
-    'Writing some...' => '写点什么...',
-    'Submit comment' => '提交评论',
     'emoj' => '表情',
     'Hi, Please fill' => 'Hi，您需要填写昵称和邮箱！',
     'person posted' => '个小伙伴在吐槽',
@@ -55,11 +47,7 @@
     'The above error occurred while the Web server was processing your request.' => '服务器在处理您的请求中发生了以上错误',
     'Please contact us if you think this is a server error. Thank you.' => '如果您认为是我们的服务器错误，请告知我们，谢谢!',
     'Guest' => '游客',
-    /*public*/
-
-    /*site*/
     'Hot Recommends' => '热门推荐',
-    'Clound Tags' => '云标签',
     'Email Suscribe' => '邮件订阅',
     'Frinendly Links' => '友情链接',
     'Latest Comments' => '最新评论',
@@ -74,36 +62,23 @@
     'Signup' => '注册',
     "None category named {name}" => '未找到分类{name}',
     "Login" => "登录",
-    /*site*/
-
-    /*article*/
     "Article id {id} is not exists" => "文章id {id}不存在",
     "Comment" => "评论",
-    "Only commented user can visit this article" => "文章仅对评论过的用户可见,可以点击下方评论后查看",
     'Like' => '赞',
     'Share' => '分享',
     'Article' => '文章',
-    /*article*/
-
-    /*comment*/
     'This article is not allowed to comment' => '此文章不允许评论',
     'Website closed comment' => '本站不允许评论',
     'Comment waiting for approved.' => '您的评论正在排队审核中，请稍后！',
-    'a minutes ago' => '一分钟前',
-    /*comment*/
-    /*reset password*/
     'Please choose your new password:' => '请输入您的新密码：',
     'Please fill out your email. A link to reset password will be sent there.' => '请填写你的电子邮件。将在那里发送重置密码的链接。',
     'Check your email for further instructions.' => '检查您的电子邮件以获得进一步的说明。',
     'Sorry, we are unable to reset password for the provided email address.' => '对不起，我们无法为所提供的电子邮件地址重置密码。',
     'New password saved.' => '密码修改成功，新密码已经保存。',
-    /*reset password*/
-    /*error*/
     'The above error occurred while the Web server was processing your request.' => '当Web服务器正在处理您的请求时发生上述错误。',
     'Please contact us if you think this is a server error. Thank you.' => '如果您认为这是服务器错误，请与我们联系。谢谢您。',
     'Wrong password reset token.' => '错误（或者过期）的密码重置令牌。',
     'Password reset token cannot be blank.' => '密码重置令牌不能为空。',
-    /*error*/
     'Account exception' => '账号异常',
     'Recommended blog Templates' => '推荐博客模板',
     'Newest' => '最新',
@@ -120,5 +95,14 @@
     'previous' => '上一篇',
     'next' => '下一篇',
     'About Articles' => '相关文章',
-    'More' => '更多'
+    'More' => '更多',
+    'Please input...' => '请输入...',
+    'Submiting...' => '正在提交, 请稍候...',
+    'Please enter the picture address here' => '请在这里输入图片地址',
+    'Cannot submit empty comments' => '不能提交空的评论哟',
+    'Submit comments' => '提交评论',
+    'Get me logged in' => '快让我登陆',
+    'reply' => '回复',
+    'praise' => '赞',
+    'forwarding' => '转发'
 ];

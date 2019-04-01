@@ -3,7 +3,10 @@
 namespace common\models;
 
 use Yii;
+use common\components\Utils;
+use yii\helpers\StringHelper;
 use yii\helpers\ArrayHelper;
+use common\components\TreeHelper;
 
 /**
  * This is the model class for table "{{%comment}}".
@@ -24,6 +27,12 @@ use yii\helpers\ArrayHelper;
  */
 class Comment extends \common\components\BaseModel
 {
+    const STATUS_INIT = 0;
+    const STATUS_PASSED = 1;
+    const STATUS_UNPASS = 2;
+    public $avator;
+    public $lv = 0;
+    public $childrens = [];
 
     /**
      * @inheritdoc
@@ -43,6 +52,19 @@ class Comment extends \common\components\BaseModel
             [['nickname', 'ip'], 'string', 'max' => 32],
             [['status'], 'string', 'max' => 2],
             [['contents'], 'string', 'max' => 255],
+            ['parent_id', function($attribute, $params) {
+                $this->$attribute = (int)$this->$attribute;
+                if ($this->$attribute !== 0) {
+                    if (self::findOne($this->$attribute) === null) {
+                        $this->addError($attribute, Yii::t('common', 'The comment you made does not exist!'));
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                return true;
+            }]
         ];
     }
 
@@ -66,5 +88,32 @@ class Comment extends \common\components\BaseModel
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ]);
+    }
+
+    public function getUser()
+    {
+        return $this->hasone(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getAvator()
+    {
+        return $this->user ? Yii::$app->request->baseUrl . '/' . $this->user->avator : Yii::$app->request->baseUrl . '/static/common/images/face.jpg';
+    }
+
+    public static function chilrdenDatas($datas, $parent_id, $lv = 0)
+    {
+        $tree = new TreeHelper($datas, true, 4, [
+            'fpid' => $parent_id,
+            'root' => $lv
+        ]);
+
+        return $tree->getTree();
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+        $this->created_at = Utils::tranDateTime($this->created_at);
+        $this->contents = StringHelper::truncate($this->contents, 139);
     }
 }

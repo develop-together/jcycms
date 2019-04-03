@@ -6,6 +6,8 @@ use Yii;
 use common\components\Utils;
 use yii\helpers\StringHelper;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
+use yii\helpers\Html;
 use common\components\TreeHelper;
 
 /**
@@ -113,7 +115,23 @@ class Comment extends \common\components\BaseModel
     public function afterFind()
     {
         parent::afterFind();
+        if (!Yii::$app->cache->get('__comment_emotions')) {
+            $emotions = Json::decode(Yii::$app->params['emotionsJson'], true);
+            $phrases = array_column($emotions, 'phrase');
+            $icons = array_column($emotions, 'icon');
+            $emotions = array_combine($phrases, $icons);
+            Yii::$app->cache->set('__comment_emotions', Json::encode($emotions));
+        } else {
+            $emotions = Json::decode(Yii::$app->cache->get('__comment_emotions'), true);
+        }
+
         $this->created_at = Utils::tranDateTime($this->created_at);
-        $this->contents = StringHelper::truncate($this->contents, 139);
+        $this->contents = preg_replace_callback("/\[.*?\]/i", function($matches) use ($emotions) {
+            foreach ($matches as &$match) {
+                $match = isset($emotions[$match]) ? "<img src=\"{$emotions[$match]}\" height=\"22\" width=\"22\" />" : $match;
+            }
+            return implode('', $matches);
+        }, $this->contents);
+        $this->contents = Html::decode($this->contents);
     }
 }

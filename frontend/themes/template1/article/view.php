@@ -35,6 +35,7 @@
 	$avator = Yii::$app->request->baseUrl . '/static/template1/images/header-img-comment_03.png';
 	$ajaxurl = Url::to(['article/view-ajax']);
 	$commentUrl = Url::to(['article/comment-ajax']);
+	$addLikeUrl = Url::to(['article/add-like']);
 	$i18n1 = Yii::t('frontend', 'Please enter the picture address here');
 	$i18n2 = Yii::t('frontend', 'Submiting...');
 	$i18n3 = Yii::t('frontend', 'Cannot submit empty comments');
@@ -88,9 +89,9 @@
 		<?php if (intval(Yii::$app->jcore->open_comment) === 1 && $model->can_comment === 1): ?>
 			<div class="commentAll">
 				<div class="comt-title" style="display: block;">
-					<div class="comt-author left"><a class="switch-author" href="javascript:void(0)" data-type="switch-author" style="font-size:12px;"><?= Yii::t('frontend', 'Cancel comment') ?><?= Yii::t('frontend', 'Get me logged in') ?></a>
+					<div class="comt-author left"><a class="switch-author" href="javascript:void(0)" data-type="switch-author" style="font-size:12px;"><?= Yii::t('frontend', 'Get me logged in') ?></a>
 					</div>
-					<!-- <a id="cancel-comment-reply-link" class="right" href="javascript:;" style="display: none;"><?= Yii::t('frontend', 'Cancel comment') ?></a> -->
+					<a id="cancel-comment-reply-link" class="right" href="javascript:;" style="display: none;"><?= Yii::t('frontend', 'Cancel comment') ?></a>
 					<div class="clearfix"></div>
 				</div>
 			    <!--评论区域 begin-->
@@ -135,8 +136,8 @@
 											<p class="comment-body"><?= $comment->contents ?></p>
 											<p class="comment-footer">
 												<div style="float:left;padding-right: 5px;"><?= $comment->created_at ?></div>
-												<div style="float:left;padding-right: 5px;cursor: pointer;" class="comment-hf hf-con-block" data-aid="<?= $comment->article_id ?>" data-id="<?= $comment->id ?>"><?= $i18n6 ?></div>　
-												<div style="float:left;padding-right: 5px;" class="date-dz-z"><i class="date-dz-z-click-red"></i><?= $i18n7 ?> (<i class="z-num"><?= $comment->like_count ?></i>)</div>
+												<div style="float:left;padding-right: 5px;cursor: pointer;" class="comment-hf hf-con-block" data-aid="<?= $comment->article_id ?>" data-id="<?= $comment->id ?>" data-addcommented="0"><?= $i18n6 ?></div>　
+												<div style="float:left;padding-right: 5px;" class="date-dz-z" data-submited="0" data-id="<?= $comment->id ?>"><i class="date-dz-z-click-red"></i><?= $i18n7 ?> (<i class="z-num"><?= $comment->like_count ?></i>)</div>
 												<div style="float:left;"><?= $i18n8 ?> <?= $comment->repeat_count ?></div>
 											</p>
 										</div>
@@ -153,8 +154,8 @@
 																<p class="comment-body"><?= $value->contents ?></p>
 																<p class="comment-footer">
 																	<div style="float:left;padding-right: 5px;"><?= $value->created_at ?></div>
-																	<!-- <div style="float:left;padding-right: 5px;cursor: pointer;" class="comment-hf hf-con-block" data-aid="<?= $value->article_id ?>" data-id="<?= $value->id ?>"><?= $i18n6 ?></div> -->　
-																	<div style="float:left;padding-right: 5px;" class="date-dz-z"><i class="date-dz-z-click-red"></i><?= $i18n7 ?> (<i class="z-num"><?= $value->like_count ?></i>)</div>
+																	<div style="float:left;padding-right: 5px;cursor: pointer;" class="comment-hf hf-con-block" data-aid="<?= $value->article_id ?>" data-id="<?= $value->id ?>" data-addcommented="0"><?= $i18n6 ?></div>　
+																	<div style="float:left;padding-right: 5px;" class="date-dz-z" data-id="<?= $value->id ?>" data-submited="0"><i class="date-dz-z-click-red"></i><?= $i18n7 ?> (<i class="z-num"><?= $value->like_count ?></i>)</div>
 																	<div style="float:left;"><?= $i18n8 ?> <?= $value->repeat_count ?></div>
 																</p>
 															</div>
@@ -301,7 +302,11 @@
 			// 	});
 			// }, 500);
 	        //点击回复动态创建回复块
-	        $('.info-show').on('click','.comment-hf',function(){
+	        $('.info-show').on('click','.comment-hf',function() {
+	        		if (parseInt($(this).attr('data-addcommented')) === 1) {//或者一开始清空下
+	        			return false;
+	        		}
+
 					//获取回复人的名字
 					var fhName = $(this).siblings('.username').html();
 					var id = $(this).data('id');
@@ -324,23 +329,47 @@
 						$(this).siblings('.hf-con').find('.hf-input').val('').focus().attr('placeholder', fhN);
 		            } else {
 		                $(this).addClass('hf-con-block');
-		                $(this).siblings('.hf-con').remove();
+		                $(this).remove();
 		            }
+		            $(this).attr('data-addcommented', 1);
 	        });
 			//点赞
 	        $('.info-show').on('click','.date-dz-z',function(){
+        		// if (parseInt($(this).data('submited')) === 1) {//或者一开始清空下
+        		// 	return false;
+        		// }
+				var self = this;
 	            var zNum = $(this).find('.z-num').html();
+        		var id = $(this).data('id');
+        		var csrfToken = $("meta[name='csrf-token']").attr('content');
+        		var type = 1;
 	            if($(this).is('.date-dz-z-click')){
 	                zNum--;
 	                $(this).removeClass('date-dz-z-click red');
 	                $(this).find('.z-num').html(zNum);
 	                $(this).find('.date-dz-z-click-red').removeClass('red');
 	            }else {
-	                zNum++;
-	                $(this).addClass('date-dz-z-click');
-	                $(this).find('.z-num').html(zNum);
-	                $(this).find('.date-dz-z-click-red').addClass('red');
+	            	zNum++;
+	            	type = 2;
 	            }
+            	$.ajax({
+					type: 'POST',
+					url: '$addLikeUrl',
+					data: {id: id, '_csrf-frontend': csrfToken, num: zNum},
+					success: function (data) {
+						if (parseInt(data) === 1) {
+			                $(self).find('.z-num').html(zNum);
+							if (type === 1) {
+								$(self).removeClass('date-dz-z-click red');
+								$(self).find('.date-dz-z-click-red').removeClass('red');
+							} else {
+				                $(self).addClass('date-dz-z-click');
+				                $(self).find('.date-dz-z-click-red').addClass('red');
+							}
+			                // $(self).attr('data-submited', 1);
+						}
+					}
+            	})
 	        })
 			$.ajax({
 				url: "$ajaxurl",

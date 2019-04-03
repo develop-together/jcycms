@@ -101,9 +101,23 @@ class ArticleController extends FrontendController
         }
     }
 
+    public function actionAddLike()
+    {
+        if (Yii::$app->request->isPost) {
+            $params = Yii::$app->request->post();
+            if (!isset($params['id']) || null === ($commentModel = Comment::findOne($params['id']))) {
+                throw new NotFoundHttpException(Yii::t("frontend", "Article id {id} is not exists"));
+            }
+
+            $num = intval($params['num']) <= 0 ? 0 : intval($params['num']);
+            $commentModel->like_count = $num;
+            return $commentModel->save(false, ['like_count']);
+        }
+    }
+
     private function findModel($id)
     {
-        if (($model = Article::findOne($id)) !== null) {
+        if (null !== ($model = Article::findOne($id))) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t("frontend", "Article id {id} is not exists"));

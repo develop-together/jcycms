@@ -68,7 +68,7 @@ function reply(data, i18ns) {
     html += '<div class="reply-cont" >';
     html += '<p class="username">' + data.username + '</p>';
     html += '<p class="comment-body">' + data.content + '</p>';
-    html += '<p class="comment-footer"><div style="float:left;padding-right: 5px;">' + data.create_time + '</div><div style="float:left;padding-right: 5px;cursor: pointer;" class="comment-hf hf-con-block" data-aid="' + data.aid + '" data-id="' + data.id + '">' + i18ns[0] +'</div><div style="float:left;padding-right: 5px;" class="date-dz-z"><i class="date-dz-z-click-red"></i>' + i18ns[1] + ' (<i class="z-num">' + data.like_count + '</i>)</div><div style="float:left;">' + i18ns[2] + '' + data.zf_count + '</div></p>';
+    html += '<p class="comment-footer"><div style="float:left;padding-right: 5px;">' + data.create_time + '</div><div style="float:left;padding-right: 5px;cursor: pointer;" class="comment-hf hf-con-block" data-aid="' + data.aid + '" data-id="' + data.id + '" data-addcommented="0">' + i18ns[0] +'</div><div style="float:left;padding-right: 5px;" class="date-dz-z" data-id="' + data.id + ' data-submited="0"><i class="date-dz-z-click-red"></i>' + i18ns[1] + ' (<i class="z-num">' + data.like_count + '</i>)</div><div style="float:left;">' + i18ns[2] + '' + data.zf_count + '</div></p>';
     html += '</div>';
     html += '</li>';
     return html;

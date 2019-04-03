@@ -380,6 +380,9 @@ ADD COLUMN `nickname` varchar(32) NOT NULL DEFAULT '' COMMENT '回复人名称' 
 ADD COLUMN `admin_id` int(10) NOT NULL DEFAULT 0 COMMENT '管理员回复id' AFTER `nickname`,
 ADD COLUMN `ip` varchar(32) NOT NULL DEFAULT '' COMMENT '回复者ip' AFTER `admin_id`;
 
+ALTER TABLE `byt_article`
+ADD COLUMN `comment_count` int(10) NOT NULL COMMENT '评论条数' AFTER `user_id`;
+
 
 
 

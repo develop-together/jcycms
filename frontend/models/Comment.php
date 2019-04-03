@@ -53,4 +53,13 @@ class Comment extends CommonComment
 		return ['code' => 10001, 'message' => implode('<br>', $this->getErrorFormat())];
 	}
 
+	public function afterSave($insert, $changedAttributes)
+	{
+		if ($insert) {
+			$articleModel = Article::findOne($this->article_id);
+			$articleModel->comment_count += 1;
+			$articleModel->save(false, ['comment_count']);
+		}
+	}
+
 }

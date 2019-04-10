@@ -22,7 +22,7 @@ class AppAsset extends AssetBundle
 
 	public $depends = [
 		'frontend\\assets\\FontsAsset',
-		// 'frontend\\assets\\JqueryAsset',
+		'frontend\\assets\\JqueryAsset',
 		'frontend\\assets\\PjaxAsset',
 		'frontend\\assets\\FlexTextAsset',
 		'frontend\\assets\\CommentAsset'

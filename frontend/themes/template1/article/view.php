@@ -47,7 +47,9 @@
     $comments = Comment::chilrdenDatas($model->comments, 0);
     // var_dump($comments);exit;
 ?>
+<style type="text/css">
 
+</style>
 <article class="blogs">
 	<?= $this->render('/widgets/_navigation') ?>
  	<div class="index_about">
@@ -236,9 +238,7 @@
 	</div>
 	</aside>
 </article>
-<script>
-
-</script>
+<?= $this->render('/widgets/_loginModal') ?>
 <?php
 	$this->registerJs(<<<JS
 	    function keyUP(t) {
@@ -301,6 +301,18 @@
 			// 		})
 			// 	});
 			// }, 500);
+			//快让我登陆
+			$(".switch-author").bind('click', function () {
+				$("#loginModal").show();
+				$(".modal-backdrop").addClass('in');
+				$(".modal-backdrop").show();
+			})
+			//close loginModal
+			$("#login_close").on('click', function() {
+				$("#loginModal").hide();
+				$(".modal-backdrop").removeClass('in');
+				$(".modal-backdrop").hide();
+			})
 	        //点击回复动态创建回复块
 	        $('.info-show').on('click','.comment-hf',function() {
 	        		if (parseInt($(this).attr('data-addcommented')) === 1) {//或者一开始清空下

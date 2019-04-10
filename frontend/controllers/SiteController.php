@@ -145,6 +145,8 @@ class SiteController extends FrontendController
                 return $this->goHome();
             }
         }
+
+        return $this->render('signup');
     }
 
     public function actionColumns()

@@ -91,7 +91,12 @@
 		<?php if (intval(Yii::$app->jcore->open_comment) === 1 && $model->can_comment === 1): ?>
 			<div class="commentAll">
 				<div class="comt-title" style="display: block;">
-					<div class="comt-author left"><a class="switch-author" href="javascript:void(0)" data-type="switch-author" style="font-size:12px;"><?= Yii::t('frontend', 'Get me logged in') ?></a>
+					<div class="comt-author left">
+						<?php if (Yii::$app->user->isGuest): ?>
+							<a class="switch-author" href="javascript:void(0)" data-type="switch-author" style="font-size:12px;"><?= Yii::t('frontend', 'Get me logged in') ?></a>
+						<?php else: ?>
+							<a class="switch-author"  style="font-size:12px;" href="javascript:;">Hi, <?= Yii::$app->getUser()->identity->username ?></a>
+						<?php endif ?>
 					</div>
 					<a id="cancel-comment-reply-link" class="right" href="javascript:;" style="display: none;"><?= Yii::t('frontend', 'Cancel comment') ?></a>
 					<div class="clearfix"></div>
@@ -101,7 +106,7 @@
 			    	<div class="comment" >
 						<div class="head-face">
 							<img src="<?=$avator?>" >
-							<p><?= Yii::t('frontend', 'Guest') ?></p>
+							<!-- <p><?php //echo Yii::t('frontend', 'Guest') ?></p> -->
 						</div>
 						<div class="comment_content">
 							<div class="cont-box">
@@ -111,6 +116,7 @@
 								<div class="operator-box-btn">
 									<span class="face-icon">☺</span>
 									<span class="img-icon" >▧</span>
+									<span class="colse-icon">x</span>
 								</div>
 								<div class="comt-loading" style="display: none">
 									<span><?= $i18n2 ?></span>
@@ -273,7 +279,8 @@
 					url: "$commentUrl",
 					type: 'POST',
 					dataType: 'JSON',
-					data: {article_id: $model->id, parent_id: pid, contents: content, '_csrf-frontend': csrfToken},
+					cache:false,
+					data: {article_id: $model->id, parent_id: pid, contents: content, _csrf_frontend: csrfToken},
 					success: function(res) {
 						if(res.code === 10002) {
 							commentOut("#comment-show-" + pid + " > ul", res.data, ['$i18n6', '$i18n7', '$i18n8'])
@@ -292,6 +299,10 @@
 	        // 绑定表情
 			$('.face-icon').SinaEmotion($('.text'));
 			$("#scan_count").show();
+			//绑定删除评论框
+			$(".tools-box").on('click', '.colse-icon', function() {
+				$(this).parent('div.operator-box-btn').parent('div.tools-box').parent('div.comment_content').parent('div.comment').hide();
+			});
 			 // $('.comment-content').flexText()
 			// setTimeout(function() {
 			// 	$(".info-show > ul > li").each(function() {
@@ -324,13 +335,16 @@
 					var id = $(this).data('id');
 					//回复@
 					var fhN = '回复@' + fhName;
-					var fhHtml = '<div class="comment_content" style="float:none"><div class="cont-box hf-con"><textarea class="comment-input hf-input" placeholder="" data-pid=" ' + id + '" id="comment-input-' + id + '"></textarea></div><div class="tools-box"><div class="operator-box-btn"><span class="face-icon">☺</span><span class="img-icon">▧</span></div><div class="comt-loading" style="display: none"><span>$i18n2</span></div><div class="submit-btn"><button type="button" class="submit-comment-btn">$i18n4</button></div></div></div><div id="comment-show-' + id + '" class="info-show"><ul></ul></div>';
+					var fhHtml = '<div class="comment_content" style="display:block;float:none"><div class="cont-box hf-con"><textarea class="comment-input hf-input" placeholder="" data-pid=" ' + id + '" id="comment-input-' + id + '"></textarea></div><div class="tools-box"><div class="operator-box-btn"><span class="face-icon">☺</span><span class="img-icon">▧</span><span class="colse-icon" >x</span></div><div class="comt-loading" style="display: none"><span>$i18n2</span></div><div class="submit-btn"><button type="button" class="submit-comment-btn">$i18n4</button></div></div></div><div id="comment-show-' + id + '" class="info-show"><ul></ul></div>';
 					//显示回复
 					if ($(this).is('.hf-con-block')) {
 						$(this).parents('.reply-cont').append(fhHtml);
 						$('.face-icon').SinaEmotion($('#comment-input-' + id));
 						$(".img-icon").click(function(){
 							$(".cont-box #comment-input-" + id).insertContent('<img src="$i18n1" alt=""/>', -10);
+						});
+						$(".tools-box").on('click', '.colse-icon', function() {
+							$(this).parent('div.operator-box-btn').parent('div.tools-box').parent('div.comment_content').hide();
 						});
 						$(".hf-input").on('keyup', function() {
 						 	keyUP(this)
@@ -388,6 +402,9 @@
 				data: {id: $model->id},
 				success: function(res) {
 					$("#scan_count").text(res.scan_count)
+					if (res.nickname) {
+						$(".comt-author").html('<a class="switch-author"  style="font-size:12px;" href="javascript:;">Hi, ' + res.nickname + '</a>');
+					}
 				}
 			})
 	        $("#comment-textarea").bind('keyup', function() {

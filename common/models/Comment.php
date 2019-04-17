@@ -99,7 +99,7 @@ class Comment extends \common\components\BaseModel
 
     public function getAvator()
     {
-        return $this->user ? Yii::$app->request->baseUrl . '/' . $this->user->avator : Yii::$app->request->baseUrl . '/static/common/images/face.jpg';
+        return $this->user ? $this->user->avatar : Yii::$app->request->baseUrl . '/static/common/images/face.jpg';
     }
 
     public static function chilrdenDatas($datas, $parent_id, $lv = 0)

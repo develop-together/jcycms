@@ -4,7 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use backend\models\User;
+use backend\models\User as AdminUser;
 use common\modules\attachment\models\Attachment;
 
 /**
@@ -219,7 +219,7 @@ class Article extends \common\components\BaseModel
 
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(AdminUser::className(), ['id' => 'user_id']);
     }
 
     public function getComments()

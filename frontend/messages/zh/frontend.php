@@ -7,7 +7,6 @@
 	'Email' => '电子邮件',
 	'Let Me Log In' => '点我登录',
 	'Please Log In' => '请登录',
-	'Register' => '注册',
 	'I sign up' => '点我注册',
 	'Password' => '密码',
 	'Duplicate Password' => '重复密码',
@@ -32,7 +31,8 @@
     'Baidu' => '百度',
     'Please input keywords' => '请输入关键字',
     'Copyright, all rights reserved' => '版权所有，保留一切权利',
-    'If you forgot your password you can' => '忘记密码您可以',
+    'forgot password?' => '忘记密码？',
+    'No account yet' => '还没有账号',
     'reset it' => '重置',
     'Remember Me' => '记住登陆',
     'Latest Articles' => '最新发布',
@@ -104,5 +104,10 @@
     'Get me logged in' => '快让我登陆',
     'reply' => '回复',
     'praise' => '赞',
-    'forwarding' => '转发'
+    'forwarding' => '转发',
+    'Please Input' => '请输入',
+    'Error' => '错误提示',
+    'Other ways to log in' => '其他方式登录',
+    'Please Input username' => '请输入用户名',
+    'Please Input password' => '请输入密码'
 ];

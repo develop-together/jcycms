@@ -7,7 +7,6 @@ use yii\helpers\Url;
 
 AppAsset::register($this);
 $this->title = Yii::$app->jcore->system_name;
-
 ?>
 
 <?php $this->beginPage() ?>
@@ -91,6 +90,19 @@ $this->title = Yii::$app->jcore->system_name;
 					  }
 				}, 300);
 			}
+
+			<?php
+				if (Yii::$app->getSession()->hasFlash('error')) {
+				    $info = addslashes( Yii::$app->getSession()->getFlash('error') );
+				    echo "layer.msg('$info', {icon: 5});";
+				}
+
+				if (Yii::$app->getSession()->hasFlash('success')) {
+					$info = addslashes( Yii::$app->getSession()->getFlash('success') );
+					echo "layer.alert('$info', {icon: 6})";
+				}
+
+			 ?>
 		})()
 	</script>
 </body>

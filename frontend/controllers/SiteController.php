@@ -68,14 +68,38 @@ class SiteController extends FrontendController
             $errs = '';
             if ($model->errors) {
                 foreach ($model->errors as $error) {
-                    $errs .= $error[0] . ',';
+                    $errs .= $error[0] . '<br/>';
                 }
-                $errs = rtrim($errs, ',');
+                $errs = rtrim($errs, '<br/>');
             }
+
             Yii::$app->session->setFlash('error', Yii::t('common', 'Login Failed') . '(' . $errs . ')');
         }
 
         return $this->goBack();
+    }
+
+    public function actionAjaxLogin()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = new LoginForm();
+        if (!($model->load(Yii::$app->request->post()) && $model->login())) {
+            $errs = '';
+            if ($model->errors) {
+                foreach ($model->errors as $error) {
+                    $errs .= $error[0] . '<br/>';
+                }
+                $errs = rtrim($errs, '<br/>');
+            }
+
+            return ['code' => 10011, 'message' => $errs];
+        }
+
+        return ['code' => 10010, 'message' => '' ];
     }
 
     /**

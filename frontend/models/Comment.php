@@ -22,7 +22,7 @@ class Comment extends CommonComment
 			$this->ip = Yii::$app->getRequest()->getUserIP();
 			if (!Yii::$app->user->isGuest) {
 				$this->user_id = Yii::$app->user->id;
-				$this->nickname = Yii::$app->user->username;
+				$this->nickname = Yii::$app->user->identity->username;
 			} else {
 				$this->user_id = 0;
 				$this->nickname = Yii::t('frontend', 'Guest');
@@ -58,7 +58,7 @@ class Comment extends CommonComment
 		if ($insert) {
 			$articleModel = Article::findOne($this->article_id);
 			$articleModel->comment_count += 1;
-			$articleModel->save(false, ['comment_count']);
+			$articleModel->save(false, ['comment_count', 'updated_at']);
 		}
 	}
 

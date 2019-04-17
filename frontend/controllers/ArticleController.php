@@ -29,7 +29,15 @@ class ArticleController extends FrontendController
                     $id = Yii::$app->getRequest()->get('id');
                     $model = $this->findModel($id);
                     $model->updateScanCount();
-                    if ($model->visibility === BaseConfig::ARTICLE_VISIBILITY_PUBLIC) return $model->updated_at;
+                    if ($model->visibility === BaseConfig::ARTICLE_VISIBILITY_PUBLIC) {
+                        return $model->updated_at;
+                    }
+
+                    // if (!Yii::$app->user->isGuest) {
+                    //     // $q = new \yii\db\Query();
+                    //     // return $q->from('byt_user')->max('updated_at');
+                    //     return Yii::$app->user->identity->updated_at;
+                    // }
                 },
             ],
         ];
@@ -53,6 +61,7 @@ class ArticleController extends FrontendController
 
     public function actionView($id)
     {
+        // Yii::$app->getUser()->setReturnUrl(['article/view', 'id' => $id]);
         $model = Article::find()->with(['category', 'user', 'comments'])->where(['id' => $id])->one();
         $prevModel = Article::find()
             ->with(['category', 'user'])
@@ -79,7 +88,8 @@ class ArticleController extends FrontendController
         $model = $this->findModel($id);
 
         return [
-            'scan_count' => $model->getScan_count()
+            'scan_count' => $model->getScan_count(),
+            'nickname' => Yii::$app->getUser()->getIsGuest() ? '' : Yii::$app->getUser()->identity->username
         ];
     }
 

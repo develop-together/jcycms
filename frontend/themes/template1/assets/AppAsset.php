@@ -25,6 +25,7 @@ class AppAsset extends AssetBundle
 		'frontend\\assets\\JqueryAsset',
 		'frontend\\assets\\PjaxAsset',
 		'frontend\\assets\\FlexTextAsset',
-		'frontend\\assets\\CommentAsset'
+		'frontend\\assets\\CommentAsset',
+		'frontend\\assets\\LayerAsset'
 	];
 }

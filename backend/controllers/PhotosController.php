@@ -25,7 +25,7 @@ class PhotosController extends BackendController
             ],
         ];
     }
-    
+
     /**
      * Lists all Article models.
      * @return mixed
@@ -34,7 +34,7 @@ class PhotosController extends BackendController
     {
         Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
         $searchModel = new ArticleSearch(['scenario' => 'page']);
-        $dataProvider = $searchModel->search(Yii::$app->request->post(), Article::PHOTOS_PAGE);
+        $dataProvider = $searchModel->search(Yii::$app->request->post());
 
         return $this->render('index', [
             'searchModel' => $searchModel,

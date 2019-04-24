@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * @Authors jiechengyang (2064320087@qq.com)
  * @Link    http://www.boomyang.cn
  * @addTime    2019-01-29 18:30:39
@@ -55,7 +55,7 @@ class Jcore extends Component
                 'port' => Yii::$app->jcore->smtp_port,
                 'encryption' => Yii::$app->params['mailerEncryption'],
             ],
-        ]); 
+        ]);
 	}
 
 	public static function frontendInit()
@@ -77,5 +77,19 @@ class Jcore extends Component
         }
 
         self::mailInit();
+    }
+
+    public static function frontendBeforeSend($event)
+    {
+        $response = $event->sender;
+        if (is_string($response->data)) {
+            $response->data = preg_replace("/(<img.*?src=[\"|\']?)uploads((.*?)[\"|\']?\s.*?>)/i", '$1' . Yii::$app->params['backendUrl'] . '/uploads$2', $response->data);
+        }
+
+        if ($response->format === 'json') {
+            $response->data = json_encode($response->data);
+            $response->data = preg_replace('/uploads/i', Yii::$app->params['backendUrl'] . '\/uploads', $response->data);
+            $response->data = json_decode($response->data);
+        }
     }
 }

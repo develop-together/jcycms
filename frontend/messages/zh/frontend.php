@@ -109,5 +109,6 @@
     'Error' => '错误提示',
     'Other ways to log in' => '其他方式登录',
     'Please Input username' => '请输入用户名',
-    'Please Input password' => '请输入密码'
+    'Please Input password' => '请输入密码',
+    'Are you sure you want to leave?' => '您确定要离开吗？'
 ];

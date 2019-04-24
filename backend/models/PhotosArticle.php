@@ -33,4 +33,8 @@ class PhotosArticle extends \common\models\Article
         return true;
     }
 
+    public function afterFind()
+    {
+        \common\components\BaseModel::afterFind();
+    }
 }

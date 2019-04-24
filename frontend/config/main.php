@@ -65,18 +65,7 @@ return [
         ],
         'response' => [
             'class' => 'yii\web\Response',
-            'on beforeSend' => function ($event) {
-                $response = $event->sender;
-                if (is_string($response->data)) {
-                    $response->data = preg_replace('/uploads/i', Yii::$app->params['backendUrl'] . '\/uploads', $response->data);
-                }
-
-                if($response->format === 'json') {
-                    $response->data = json_encode($response->data);
-                    $response->data = preg_replace('/uploads/i', Yii::$app->params['backendUrl'] . '\/uploads', $response->data);
-                    $response->data = json_decode($response->data);
-                }
-            },
+            'on beforeSend' => [jcore\components\Jcore::class, 'frontendBeforeSend'],
         ],
         'view' => [
             'theme' => 'common\\components\\ThemeManager'

@@ -73,26 +73,33 @@ nav a:hover { text-decoration: none }
 article { width: 1000px; margin: 20px auto; overflow: hidden }
 aside { width: 250px; }
 footer { text-align: center; line-height: 40px; border-top: #E8E8E8 1px solid ; width:1000px; margin:auto}
-.rollto {
-	position: fixed;
-    bottom: 8rem;
-    right: 1rem;
+.fixted_tools {
+    position: fixed;
     border-radius: 50%;
-    display: none;
+    right: 1rem;
     z-index: 10000;
     cursor: pointer;
     font-size: 2rem;
     width: 48px;
     height: 48px;
+    line-height: 48px;
     text-align: center;
     background: rgba(0,0,0,0.35);
 }
-.rollto span {
-	color: #fff;
+.fixted_tools .fa {
+    width: auto !important;
 }
 
-.rollto .fa {
-	width: auto !important;
+.fixted_tools span, .fixted_tools a {
+	color: #fff;
+}
+.fixted_tools.rollto {
+    bottom: 8rem;
+    display: none;
+
+}
+.fixted_tools.user_center {
+    bottom: 4rem;
 }
 .infos {
     overflow-x: auto;

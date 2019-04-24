@@ -59,9 +59,15 @@ $this->title = Yii::$app->jcore->system_name;
 	<footer>
 	  <p><?= Yii::$app->jcore->icp ?>&nbsp;Copyright &copy; <?= date('Y') ?> <?= $this->title ?> </p>
 	</footer>
-	<div class="rollto" id="rolltoBtn" style="display: none;" title="回到顶部">
+	<div class="fixted_tools rollto" id="rolltoBtn" style="display: none;" title="回到顶部">
     	<span><i class="fa fa-arrow-up"></i></span>
 	</div>
+	<?php if (! Yii::$app->user->isGuest): ?>
+		<div class="fixted_tools user_center" title="个人中心">
+	    	<a href="<?= Url::to(['user/center']) ?>" target="_self"><i class="fa fa-user"></i></a>
+		</div>
+	<?php endif ?>
+
 	<?php $this->endBody() ?>
 	<script>
 		(function(){

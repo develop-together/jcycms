@@ -650,5 +650,43 @@ button.close {
 .transition{-webkit-transition:all .3s ease-out 0s;-moz-transition:all .3s ease-out 0s;-o-transition:all .3s ease-out 0s;transition:all .3s ease-out 0s}
 .W1160{width:1160px;margin:0 auto}
 .col_left,.index .media_reports .col_right{background-color:#fff}
-
 /*----------login modal end------- */
+    .profile {
+        padding-top: 30px;
+    }
+    .panel .panel-heading {
+        background: #FCFCFC;
+        border-bottom: #eee solid 1px;
+    }
+    .panel .panel-heading .panel-title {
+        margin: 0;
+        font-size: 14px;
+        display: inline;
+    }
+    .img-rounded {
+        display: inline-block;
+        border-radius: 6px;
+    }
+    .panel ul {
+        padding: 0;
+        margin: 0;
+    }
+    .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+        background-color: #00a65a;
+    }
+    .nav > li:after {
+        content: "";
+        width: 0;
+        height: 5px;
+        background: #34c9dd;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transition: all 0.5s ease 0s;
+    }
+    .nav > li:hover:after {
+        width: 100%;
+    }
+    .user-info li {
+        line-height: 2em;
+    }

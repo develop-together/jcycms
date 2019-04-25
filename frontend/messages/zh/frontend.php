@@ -110,5 +110,9 @@
     'Other ways to log in' => '其他方式登录',
     'Please Input username' => '请输入用户名',
     'Please Input password' => '请输入密码',
-    'Are you sure you want to leave?' => '您确定要离开吗？'
+    'Are you sure you want to leave?' => '您确定要离开吗？',
+    'Email' => '邮箱',
+    'Login Count' => '登录次数',
+    'Last Login Address' => '最后登录地点',
+    'Last Login Time' => '最后登录时间'
 ];

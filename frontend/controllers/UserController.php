@@ -15,6 +15,16 @@ class UserController extends FrontendController
 {
 	public function actionCenter()
 	{
-		return $this->render('center');
+		return $this->render('center', ['tpl' => 'basic']);
+	}
+
+	public function actionAvatarSetting()
+	{
+		return $this->render('center', ['tpl' => 'avatar-setting']);
+	}
+
+	public function actionSafetySetting()
+	{
+		return $this->render('center', ['tpl' => 'safety-setting']);
 	}
 }

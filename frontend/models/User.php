@@ -1,10 +1,12 @@
-<?php 
+<?php
  namespace frontend\models;
 
  use Yii;
+ use yii\helpers\Json;
+ use common\components\Utils;
  use common\models\User as commonUser;
 
- class User extends commonUser 
+ class User extends commonUser
  {
  	public $password;
  	public $repeat_pwd;
@@ -27,7 +29,7 @@
             [['username', 'email', 'password', 'repeat_pwd'], 'required', 'on' => ['create']],
             [['username', 'email'], 'required', 'on' => ['update']],
 		];
-	}	
+	}
 
 	public function scenarios()
 	{
@@ -55,5 +57,22 @@
 			'updated_at' => yii::t('common', 'Updated At'),
 		];
 	}
-	
+
+	public function getAvatarFormat()
+	{
+		return $this->avatar ? $this->avatar : '/staic/common/face.jpg';
+	}
+
+	public function getLoginAddress()
+	{
+        $url = "http://ip.taobao.com/service/getIpInfo.php?ip=" . $this->last_login_ip;
+        $ip = Json::decode(file_get_contents($url), true);
+        if (!$ip['data']['region']) {
+			return $this->last_login_ip;
+        } else {
+        	return $ip['data']['country'] . '.' . $ip['data']['region'] . '.' . $ip['data']['city'];
+        }
+
+	}
+
  }

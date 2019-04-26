@@ -13,7 +13,7 @@
   <div class="profile">
    <div class="row">
     <?php echo $this->render('/widgets/userCenterLeft', ['user' => $user]) ?>
-    <?php if ('default' === $tpl): ?>
+    <?php if ('basic' === $tpl): ?>
         <div class="col-md-9">
          <div class="panel panel-default">
           <div class="panel-heading">

@@ -8,10 +8,10 @@
       </div>
       <div class="panel-body">
        <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a href="<?= Url::to(['user/center']) ?>">个人信息</a></li>
-        <li><a href="<?= Url::to(['user/avatar-setting']) ?>">头像设置</a></li>
-        <li><a href="<?= Url::to(['user/safety-setting']) ?>">安全设置</a></li>
-        <li><a href="javascript:;" data-url="<?= Url::to(['site/logout']) ?>" class="logout">退出登录</a></li>
+        <li class="<?= 'center' === $this->context->action->id ? 'active' : '' ?>"><a href="<?= Url::to(['user/center']) ?>">个人信息</a></li>
+        <li class="<?= 'avatar-setting' === $this->context->action->id ? 'active' : '' ?>"><a href="<?= Url::to(['user/avatar-setting']) ?>">头像设置</a></li>
+        <li class="<?= 'safety-setting' === $this->context->action->id ? 'active' : '' ?>"><a href="<?= Url::to(['user/safety-setting']) ?>">安全设置</a></li>
+        <li ><a href="javascript:;" data-url="<?= Url::to(['site/logout']) ?>" class="logout">退出登录</a></li>
        </ul>
       </div>
    </div>

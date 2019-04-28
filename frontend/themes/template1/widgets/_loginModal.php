@@ -88,6 +88,8 @@
 					url: $("#login-form").attr('action'),
 					data: {LoginForm: params, _csrf_frontend: csrfToken},
 					dataType: 'JSON',
+					cache: false,
+					ifModifiedBoolean: true,
 					success: function (res) {
 						if(res.code !== 10010) {
 							layer.msg(res.message, {icon: 5});

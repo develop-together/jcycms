@@ -114,5 +114,7 @@
     'Email' => '邮箱',
     'Login Count' => '登录次数',
     'Last Login Address' => '最后登录地点',
-    'Last Login Time' => '最后登录时间'
+    'Last Login Time' => '最后登录时间',
+    'Personal center' => '个人中心',
+    'Back to the top' => '回到顶部'
 ];

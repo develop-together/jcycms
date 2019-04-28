@@ -19,29 +19,29 @@ use common\components\BaseConfig;
 class ArticleController extends FrontendController
 {
 
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => HttpCache::className(),
-                'only' => ['view'],
-                'lastModified' => function ($action, $params) {
-                    $id = Yii::$app->getRequest()->get('id');
-                    $model = $this->findModel($id);
-                    $model->updateScanCount();
-                    if ($model->visibility === BaseConfig::ARTICLE_VISIBILITY_PUBLIC) {
-                        return $model->updated_at;
-                    }
+    // public function behaviors()
+    // {
+    //     return [
+    //         [
+    //             'class' => HttpCache::className(),
+    //             'only' => ['view'],
+    //             'lastModified' => function ($action, $params) {
+    //                 $id = Yii::$app->getRequest()->get('id');
+    //                 $model = $this->findModel($id);
+    //                 $model->updateScanCount();
+    //                 if ($model->visibility === BaseConfig::ARTICLE_VISIBILITY_PUBLIC) {
+    //                     return $model->updated_at;
+    //                 }
 
-                    // if (!Yii::$app->user->isGuest) {
-                    //     // $q = new \yii\db\Query();
-                    //     // return $q->from('byt_user')->max('updated_at');
-                    //     return Yii::$app->user->identity->updated_at;
-                    // }
-                },
-            ],
-        ];
-    }
+    //                 $q = new \yii\db\Query();
+    //                 return $q->from('{{%user}}')->max('last_login_at');
+    //             },
+    //             'etagSeed' => function($action, $params) {
+    //                 return Yii::$app->user->getIsGuest();
+    //             }
+    //         ],
+    //     ];
+    // }
 
 	public function actionIndex($cat)
 	{

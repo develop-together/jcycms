@@ -56,15 +56,20 @@ $this->title = Yii::$app->jcore->system_name;
 		</div>
 	</header>
 	<?= $content ?>
+	<?= $this->render('/widgets/_loginModal') ?>
 	<footer>
 	  <p><?= Yii::$app->jcore->icp ?>&nbsp;Copyright &copy; <?= date('Y') ?> <?= $this->title ?> </p>
 	</footer>
-	<div class="fixted_tools rollto" id="rolltoBtn" style="display: none;" title="回到顶部">
+	<div class="fixted_tools rollto" id="rolltoBtn" style="display: none;" title="<?= Yii::t('frontend', 'Back to the top') ?>">
     	<span><i class="fa fa-arrow-up"></i></span>
 	</div>
 	<?php if (! Yii::$app->user->isGuest): ?>
-		<div class="fixted_tools user_center" title="个人中心">
+		<div class="fixted_tools user_center" title="<?= Yii::t('frontend', 'Personal center') ?>">
 	    	<a href="<?= Url::to(['user/center']) ?>" target="_self"><i class="fa fa-user"></i></a>
+		</div>
+	<?php else: ?>
+		<div class="fixted_tools user_center" title="<?= Yii::t('frontend', 'Let Me Log In') ?>">
+	    	<a href="javascript:;" class="switch-author"><i class="fa fa-sign-in"></i></a>
 		</div>
 	<?php endif ?>
 
@@ -82,7 +87,11 @@ $this->title = Yii::$app->jcore->system_name;
 					rolltoBtn.style.display = 'none';
 				}
 			}
-
+			$(".switch-author").bind('click', function () {
+				$("#loginModal").show();
+				$(".modal-backdrop").addClass('in');
+				$(".modal-backdrop").show();
+			})
 			document.getElementById('rolltoBtn').onclick = function(event) {
 				var scrolltop = document.documentElement.scrollTop || document.body.scrollTop;
 				var speed = 500;

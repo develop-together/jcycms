@@ -260,7 +260,7 @@ pre {
     font-size: 16px;
     color: #666;
 }
-.switch-author {
+.switch-author, .author {
     color: #09a8c5 !important;
 }
 .switch-author:hover, .switch-author:focus {

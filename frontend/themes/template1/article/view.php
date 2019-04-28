@@ -5,6 +5,8 @@
 	use frontend\models\Article;
 	use yii\data\ArrayDataProvider;
 	use frontend\models\Comment;
+	use yii\caching\FileDependency;
+	use yii\caching\DbDependency;
 
 	$this->title = $model->title;
 	$this->registerMetaTag(['name' => 'keywords', 'content' => $model->seo_keywords], 'keywords');
@@ -36,6 +38,7 @@
 	$ajaxurl = Url::to(['article/view-ajax']);
 	$commentUrl = Url::to(['article/comment-ajax']);
 	$addLikeUrl = Url::to(['article/add-like']);
+	$uCenterUrl = Url::to(['user/center']);
 	$i18n1 = Yii::t('frontend', 'Please enter the picture address here');
 	$i18n2 = Yii::t('frontend', 'Submiting...');
 	$i18n3 = Yii::t('frontend', 'Cannot submit empty comments');
@@ -46,44 +49,55 @@
 	$i18n8 = Yii::t('frontend', 'forwarding');
     $comments = Comment::chilrdenDatas($model->comments, 0);
     // var_dump($comments);exit;
+    // DB依赖（数据库依赖）【依赖的为数据库查询条数，一但文章被修改，缓存失效】
+    $dependency = new DbDependency([
+    	'sql' => 'SELECT updated_at FROM ' . Article::tableName() . ' WHERE `id` = ' . $model->id . ' LIMIT 1'
+    ]);
 ?>
-<style type="text/css">
 
-</style>
-<article class="blogs">
+<!--
+    片段缓存通过beginCache来实现，如果需要设置缓存时间的话需要在beginCache里面添加第二个参数，是个数组
+    ['duration'=>20]
+-->
+<article class="blogs" >
 	<?= $this->render('/widgets/_navigation') ?>
  	<div class="index_about">
-		<h2 class="c_titile"><?= $model->title ?></h2>
-		<p class="box_c">
-			<span class="d_time"><?= Yii::t('frontend', 'Created At') ?>：<?= $model->created_at ?></span>
-			<span><?= Yii::t('frontend', 'Author') ?>：<?= $model->user->penname ?></span>
-			<span><?= Yii::t('frontend', 'View count')?>：<b id="scan_count" style="display: none"><?= $model->getScan_count() ?></b></span>
-		</p>
-		<div class="infos">
-			<?= $model->content ?>
+ 		<?php if ($this->beginCache('cache_div', ['duration' => 3600 * 24, 'dependency' => $dependency,'enabled' => true])): ?>
+		<div id="cache_div">
+			<h2 class="c_titile"><?= $model->title ?></h2>
+			<p class="box_c">
+				<span class="d_time"><?= Yii::t('frontend', 'Created At') ?>：<?= $model->created_at ?></span>
+				<span><?= Yii::t('frontend', 'Author') ?>：<?= $model->user->penname ?></span>
+				<span><?= Yii::t('frontend', 'View count')?>：<b id="scan_count" style="display: none"><?= $model->getScan_count() ?></b></span>
+			</p>
+			<div class="infos">
+				<?= $model->content ?>
+			</div>
+		    <div class="keybq">
+		    	<p><span><?= Yii::t('frontend', 'Keywords') ?></span>：<?= $model->tag ?></p>
+		    </div>
+		    <div class="ad"> </div>
+			<div class="nextinfo">
+				<?php if ($prevModel): ?>
+					<p><?= Yii::t('frontend', 'previous') ?>：<?= Html::a($prevModel->title, Url::to(['acticle/view', 'id' => $prevModel->id]), ['title' => $prevModel->sub_title, 'target' => '_self']) ?></p>
+				<?php endif ?>
+				<?php if ($nextModel): ?>
+				<p><?= Yii::t('frontend', 'next') ?>：<?= Html::a($nextModel->title, Url::to(['acticle/view', 'id' => $nextModel->id]), ['title' => $nextModel->sub_title, 'target' => '_self']) ?></p>
+				<?php endif ?>
+			</div>
+			<div class="otherlink">
+			    <?= ArticleListView::widget([
+			        'dataProvider' => new ArrayDataProvider([
+			            'allModels' => Article::find()->where(['category_id' => $model->category_id])->limit(6)->all(),
+			         ]),
+			        'layout' => '<h2>' . Yii::t('frontend', 'About Articles') . '</h2><ul>{items}</ul>',
+			        'template' => '<a href="{viewUrl}" title="{title}">{title}</a>',
+			        'itemOptions' => ['tag'=>'li'],
+			    ]) ?>
+			</div>
 		</div>
-	    <div class="keybq">
-	    	<p><span><?= Yii::t('frontend', 'Keywords') ?></span>：<?= $model->tag ?></p>
-	    </div>
-	    <div class="ad"> </div>
-		<div class="nextinfo">
-			<?php if ($prevModel): ?>
-				<p><?= Yii::t('frontend', 'previous') ?>：<?= Html::a($prevModel->title, Url::to(['acticle/view', 'id' => $prevModel->id]), ['title' => $prevModel->sub_title, 'target' => '_self']) ?></p>
-			<?php endif ?>
-			<?php if ($nextModel): ?>
-			<p><?= Yii::t('frontend', 'next') ?>：<?= Html::a($nextModel->title, Url::to(['acticle/view', 'id' => $nextModel->id]), ['title' => $nextModel->sub_title, 'target' => '_self']) ?></p>
-			<?php endif ?>
-		</div>
-		<div class="otherlink">
-		    <?= ArticleListView::widget([
-		        'dataProvider' => new ArrayDataProvider([
-		            'allModels' => Article::find()->where(['category_id' => $model->category_id])->limit(6)->all(),
-		         ]),
-		        'layout' => '<h2>' . Yii::t('frontend', 'About Articles') . '</h2><ul>{items}</ul>',
-		        'template' => '<a href="{viewUrl}" title="{title}">{title}</a>',
-		        'itemOptions' => ['tag'=>'li'],
-		    ]) ?>
-		</div>
+		<?php $this->endCache(); ?>
+		<?php endif ?>
 		<!--
 		    此评论textarea文本框部分使用的https://github.com/alexdunphy/flexText此插件
 		-->
@@ -93,9 +107,9 @@
 				<div class="comt-title" style="display: block;">
 					<div class="comt-author left">
 						<?php if (Yii::$app->user->isGuest): ?>
-							<a class="switch-author" href="javascript:void(0)" data-type="switch-author" style="font-size:12px;"><?= Yii::t('frontend', 'Get me logged in') ?></a>
+							<a class="switch-author" href="javascript:void(0)" style="font-size:12px;"><?= Yii::t('frontend', 'Get me logged in') ?></a>
 						<?php else: ?>
-							<a class="switch-author"  style="font-size:12px;" href="javascript:;">Hi, <?= Yii::$app->getUser()->identity->username ?></a>
+							<a class="author"  style="font-size:12px;" href="<?= $uCenterUrl ?>">Hi, <?= Yii::$app->getUser()->identity->username ?></a>
 						<?php endif ?>
 					</div>
 					<a id="cancel-comment-reply-link" class="right" href="javascript:;" style="display: none;"><?= Yii::t('frontend', 'Cancel comment') ?></a>
@@ -181,31 +195,8 @@
 			    	</ul>
 			    	<div class="clearfix"></div>
 			    </div>
-	<!-- 		    <div class="comment-show">
-			        <div class="comment-show-con">
-			            <div class="comment-show-con-img left"><img src="<?= $avator ?>" alt=""></div>
-			            <div class="comment-show-con-list left ">
-			                <div class="pl-text clearfix">
-			                    <a href="#" class="comment-size-name">张三 : </a>
-			                    <span class="my-pl-con">&nbsp;来啊 造作啊!</span>
-			                </div>
-			                <div class="date-dz">
-			                    <span class="date-dz-left left comment-time">2017-5-2 11:11:39</span>
-			                    <div class="date-dz-right right comment-pl-block">
-			                        <a href="javascript:;" class="removeBlock">删除</a>
-			                        <a href="javascript:;" class="date-dz-pl pl-hf hf-con-block left">回复</a>
-			                        <span class="left date-dz-line">|</span>
-			                        <a href="javascript:;" class="date-dz-z left"><i class="date-dz-z-click-red"></i>赞 (<i class="z-num">666</i>)</a>
-			                    </div>
-			                </div>
-			                <div class="hf-list-con"></div>
-			            </div>
-			        </div>
-			    </div> -->
-			    <!--回复区域 end-->
 			</div>
 		<?php endif ?>
-
  	</div>
 	<aside class="right">
 	<!-- Baidu Button BEGIN -->
@@ -213,7 +204,7 @@
 	<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6574585" ></script>
 	<script type="text/javascript" id="bdshell_js"></script>
 	<script type="text/javascript">
-	document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+		document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
 	</script>
 	<!-- Baidu Button END -->
 	<div class="blank"></div>
@@ -244,7 +235,6 @@
 	</div>
 	</aside>
 </article>
-<?= $this->render('/widgets/_loginModal') ?>
 <?php
 	$this->registerJs(<<<JS
 	    function keyUP(t) {
@@ -285,6 +275,8 @@
 						if(res.code === 10002) {
 							commentOut("#comment-show-" + pid + " > ul", res.data, ['$i18n6', '$i18n7', '$i18n8'])
 							$(self).parent('.submit-btn').siblings(".comt-loading").hide();
+							textareaObj.val('');
+
 						} else {
 							alert(res.message);
 						}
@@ -335,7 +327,7 @@
 					var id = $(this).data('id');
 					//回复@
 					var fhN = '回复@' + fhName;
-					var fhHtml = '<div class="comment_content" style="display:block;float:none"><div class="cont-box hf-con"><textarea class="comment-input hf-input" placeholder="" data-pid=" ' + id + '" id="comment-input-' + id + '"></textarea></div><div class="tools-box"><div class="operator-box-btn"><span class="face-icon">☺</span><span class="img-icon">▧</span><span class="colse-icon" >x</span></div><div class="comt-loading" style="display: none"><span>$i18n2</span></div><div class="submit-btn"><button type="button" class="submit-comment-btn">$i18n4</button></div></div></div><div id="comment-show-' + id + '" class="info-show"><ul></ul></div>';
+					var fhHtml = '<div class="comment_content" style="display:block;float:none"><div class="cont-box hf-con"><textarea class="comment-input hf-input" placeholder="" data-pid=" ' + id + '" id="comment-input-' + id + '"></textarea></div><div class="tools-box"><div class="operator-box-btn"><span class="face-icon">☺</span><span class="img-icon">▧</span><span class="colse-icon" data-id="' + id + '">x</span></div><div class="comt-loading" style="display: none"><span>$i18n2</span></div><div class="submit-btn"><button type="button" class="submit-comment-btn">$i18n4</button></div></div></div><div id="comment-show-' + id + '" class="info-show"><ul></ul></div>';
 					//显示回复
 					if ($(this).is('.hf-con-block')) {
 						$(this).parents('.reply-cont').append(fhHtml);
@@ -345,6 +337,11 @@
 						});
 						$(".tools-box").on('click', '.colse-icon', function() {
 							$(this).parent('div.operator-box-btn').parent('div.tools-box').parent('div.comment_content').hide();
+							var id = $(this).data('id');
+							if (id) {
+								$('.comment-hf[data-id="' + id + '"]').attr('data-addcommented', 0);
+								$('.comment-hf[data-id="' + id + '"]').addClass('hf-con-block');
+							}
 						});
 						$(".hf-input").on('keyup', function() {
 						 	keyUP(this)
@@ -381,7 +378,7 @@
             	$.ajax({
 					type: 'POST',
 					url: '$addLikeUrl',
-					data: {id: id, '_csrf-frontend': csrfToken, num: zNum},
+					data: {id: id, _csrf_frontend: csrfToken, num: zNum},
 					success: function (data) {
 						if (parseInt(data) === 1) {
 			                $(self).find('.z-num').html(zNum);
@@ -403,7 +400,7 @@
 				success: function(res) {
 					$("#scan_count").text(res.scan_count)
 					if (res.nickname) {
-						$(".comt-author").html('<a class="switch-author"  style="font-size:12px;" href="javascript:;">Hi, ' + res.nickname + '</a>');
+						$(".comt-author").html('<a class="author" target="_self" style="font-size:12px;" href="{$uCenterUrl}">Hi, ' + res.nickname + '</a>');
 					}
 				}
 			})

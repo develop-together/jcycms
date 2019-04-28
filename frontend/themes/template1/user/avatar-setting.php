@@ -12,7 +12,7 @@
 			<div class="row">
 				<div class="col-md-6 col-sm-6">
 					<div class="image-group">
-		               <img id="image" src="https://fengyuanchen.github.io/cropperjs/images/picture.jpg" class="cropper-hidden">
+		               <img id="image" src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=db04718820738bd4db21b431918a876c/f7246b600c338744ea4821295f0fd9f9d62aa0d1.jpg" class="cropper-hidden">
 					</div>
 				</div>
 				<div class="col-md-6 col-sm-6">
@@ -63,14 +63,20 @@
       var image = document.getElementById('image');
       var button = document.getElementById('setDrag');
       var result = document.getElementById('result');
+      var zoomIn = document.getElementById('zoomIn');
+      var zoomOut = document.getElementById('zoomOut');
+      var rotateLeft = document.getElementById('rotateLeft');
+      var rotateRight = document.getElementById('rotateRight');
+      var inputImage = document.getElementById('inputImage');
       var croppable = false;
-      var cropper = new Cropper(image, {
-        aspectRatio: 1,
-        viewMode: 1,
-        ready: function () {
-          croppable = true;
-        },
-      });
+      var cropperOptions = {
+          aspectRatio: 1,
+          viewMode: 1,
+          ready: function () {
+            croppable = true;
+          },
+      }
+      var cropper = new Cropper(image, cropperOptions);
 
       button.onclick = function () {
         var croppedCanvas;
@@ -93,5 +99,49 @@
         result.innerHTML = '';
         result.appendChild(roundedImage);
       };
+
+      zoomIn.addEventListener('click', function() {
+        cropper.zoom(0.1);
+      });
+
+      zoomOut.addEventListener('click', function() {
+        cropper.zoom(-0.1);
+      });
+
+      rotateLeft.addEventListener('click', function() {
+        cropper.rotate(-45);
+      });
+
+      rotateRight.addEventListener('click', function() {
+        cropper.rotate(45);
+      });
+
+      inputImage.addEventListener('change', function() {
+        var files = this.files;
+        var file;
+        if (cropper && files && files.length) {
+          file = files[0];
+          if (/^image\/\w+/.test(file.type)) {
+            // uploadedImageType = file.type;
+            // uploadedImageName = file.name;
+            // if (uploadedImageURL) {
+            //   URL.revokeObjectURL(uploadedImageURL);
+            // }
+
+            // image.src = uploadedImageURL = URL.createObjectURL(file);
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+              image.src = this.result;
+              cropper.destroy();
+              cropper = new Cropper(image, cropperOptions);
+              inputImage.value = null;
+            }
+
+          } else {
+            window.alert('Please choose an image file.');
+          }
+        }
+      })
     });
   </script>

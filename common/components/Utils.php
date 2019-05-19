@@ -1300,6 +1300,43 @@ class Utils {
         return false;
     }
 
+    public static function getBase64Ext($base64String)
+    {
+        $base64String = explode(',', $base64String); //data:image/jpeg;base64,
+        $imgInfo = explode(';', $base64String[0]); //[data:image/jpeg,base64]
+        $imgInfo = explode(':', $imgInfo[0]); //[data,image/jpeg]
+        $imgInfo = explode('/', end($imgInfo));
+        $fileExt = end($imgInfo);
+
+        return $fileExt;
+    }
+
+    public static function base64ToFile($base64String, $uploadPath, $outputFile)
+    {
+        // $base64String = base64_decode($base64String);
+        $base64Arr = explode(',', $base64String);
+        $fileExt = self::getBase64Ext($base64String);
+        $outputFile = $outputFile . '.' . $fileExt;
+         // base64_decode(end($base64String))
+         !is_dir($uploadPath) && mkdir($uploadPath, 0777, true);
+         $fullname = str_replace('\\', '/', $uploadPath . '/' . $outputFile);
+         // var_dump($base64Arr, end($base64Arr));exit;
+        if (!file_put_contents($fullname, end($base64Arr))) {
+            return false;
+        }
+
+        return rtrim('uploads/', 'uploads/' . $outputFile);
+    }
+
+    public static function getBetweenWeek($isTimestamp = true)
+    {
+        $weekday = date('w');//获取周几
+        $weekday = ($weekday + 6) % 7;
+        $firstday = date('Y-m-d 00:00:00', strtotime("-{$weekday} day"));
+        $lastday = date('Y-m-d 23:59:59', strtotime($firstday) + 6 * 86400);
+
+        return $isTimestamp ? [strtotime($firstday), strtotime($lastday)] : [$firstday, $lastday];
+    }
 }
 
 ?>

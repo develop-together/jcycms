@@ -93,72 +93,72 @@ class Article extends \common\components\BaseModel
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
-        $parentScenarios = parent::scenarios();
+    // public function scenarios()
+    // {
+    //     $parentScenarios = parent::scenarios();
 
-        return array_merge($parentScenarios, [
-            'article' => [
-                'category_id',
-                'type',
-                'title',
-                'sub_title',
-                'summary',
-                'content',
-                'thumb',
-                'seo_title',
-                'seo_keywords',
-                'seo_description',
-                'status',
-                'sort',
-                'user_id',
-                'created_at',
-                'updated_at',
-                'scan_count',
-                'can_comment',
-                'visibility',
-                'tag',
-                'flag_headline',
-                'flag_recommend',
-                'flag_slide_show',
-                'flag_special_recommend',
-                'flag_roll',
-                'flag_bold',
-                'flag_picture'
-            ],
-            'page' => [
-                'type',
-                'title',
-                'sub_title',
-                'summary',
-                'seo_title',
-                'content',
-                'seo_keywords',
-                'seo_description',
-                'status',
-                'can_comment',
-                'visibility',
-                'tag',
-                'sort'
-            ],
-            'photos' => [
-                'type',
-                'category_id',
-                'title',
-                'sub_title',
-                'summary',
-                'seo_title',
-                'seo_keywords',
-                'seo_description',
-                'status',
-                'can_comment',
-                'visibility',
-                'tag',
-                'sort',
-                'photo_file_ids',
-            ],
-        ]);
-    }
+    //     return array_merge($parentScenarios, [
+    //         'article' => [
+    //             'category_id',
+    //             'type',
+    //             'title',
+    //             'sub_title',
+    //             'summary',
+    //             'content',
+    //             'thumb',
+    //             'seo_title',
+    //             'seo_keywords',
+    //             'seo_description',
+    //             'status',
+    //             'sort',
+    //             'user_id',
+    //             'created_at',
+    //             'updated_at',
+    //             'scan_count',
+    //             'can_comment',
+    //             'visibility',
+    //             'tag',
+    //             'flag_headline',
+    //             'flag_recommend',
+    //             'flag_slide_show',
+    //             'flag_special_recommend',
+    //             'flag_roll',
+    //             'flag_bold',
+    //             'flag_picture'
+    //         ],
+    //         'page' => [
+    //             'type',
+    //             'title',
+    //             'sub_title',
+    //             'summary',
+    //             'seo_title',
+    //             'content',
+    //             'seo_keywords',
+    //             'seo_description',
+    //             'status',
+    //             'can_comment',
+    //             'visibility',
+    //             'tag',
+    //             'sort'
+    //         ],
+    //         'photos' => [
+    //             'type',
+    //             'category_id',
+    //             'title',
+    //             'sub_title',
+    //             'summary',
+    //             'seo_title',
+    //             'seo_keywords',
+    //             'seo_description',
+    //             'status',
+    //             'can_comment',
+    //             'visibility',
+    //             'tag',
+    //             'sort',
+    //             'photo_file_ids',
+    //         ],
+    //     ]);
+    // }
 
     /**
      * @inheritdoc
@@ -199,6 +199,11 @@ class Article extends \common\components\BaseModel
         ]);
     }
 
+    public static function find()
+    {
+        return new ArticleQuery(get_called_class());
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -225,7 +230,9 @@ class Article extends \common\components\BaseModel
     public function getComments()
     {
         // ->where(['parent_id' => 0])
-        return $this->hasMany(Comment::class, ['article_id' => 'id'])->orderBy('id DESC');
+        return $this->hasMany(Comment::class, ['article_id' => 'id'])
+            ->where(['status' => Comment::STATUS_PASSED])
+            ->orderBy('id DESC');
     }
 
     public function getAuthor_name()
@@ -272,7 +279,7 @@ class Article extends \common\components\BaseModel
     public function afterFind()
     {
         parent::afterFind();
-        $this->content = $this->articleContent->content;
+        $this->content = $this->articleContent ? $this->articleContent->content : '';
     }
 
     public function saveArticle()

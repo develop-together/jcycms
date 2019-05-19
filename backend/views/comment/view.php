@@ -20,20 +20,31 @@ $this->params['breadcrumbs'] = [
                     'model' => $model,
                     'attributes' => [
                         'id',
-            'user_id',
-            'article_id',
-            'parent_id',
-            'nickname',
-            'admin_id',
-            'ip',
-            'status',
-            'like_count',
-            'repeat_count',
-            'contents',
-            'created_at',
-            'updated_at',
+                        'user_id',
+                        [
+                            'attribute' => 'article_id',
+                            'format' => 'raw',
+                            'value' => function($model) {
+                                return $model->article->title;
+                            }
+                        ],
+                        [
+                            'attribute' => 'parent_id',
+                            'format' => 'raw',
+                            'value' => function($model) {
+                                return $model->parent ? $model->parent->contents :'';
+                            }
+                        ],
+                        'nickname',
+                        'ip',
+                        'status',
+                        'like_count',
+                        'repeat_count',
+                        'contents:raw',
+                        'created_at',
+                        'updated_at',
                     ],
-]) ?>  
+]) ?>
             </div>
         </div>
     </div>

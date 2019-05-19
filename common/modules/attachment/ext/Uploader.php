@@ -53,11 +53,10 @@ class Uploader
      * @param $config 配置项
      * @param string $type 是否解析base64编码，可省略。若开启，则$fileField代表的是base64编码的字符串表单名
      */
-    public function __construct($fileField, $config, $type = "upload")
+    public function __construct($fileField = null, $config, $type = "upload")
     {
-        $thumbDir = Yii::$app->params['thumbPath'];
-        is_dir($thumbDir) ? '' : mkdir($thumbDir, 0777, true);
-
+        // $thumbDir = isset(Yii::$app->params['thumbPath']) ? Yii::$app->params['thumbPath'] : '';
+        // $thumbDir && is_dir($thumbDir) ? '' : mkdir($thumbDir, 0777, true);
         $this->fileField = $fileField;
         $this->config = $config;
         $this->type = $type;
@@ -140,7 +139,16 @@ class Uploader
      */
     private function upBase64()
     {
-        $base64Data = $_POST[$this->fileField];
+        if (is_array($this->fileField)) {
+            if (isset($this->fileField[2]) && !empty($this->fileField[2])) {
+                $base64Data = $this->fileField[2];
+            } else {
+                $base64Data = Yii::$app->request->post()[$this->fileField[0]][$this->fileField[1]];
+            }
+        } else {
+            $base64Data = Yii::$app->request->post()[$this->fileField];//$_POST[$this->fileField];
+        }
+
         $img = base64_decode($base64Data);
 
         $this->oriName = $this->config['oriName'];
@@ -195,7 +203,7 @@ class Uploader
             $this->stateInfo = $this->getStateInfo("ERROR_DEAD_LINK");
             return;
         }
-        
+
         $heads['Content-Type'] = isset($heads['Content-Type']) ? $heads['Content-Type'] : $heads[3];
         //格式验证(扩展名验证和Content-Type验证)
         $fileType = strtolower(strrchr($imgUrl, '.'));

@@ -128,6 +128,7 @@ return [
 
 	/*Comment*/
 	'Comments' => '评论',
+	'Comment' => '评论',
 	'Article Title' => '文章标题',
 	/*Comment*/
 
@@ -331,8 +332,8 @@ return [
 	'The Old Password Is Error' => '旧密码输入不对',
 	'Not to fill, by default do not modify' => '不填，默认不修改',
 	'Time Tips' => '时间小贴士',
-	'Click On The List Last Week' => '上周点击排行榜',
-	"Last week's Comments On The List" => '上周评论排行榜',
+	'Click on the general list' => '点击排行总榜',
+	"Comments on the general list" => '评论排行总榜',
 	'New Quantity Statistical Chart' => '新增数量统计图',
 	'Photo Album' => '相册图片',
 	'Photos' => '相册',
@@ -383,5 +384,7 @@ return [
 	'lower left' => '左下角',
 	'No classification' => '暂无分类',
 	'Text' => '文字',
+	'Verify' => '审核',
+	'No pictures yet' => '暂无图片',
 	'Multiple keywords separated by "," up to a maximum of 10' => '多个关键字之间用“,”分隔，最多不超过10个'
 ];

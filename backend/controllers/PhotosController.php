@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\PhotosArticle as Article;
-use backend\models\search\ArticleSearch;
+use backend\models\PhotosArticle;
+use backend\models\search\PhotosArticleSearch;
 use common\components\BackendController;
 use backend\actions\DeleteAction;
 use yii\web\NotFoundHttpException;
@@ -21,7 +21,7 @@ class PhotosController extends BackendController
         return [
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => Article::className(),
+                'modelClass' => PhotosArticle::className(),
             ],
         ];
     }
@@ -33,7 +33,7 @@ class PhotosController extends BackendController
     public function actionIndex()
     {
         Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
-        $searchModel = new ArticleSearch(['scenario' => 'page']);
+        $searchModel = new PhotosArticleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->post());
 
         return $this->render('index', [
@@ -66,15 +66,13 @@ class PhotosController extends BackendController
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
 
-            $model->setScenario('photos');
+            // $model->setScenario('photos');
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if (!$model->load($post)) {
                     throw new \yii\web\BadRequestHttpException('数据提交出错');
                 }
-                // var_dump($post);exit;
-                // $model->photo_file_ids = '';
-                // var_dump($model->getAttributes());exit;
+
                 if (!$model->save()) {
                     $errors = [];
                     foreach ($model->errors as $error) {

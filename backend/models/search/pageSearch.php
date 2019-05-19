@@ -5,9 +5,9 @@ namespace backend\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\PhotosArticle;
+use backend\models\PageArticle;
 
-class PhotosArticleSearch extends PhotosArticle
+class PageSearch extends PageArticle
 {
 
     public function rules()
@@ -20,7 +20,7 @@ class PhotosArticleSearch extends PhotosArticle
 
     public function search($params)
     {
-        $query = PhotosArticle::find()->photo()->with('category');
+        $query = PageSearch::find()->singlePage()->with('category');
         $this->load($params);
         $pageSize = 10;
         $pageCurrent = 0;

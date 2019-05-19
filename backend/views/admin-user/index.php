@@ -42,7 +42,7 @@ $assignment = function ($url, $model) {
                                 'options' => ['width' => '100' , 'height' => '100'],
                                 'filter' => '',
                                 'enableSorting' => false,
-                            ],                            
+                            ],
                             [
                                 'attribute' => 'username',
                                 'filter' => '',
@@ -94,8 +94,8 @@ $assignment = function ($url, $model) {
                                 'buttons' => ['assignment' => $assignment],
                             ],
                         ],
-                    ]); ?>         
-            </div>            
+                    ]); ?>
+            </div>
         </div>
     </div>
 </div>
@@ -106,13 +106,13 @@ $assignment = function ($url, $model) {
         var url = $(obj).data('url') ? $(obj).data('url') : $(obj).attr('data-url');
         layer.open({
           type: 2,
-          title: '角色分配',
+          title: '<?= Yii::t('app', 'Assign Permission') ?>',
           shadeClose: true,
           shade: 0.8,
           area: ['600px', '90%'],
           maxmin:true,
           content: url //iframe的url
-        });         
+        });
     }
 
 </script>

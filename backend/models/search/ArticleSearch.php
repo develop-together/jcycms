@@ -5,7 +5,7 @@ namespace backend\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Article;
+use backend\models\Article;
 
 /**
  * ArticleSearch represents the model behind the search form about `common\models\Article`.
@@ -31,16 +31,16 @@ class ArticleSearch extends Article
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
-        $scenarios = parent::scenarios();
-        $scenarios['article'] = array_merge($scenarios['article'], [
-            'create_start_at',
-            'create_end_at',
-        ]);
+    // public function scenarios()
+    // {
+    //     $scenarios = parent::scenarios();
+    //     $scenarios['article'] = array_merge($scenarios['article'], [
+    //         'create_start_at',
+    //         'create_end_at',
+    //     ]);
 
-        return $scenarios;
-    }
+    //     return $scenarios;
+    // }
 
     /**
      * Creates data provider instance with search query applied
@@ -49,9 +49,9 @@ class ArticleSearch extends Article
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $type = self::ARTICLE)
+    public function search($params)
     {
-        $query = Article::find()->where(['type' => $type])->with('category');
+        $query = Article::find()->article()->with('category');
 
         // add conditions that should always apply here
 

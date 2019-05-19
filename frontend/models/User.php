@@ -28,6 +28,8 @@
             [['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             [['username', 'email', 'password', 'repeat_pwd'], 'required', 'on' => ['create']],
             [['username', 'email'], 'required', 'on' => ['update']],
+//             [['avatar'], 'avatar', 'enableClientValidation' => true,   'maxSize' => 1024, 'message' => '您上传的文件过
+// 大'],
 		];
 	}
 
@@ -37,6 +39,7 @@
 			'create' => ['username', 'password', 'avatar', 'email', 'status', 'password', 'repeat_pwd'],
 			'update' => ['username', 'password', 'avatar', 'email', 'status', 'password', 'repeat_pwd'],
 			'self-update' => [],
+			'avatar-setting' => ['avatar']
 		];
 	}
 
@@ -72,7 +75,18 @@
         } else {
         	return $ip['data']['country'] . '.' . $ip['data']['region'] . '.' . $ip['data']['city'];
         }
-
 	}
 
+	public function beforeSave($insert) {
+		if (!$insert) {
+			// if ( false !== strpos($this->avatar, 'data:') ) {
+			// 	$this->avatar = Utils::base64ToFile($this->avatar, Yii::getAlias('@backend/web/uploads/user-avatar/' . date('Y-m')), time() . uniqid());
+			// 	false === $this->avatar && $this->avatar = '';
+			// }
+			// var_dump($_FILES);exit;
+			$this->avatar = $this->uploadOpreate('avatar', '@backend/web/uploads/user-avatar/' . date('Ymd') . '/', 'Image');
+		}
+
+		return parent::beforeSave($insert);
+	}
  }

@@ -4,9 +4,19 @@ namespace common\models;
 
 class ArticleQuery extends \yii\db\ActiveQuery
 {
-	public function init()
+
+	public function article()
 	{
-		$this->andOnCondition(['type' => Article::ARTICLE]);
-		parent::init();
+		return $this->andOnCondition(['type' => Article::ARTICLE]);
+	}
+
+	public function photo()
+	{
+		return $this->andOnCondition(['type' => Article::PHOTOS_PAGE]);
+	}
+
+	public function singlePage()
+	{
+		return $this->andOnCondition(['type' => Article::SINGLE_PAGE]);
 	}
 }

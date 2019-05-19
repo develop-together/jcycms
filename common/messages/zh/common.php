@@ -91,4 +91,7 @@ return [
 	'Image List' => '图片列表',
 	'The comment you made does not exist!' => '您评论的这条评论语不存在！',
     'Incorrect username or password.' => '用户名或密码错误',
+    'Like Count' => '点赞量',
+    'Superior comment' => '上级评论',
+    'Repeat Count' => '回复量'
 ];

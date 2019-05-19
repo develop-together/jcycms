@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Article;
-use backend\models\search\ArticleSearch;
+use backend\models\pageArticle;
+use backend\models\search\pageSearch;
 use common\components\BackendController;
 use backend\actions\DeleteAction;
 use yii\web\NotFoundHttpException;
@@ -20,11 +20,11 @@ class PageController extends BackendController
         return [
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => Article::className(),
+                'modelClass' => pageArticle::className(),
             ],
         ];
     }
-    
+
     /**
      * Lists all Article models.
      * @return mixed
@@ -32,8 +32,8 @@ class PageController extends BackendController
     public function actionIndex()
     {
         Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
-        $searchModel = new ArticleSearch(['scenario' => 'page']);
-        $dataProvider = $searchModel->search(Yii::$app->request->post(), Article::SINGLE_PAGE);
+        $searchModel = new pageSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->post());
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -64,13 +64,13 @@ class PageController extends BackendController
         $model->type = Article::SINGLE_PAGE;
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-            $model->setScenario('page');
+            // $model->setScenario('page');
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if (!$model->load($post)) {
                     throw new \yii\web\BadRequestHttpException('数据提交出错');
                 }
-                
+
                 $model->saveArticle() && Yii::$app->session->setFlash('success', "操作成功");
                 $transaction->commit();
 
@@ -97,13 +97,13 @@ class PageController extends BackendController
         $model = $this->findModel($id);
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-            $model->setScenario('page');
+            // $model->setScenario('page');
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if (!$model->load($post)) {
                     throw new \yii\web\BadRequestHttpException('数据提交出错');
                 }
-                
+
                 $model->saveArticle() && Yii::$app->session->setFlash('success', "操作成功");
                 $transaction->commit();
 

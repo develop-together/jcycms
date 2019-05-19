@@ -1,4 +1,4 @@
-<?php 
+<?php
 	use yii\helpers\Html;
 	use yii\helpers\Url;
 	$this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/echarts/echarts.min.js', [
@@ -55,7 +55,7 @@
     <div class="col-sm-6">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5><?= Yii::t('app', 'Click On The List Last Week') ?></h5>
+                <h5><?= Yii::t('app', 'Click on the general list') ?></h5>
                 <div class="ibox-tools">
                     <a class="collapse-link">
                         <i class="fa fa-chevron-up"></i>
@@ -63,17 +63,31 @@
                     <a class="close-link">
                         <i class="fa fa-times"></i>
                     </a>
-                </div>                
+                </div>
             </div>
             <div class="ibox-content no-padding">
-                
-            </div>        
-        </div>       
+                <?php if ($readRanking): ?>
+                    <ul class="list-group">
+                    <?php foreach ($readRanking as $key => $read): ?>
+                        <li class="list-group-item">
+                            <?php
+                                if (0 === $key) {
+                                    echo  Html::a($read->title, Url::to(['article/view', 'id' => $read->id]), ['title' => $read->sub_title]) . '<small class="pull-right text-danger"><i class="fa fa-thumbs-up"></i></small> <span class="pull-right badge badge-info">' . $read->scan_count . '</span> ';
+                                } else {
+                                    echo Html::a($read->title, Url::to(['article/view', 'id' => $read->id]), ['title' => $read->sub_title]) . '<span class="pull-right badge badge-info">' . $read->scan_count . '</span>';
+                                }
+                            ?>
+                        </li>
+                    <?php endforeach ?>
+                    </ul>
+                <?php endif ?>
+            </div>
+        </div>
     </div>
     <div class="col-sm-6">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5><?= Yii::t('app', "Last week's Comments On The List") ?></h5>
+                <h5><?= Yii::t('app', "Comments on the general list") ?></h5>
                 <div class="ibox-tools">
                     <a class="collapse-link">
                         <i class="fa fa-chevron-up"></i>
@@ -81,12 +95,26 @@
                     <a class="close-link">
                         <i class="fa fa-times"></i>
                     </a>
-                </div>                
+                </div>
             </div>
             <div class="ibox-content no-padding">
-                
-            </div>             
-        </div>       
+                <?php if ($commentRanking): ?>
+                    <ul class="list-group">
+                    <?php foreach ($commentRanking as $key => $cr): ?>
+                        <li class="list-group-item">
+                            <?php
+                                if (0 === $key) {
+                                    echo  Html::a($cr->title, Url::to(['article/view', 'id' => $cr->id]), ['title' => $cr->sub_title]) . '<small class="pull-right text-danger"><i class="fa fa-heart"></i></small> <span class="pull-right badge badge-info">' . $cr->comment_count . '</span> ';
+                                } else {
+                                    echo Html::a($cr->title, Url::to(['article/view', 'id' => $cr->id]), ['title' => $cr->sub_title]) . '<span class="pull-right badge badge-info">' . $cr->comment_count . '</span>';
+                                }
+                            ?>
+                        </li>
+                    <?php endforeach ?>
+                    </ul>
+                <?php endif ?>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">
@@ -106,7 +134,7 @@
             <div class="ibox-content no-padding">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <span class="badge badge-primary">&nbsp;&nbsp;</span><strong>JCY
+                        <span class="badge badge-info">&nbsp;&nbsp;</span><strong>JCY
                             CMS</strong>: <?= yii::$app->version ?>
                     </li>
                     <li class="list-group-item ">
@@ -197,32 +225,32 @@
                     <a class="close-link">
                         <i class="fa fa-times"></i>
                     </a>
-                </div>                
+                </div>
             </div>
             <div class="ibox-content no-padding">
                 <ul class="list-group">
                     <li class="list-group-item">
                        <strong>当前时间:</strong>
                        <span id="clock_<?= $uniqid ?>"></span>
-                    </li>    
+                    </li>
                     <li class="list-group-item">
                         <strong>今天是星期<?= date('w') == 0 ? '天' : date('w') ?>(<?= date('l') ?>)</strong>
-                    </li>        
+                    </li>
                     <li class="list-group-item">
                         <strong>今天是本月的第<?= date('j') ?>天</strong>
-                    </li>       
+                    </li>
                     <li class="list-group-item">
                         <strong>今年已经过去<?= date('z')?> 天</strong>
                     </li>
                     <li class="list-group-item">
                         <strong>现在是今年的第<?= date('W')?> 周</strong>
-                    </li>      
+                    </li>
                     <li class="list-group-item">
                         <strong><?= date('L') == 1 ? '今年是闰年' : '今年不是闰年' ?></strong>
-                    </li>      
+                    </li>
                 </ul>
-            </div>             
-        </div>        
+            </div>
+        </div>
     </div>
 </div>
 <style>
@@ -234,7 +262,7 @@
         margin-left: 15px;
     }
 </style>
-<?php 
+<?php
 	$this->registerJs(<<<EOT
 		<!--当周新增数量统计图
 		var myChart = echarts.init(document.getElementById('countMap_$uniqid'));
@@ -296,7 +324,7 @@
             var month = nowDate.getMonth() + 1;
             var date = nowDate.getDate() ;
             obj.innerHTML = year + '-' + month + '-' + date + ' ' + nowDate.toLocaleTimeString();
-            
+
         }
         setInterval(function() {
             displayTime("clock_$uniqid");

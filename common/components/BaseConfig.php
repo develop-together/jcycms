@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace common\components;
 
@@ -20,10 +20,6 @@ class BaseConfig
     const Status_Enable = 1;
     const Status_Desable = 0;
 
-    const COMMENT_INITIAL = 0;
-    const COMMENT_PUBLISH = 1;
-    const COMMENT_RUBISSH = 2;
-
     const TARGET_BLANK = '_blank';
     const TARGET_SELF = '_self';
 
@@ -41,7 +37,7 @@ class BaseConfig
 
     const LANGUAGE_ZN_CN = 'zh_CN';
     // const LANGUAGE_ZN_TW = 'ZN_TW';
-    const LANGUAGE_EN_US = 'en-US'; 
+    const LANGUAGE_EN_US = 'en-US';
 
     const WEB_TEMPLATE_BASE = 'basic';
     const WEB_TEMPLATE_ONE = 'template1';
@@ -79,16 +75,6 @@ class BaseConfig
         $items = [
             self::YesNo_Yes => Yii::t('app', 'Opened'),
             self::YesNo_No => Yii::t('app', 'Closed'),
-        ];
-        return self::getItems($items, $key);
-    }
-
-    public static function getCommentStatusItems($key = null)
-    {
-        $items = [
-            self::COMMENT_INITIAL => Yii::t('app', 'Not Audited'),
-            self::COMMENT_PUBLISH => Yii::t('app', 'Passed'),
-            self::COMMENT_RUBISSH => Yii::t('app', 'Unpassed'),
         ];
         return self::getItems($items, $key);
     }
@@ -150,7 +136,7 @@ class BaseConfig
         return self::getItems($items, $key);
     }
 
-    private static function getItems($items, $key = null)
+    public static function getItems($items, $key = null)
     {
         if ($key !== null) {
             if (key_exists($key, $items)) {
@@ -171,7 +157,7 @@ class BaseConfig
         return self::getItems($items, $key);
     }
 
-    public static function getWebTemplateItems($key = null) 
+    public static function getWebTemplateItems($key = null)
     {
         $items = [
             self::WEB_TEMPLATE_BASE => Yii::t('app', 'Basic blog'),
@@ -179,10 +165,10 @@ class BaseConfig
             self::WEB_TEMPLATE_TWO => Yii::t('app', 'Classical style theme blog'),
         ];
 
-        return self::getItems($items, $key);        
+        return self::getItems($items, $key);
     }
 
-    public static function getDataImgSrc($key = null) 
+    public static function getDataImgSrc($key = null)
     {
         $items = [
             self::WEB_TEMPLATE_BASE => ['data-img-src' => Yii::$app->request->getBaseUrl() . '/static/img/theme/basic.png', 'data-img-class' => 'picker200'],
@@ -190,7 +176,7 @@ class BaseConfig
             self::WEB_TEMPLATE_TWO => ['data-img-src' => Yii::$app->request->getBaseUrl() . '/static/img/theme/gudian.png', 'data-img-class' => 'picker200'],
         ];
 
-        return self::getItems($items, $key);       
+        return self::getItems($items, $key);
     }
 
     public static function loadThemes($key = null)
@@ -225,7 +211,7 @@ class BaseConfig
     {
         $items = [
             self::UPPER_LEFT => Yii::t('app', 'upper left'),
-            self::UPPER_RIGHT => Yii::t('app', 'upper right'), 
+            self::UPPER_RIGHT => Yii::t('app', 'upper right'),
             self::LOWER_LEFT => Yii::t('app', 'lower left'),
             self::LOWER_RIGHT => Yii::t('app', 'lower right'),
         ];

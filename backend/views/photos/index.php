@@ -15,7 +15,7 @@ $showPicture = function($url, $model, $uniqid) {
         'id' => 'show_picture',
         'data-id' => $model->id,
         'data-fids' => $model->photo_file_ids,
-    ]);	
+    ]);
 }
 
 ?>
@@ -85,7 +85,7 @@ $showPicture = function($url, $model, $uniqid) {
 
 		                            },
 		                            'filter' => BaseConfig::getArticleStatus(),
-		                        ],		                       		                      
+		                        ],
 								'created_at:datetime',
 								'updated_at:datetime',
 
@@ -101,11 +101,12 @@ $showPicture = function($url, $model, $uniqid) {
     </div>
 </div>
 <?php
+	$zh_cn = Yii::t('app', 'No pictures yet');
 	$url = Url::toRoute(['photos/show-pictures']);
 	$this->registerJs(<<<EOT
 		$("#show_picture").on('click', function(event) {
 			if (!$(this).data('fids')) {
-				layer.tips('暂无图片', this, {
+				layer.tips('{$zh_cn}', this, {
 				  tips: [1, '#3595CC'],
 				  time: 4000
 				});
@@ -127,7 +128,7 @@ $showPicture = function($url, $model, $uniqid) {
 			});
 		});
 EOT
-);	
+);
 ?>
 
 

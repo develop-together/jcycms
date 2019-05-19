@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use common\components\Utils;
+use common\components\BaseConfig;
 use yii\helpers\StringHelper;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -36,6 +37,32 @@ class Comment extends \common\components\BaseModel
     public $lv = 0;
     public $childrens = [];
 
+    public  function getCommentStatusItems($key = null)
+    {
+        $items = [
+            self::STATUS_INIT => Yii::t('app', 'Not Audited'),
+            self::STATUS_PASSED => Yii::t('app', 'Passed'),
+            self::STATUS_UNPASS => Yii::t('app', 'Unpassed'),
+        ];
+        return BaseConfig::getItems($items, $key);
+    }
+
+
+    public function getStatusFormat()
+    {
+        $class = 'badge badge-rounded ';
+        $value = $this->getCommentStatusItems($this->status);
+        if ( self::STATUS_PASSED === $this->status ) {
+            $class .= 'badge-success';
+        } elseif ( self::STATUS_UNPASS === $this->status ) {
+            $class .= 'badge-danger';
+        } else {
+            $class .= 'badge-info';
+        }
+
+        return '<span class="' . $class . '">' . $value . '</span>';
+    }
+
     /**
      * @inheritdoc
      */
@@ -53,6 +80,7 @@ class Comment extends \common\components\BaseModel
             [['user_id', 'article_id', 'parent_id', 'admin_id', 'like_count', 'repeat_count', 'created_at', 'updated_at'], 'integer'],
             [['nickname', 'ip'], 'string', 'max' => 32],
             [['status'], 'string', 'max' => 2],
+            ['status', 'in', 'range' => [self::STATUS_INIT, self::STATUS_PASSED, self::STATUS_UNPASS]],
             [['contents'], 'string', 'max' => 255],
             ['parent_id', function($attribute, $params) {
                 $this->$attribute = (int)$this->$attribute;
@@ -77,19 +105,29 @@ class Comment extends \common\components\BaseModel
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
             'id' => Yii::t('app', 'ID'),
-            'user_id' => Yii::t('app', 'User ID'),
-            'article_id' => Yii::t('app', 'Article ID'),
-            'parent_id' => Yii::t('app', 'Parent ID'),
+            'user_id' => Yii::t('common', 'Username'),
+            'article_id' => Yii::t('app', 'Article'),
+            'parent_id' => Yii::t('common', 'Superior comment'),
             'nickname' => Yii::t('app', 'Nickname'),
-            'admin_id' => Yii::t('app', 'Admin ID'),
+            'admin_id' => Yii::t('common', 'Admin user'),
             'ip' => Yii::t('app', 'Ip'),
             'status' => Yii::t('app', 'Status'),
-            'like_count' => Yii::t('app', 'Like Count'),
-            'repeat_count' => Yii::t('app', 'Repeat Count'),
-            'contents' => Yii::t('app', 'Contents'),
+            'like_count' => Yii::t('common', 'Like Count'),
+            'repeat_count' => Yii::t('common', 'Repeat Count'),
+            'contents' => Yii::t('app', 'Comments'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ]);
+    }
+
+    public function getParent()
+    {
+        return $this->hasOne(self::className(), ['id' => 'parent_id']);
+    }
+
+    public function getArticle()
+    {
+        return $this->hasOne(Article::class, ['id' => 'article_id']);
     }
 
     public function getUser()

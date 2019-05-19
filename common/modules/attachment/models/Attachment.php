@@ -39,15 +39,15 @@ class Attachment extends \common\components\BaseModel
         return '{{%attachment}}';
     }
 
-    public function behaviors()
-    {
-        $behaviors = [];
-        if($this->hasAttribute('created_at') && $this->hasAttribute('updated_at')) {
-            $behaviors[] = TimestampBehavior::className();
-        }
+    // public function behaviors()
+    // {
+    //     $behaviors = [];
+    //     if($this->hasAttribute('created_at') && $this->hasAttribute('updated_at')) {
+    //         $behaviors[] = TimestampBehavior::className();
+    //     }
 
-        return $behaviors;
-    }
+    //     return $behaviors;
+    // }
 
     /**
      * @inheritdoc

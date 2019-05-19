@@ -16,17 +16,10 @@ use common\widgets\ActiveForm AS BAF;
         'options' => ['class' => 'form-inline'],
         'fieldConfig' => [
             'template' =>"{label}\n{input}\n{error}\n{hint}",
-            'labelOptions' => ['class' => 'control-label'],                          
+            'labelOptions' => ['class' => 'control-label'],
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'user_id') ?>
-
-    <?= $form->field($model, 'article_id') ?>
-
-    <?= $form->field($model, 'parent_id') ?>
 
     <?= $form->field($model, 'nickname') ?>
 
@@ -40,7 +33,7 @@ use common\widgets\ActiveForm AS BAF;
 
     <?php // echo $form->field($model, 'repeat_count') ?>
 
-    <?php // echo $form->field($model, 'contents') ?>
+    <?php  echo $form->field($model, 'contents') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 

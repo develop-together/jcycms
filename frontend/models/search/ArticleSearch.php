@@ -27,6 +27,7 @@ class ArticleSearch extends Article
 
 		// ->joinWith('articleContents')
 		$query = self::find()
+			->article()
 			->with(['category', 'user', 'articleContent']);
 		$this->load($params);
 

@@ -4,8 +4,9 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Article;
 use backend\models\User;
-use frontend\models\User AS FrontendUser;
-use common\models\FriendLink;
+use backend\models\FrontendUser;
+use backend\models\Comment;
+use backend\models\FriendLink;
 use common\components\ServerInfo;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -18,48 +19,14 @@ use common\components\Utils;
 /**
  * Site controller
  */
-class SiteController extends BackendController 
+class SiteController extends BackendController
 {
-	/**
-	 * @inheritdoc
-	 */
-	// public function behaviors() 
-	// {
-	// 	return [
-	// 		'access' => [
-	// 			'class' => AccessControl::className(),
-	// 			'rules' => [
-	// 				[
-	// 					'actions' => ['login', 'error', 'captcha'], //为access rules的actions增加captcha方法可访问。
-	// 					'allow' => true,
-	// 				],
-	// 				[
-	// 					'actions' => ['logout', 'index', 'desktop'],
-	// 					'allow' => true,
-	// 					'roles' => ['@'],
-	// 				],
-	// 			],
-	// 		],
-	// 		'verbs' => [
-	// 			'class' => VerbFilter::className(),
-	// 			'actions' => [
-	// 				'logout' => ['get'],
-	// 			],
-	// 		],
-	// 	];
-	// }
-
-    public function actions()
-    {
-        return parent::actions();
-    }
-
 	/**
 	 * Displays homepage.
 	 *
 	 * @return string
 	 */
-	public function actionIndex() 
+	public function actionIndex()
 	{
 		$this->layout = false;
 
@@ -78,19 +45,19 @@ class SiteController extends BackendController
 				'countName' => Yii::t('app', 'Articles'),
 				'type' => 'Month',
 				'url' => Url::to(['article/index']),
-				'countNumber' => Article::find()->where(['type' => Article::ARTICLE])->count('id'),
+				'countNumber' => Article::find()->article()->count('id'),
 			],
 			'comment' => [
 				'countName' => Yii::t('app', 'Comments'),
 				'type' => 'Today',
-				'url' => 'javascript:;',
-				'countNumber' => 0,
+				'url' => Url::to(['comment/index']),
+				'countNumber' => Comment::find()->count('id'),
 			],
 			'frontendUser' => [
 				'countName' => Yii::t('app', 'Users'),
 				'type' => 'Month',
-				'url' => 'javascript:;',
-				'countNumber' => 0,
+				'url' => Url::to(['user/index']),
+				'countNumber' => FrontendUser::find()->count('id'),
 			],
 			'friendLink' => [
 				'countName' => Yii::t('app', 'Friendly Links'),
@@ -101,17 +68,17 @@ class SiteController extends BackendController
 		];
 		$countData['article']['proportion'] = $countData['article']['countNumber'] == 0 ? 0 : number_format(
 				Article::find()
-					->where(['type' => Article::ARTICLE])
-					->andWhere(['between', 'created_at', 
-						strtotime(date('Y-m-01')), 
+					->article()
+					->andWhere(['between', 'created_at',
+						strtotime(date('Y-m-01')),
 						strtotime(date('Y-m-01 23:59:59') . " +1 month -1 day")
 					])->count('id') / $countData['article']['countNumber'] * 100, 2);
 		$countData['comment']['proportion'] = 0;
 		$countData['frontendUser']['proportion'] = 0;
 		$countData['friendLink']['proportion'] = $countData['friendLink']['countNumber'] == 0 ? 0 : number_format(
 				friendLink::find()
-					->where(['between', 'created_at', 
-						strtotime(date('Y-m-01')), 
+					->where(['between', 'created_at',
+						strtotime(date('Y-m-01')),
 						strtotime(date('Y-m-01 23:59:59') . " +1 month -1 day")
 					])->count('id') / $countData['friendLink']['countNumber'] * 100, 2);
 
@@ -119,7 +86,7 @@ class SiteController extends BackendController
 		$dbInfo = 'Unknown';
 		$driverName = strtolower(Yii::$app->getDb()->driverName);
 		if ($driverName == 'mysql') {
-			// 原生语句select version();\status;\mysql --help | grep Distrib 
+			// 原生语句select version();\status;\mysql --help | grep Distrib
 			$dbInfo = 'MYSQL ' . (new Query())->select('version() as m_version')->one()['m_version'];
 		} elseif ($driverName == 'pgsql') {
 			$dbInfo = (new Query())->select('version() as m_version')->one()['m_version'];
@@ -169,25 +136,28 @@ class SiteController extends BackendController
 		}
 
 		$series[0] = [
-			'type' => 'line', 
-			'stack' => '总量', 
+			'type' => 'line',
+			'stack' => '总量',
 			'areaStyle' => ['normal' => []],
-			'name' => $echartsData['legend'][0], 
+			'name' => $echartsData['legend'][0],
 			'data' => $articleCount
 		];
 		$series[1] = [
-			'type' => 'line', 
-			'stack' => '总量', 
+			'type' => 'line',
+			'stack' => '总量',
 			'areaStyle' => ['normal' => []],
-			'name' => $echartsData['legend'][1], 
+			'name' => $echartsData['legend'][1],
 			'data' => $userCount
 		];
 		$echartsData['series'] = Json::encode($series);
 		$echartsData['xAxis'] = Json::encode(array_values($xAxis));
+
 		return $this->render('desktop', [
 			'countData' => $countData,
 			'enviromentInfo' => $enviromentInfo,
 			'serverStatics' => $serverStatics,
+			'readRanking' => Article::getReadRanking(),
+			'commentRanking' => Article::getCommentRanking(),
 			'echartsData' => $echartsData,
 		]);
 	}

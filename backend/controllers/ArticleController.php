@@ -24,7 +24,7 @@ class ArticleController extends BackendController
             ],
         ];
     }
-    
+
     /**
      * Lists all Article models.
      * @return mixed
@@ -65,13 +65,13 @@ class ArticleController extends BackendController
         $model->sort = 0;
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-            $model->setScenario('article');
+            // $model->setScenario('article');
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if (!$model->load($post)) {
                     throw new \yii\web\BadRequestHttpException('数据提交出错');
                 }
-                
+
                 $model->saveArticle() && Yii::$app->session->setFlash('success', "操作成功");
                 $transaction->commit();
 
@@ -98,7 +98,7 @@ class ArticleController extends BackendController
         $model = $this->findModel($id);
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-            $model->setScenario('article');
+            // $model->setScenario('article');
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if (!$model->load($post)) {

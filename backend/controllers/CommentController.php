@@ -3,7 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Comment;
+use backend\models\Comment;
 use backend\models\search\CommentSearch;
 use common\components\BackendController;
 use backend\actions\DeleteAction;
@@ -24,7 +24,7 @@ class CommentController extends BackendController
             ],
         ];
     }
-    
+
     /**
      * Lists all Comment models.
      * @return mixed
@@ -53,6 +53,35 @@ class CommentController extends BackendController
         ]);
     }
 
+    public function actionAudit($id)
+    {
+        $model = $this->findModel($id);
+        if (Yii::$app->request->isPost) {
+            $params = Yii::$app->request->post();
+            $model->setScenario('audit');
+            if ($model->load($params) && $model->save()) {
+                if (Yii::$app->getRequest()->getIsAjax()) {
+                    Yii::$app->getResponse()->format = \yii\web\Response::FORMAT_JSON;
+                    return ['code' => 200, 'message' => Yii::t('app', 'Success')];
+                } else {
+                    Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
+                    return $this->redirect(['index']);
+                }
+            } else {
+                if (Yii::$app->getRequest()->getIsAjax()) {
+                    Yii::$app->getResponse()->format = \yii\web\Response::FORMAT_JSON;
+                    return ['code' => 300, 'message' => Yii::t('app', 'Error')];
+                } else {
+                    Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Error'));
+                    return $this->redirect(['index']);
+                }
+            }
+        }
+        return $this->render('audit', [
+            'model' => $model
+        ]);
+    }
+
     /**
      * Creates a new Comment model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -61,7 +90,7 @@ class CommentController extends BackendController
     public function actionCreate()
     {
         $model = new Comment();
-        
+
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {
@@ -84,7 +113,7 @@ class CommentController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
+
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {

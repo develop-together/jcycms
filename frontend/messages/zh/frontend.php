@@ -116,5 +116,13 @@
     'Last Login Address' => '最后登录地点',
     'Last Login Time' => '最后登录时间',
     'Personal center' => '个人中心',
-    'Back to the top' => '回到顶部'
+    'Back to the top' => '回到顶部',
+    'Reading record' => '阅读记录',
+    'Like record' => '点赞记录',
+    'Comment record' => '评论记录',
+    'Avatar setting' => '头像设置',
+    'Personal information' => '个人信息',
+    'Security settings' => '安全设置',
+    'Failed to set avatar' => '头像设置失败',
+    'The avatar was set successfully' => '头像设置成功'
 ];

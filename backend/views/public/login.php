@@ -115,7 +115,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php $this->endBody();?>
         <?php 
             $jsStr = <<<JS
-                $.backstretch("/static/img/login_bg_1.jpg");
+                $.backstretch([
+                    'http://kan.027cgb.com/622459/login_bg_1.jpg',
+                    'http://kan.027cgb.com/622459/login_bg_2.jpg',
+                    'http://kan.027cgb.com/622459/login-background.jpg'
+                ], { 
+                    fade: 1000, 
+                    duration: 8000 
+                });
 JS;
             $this->registerJs($jsStr);
          ?>

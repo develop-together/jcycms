@@ -15,7 +15,6 @@ npm-debug.log
 /composer.lock
 /frontend/config/main-local.php
 /frontend/config/params-local.php
-/frontend/config/params.php
 /common/config/main-local.php
 /backend/config/main-local.php
 /backend/config/params-local.php

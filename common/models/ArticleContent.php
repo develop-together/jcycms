@@ -71,17 +71,15 @@ class ArticleContent extends \common\components\BaseModel
 
     public function beforeSave($insert)
     {
-        if (!parent::beforeSave($insert))
-            return false;
-       if (preg_match('/<\s*img\s+[^>]*?src\s*=\s*(\'|\")(.*?)\\1[^>]*?\/?\s*>/i', $this->content, $match)) {
+        if ($insert && preg_match('/<\s*img\s+[^>]*?src\s*=\s*(\'|\")(.*?)\\1[^>]*?\/?\s*>/i', $this->content, $match)) {
             $src = $match[2];
             $configData = Config::loadData();
             if (isset($configData['watermark_img']) && $configData['watermark_img']) {
                 $imgInfo = ImageHelper::imgInfo(Yii::getAlias('@backend/web/') . $src);
                 ImageHelper::watermark($src, str_replace("\\", '/', Yii::getAlias('@backend/web/') . $configData['system_logo']), $configData['watermark_style'], [$imgInfo['width'], $imgInfo['height'], $configData['watermark_location']]);
             }
-       }
+        }
 
-        return true;
+        return parent::beforeSave($insert);
     }
 }

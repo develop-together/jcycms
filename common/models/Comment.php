@@ -37,13 +37,14 @@ class Comment extends \common\components\BaseModel
     public $lv = 0;
     public $childrens = [];
 
-    public  function getCommentStatusItems($key = null)
+    public  function getCommentStatusItems($key = null, $delDefault = false)
     {
         $items = [
             self::STATUS_INIT => Yii::t('app', 'Not Audited'),
             self::STATUS_PASSED => Yii::t('app', 'Passed'),
             self::STATUS_UNPASS => Yii::t('app', 'Unpassed'),
         ];
+        if ($delDefault) unset($items[self::STATUS_INIT]);
         return BaseConfig::getItems($items, $key);
     }
 

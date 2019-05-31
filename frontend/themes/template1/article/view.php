@@ -272,11 +272,16 @@
 					cache:false,
 					data: {article_id: $model->id, parent_id: pid, contents: content, _csrf_frontend: csrfToken},
 					success: function(res) {
-						if(res.code === 10002) {
+						if ( 10002 === res.code ) {
 							commentOut("#comment-show-" + pid + " > ul", res.data, ['$i18n6', '$i18n7', '$i18n8'])
 							$(self).parent('.submit-btn').siblings(".comt-loading").hide();
 							textareaObj.val('');
 
+						} else if (10003 == res.code ) {
+							layer.msg(res.message, {icon:5});
+							setTimeout(function() {
+								location.reload();
+							}, 700);
 						} else {
 							alert(res.message);
 						}

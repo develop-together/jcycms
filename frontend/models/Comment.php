@@ -37,6 +37,10 @@ class Comment extends CommonComment
 	{
 		if ($this->load($params) && $this->save()) {
 			// $this->afterFind();
+			if (1 === intval(Yii::$app->jcore->open_comment_verify)) {
+				return ['code' => 10003, 'message' => Yii::t('frontend', 'Dear, your comments have been submitted and will not be read until the background administrator has approved them.')];
+			}
+
 			return ['code' => 10002, 'data' => [
 					'id' => $this->id,
 					'article_id' => $this->article_id,

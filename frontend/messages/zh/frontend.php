@@ -124,5 +124,6 @@
     'Personal information' => '个人信息',
     'Security settings' => '安全设置',
     'Failed to set avatar' => '头像设置失败',
-    'The avatar was set successfully' => '头像设置成功'
+    'The avatar was set successfully' => '头像设置成功',
+    'Dear, your comments have been submitted and will not be read until the background administrator has approved them.' => '亲，您的评论已提交，待后台管理员审核通过之后才能才看哟'
 ];

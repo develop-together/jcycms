@@ -11,7 +11,7 @@ use common\widgets\ActiveForm AS BAF;
         <div class="ibox">
             <div class="ibox-content">
                 <?php $form = BAF::begin(); ?>
-                    <?= $form->field($model, 'status')->radioList($model->getCommentStatusItems()); ?>
+                    <?= $form->field($model, 'status')->radioList($model->getCommentStatusItems(null, true)); ?>
 <!--                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">

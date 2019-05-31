@@ -357,9 +357,10 @@ class Article extends \common\components\BaseModel
             $contentModel = new ArticleContent();
             $contentModel->article_id = $this->id;
         } else {
-            if ($this->content === null) {
+            if ($this->content === null || !in_array('content', $changedAttributes)) {
                 return;
             }
+
             $contentModel = ArticleContent::findOne(['article_id' => $this->id]);
             if ($contentModel == null) {
                 $contentModel = new ArticleContent();

@@ -10,6 +10,7 @@ npm-debug.log
 /backend/runtime
 /console/runtime
 /frontend/runtime
+/api/runtime
 /yii_test
 /yii_test.bat
 /composer.lock

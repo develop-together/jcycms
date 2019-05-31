@@ -116,9 +116,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php 
             $jsStr = <<<JS
                 $.backstretch([
-                    'http://kan.027cgb.com/622459/login_bg_1.jpg',
-                    'http://kan.027cgb.com/622459/login_bg_2.jpg',
-                    'http://kan.027cgb.com/622459/login-background.jpg'
+                    'http://psdcab48n.bkt.clouddn.com/login_bg_1.jpg',
+                    'http://psdcab48n.bkt.clouddn.com/login-background.jpg',
+                    'http://psdcab48n.bkt.clouddn.com/login-background.jpg'
                 ], { 
                     fade: 1000, 
                     duration: 8000 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace common\components;
 
 use Yii;
@@ -7,7 +7,7 @@ use common\models\Config;
 /**
  * 邮件操作
  */
- class BaseMail 
+ class BaseMail
  {
  	private static $_instance = null;
 
@@ -43,7 +43,7 @@ use common\models\Config;
                 'port' => $config['smtp_port'],
                 'encryption' => Yii::$app->params['mailerEncryption'],
             ],
-        ]); 		
+        ]);
  	}
 
  	public static function send($email, $subject, $message, $compose = [])
@@ -63,20 +63,22 @@ use common\models\Config;
         try {
             if(empty($compose) && !empty($message)) {
                 $result = $mailer->compose()
+                    ->setFrom([Yii::$app->jcore->smtp_sender => Yii::$app->jcore->system_name])
                     ->setTo($email)
                     ->setSubject($subject)
                     ->setHtmlBody($message)
                     ->send();
             } else {
                 $result = $mailer->compose($view , $params)
+                    ->setFrom([Yii::$app->jcore->smtp_sender => Yii::$app->jcore->system_name])
                     ->setTo($email)
                     ->setSubject($subject)
-                    ->send();                
+                    ->send();
             }
-            
+
             return [$result, null];
         } catch(\Exception $e) {
             return [false, Yii::t('app', 'Send a failure, please confirm whether the mailbox exists!')];
-        }		
+        }
  	}
  }

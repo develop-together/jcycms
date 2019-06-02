@@ -1,17 +1,24 @@
 (function(){
     var jcms = function () {
         var self = this;
-        this.ajax = function(type, url, data, dataType, callback, async) {
+        this.ajax = function(type, url, data, dataType, callback, async, timeout) {
             if (type.toLowerCase() == 'post') {
                data._csrf_backend = $("meta[name='csrf-token']").attr('content');
             }
-
-            jQuery.ajax({
+            timeout = timeout || 30000;
+            var ajaxRequest = jQuery.ajax({
                 type: type,
                 url: url,
                 data: data,
                 async: async,
                 dataType: dataType,
+                timeout: timeout,
+                complete: function(XMLHttpRequest, status) {
+                    if ( 'timeout' == status ) {
+                        ajaxRequest.abort();
+                        swal('Timeout!!', "error");
+                    }
+                },
                 success: function(response) {
                    console.log('Response Data is: ', response);
                    // console.log(typeof(callback));return;

@@ -22,9 +22,9 @@ $uniqid = Yii::$app->controller->_uniqid;
                             'fieldConfig' => [
                                 'template' =>"{label}\n<div class=\"col-sm-10\">{input}\n{error}</div>\n{hint}",
                                 'labelOptions' => ['class' => 'col-sm-2 control-label'],
-                                'options' => ['class' => 'form-group'],    
+                                'options' => ['class' => 'form-group'],
                                 'inputOptions' => ['class' => 'form-control'],
-                                'errorOptions' => ['class' => 'help-block m-b-none'],                            
+                                'errorOptions' => ['class' => 'help-block m-b-none'],
                             ],
                             'options' => ['class' => 'form-horizontal'],
                 ]); ?>
@@ -68,8 +68,8 @@ $uniqid = Yii::$app->controller->_uniqid;
                     <div class="col-sm-10">
                         <?= Html::textInput('test_email',  '', [
                             'id' => 'test_email_input_' . $uniqid,
-                            'class' => 'form-control', 
-                            'style' => 'width:40%;display:inline', 
+                            'class' => 'form-control',
+                            'style' => 'width:40%;display:inline',
                             'placeholder' => Yii::t('app', 'Fill In The Mail Box'),
                         ]) ?>
 
@@ -83,23 +83,23 @@ $uniqid = Yii::$app->controller->_uniqid;
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">
                         <?= Html::submitButton(Yii::t('app', 'Save') , ['class' => 'btn btn-success']) ?>
-                        
-                        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']);?>                        
+
+                        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']);?>
                     </div>
                 </div>
-                <?php  BAF::end(); ?> 
+                <?php  BAF::end(); ?>
             </div>
         </div>
     </div>
 </div>
 
-<?php 
+<?php
     $testurl = Url::toRoute(['config/test-email']);
     $this->registerJs(<<<EOT
         $("#email-test-btn-$uniqid").on('click', function(){
             jcms.ajax('GET', "$testurl", {email: $("#test_email_input_$uniqid").val()}, 'JSON', function(response){
                 jcms.callback(response.message, response.statusCode, true);
-            });
+            }, false, 1000);
         });
 EOT
 );

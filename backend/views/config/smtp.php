@@ -97,6 +97,7 @@ $uniqid = Yii::$app->controller->_uniqid;
     $testurl = Url::toRoute(['config/test-email']);
     $this->registerJs(<<<EOT
         $("#email-test-btn-$uniqid").on('click', function(){
+            layer.load();
             jcms.ajax('GET', "$testurl", {email: $("#test_email_input_$uniqid").val()}, 'JSON', function(response){
                 jcms.callback(response.message, response.statusCode, true);
             }, false, 1000);

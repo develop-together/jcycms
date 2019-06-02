@@ -100,7 +100,7 @@ $uniqid = Yii::$app->controller->_uniqid;
             layer.load();
             jcms.ajax('GET', "$testurl", {email: $("#test_email_input_$uniqid").val()}, 'JSON', function(response){
                 jcms.callback(response.message, response.statusCode, true);
-            }, false, 1000);
+            }, false, 5000);
         });
 EOT
 );

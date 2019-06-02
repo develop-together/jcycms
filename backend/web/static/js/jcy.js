@@ -6,6 +6,7 @@
                data._csrf_backend = $("meta[name='csrf-token']").attr('content');
             }
             timeout = timeout || 30000;
+            async = async || true;
             var ajaxRequest = jQuery.ajax({
                 type: type,
                 url: url,
@@ -13,21 +14,19 @@
                 async: async,
                 dataType: dataType,
                 timeout: timeout,
-                complete: function(XMLHttpRequest, status) {
-                    if ( 'timeout' == status ) {
-                        ajaxRequest.abort();
-                        swal('Timeout!!', "error");
-                    }
-                },
                 success: function(response) {
-                   console.log('Response Data is: ', response);
+                   // console.log('Response Data is: ', response);
                    // console.log(typeof(callback));return;
                    if (callback && typeof(callback) == 'function') {
                         callback(response);
                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                     swal(tips.error + ': ' + jqXHR.responseJSON.message, tips.operatingFailed + '.', "error");
+                    if ('timeout' === textStatus ) {
+                        swal(tips.error + ': ' + 'timeout!');
+                        return;
+                    }
+                     jqXHR.responseJSON.hasOwnProperty('message') && swal(tips.error + ': ' + jqXHR.responseJSON.message, tips.operatingFailed + '.', "error");
                 }
             });
         }
@@ -50,7 +49,7 @@
                 message = this._null(message) || config[p].message;
             }
             var icon = statusCode == 200 ? 1 : 2;
-            console.log('正确返回后是否关闭layer', closeLayer && statusCode == 200);
+            // console.log('正确返回后是否关闭layer', closeLayer && statusCode == 200);
             var alertIndex = layer.alert(message, {icon: icon}, function(){
                 closeLayer && statusCode == 200 && setTimeout(function () {
                     // parent.layer.closeAll();

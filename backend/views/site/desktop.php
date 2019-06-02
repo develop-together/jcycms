@@ -71,7 +71,7 @@
                     <?php foreach ($readRanking as $key => $read): ?>
                         <li class="list-group-item">
                             <?php
-                                if (0 === $key) {
+                                if (0 === $key && $read->scan_count > 0) {
                                     echo  Html::a($read->title, Url::to(['article/view', 'id' => $read->id]), ['title' => $read->sub_title]) . '<small class="pull-right text-danger"><i class="fa fa-thumbs-up"></i></small> <span class="pull-right badge badge-info">' . $read->scan_count . '</span> ';
                                 } else {
                                     echo Html::a($read->title, Url::to(['article/view', 'id' => $read->id]), ['title' => $read->sub_title]) . '<span class="pull-right badge badge-info">' . $read->scan_count . '</span>';
@@ -103,7 +103,7 @@
                     <?php foreach ($commentRanking as $key => $cr): ?>
                         <li class="list-group-item">
                             <?php
-                                if (0 === $key) {
+                                if (0 === $key $read->comment_count > 0) {
                                     echo  Html::a($cr->title, Url::to(['article/view', 'id' => $cr->id]), ['title' => $cr->sub_title]) . '<small class="pull-right text-danger"><i class="fa fa-heart"></i></small> <span class="pull-right badge badge-info">' . $cr->comment_count . '</span> ';
                                 } else {
                                     echo Html::a($cr->title, Url::to(['article/view', 'id' => $cr->id]), ['title' => $cr->sub_title]) . '<span class="pull-right badge badge-info">' . $cr->comment_count . '</span>';

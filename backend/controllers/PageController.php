@@ -3,7 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\pageArticle;
+use backend\models\PageArticle;
 use backend\models\search\pageSearch;
 use common\components\BackendController;
 use backend\actions\DeleteAction;
@@ -20,7 +20,7 @@ class PageController extends BackendController
         return [
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => pageArticle::className(),
+                'modelClass' => PageArticle::className(),
             ],
         ];
     }
@@ -60,7 +60,7 @@ class PageController extends BackendController
      */
     public function actionCreate()
     {
-        $model = new pageArticle();
+        $model = new PageArticle();
 
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
@@ -128,7 +128,7 @@ class PageController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = pageArticle::findOne($id)) !== null) {
+        if (($model = PageArticle::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

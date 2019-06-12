@@ -51,7 +51,7 @@
     <div class="news">
     <?= ArticleListView::widget([
         'dataProvider' => new ArrayDataProvider([
-            'allModels' => Article::find()->limit(8)->orderBy(['created_at' => SORT_DESC])->all(),
+            'allModels' => Article::find()->article()->limit(8)->orderBy(['created_at' => SORT_DESC])->all(),
          ]),
         'layout' => '<h3><p>' . Yii::t('frontend', 'Newest') . '<span>' . Yii::t('frontend', 'Article') . '</span></p></h3><ul class="rank">{items}</ul>',
         'template' => '<a href="{viewUrl}" title="{title}">{title}</a>',
@@ -59,7 +59,7 @@
     ]) ?>
     <?= ArticleListView::widget([
         'dataProvider' => new ArrayDataProvider([
-            'allModels' => Article::find()->limit(6)->orderBy(['scan_count' => SORT_DESC])->all(),
+            'allModels' => Article::find()->article()->limit(6)->orderBy(['scan_count' => SORT_DESC])->all(),
          ]),
         'layout' => '<h3 class="ph"><p>' . Yii::t('frontend', 'click') . '<span>' . Yii::t('frontend', 'Ranking') . '</span></p></h3><ul class="paih">{items}</ul>',
         'template' => '<a href="{viewUrl}" title="{title}">{title}</a>',

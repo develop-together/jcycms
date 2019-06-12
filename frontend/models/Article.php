@@ -30,20 +30,21 @@ class Article extends \common\models\Article
     // updateAllCounters
     public function updateScanCount()
     {
-        $key = 'article_scan_count_' . $this->id;
-        $cacheCount = Yii::$app->cache->get($key);
-        if ($cacheCount === null) {
-            Yii::$app->cache->set($key, 1);//$this->scan_count +
-            return true;
-        }
+        // $key = 'article_scan_count_' . $this->id;
+        // $cacheCount = Yii::$app->cache->get($key);
+        // if ($cacheCount === null) {
+        //     Yii::$app->cache->set($key, 1);//$this->scan_count +
+        //     return true;
+        // }
 
-        if ($cacheCount >= self::MAX_CACHE_COUNT) {
-            $this->updateCounters(['scan_count' => $cacheCount]);
-            Yii::$app->getCache()->delete($key);
-            return true;
-        }
+        // if ($cacheCount >= self::MAX_CACHE_COUNT) {
+        //     $this->updateCounters(['scan_count' => $cacheCount]);
+        //     Yii::$app->getCache()->delete($key);
+        //     return true;
+        // }
 
-        Yii::$app->cache->set($key, $cacheCount + 1);
+        // Yii::$app->cache->set($key, $cacheCount + 1);
+        $this->updateCounters(['scan_count' => $this->scan_count ? $this->scan_count + 1 : 1]);
         return true;
     }
 

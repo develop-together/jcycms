@@ -60,8 +60,8 @@ class PageController extends BackendController
      */
     public function actionCreate()
     {
-        $model = new Article();
-        $model->type = Article::SINGLE_PAGE;
+        $model = new pageArticle();
+
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
             // $model->setScenario('page');
@@ -128,7 +128,7 @@ class PageController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Article::findOne($id)) !== null) {
+        if (($model = pageArticle::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -26,4 +26,13 @@ class PageArticle extends \common\models\Article
             ]
         ];
     }
+
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            $this->type = Parent::SINGLE_PAGE;
+        }
+
+        return parent::beforeSave($insert);
+    }
 }

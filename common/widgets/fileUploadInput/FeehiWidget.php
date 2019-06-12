@@ -95,7 +95,7 @@ class FeehiWidget extends InputWidget
 			'multiple' => $this->multiple,
 			'style' => 'max-width: ' . $maxWidth . '; max-height: ' . $maxHeight . '; display: none;',
 		]);
-		$content .= '<div class="input-append input-group"><span class="input-group-btn"><button class="btn btn-white" type="button">选择文件</button></span><input class="input-large form-control filename_lists" type="text" readonly placeHolder="' . $this->placeHolder . '" value="' . rtrim($inputValue, '、') . '" ></div>' . $imgHtml;// . '<div class="help-block m-b-none"></div>'
+		$content .= '<div class="input-append input-group"><span class="input-group-btn"><button class="btn btn-white" type="button">选择文件</button></span><input class="input-large form-control filename_lists" type="text" readonly placeHolder="' . $this->placeHolder . '" value="' . rtrim($inputValue, '、') . '" ></div><div>' . $imgHtml . '</div>';// . '<div class="help-block m-b-none"></div>'
 		$content .= Html::endTag('div');
 
 		return $content;

@@ -4,7 +4,7 @@ namespace backend\components;
 use Yii;
 use backend\models\AdminLog as AdminLogModel;
 
-class AdminLog extends \yii\base\Object
+class AdminLog extends \yii\base\BaseObject
 {
     /**
      * 数据库新增保存日志

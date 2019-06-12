@@ -98,9 +98,4 @@ class Article extends \common\models\Article
             ->limit($limit)
             ->all();
     }
-
-    public function getTagFormat()
-    {
-        return explode(',', $this->tag);
-    }
 }

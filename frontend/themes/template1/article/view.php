@@ -74,7 +74,13 @@
 				<?= $model->content ?>
 			</div>
 		    <div class="keybq">
-		    	<p><span><?= Yii::t('frontend', 'Keywords') ?></span>：<?= $model->tag ?></p>
+		    	<p><span><?= Yii::t('frontend', 'Keywords') ?></span>：
+					<?php if ($model->tagFormat): ?>
+                        <?php foreach ($model->tagFormat as $tag): ?>
+                            <a href="<?= Url::to(['article/tags', 'tag' => $tag]) ?>" target="_self"><?= $tag ?></a>
+                        <?php endforeach ?>
+					<?php endif ?>
+		    	</p>
 		    </div>
 		    <div class="ad"> </div>
 			<div class="nextinfo">

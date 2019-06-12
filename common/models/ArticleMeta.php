@@ -81,21 +81,22 @@ class ArticleMeta extends \common\components\BaseModel
         return $this->hasOne(Article::className(), ['id' => 'aid']);
     }
 
-    public function getTagsByArticle(int $aid)
+    public function getTagsByArticle(int $aid): array
     {
         $data = self::find()->select(['value'])->where(['key' => $this->keyName, 'aid' => $aid])->asArray()->all();
-        if (! $data) {
-            return [];
-        }
+        return ! $data ? [] : ArrayHelper::getColumn($data, 'value');
+    }
 
-        return ArrayHelper::getColumn($data, 'value');
+    public static function getArticleByTag(string $keyName, string $tag): array
+    {
+        $data = self::find()->select(['aid'])->where(['key' => $keyName, 'value' => $tag])->asArray()->all();
+        return ! $data ? [] : ArrayHelper::getColumn($data, 'aid');
     }
 
     public function setArticleTags($aid, $tags)
     {
-        if (! $tags) {
-            $tags = [];
-        } elseif (is_string($tags)) {
+        $tags = !$tags && [];
+        if (is_string($tags)) {
             $tags = str_replace('，', ',', $tags);
             $tags = explode(',', $tags);
         }

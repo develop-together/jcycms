@@ -59,6 +59,17 @@ class ArticleController extends FrontendController
 		]);
 	}
 
+    public function actionTags($tag)
+    {
+        $serarchModel = new ArticleSearch();
+        $dataProvider = $serarchModel->tagSearch(Yii::$app->request->getQueryParams(), $tag);
+        return $this->render('list', [
+            'serarchModel' => $serarchModel,
+            'tag' => $tag,
+            'dataProvider' => $dataProvider
+        ]);        
+    }
+
     public function actionView($id)
     {
         // Yii::$app->getUser()->setReturnUrl(['article/view', 'id' => $id]);

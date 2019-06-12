@@ -53,3 +53,5 @@
 	3、使用 nodejs、workerman、swoole、go构建webIM服务
 	4、使用 nodejs创建http服务器，实现代码压缩
 	5、后台引入markdown、CodeMirror
+#2019-06-12
+	1、引入webuploader并实现大文件分片、断点续传

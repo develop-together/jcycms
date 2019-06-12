@@ -261,6 +261,11 @@ class Article extends \common\components\BaseModel
         return $this->scan_count + $cacheCount;
     }
 
+    public function getTagFormat()
+    {
+        return explode(',', $this->tag);
+    }
+    
     /**
      * @inheritdoc
      */

@@ -6,7 +6,8 @@
   use frontend\models\Article;
   use frontend\models\FriendLink;
   use yii\data\ArrayDataProvider;
-  $this->title = $cate->name;
+  $tag = empty($tag) ? 'None Tag' : $tag;
+  $this->title = !empty($cate) ? $cate->name : $tag;
   $this->params['breadcrumbs'] = [
     [
       'label' => Yii::t('frontend', 'Home'),
@@ -20,7 +21,7 @@
  <article class="blogs">
      <?= $this->render('/widgets/_navigation') ?>
      <?= ArticleListView::widget([
-        'titler' => '<h2 class="title_tj"><p>' . $cate->name . '</p></h2>',
+        'titler' => '<h2 class="title_tj"><p>' . $this->title . '</p></h2>',
         'dataProvider' => $dataProvider
       ]); ?>
   <aside class="right">

@@ -189,9 +189,10 @@ class BaseModel extends \yii\db\ActiveRecord
             $baseName = $upload->baseName;
             $extension = $upload->extension;
             $uniqid = time() . '-' . uniqid();
-            if (Utils::chinese($baseName)) {
-                $baseName = iconv('UTF-8', 'GBK', $baseName);
-            }
+            // if (Utils::chinese($baseName)) {
+            //     $baseName = iconv('UTF-8', 'GBK', $baseName);
+            //     $baseName = mb_convert_encoding($basename, 'UTF-8', 'GBK');
+            // }
 
             $fullName = $uploadPath . $uniqid . '_' . $baseName . '.' . $extension;
             $filename = $uploadPath . $uniqid . '_' . $upload->baseName . '.' . $extension;

@@ -81,7 +81,8 @@ class FeehiWidget extends InputWidget
 				$imgHtml .=  '<img src="' . $src . '" alt="" style="max-width:' . $maxWidth . ';max-height:' . $maxHeight . '; display: block;float: left;padding-right: 5px;" class="mutil_image" data-file-id="' . $key . '">';
 				$inputValue .= $value->filename . '、';
 			}
-			array_walk($this->value, 'createHtml');
+
+			array_walk($this->value, "createHtml", $maxWidth, $maxHeight);
 		} else {
 			$src = Yii::$app->request->baseUrl . (!empty($this->value) ? '/' . $this->value : '/static/img/none.jpg');
 			$imgHtml = '<img src="' . $src . '" alt="" style="max-width:' . $maxWidth . ';max-height:' . $maxHeight . '" class="none_image">';

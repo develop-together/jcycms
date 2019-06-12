@@ -18,9 +18,9 @@ class ImageHelper
 	{
 		$info = pathinfo($imgPath);
 		$oldFilename = $info['filename'];
-        if (Utils::chinese($info['filename'])) {
-            $info['filename'] = iconv('UTF-8', 'GBK', $info['filename']);
-        }
+        // if (Utils::chinese($info['filename'])) {
+        //     $info['filename'] = iconv('UTF-8', 'GBK', $info['filename']);
+        // }
 
         $dirname = $info['dirname'] . '/thumb/';
         if (!is_dir($dirname)) {

@@ -379,7 +379,7 @@ class ServerInfo
         $arrProp = $objWEBM->Properties_;
         $arrWEBMCol = $objWEBM->Instances_();
         foreach ($arrWEBMCol as $objItem) {
-            @reset($arrProp);
+            is_array($arrProp) && @reset($arrProp);
             $arrInstance = array();
             foreach ($arrProp as $propItem) {
                 eval("\$value = \$objItem->" . $propItem->Name . ";");
@@ -393,6 +393,7 @@ class ServerInfo
             }
             $arrData[] = $arrInstance;
         }
+
         return $arrData;
     }
 }

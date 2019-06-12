@@ -65,7 +65,7 @@ class SiteController extends BackendController
 				'url' => Url::to(['friend-link/index']),
 				'countNumber' => friendLink::find()->count('id'),
 			],
-		];
+		];		
 		$countData['article']['proportion'] = $countData['article']['countNumber'] == 0 ? 0 : number_format(
 				Article::find()
 					->article()
@@ -81,7 +81,6 @@ class SiteController extends BackendController
 						strtotime(date('Y-m-01')),
 						strtotime(date('Y-m-01 23:59:59') . " +1 month -1 day")
 					])->count('id') / $countData['friendLink']['countNumber'] * 100, 2);
-
 		// 系统运行环境信息Environment
 		$dbInfo = 'Unknown';
 		$driverName = strtolower(Yii::$app->getDb()->driverName);
@@ -114,7 +113,6 @@ class SiteController extends BackendController
                 'percentage' => $serverInfo['memRealPercent'] . '%',
             ],
 		];
-
 		// 当周新增数量统计图
 		$echartsData = $xAxis = $articleData = $frontendUserData = [];
 		$echartsData['legend'] = [Yii::t('app', 'Articles'), Yii::t('app', 'Users')];

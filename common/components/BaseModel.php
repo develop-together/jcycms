@@ -220,10 +220,7 @@ class BaseModel extends \yii\db\ActiveRecord
             }
 
             $clipping_img = \common\models\Config::getClippingImg();
-            var_dump(self::tableName() === "{{%article}}");
-            var_dump($this->hasAttribute('thumb'));
-            var_dump($clipping_img === 1);
-            if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb') && $clipping_img === 1) {
+            if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb') && $fullName && $clipping_img === 1) {
                 $relativePath = ImageHelper::thumbnail($fullName, $this->width, $this->height);
                 file_exists($fullName) && @unlink($fullName);
             }

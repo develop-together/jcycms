@@ -48,7 +48,7 @@ $this->title = Yii::t('app', 'Article');
 			                            'enableSorting' => false,
 			                            'value' => function ($model, $key, $index, $column) {
 			                                return Html::a($model->title, 'javascript:void(0)', [
-			                                    'title' => Yii::$app->request->baseUrl . '/' . $model->thumb,
+			                                    'title' => $model->thumb ? Yii::$app->request->baseUrl . '/' . $model->thumb : '',
 			                                    'class' => 'title'
 			                                ]);
 			                            }

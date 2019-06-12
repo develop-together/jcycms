@@ -75,14 +75,11 @@ class FeehiWidget extends InputWidget
 
 		if (is_array($this->value)) {
 			$inputValue = '';
-			function createHtml($value, $key, $maxWidth, $maxHeight)
-			{
+			array_walk($this->value, function($value) use (&$inputValue, $maxWidth, $maxHeight) {
 				$src = Yii::$app->request->baseUrl . (!empty($value->filepath) ? '/' . $value->filepath : '/static/img/none.jpg');
-				$imgHtml .=  '<img src="' . $src . '" alt="" style="max-width:' . $maxWidth . ';max-height:' . $maxHeight . '; display: block;float: left;padding-right: 5px;" class="mutil_image" data-file-id="' . $key . '">';
+				$imgHtml .=  '<img src="' . $src . '" alt="" style="max-width:' . $maxWidth . ';max-height:' . $maxHeight . ';    display: block;float: left;padding-right: 5px;" class="mutil_image" data-file-id="' . $key . '">';
 				$inputValue .= $value->filename . '、';
-			}
-
-			array_walk($this->value, "createHtml", $maxWidth, $maxHeight);
+			});
 		} else {
 			$src = Yii::$app->request->baseUrl . (!empty($this->value) ? '/' . $this->value : '/static/img/none.jpg');
 			$imgHtml = '<img src="' . $src . '" alt="" style="max-width:' . $maxWidth . ';max-height:' . $maxHeight . '" class="none_image">';

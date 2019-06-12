@@ -87,11 +87,20 @@ $this->title = Yii::$app->jcore->system_name;
 					rolltoBtn.style.display = 'none';
 				}
 			}
+
 			$(".switch-author").bind('click', function () {
 				$("#loginModal").show();
 				$(".modal-backdrop").addClass('in');
 				$(".modal-backdrop").show();
-			})
+			});
+
+			//close loginModal
+			$("#login_close").on('click', function() {
+				$("#loginModal").hide();
+				$(".modal-backdrop").removeClass('in');
+				$(".modal-backdrop").hide();
+			});
+
 			document.getElementById('rolltoBtn').onclick = function(event) {
 				var scrolltop = document.documentElement.scrollTop || document.body.scrollTop;
 				var speed = 500;

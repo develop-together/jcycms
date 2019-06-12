@@ -364,12 +364,17 @@ $(document).ready(function(){
         // console.log('value is:', $('input.filename_lists').val());
         var fileContents = !that.parent('div').find('input.filename_lists').val() ? '' : that.parent('div').find('input.filename_lists').val();
         var file = null;
-        for(var p in files) {
-            file = files[p];
-            if(typeof(file) == 'object') {
-                fileContents += file.name + '、';
-                reloadImageList(that, file);
-            }
+        if (files) {
+            that.parent('div').find('img.none_image').hide();
+            for (var p in files) {
+                file = files[p];
+                if(typeof(file) == 'object') {
+                    fileContents += file.name + '、';
+                    reloadImageList(that, file);
+                }
+            }            
+        } else {
+            that.parent('div').find('img.none_image').show();
         }
 
         that.parents("div.image").children("div.input-append").children("input[type='text']").val(fileContents.substr(0, fileContents.length-1));

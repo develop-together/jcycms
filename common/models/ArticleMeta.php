@@ -95,7 +95,7 @@ class ArticleMeta extends \common\components\BaseModel
 
     public function setArticleTags($aid, $tags)
     {
-        $tags = $tags || [];
+        !$tags && $tags = [];
         if (is_string($tags)) {
             $tags = str_replace('，', ',', $tags);
             $tags = explode(',', $tags);

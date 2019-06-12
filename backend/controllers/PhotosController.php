@@ -61,8 +61,8 @@ class PhotosController extends BackendController
      */
     public function actionCreate()
     {
-        $model = new Article();
-        $model->type = Article::PHOTOS_PAGE;
+        $model = new PhotosArticle();
+        // $model->type = Article::PHOTOS_PAGE;
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
 
@@ -124,7 +124,7 @@ class PhotosController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Article::findOne($id)) !== null) {
+        if (($model = PhotosArticle::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

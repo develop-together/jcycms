@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * @Authors jiechengyang (2064320087@qq.com)
  * @Link    http://www.boomyang.cn
  * @addTime    2019-01-28 11:11:20
@@ -95,7 +95,7 @@ class ArticleMeta extends \common\components\BaseModel
 
     public function setArticleTags($aid, $tags)
     {
-        $tags = !$tags && [];
+        $tags = $tags || [];
         if (is_string($tags)) {
             $tags = str_replace('，', ',', $tags);
             $tags = explode(',', $tags);
@@ -109,7 +109,7 @@ class ArticleMeta extends \common\components\BaseModel
             $model = new self(['key' => $this->keyName, 'aid' => $aid, 'value' => $value]);
             $model->save();
         }
-        
+
         if ($removeTags) {
             self::deleteAll(['value' => $removeTags, 'key' => $this->keyName, 'aid' => $aid]);
         }

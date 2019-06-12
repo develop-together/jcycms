@@ -74,7 +74,7 @@ class FeehiWidget extends InputWidget
 		}
 
 		if (is_array($this->value)) {
-			var_dump($this->value);exit;
+			$inputValue = '';
 			array_walk(function($value) {
 				$src = Yii::$app->request->baseUrl . (!empty($value->filepath) ? '/' . $value->filepath : '/static/img/none.jpg');
 				$imgHtml .=  '<img src="' . $src . '" alt="" style="max-width:' . $maxWidth . ';max-height:' . $maxHeight . ';    display: block;float: left;padding-right: 5px;" class="mutil_image" data-file-id="' . $key . '">';

@@ -62,8 +62,8 @@
 <article class="blogs" >
 	<?= $this->render('/widgets/_navigation') ?>
  	<div class="index_about">
- 		<?php if ($this->beginCache('cache_div', ['duration' => 3600 * 24, 'dependency' => $dependency,'enabled' => true])): ?>
-		<div id="cache_div">
+ 		<?php if ($this->beginCache('cache_div_' . $model->id, ['duration' => 3600 * 24, 'dependency' => $dependency, 'enabled' => true])): ?>
+		<div id="cache_div_<?= $model->id ?>">
 			<h2 class="c_titile"><?= $model->title ?></h2>
 			<p class="box_c">
 				<span class="d_time"><?= Yii::t('frontend', 'Created At') ?>：<?= $model->created_at ?></span>

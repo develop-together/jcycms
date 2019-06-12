@@ -44,7 +44,10 @@ class PhotosArticle extends \common\models\Article
             return false;
         }
 
-        $this->type = parent::PHOTOS_PAGE;
+        if ($insert) {
+            $this->type = parent::PHOTOS_PAGE;
+        }
+        
         $uploaded = $this->uploadMultiple('photo_file_ids', '@original/' . date('Ymd') . '/');
         $this->photo_file_ids = implode(',', $uploaded);
         if($this->getOldAttribute('photo_file_ids')) {

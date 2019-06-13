@@ -80,7 +80,7 @@
 					 ?>
 				</span>
 				<span><?= Yii::t('frontend', 'Author') ?>：<?= $model->user->penname ?></span>
-				<span><?= Yii::t('frontend', 'View count')?>：<b id="scan_count" style="display: none"><?= $this->renderDynamic("\"return \"$model->getScan_count()\";") ?></b></span>
+				<span><?= Yii::t('frontend', 'View count')?>：<b id="scan_count" style="display: none"><?= $this->renderDynamic("return $model->getScan_count();") ?></b></span>
 			</p>
 			<div class="infos">
 				<?= $model->content ?>

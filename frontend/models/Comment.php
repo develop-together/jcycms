@@ -66,4 +66,10 @@ class Comment extends CommonComment
 		}
 	}
 
+	public function afterFind()
+	{
+		parent::afterFind();
+        $this->created_at = Utils::tranDateTime($this->created_at);
+	}
+
 }

@@ -41,7 +41,13 @@ $this->params['breadcrumbs'] = [
                         'like_count',
                         'repeat_count',
                         'contents:raw',
-                        'created_at',
+                        [
+                            'attribute' => 'created_at',
+                            'value' => function ($model) {
+                                return $model->created_at_format;
+                            }
+                        ],
+                        'updated_at:datetime'
                     ],
 ]) ?>
             </div>

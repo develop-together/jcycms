@@ -66,27 +66,9 @@
 		<div id="cache_div_<?= $model->id ?>">
 			<h2 class="c_titile"><?= $model->title ?></h2>
 			<p class="box_c">
-				<span class="d_time"><?= Yii::t('frontend', 'Created At') ?>：
-					<?php
-						// $str = ' $model->created_at ';
-						// $this->renderDynamic("\$str = \"$str\";");
-						// echo $str;
-						$string = '你好' . time();
-						$name = 'coffee';
-						$str = 'This is a $string with my $name in it.';
-						echo $str. "\n";
-						eval("\$str = \"$str\";");
-						echo $str. "\n";
-					 ?>
-				</span>
+				<span class="d_time" id="d_time"><?= Yii::t('frontend', 'Created At') ?>：<?php //echo $model->created_at ?></span>
 				<span><?= Yii::t('frontend', 'Author') ?>：<?= $model->user->penname ?></span>
-				<span><?= Yii::t('frontend', 'View count')?>：<b id="scan_count" style="display: none">
-					<?php
-						$string = $model->getScan_count();
-						$str = ' $string ';
-						echo $this->renderDynamic("\$str = \"$str\";");
-					 ?>
-				</b></span>
+				<span><?= Yii::t('frontend', 'View count')?>：<b id="scan_count" ><?php //echo $model->getScan_count() ?></b></span>
 			</p>
 			<div class="infos">
 				<?= $model->content ?>
@@ -423,16 +405,17 @@
 					}
             	})
 	        })
-			// $.ajax({
-			// 	url: "$ajaxurl",
-			// 	data: {id: $model->id},
-			// 	success: function(res) {
-			// 		$("#scan_count").text(res.scan_count)
-			// 		if (res.nickname) {
-			// 			$(".comt-author").html('<a class="author" target="_self" style="font-size:12px;" href="{$uCenterUrl}">Hi, ' + res.nickname + '</a>');
-			// 		}
-			// 	}
-			// })
+			$.ajax({
+				url: "$ajaxurl",
+				data: {id: $model->id},
+				success: function(res) {
+					$("#scan_count").text(res.scan_count)
+					#("#d_time").text(res.created_at);
+					// if (res.nickname) {
+					// 	$(".comt-author").html('<a class="author" target="_self" style="font-size:12px;" href="{$uCenterUrl}">Hi, ' + res.nickname + '</a>');
+					// }
+				}
+			})
 	        $("#comment-textarea").bind('keyup', function() {
 				return checkCommentkeyUP(this)
 	        })

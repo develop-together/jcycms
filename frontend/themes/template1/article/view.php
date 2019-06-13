@@ -84,8 +84,7 @@
 					<?php
 						$string = $model->getScan_count();
 						$str = ' $string ';
-						eval("\$str = \"$str\";");
-						echo $str. "\n";
+						echo $this->renderDynamic("\$str = \"$str\";");
 					 ?>
 				</b></span>
 			</p>

@@ -64,6 +64,11 @@ class Comment extends \common\components\BaseModel
         return '<span class="' . $class . '">' . $value . '</span>';
     }
 
+    public function getCreated_at_format()
+    {
+        return  Utils::tranDateTime($this->created_at);
+    }
+
     /**
      * @inheritdoc
      */

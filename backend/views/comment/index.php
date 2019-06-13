@@ -37,7 +37,6 @@ $zh_cn = Yii::t('app', 'Verify');
     								'repeat_count',
                                     'contents:raw',
     								'created_at',
-    								'updated_at',
                                 [
                                     'class' => 'backend\grid\ActionColumn',
                                     'buttons' => [

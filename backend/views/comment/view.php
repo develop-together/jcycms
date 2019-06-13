@@ -42,7 +42,6 @@ $this->params['breadcrumbs'] = [
                         'repeat_count',
                         'contents:raw',
                         'created_at',
-                        'updated_at',
                     ],
 ]) ?>
             </div>

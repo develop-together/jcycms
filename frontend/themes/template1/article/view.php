@@ -68,9 +68,15 @@
 			<p class="box_c">
 				<span class="d_time"><?= Yii::t('frontend', 'Created At') ?>：
 					<?php
-						$str = ' $model->created_at ';
-						$this->renderDynamic("\$str = \"$str\";");
-						echo $str;
+						// $str = ' $model->created_at ';
+						// $this->renderDynamic("\$str = \"$str\";");
+						// echo $str;
+						$string = '你好' . time();
+						$name = 'coffee';
+						$str = 'This is a $string with my $name in it.';
+						echo $str. "\n";
+						eval("\$str = \"$str\";");
+						echo $str. "\n";
 					 ?>
 				</span>
 				<span><?= Yii::t('frontend', 'Author') ?>：<?= $model->user->penname ?></span>

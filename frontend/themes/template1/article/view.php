@@ -163,7 +163,7 @@
 											<p class="username"><?= $comment->nickname ?></p>
 											<p class="comment-body"><?= $comment->contents ?></p>
 											<p class="comment-footer">
-												<div style="float:left;padding-right: 5px;"><?= $comment->created_at ?></div>
+												<div style="float:left;padding-right: 5px;"><?= $comment->created_at_format ?></div>
 												<div style="float:left;padding-right: 5px;cursor: pointer;" class="comment-hf hf-con-block" data-aid="<?= $comment->article_id ?>" data-id="<?= $comment->id ?>" data-addcommented="0"><?= $i18n6 ?></div>　
 												<div style="float:left;padding-right: 5px;" class="date-dz-z" data-submited="0" data-id="<?= $comment->id ?>"><i class="date-dz-z-click-red"></i><?= $i18n7 ?> (<i class="z-num"><?= $comment->like_count ?></i>)</div>
 												<div style="float:left;"><?= $i18n8 ?> <?= $comment->repeat_count ?></div>
@@ -181,7 +181,7 @@
 																<p class="username"><?= $value->nickname ?></p>
 																<p class="comment-body"><?= $value->contents ?></p>
 																<p class="comment-footer">
-																	<div style="float:left;padding-right: 5px;"><?= $value->created_at ?></div>
+																	<div style="float:left;padding-right: 5px;"><?= $value->created_at_format ?></div>
 																	<div style="float:left;padding-right: 5px;cursor: pointer;" class="comment-hf hf-con-block" data-aid="<?= $value->article_id ?>" data-id="<?= $value->id ?>" data-addcommented="0"><?= $i18n6 ?></div>　
 																	<div style="float:left;padding-right: 5px;" class="date-dz-z" data-id="<?= $value->id ?>" data-submited="0"><i class="date-dz-z-click-red"></i><?= $i18n7 ?> (<i class="z-num"><?= $value->like_count ?></i>)</div>
 																	<div style="float:left;"><?= $i18n8 ?> <?= $value->repeat_count ?></div>

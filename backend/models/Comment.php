@@ -11,7 +11,7 @@ class Comment extends \common\models\Comment
 	public function scenarios()
 	{
 		return ArrayHelper::merge(parent::scenarios(), [
-			'audit' => ['status', 'created_at', 'updated_at']
+			'audit' => ['status', 'updated_at']
 		]);
 	}
 }

@@ -45,7 +45,7 @@ class Comment extends CommonComment
 					'id' => $this->id,
 					'article_id' => $this->article_id,
 					'username' => $this->nickname,
-					'create_time' => $this->created_at,//Utils::tranDateTime(),
+					'create_time' => $this->created_at_format,//Utils::tranDateTime(),
 					'avator' => $this->getAvator(),
 					'like_count' => $this->like_count,
 					'content' => $this->contents,

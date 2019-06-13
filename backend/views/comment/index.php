@@ -42,7 +42,7 @@ $zh_cn = Yii::t('app', 'Verify');
                                             return $model->created_at_format;
                                         }
                                     ],
-                                    'updated_at:datetime'
+                                    'updated_at:datetime',
                                 [
                                     'class' => 'backend\grid\ActionColumn',
                                     'buttons' => [

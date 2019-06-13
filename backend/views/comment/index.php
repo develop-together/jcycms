@@ -86,7 +86,7 @@ $zh_cn = Yii::t('app', 'Verify');
                             setTimeout(function() {
                                 location.reload();
                             }, 300)
-                        })
+                        }, 'json')
 
                     }
                     // ,btn2: function(index, layero){

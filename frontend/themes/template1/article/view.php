@@ -68,8 +68,8 @@
 			<p class="box_c">
 				<span class="d_time"><?= Yii::t('frontend', 'Created At') ?>：
 					<?php
-						$str = '$model->created_at';
-						$this->renderDynamic("$str = "$str";");
+						$str = ' $model->created_at ';
+						$this->renderDynamic("\$str = \"$str\";");
 						echo $str;
 					 ?>
 				</span>

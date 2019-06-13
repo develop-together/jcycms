@@ -410,7 +410,7 @@
 				data: {id: $model->id},
 				success: function(res) {
 					$("#scan_count").text(res.scan_count)
-					#("#d_time").text(res.created_at);
+					$("#d_time").text(res.created_at);
 					// if (res.nickname) {
 					// 	$(".comt-author").html('<a class="author" target="_self" style="font-size:12px;" href="{$uCenterUrl}">Hi, ' + res.nickname + '</a>');
 					// }

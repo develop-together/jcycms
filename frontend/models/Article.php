@@ -44,7 +44,8 @@ class Article extends \common\models\Article
         // }
 
         // Yii::$app->cache->set($key, $cacheCount + 1);
-        $this->updateCounters(['scan_count' => $this->scan_count ? $this->scan_count + 1 : 1]);
+        $this->updateCounters(['scan_count' => 1]);
+        // $this->scan_count ? $this->scan_count + 1 : 1
         return true;
     }
 

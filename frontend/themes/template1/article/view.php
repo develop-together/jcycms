@@ -66,7 +66,13 @@
 		<div id="cache_div_<?= $model->id ?>">
 			<h2 class="c_titile"><?= $model->title ?></h2>
 			<p class="box_c">
-				<span class="d_time"><?= Yii::t('frontend', 'Created At') ?>：<?= $this->renderDynamic("\"return \"$model->created_at\";") ?></span>
+				<span class="d_time"><?= Yii::t('frontend', 'Created At') ?>：
+					<?php
+						$str = "$model->created_at";
+						$this->renderDynamic("$str = "$str";");
+						echo $str;
+					 ?>
+				</span>
 				<span><?= Yii::t('frontend', 'Author') ?>：<?= $model->user->penname ?></span>
 				<span><?= Yii::t('frontend', 'View count')?>：<b id="scan_count" style="display: none"><?= $this->renderDynamic("\"return \"$model->getScan_count()\";") ?></b></span>
 			</p>

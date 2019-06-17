@@ -5,7 +5,7 @@ return [
     /* 执行上传图片的action名称 */
     "imageFieldName"          => "upfile",
     /* 提交的图片表单名称 */
-    "imageMaxSize"            => 2048000,
+    "imageMaxSize"            => 3072000,
     /* 上传大小限制，单位B */
     "imageAllowFiles"         => [
         ".png",
@@ -45,7 +45,7 @@ return [
     /* 提交的图片表单名称 */
     "scrawlPathFormat"        => "/ueditor/php/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}",
     /* 上传保存路径,可以自定义保存路径和文件名格式 */
-    "scrawlMaxSize"           => 2048000,
+    "scrawlMaxSize"           => 3072000,
     /* 上传大小限制，单位B */
     "scrawlUrlPrefix"         => "",
     /* 图片访问路径前缀 */
@@ -74,7 +74,7 @@ return [
     /* 上传保存路径,可以自定义保存路径和文件名格式 */
     "catcherUrlPrefix"        => "",
     /* 图片访问路径前缀 */
-    "catcherMaxSize"          => 2048000,
+    "catcherMaxSize"          => 3072000,
     /* 上传大小限制，单位B */
     "catcherAllowFiles"       => [
         ".png",

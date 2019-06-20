@@ -64,6 +64,11 @@ class Comment extends \common\components\BaseModel
         return '<span class="' . $class . '">' . $value . '</span>';
     }
 
+    public function getCreated_at_format()
+    {
+        return  Utils::tranDateTime($this->created_at);
+    }
+
     /**
      * @inheritdoc
      */
@@ -164,7 +169,6 @@ class Comment extends \common\components\BaseModel
             $emotions = Json::decode(Yii::$app->cache->get('__comment_emotions'), true);
         }
 
-        $this->created_at = Utils::tranDateTime($this->created_at);
         $this->contents = preg_replace_callback("/\[.*?\]/i", function($matches) use ($emotions) {
             foreach ($matches as &$match) {
                 $match = isset($emotions[$match]) ? "<img src=\"{$emotions[$match]}\" height=\"22\" width=\"22\" />" : $match;

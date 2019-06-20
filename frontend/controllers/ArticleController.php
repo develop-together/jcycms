@@ -67,7 +67,7 @@ class ArticleController extends FrontendController
             'serarchModel' => $serarchModel,
             'tag' => $tag,
             'dataProvider' => $dataProvider
-        ]);        
+        ]);
     }
 
     public function actionView($id)
@@ -101,6 +101,7 @@ class ArticleController extends FrontendController
 
         return [
             'scan_count' => $model->getScan_count(),
+            'created_at' => $model->created_at,
             'nickname' => Yii::$app->getUser()->getIsGuest() ? '' : Yii::$app->getUser()->identity->username
         ];
     }

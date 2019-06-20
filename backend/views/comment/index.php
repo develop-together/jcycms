@@ -36,8 +36,13 @@ $zh_cn = Yii::t('app', 'Verify');
     								'like_count',
     								'repeat_count',
                                     'contents:raw',
-    								'created_at',
-    								'updated_at',
+                                    [
+                                        'attribute' => 'created_at',
+                                        'value' => function ($model) {
+                                            return $model->created_at_format;
+                                        }
+                                    ],
+                                    'updated_at:datetime',
                                 [
                                     'class' => 'backend\grid\ActionColumn',
                                     'buttons' => [
@@ -81,13 +86,13 @@ $zh_cn = Yii::t('app', 'Verify');
                             if ( 200 === res.code ) {
                                 layer.msg(res.message, {icon: 6});
                             } else {
-                                layer.msg(res.message, {icon: 5});
+                                layer.msg(res.message ? res.message : "审核失败", {icon: 5});
                             }
                             layer.closeAll('loading');
                             setTimeout(function() {
                                 location.reload();
                             }, 300)
-                        })
+                        }, 'json')
 
                     }
                     // ,btn2: function(index, layero){

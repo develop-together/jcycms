@@ -36,7 +36,7 @@
 		public $acceptFileTypes;
 
 		//删除上传附件的URL
-		public $deleteUrl = ['/upload/delete'];
+		public $deleteUrl = 'upload/delete';
 
 		public $fileInputName;
 
@@ -51,9 +51,9 @@
 	        parent::init();
 	        if (empty($this->url)) {
 	            if ($this->onlyImage === false) {
-	                $this->url = $this->multiple ? ['/upload/backend-files-upload'] : ['/upload/file-upload'];
+	                $this->url = $this->multiple ? 'upload/backend-files-upload' : 'upload/file-upload';
 	            } else {
-	                $this->url = $this->multiple ? ['/upload/images-upload'] : ['/upload/image-upload'];
+	                $this->url = $this->multiple ? 'upload/images-upload' : 'upload/image-upload';
 	                $this->acceptFileTypes = 'image/png, image/jpg, image/jpeg, image/gif, image/bmp';
 	            }
 	        }
@@ -61,34 +61,16 @@
 	        if ($this->hasModel()) {
 	            $this->name = $this->name ? : Html::getInputName($this->model, $this->attribute);
 	            $this->attribute = Html::getAttributeName($this->attribute);
-	            // $this->value[] = $this->model->{$this->attribute};
 	            $value = $this->formatAttachment($this->model->{$this->attribute});
 	            $this->value[] = $value;
-	            // var_dump($this->value);
-	            // $attachments = $this->multiple == true ? $this->value : [$this->value];
-	            // $this->value = [];
-	            // if ($attachments) {
-	            //     foreach ($attachments as $attachment) {
-	            //         $value = $this->formatAttachment($attachment);
-	            //         if ($value) {
-	            //             $this->value[] = $value;
-	            //         }
-	            //     }
-	            // }
-
 	        }
 
 	        $this->fileInputName = md5($this->name);
 	        $this->parentDivId = 'Res-' . time();
-	        if (! array_key_exists('fileparam', $this->url)) {
-	            $this->url['fileparam'] = $this->fileInputName;//服务器需要通过这个判断是哪一个input name上传的
-	        }
-
 	        $this->clientOptions = ArrayHelper::merge($this->clientOptions, [
-	            'id' => $this->options['id'],
-	            'name'=> $this->name, //主要用于上传后返回的项目name
-	            'url' => Url::to($this->url),
-	            'deleteUrl' => Url::toRoute($this->deleteUrl),
+	        	'hiddenInputId' => $this->options['id'],
+	            'url' => Url::toRoute([$this->url, 'fileparam' => $this->fileInputName]),
+	            'deleteUrl' => urlencode(Url::toRoute([$this->deleteUrl, 'table' => $this->model->tableName(), 'attribute'=> $this->attribute])),
 	            'multiple' => $this->multiple,
 	            'maxNumberOfFiles' => $this->maxNumberOfFiles,
 	            'maxFileSize' => $this->maxFileSize,
@@ -108,10 +90,9 @@
 					->where(['filepath' => $attachment])
 					->orderBy(['id' => SORT_DESC])
 					->One();
-				$attachment = Yii::$app->request->baseUrl . '/' . $attachment;
 				$arr = [
-					'url' => $attachment,
-					'path' => $attachment,
+					'url' => Yii::$app->request->hostInfo . '/' . $attachment,
+					'fullname' => $attachment,
 				];
 			} else if (is_array($attachment)) {
             	return $attachment;
@@ -131,12 +112,13 @@
 		{
 			$this->registerClientScript();
 			$inputPix = $this->multiple ? '[]' : '';
+			$content = '';
 			$content = Html::hiddenInput($this->name . $inputPix, null, $this->options);
 			$this->wrapperOptions = ArrayHelper::merge(['id' => $this->parentDivId], $this->wrapperOptions);
 			$content .= Html::beginTag('div', $this->wrapperOptions);
 			$options = Json::encode($this->clientOptions);
-			$content .= Html::fileInput($this->fileInputName, null,[
-				'id' => $this->fileInputName,
+			$content .= Html::fileInput($this->fileInputName, null, [
+				// 'id' => $this->fileInputName,
 				'multiple' => $this->multiple,
 				'accept' => $this->acceptFileTypes,
 				'onchange' => "ajaxUpload(this,'" . $this->parentDivId. "')",

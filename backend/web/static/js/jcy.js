@@ -1,34 +1,57 @@
 (function(){
     var jcms = function () {
         var self = this;
-        this.ajax = function(type, url, data, dataType, callback, async, timeout) {
-            if (type.toLowerCase() == 'post') {
-               data._csrf_backend = $("meta[name='csrf-token']").attr('content');
-            }
+        this.ajax = function(type, url, data, dataType, callback, async, timeout, isUpload, errCallback) {
             timeout = timeout || 30000;
             async = async || true;
-            var ajaxRequest = jQuery.ajax({
+            isUpload = isUpload || false;
+            var ajaxParams = {
                 type: type,
                 url: url,
                 data: data,
                 async: async,
+                timeout: timeout,         
                 dataType: dataType,
-                timeout: timeout,
                 success: function(response) {
-                   // console.log('Response Data is: ', response);
-                   // console.log(typeof(callback));return;
                    if (callback && typeof(callback) == 'function') {
                         callback(response);
                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    if ('timeout' === textStatus ) {
-                        swal(tips.error + ': ' + 'timeout!');
-                        return;
-                    }
-                     jqXHR.responseJSON.hasOwnProperty('message') && swal(tips.error + ': ' + jqXHR.responseJSON.message, tips.operatingFailed + '.', "error");
+                   if (errCallback && typeof(errCallback) == 'function') {
+                        errCallback(jqXHR, textStatus, errorThrown);
+                   } else {
+                        if ('timeout' === textStatus ) {
+                            swal(tips.error + ': ' + 'timeout!');
+                            return;
+                        }
+                         jqXHR.responseJSON && jqXHR.responseJSON.hasOwnProperty('message') && swal(tips.error + ': ' + jqXHR.responseJSON.message, tips.operatingFailed + '.', "error");                    
+                   }
                 }
-            });
+            }
+
+            if (type.toLowerCase() == 'post') {
+                if (Object.prototype.toString.call(data) === '[object FormData]' || isUpload) {
+                    data.append('_csrf_backend', $("meta[name='csrf-token']").attr('content'));
+                    ajaxParams['processData'] = false;                
+                    ajaxParams['contentType'] = false;
+                    ajaxParams['xhr'] = function() {  // custom xhr  
+                        myXhr = $.ajaxSettings.xhr();  
+                        if (myXhr.upload) { // check if upload property exists  
+                            myXhr.upload.addEventListener('progress', function(evt) {  
+                                evt = window.event || evt;
+                                var percentComplete = Math.round(evt.loaded*100 / evt.total);  
+                                console.log('上传完成时间：', percentComplete);  
+                            }, false); // for handling the progress of the upload  
+                        }  
+                        return myXhr;  
+                    };             
+                } else {
+                    data._csrf_backend = $("meta[name='csrf-token']").attr('content');
+                }
+            }
+
+            var ajaxRequest = jQuery.ajax(ajaxParams);
         }
 
         this.callback = function(message, state, closeLayer) {
@@ -178,8 +201,7 @@ yii.confirm = function(message, ok, cancel) {
     });
 }
 
-function viewLayer(type, url, obj, cssoption)
-{
+function viewLayer(type, url, obj, cssoption) {
 	if (!type) {
 		 type = 2;
 	}
@@ -198,8 +220,7 @@ function viewLayer(type, url, obj, cssoption)
     });
 }
 
-function close_tab()
-{
+function close_tab() {
     $(".J_menuTab", parent.document).each(function (index) {
         if ($(this).hasClass("active")) {
             if ($(this).prev("a.J_menuTab").length > 0) {
@@ -214,8 +235,7 @@ function close_tab()
     });
 }
 
-function showPhotos(obj, shift)
-{
+function showPhotos(obj, shift) {
     shift = shift || 5;
     var json =  JSON.parse($(obj).attr('data'));
     layer.photos({
@@ -224,9 +244,7 @@ function showPhotos(obj, shift)
     });
 }
 
-function reloadImageList(that, file)
-{
-
+function reloadImageList(that, file) {
     if(that.parent().attr('class').indexOf("image") >= 0){
         if(!/image\/\w+/.test(file.type)){
             layer.tips(tips.onlyPictureCanBeSelected, that.parent());
@@ -235,8 +253,6 @@ function reloadImageList(that, file)
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function (e) {
-            // console.log("打印上传测试记录:", that.parents("div.image").children());
-            // that.parents("div.image").children("img").attr("src", this.result);
             var maxWidth = '200px', maxHeight = '200px';
             if($(that).css('max-width')) {
                 maxWidth = $(that).css('max-width');
@@ -245,11 +261,42 @@ function reloadImageList(that, file)
             if($(that).css('max-width')) {
                 maxHeight = $(that).css('max-height');
             }
-
+            var imageHtml = '<div class="multi-item col-lg-3 col-sm-3 col-md-3"><i class="fa fa-trash cancels" style="position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;" data-file="'+ file.name +'"></i><img class="upload_image_lists img-thumbnail" src="' + this.result + '"></div>';
             that.parents("div.image").children("img.none_image").remove();
-            that.parents("div.image").append("<img src='"+ this.result +"' style='max-width:" + maxWidth + ";max-height:" + maxHeight + "' class='upload_image_lists'/>");
+            that.parents("div.image").find('div.multi-img-details').append(imageHtml);
+            _clickRemoveImg();
+
         }
     }
+}
+
+function _clickRemoveImg() {
+    $("div.multi-img-details").find('i.cancels').bind('click', function(evt) {
+        var file = $(this).data('file');
+        var obj = $(this).parent()
+            .parent('.multi-img-details')
+            .prev('.input-append')
+            .find("input.filename_lists");
+        var fobj = $(this).parent()
+            .parent('.multi-img-details')
+            .parent('div.image')
+            .find("input.feehi_html5_upload");
+        var files = fobj[0].files;
+        console.log('files:', files);
+        if (obj && file) {
+            var files = obj.val();
+            if (files) {
+                var fileList = files.split('、');
+                var newfiles = '';
+                for (var i = 0; i < fileList.length; i++) {
+                    if (fileList[i] == file) continue;
+                    newfiles += fileList[i] + '、';
+                }
+                obj.val(newfiles.substring(0, newfiles.length - 1));
+            }
+        }
+        $(this).parent().remove();            
+    })
 }
 
 $(document).ready(function(){
@@ -327,6 +374,7 @@ $(document).ready(function(){
         }
 
     })
+    _clickRemoveImg();
 
     // 刷新
     $('a.refresh').click(function(){
@@ -345,7 +393,13 @@ $(document).ready(function(){
         e.preventDefault();
         if ($('img.upload_image_lists')) {
             $('img.upload_image_lists').remove();
-            $(this).parents("div.image").children("div.input-append").children("input[type='text']").val('');
+            var newFileContents  = '';
+            var oldFileContents =  $(this).parents("div.image").children("div.input-append").children("input[type='text']").val();
+            if (oldFileContents) {
+                newFileContents = oldFileContents + '、';
+            }
+
+            $(this).parents("div.image").children("div.input-append").children("input[type='text']").val(newFileContents.substr(0, newFileContents.length-1));
         }
         $(this).parent('div').find( 'input[type="file"]' ).click();
     });
@@ -360,16 +414,20 @@ $(document).ready(function(){
             return;
         }
         var that = $(this);
-        var files = $( this )[0].files;
-        // console.log('value is:', $('input.filename_lists').val());
-        var fileContents = !that.parent('div').find('input.filename_lists').val() ? '' : that.parent('div').find('input.filename_lists').val();
+        var files = $(this)[0].files;
+        var newFileContents  = '';
+        var oldFileContents = that.parent('div').find('input.filename_lists').val();
+        if (oldFileContents) {
+            newFileContents = oldFileContents + '、';
+        }
+        // var fileContents = !that.parent('div').find('input.filename_lists').val() ? '' : that.parent('div').find('input.filename_lists').val();
         var file = null;
         if (files) {
             that.parent('div').find('img.none_image').hide();
             for (var p in files) {
                 file = files[p];
                 if(typeof(file) == 'object') {
-                    fileContents += file.name + '、';
+                    newFileContents += file.name + '、';
                     reloadImageList(that, file);
                 }
             }            
@@ -377,7 +435,7 @@ $(document).ready(function(){
             that.parent('div').find('img.none_image').show();
         }
 
-        that.parents("div.image").children("div.input-append").children("input[type='text']").val(fileContents.substr(0, fileContents.length-1));
+        that.parents("div.image").children("div.input-append").children("input[type='text']").val(newFileContents.substr(0, newFileContents.length-1));
     });
 
     // layer phots

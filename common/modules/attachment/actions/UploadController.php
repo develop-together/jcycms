@@ -13,13 +13,22 @@ use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
+use yii\helpers\ArrayHelper;
 use common\modules\attachment\models\Attachment;
 use yii\web\NotFoundHttpException;
 
 
 class UploadController extends Controller
 {
-    public $enableCsrfValidation = false;
+    // public $enableCsrfValidation = false;
+    public $config = [];
+
+    // public function init()
+    // {
+    //     //close csrf
+    //     Yii::$app->request->enableCsrfValidation = false;
+    //     parent::init();
+    // }
 
     public function actions()
     {
@@ -54,27 +63,27 @@ class UploadController extends Controller
             //     'class' => CatchAction::className(),
             //     'path' => date('Ymd'),
             // ],
-            'ueditor-image-upload' => [
-                'class' => UploadAction::className(),
-                'path' => date('Ymd'),
-                'uploadParam' => 'upfile',
-                'callback' => function($result) {
-                    return !isset($result['files'][0]['error']) ? [
-                        'state' => 'SUCCESS',
-                        'url' => $result['files'][0]['url'],
-                        'title' => $result['files'][0]['name'],
-                        'original' => $result['files'][0]['name'],
-                        'type' => $result['files'][0]['type'],
-                        'size' => $result['files'][0]['size'],
-                    ] : [
-                        'error' => $result['files'][0]['error']
-                    ];
-                }
-            ]
+            // 'ueditor-image-upload' => [
+            //     'class' => UploadAction::className(),
+            //     'path' => date('Ymd'),
+            //     'uploadParam' => 'upfile',
+            //     'callback' => function($result) {
+            //         return !isset($result['files'][0]['error']) ? [
+            //             'state' => 'SUCCESS',
+            //             'url' => $result['files'][0]['url'],
+            //             'title' => $result['files'][0]['name'],
+            //             'original' => $result['files'][0]['name'],
+            //             'type' => $result['files'][0]['type'],
+            //             'size' => $result['files'][0]['size'],
+            //         ] : [
+            //             'error' => $result['files'][0]['error']
+            //         ];
+            //     }
+            // ]
         ];
     }
 
-    public function actionDelete()
+    public function actionDelete($table = '', $attribute = '')
     {
         //TODO AttachmentIndex里没有该attachment_id就可以把attachment删了
         if (Yii::$app->request->isAjax) {
@@ -86,11 +95,26 @@ class UploadController extends Controller
             $filePath = str_replace('', "\\", $filePath);
             $transaction = Yii::$app->db->beginTransaction();
             try{
-                if ((file_exists($filePath) && $model->delete() && @unlink($filePath)) || $model->delete()) {
-                    return ['code' => 200 , 'message' => '删除成功!'];
-                } else{
-                    throw new \yii\web\BadRequestHttpException('操作失败！');
+                if (!empty($table) && !empty($attribute)) {
+                    if ('{{%config}}' === $table && 'system_logo' === $attribute) {
+                        // echo                         Yii::$app->db
+                        //     ->createCommand()
+                        //     ->update($table, ['value' => ''], 'scope = \'base\' AND variable=:VARIABLE AND value=:VALUE', [':VARIABLE' => $attribute, ':VALUE' => $post['filepath']])->getRawSql();
+                        Yii::$app->db
+                            ->createCommand()
+                            ->update($table, ['value' => ''], 'scope = \'base\' AND variable=:VARIABLE AND value=:VALUE', [':VARIABLE' => $attribute, ':VALUE' => $post['filepath']])
+                            ->execute();
+                        // Yii::$app->cache->delete('_config');                 
+                    } else {
+                        Yii::$app->db
+                            ->createCommand()
+                            ->update($table, [$attribute => ''], $attribute . '=:PATH', [':PATH' => $post['filepath']])
+                            ->execute();                        
+                    }
                 }
+                $model->delete();
+                @unlink($filePath);
+                return ['code' => 200 , 'message' => '删除成功!'];
             } catch (\Exception $e) {
                 $transaction->rollBack();
                 return ['code' => 300 , 'message' => $e->getMessage()];

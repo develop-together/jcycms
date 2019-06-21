@@ -95,6 +95,5 @@ class FriendLink extends \common\components\BaseModel
     public function afterFind()
     {
         parent::afterFind();
-        $this->image = Yii::$app->request->baseUrl . '/' . $this->image;
     }
 }

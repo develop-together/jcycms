@@ -62,11 +62,8 @@ class PhotosController extends BackendController
     public function actionCreate()
     {
         $model = new PhotosArticle();
-        // $model->type = Article::PHOTOS_PAGE;
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-
-            // $model->setScenario('photos');
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if (!$model->load($post)) {

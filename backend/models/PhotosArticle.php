@@ -44,15 +44,25 @@ class PhotosArticle extends \common\models\Article
             return false;
         }
 
+        $uploaded = $this->uploadMultiple('photo_file_ids', '@original/' . date('Ymd') . '/');
         if ($insert) {
             $this->type = parent::PHOTOS_PAGE;
+            $this->photo_file_ids = implode(',', $uploaded);
+
+        } else  {
+            $new_file_ids = implode(',', $uploaded);
+            // var_dump($new_file_ids, $this->getOldAttribute('photo_file_ids'));exit;
+            if (empty($new_file_ids)) {
+                $this->photo_file_ids = '';
+            } elseif (!empty($this->getOldAttribute('photo_file_ids'))) {
+                $photo_file_ids = $new_file_ids . ',' . $this->getOldAttribute('photo_file_ids');
+                $photo_file_ids = explode(',', $photo_file_ids);
+                $this->photo_file_ids = implode(',', array_unique($photo_file_ids));                
+            } else {
+                $this->photo_file_ids = $new_file_ids;
+            }
         }
-        
-        $uploaded = $this->uploadMultiple('photo_file_ids', '@original/' . date('Ymd') . '/');
-        $this->photo_file_ids = implode(',', $uploaded);
-        if($this->getOldAttribute('photo_file_ids')) {
-            $this->photo_file_ids .= ',' . $this->getOldAttribute('photo_file_ids');
-        }
+
 
         return true;
     }

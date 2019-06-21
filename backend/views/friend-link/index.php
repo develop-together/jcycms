@@ -5,7 +5,7 @@ use yii\helpers\Url;
 use backend\grid\GridView;
 use backend\grid\ActionColumn;
 use common\components\BaseConfig;
-use common\models\FriendLink;
+use backend\models\FriendLink;
 
 ?>
 
@@ -36,6 +36,9 @@ use common\models\FriendLink;
                                             'onclick' => 'parent.$.imgview({url: $(this).attr("src")})'
                                         ]
                                     ],
+                                    'value' => function($model) {
+                                        return $model->getImageFormat();
+                                    }
                                 ],
 								[
                                     'attribute' => 'url',

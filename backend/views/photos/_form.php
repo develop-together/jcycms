@@ -84,7 +84,7 @@ $this->title = Yii::t('app', 'Photos');
                     <div class="hr-line-dashed"></div>
                     <div class="form-group text-right">
                         <div class="col-sm-4 col-sm-offset-2">
-                            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                            <?= Html::button($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary ajax-form-submit']) ?>
                             
                             <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']);?>                        
                         </div>

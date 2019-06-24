@@ -160,6 +160,7 @@ class BaseModel extends \yii\db\ActiveRecord
     public function uploadMultiple($field='thumb', $uploadAlias='@original/', $attribute='Thumb')
     {
         $uploads = UploadedFile::getInstances($this, $field);
+        var_dump($_FILES);exit;
         $result = [];
         if ($uploads) {
             foreach ($uploads as $upload) {

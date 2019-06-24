@@ -150,7 +150,6 @@
             // }
         }
     }
-
     var jcmsobj = new jcms()
     window.jcms = jcmsobj;
 })(window)
@@ -244,7 +243,7 @@ function showPhotos(obj, shift) {
     });
 }
 
-function reloadImageList(that, file) {
+function reloadImageList(that, file, curFiles) {
     if(that.parent().attr('class').indexOf("image") >= 0){
         if(!/image\/\w+/.test(file.type)){
             layer.tips(tips.onlyPictureCanBeSelected, that.parent());
@@ -261,18 +260,37 @@ function reloadImageList(that, file) {
             if($(that).css('max-width')) {
                 maxHeight = $(that).css('max-height');
             }
-            var imageHtml = '<div class="multi-item col-lg-3 col-sm-3 col-md-3"><i class="fa fa-trash cancels" style="position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;" data-file="'+ file.name +'"></i><img class="upload_image_lists img-thumbnail" src="' + this.result + '"></div>';
+            // console.log('file:', file);
+            var imageHtml = '<div class="multi-item col-lg-3 col-sm-3 col-md-3"><i class="fa fa-trash cancels" style="position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;" data-file="'+ file.name +'" data-fid=""></i><img class="upload_image_lists img-thumbnail" src="' + this.result + '"></div>';
             that.parents("div.image").children("img.none_image").remove();
             that.parents("div.image").find('div.multi-img-details').append(imageHtml);
-            _clickRemoveImg();
+            _clickRemoveImg(curFiles);
 
         }
     }
 }
 
-function _clickRemoveImg() {
+function reconstructionFiles(name, files) {
+    var newFiles = [];
+    for (var k  = 0; k < files.length; k++) {
+        if (files[k].name == name) continue;
+        newFiles.push(files[k]);
+    }
+
+    return newFiles;
+}
+
+function _clickRemoveImg(curFiles) {
+    curFiles = curFiles || null;
     $("div.multi-img-details").find('i.cancels').bind('click', function(evt) {
         var file = $(this).data('file');
+        var fid = $(this).data('fid');
+        var inputId = $(this).data('input');
+        var delHidden = $('#del_file_' + inputId);
+        if (fid != '' && fid != null && fid != undefined && fid != 'undefined') {
+           delHidden.val( delHidden.val() + fid + ',' );
+        }
+
         var obj = $(this).parent()
             .parent('.multi-img-details')
             .prev('.input-append')
@@ -281,20 +299,33 @@ function _clickRemoveImg() {
             .parent('.multi-img-details')
             .parent('div.image')
             .find("input.feehi_html5_upload");
-        var files = fobj[0].files;
-        console.log('files:', files);
+        var newfiles = '';
         if (obj && file) {
             var files = obj.val();
             if (files) {
                 var fileList = files.split('、');
-                var newfiles = '';
                 for (var i = 0; i < fileList.length; i++) {
                     if (fileList[i] == file) continue;
                     newfiles += fileList[i] + '、';
                 }
                 obj.val(newfiles.substring(0, newfiles.length - 1));
             }
+
+            if (curFiles) {
+                curFiles = curFiles.filter(function(fileObj) {
+                    return fileObj.name !== file;
+                });
+                console.log('curFiles:', curFiles);
+                var fd = new FormData(fobj.parent().parent().parent().parent().parent('form')[0]);
+                fd.delete(fobj.attr('name'));
+                for (var i = 0; i < curFiles.length; i++) {
+                    console.log(i, fobj.attr('name'));
+                    fd.append(fobj.attr('name'), curFiles[i]);
+                }
+            }
+
         }
+
         $(this).parent().remove();            
     })
 }
@@ -374,6 +405,7 @@ $(document).ready(function(){
         }
 
     })
+
     _clickRemoveImg();
 
     // 刷新
@@ -424,11 +456,16 @@ $(document).ready(function(){
         var file = null;
         if (files) {
             that.parent('div').find('img.none_image').hide();
+            var curFiles = [];
+            if (files && files.length) {
+                // 原始FileList对象不可更改，所以将其赋予curFiles提供接下来的修改
+                Array.prototype.push.apply(curFiles, files);                
+            }
             for (var p in files) {
                 file = files[p];
                 if(typeof(file) == 'object') {
                     newFileContents += file.name + '、';
-                    reloadImageList(that, file);
+                    reloadImageList(that, file, curFiles);
                 }
             }            
         } else {
@@ -449,7 +486,7 @@ $(document).ready(function(){
     var container = $('.pjax-reload');
     if (container.length) {
         container.on('pjax:send',function(args){
-            layer.load(2);
+            layer.load();
         });
         container.on('pjax:complete',function(args){
             layer.closeAll('loading');
@@ -468,6 +505,29 @@ $(document).ready(function(){
         // $(this).closest('form').submit();
         var url = $(this).closest('form').attr('action');
         window.location.href = url;
+    });
+
+    //ajax form submit
+    $("button.ajax-form-submit").bind('click', function() {
+        var form = $(this).parent().parent().parent('form')[0];
+        var fd = new FormData(form);
+        var ajaxUrl = form.getAttribute('action');
+        jcms.ajax('POST', ajaxUrl, fd, 'JSON', function(response) {
+            console.log(response);
+            if (200 == response.statusCode) {
+                layer.msg(response.message, {icon: 6});
+                setTimeout(() => {
+                    location.href = response.href;
+                }, 300);
+            } else {
+                layer.msg(response.message, {icon: 5});
+            }
+            return false;
+        }, true, 10000, true, function(XMLHttpRequest, textStatus, errorThrown) {
+            if (200 !== XMLHttpRequest.status) {
+                layer.alert(XMLHttpRequest.status + '<br>' + XMLHttpRequest.readyState + '<br>' + textStatus, {icon: 5});
+            }
+        });
     });
 
 })

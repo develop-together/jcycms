@@ -207,12 +207,14 @@ function close_tab() {
 }
 
 function showPhotos(obj, shift) {
-    shift = shift || 5;
-    var json =  JSON.parse($(obj).attr('data'));
-    layer.photos({
-        photos: json,
-        shift: shift //0-6的选择，指定弹出图片动画类型，默认随机
-    });
+    if (!jcms._null($(obj).attr('data'))) {
+        shift = shift || 5;
+        var json =  JSON.parse($(obj).attr('data'));
+        layer.photos({
+            photos: json,
+            shift: shift //0-6的选择，指定弹出图片动画类型，默认随机
+        });
+    }
 }
 
 var curFiles = [];
@@ -494,4 +496,36 @@ $(document).ready(function(){
         });
     });
 
+    var articleShowImgTimer;
+    $('table tr td a.title').hover(function() {
+        showImage(this);
+    }, 
+    function(){
+        // debugger;
+        clearTimeout(articleShowImgTimer);
+    });
+
+    // var container = $('#pjax');
+    // container.on('pjax:send',function(args){
+    //     layer.load(2);
+    // });
+    // container.on('pjax:complete',function(args){
+    //     layer.closeAll('loading');
+    //     $('table tr td a.title').bind('mouseover mouseout', function() {
+    //      showImage(this);
+    //     });
+    // });
+
+    function showImage(obj)
+    {
+        articleShowImgTimer = setTimeout(function() {
+            var node = $(obj).attr('title');
+            // console.log($(obj));return;
+            if (node.length) {
+                layer.tips('<img src="' + node + '" width="100" height="100">', $(obj), {
+                    tips: [2, '#3595CC'],
+                });
+            }
+        }, 200);
+    }
 })

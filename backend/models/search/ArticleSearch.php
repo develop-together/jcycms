@@ -57,7 +57,7 @@ class ArticleSearch extends Article
 
         $this->load($params);
 
-        $pageSize = 10;
+        $pageSize = 2;
         $pageCurrent = 0;
         $field = 'id';
         $sort = SORT_DESC;

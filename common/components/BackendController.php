@@ -54,9 +54,8 @@ class BackendController extends BaseController
 		 * @var [type]
 		 */
 		try {
-			// in_array($action->id, ['index', 'create', 'update', 'delete', 'view']) &&
             $route = $this->route . ':' . strtoupper(Yii::$app->request->getMethod());
-
+            var_dump($route);
 			if (!UserAcl::hasAcl($route)) {
                 if (yii::$app->request->isAjax) {
                     yii::$app->getResponse()->content = json_encode(['code' => 1001, 'message' => Yii::t("app", "Permission denied")]);
@@ -64,7 +63,7 @@ class BackendController extends BaseController
                 } else {
                 	$error = '<div class="ibox-title"><strong>' . Yii::t("app", "Permission denied") . '</strong>';
                 	if ($action->id != 'assignment') {
-                		$error .= '<<<a style="text-decoration: none;cursor:pointer;color:#1ab394" href="'. Url::toRoute([Yii::$app->controller->id . '/index']) .'">返回</a>>>';
+                		$error .= '<<<a style="text-decoration: none;cursor:pointer;color:#1ab394" href="'. Url::toRoute([Yii::$app->controller->id . '/index']) .'">' . Yii::t('app', 'Back') .'</a>>>';
                 	}
 
                 	throw new ForbiddenHttpException($error . '</div>');

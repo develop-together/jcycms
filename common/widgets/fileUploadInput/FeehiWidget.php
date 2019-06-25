@@ -76,7 +76,6 @@ class FeehiWidget extends InputWidget
 
 		if (is_array($this->value)) {
 			$inputValue = '';
-
 			array_walk($this->value, function($value) use (&$inputValue, &$imgHtml, $maxWidth, $maxHeight, $inputName) {
 				$src = Yii::$app->request->baseUrl . (!empty($value->filepath) ? '/' . $value->filepath : '/static/img/none.jpg');
 				$imgHtml .= "<div class='multi-item col-lg-3 col-sm-3 col-md-3'><i class='fa fa-trash cancels' style='position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;' data-file='{$value->filename}' data-fid='{$value->id}' data-input='{$this->inputId}'></i><img class='img-thumbnail' src='{$src}'/><input type='hidden' -name='{$inputName}' value='{$value->filepath}'></div>";
@@ -84,7 +83,13 @@ class FeehiWidget extends InputWidget
 			});
 		} else {
 			$src = Yii::$app->request->baseUrl . (!empty($this->value) ? '/' . $this->value : '/static/img/none.jpg');
-			"<div class='multi-item col-lg-3 col-sm-3 col-md-3'><i class='fa fa-trash cancels' style='position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;' data-file='{$this->value}'></i><img class='img-thumbnail' src='{$src}'/><input type='hidden' -name='{$inputName}' value='{$this->value}'></div>";
+			// <i class='fa fa-trash cancels' style='position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;' data-file='{$this->value}'></i>
+			$imgHtml = "<div class='multi-item col-lg-3 col-sm-3 col-md-3'>";
+			if ($this->multiple) {
+				$imgHtml .= "<i class='fa fa-trash cancels' style='position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;' data-file='{$this->value}'></i><img class='img-thumbnail' src='{$src}'/><input type='hidden' -name='{$inputName}' value='{$this->value}'></div>";
+			} else {
+				$imgHtml .= "<img class='img-thumbnail' src='{$src}'/><input type='hidden' -name='{$inputName}' value='{$this->value}'></div>";
+			}
 		}
 
 		$content = '';

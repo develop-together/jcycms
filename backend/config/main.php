@@ -13,6 +13,11 @@ return [
 	'language' => 'zh-CN', //默认语言
 	'timeZone' => 'Asia/Shanghai', //默认时区
 	'bootstrap' => ['log'],
+    'controllerMap' => [
+        'upload' => [
+            'class' => 'common\modules\attachment\actions\UploadController',
+        ],
+    ],
 	'components' => [
 		'request' => [
 			'csrfParam' => '_csrf-backend',

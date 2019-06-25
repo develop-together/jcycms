@@ -4,6 +4,9 @@ return [
     'supportEmail' => 'support@example.com',
     'user.passwordResetTokenExpire' => 3600,
     'mailerEncryption' => 'tls',
+    'qiniuConfig' => [
+    	'staticSourceUrl' => "http://psdcab48n.bkt.clouddn.com"
+    ],
     'uploadConfig' => [
     	'uploadSaveFilePath' => 'uploads',
     	'imageMaxSize'       => 2048000,

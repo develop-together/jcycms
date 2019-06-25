@@ -114,11 +114,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <?php $this->endBody();?>
         <?php 
+            $url = Yii::$app->params['qiniuConfig']['staticSourceUrl'];
             $jsStr = <<<JS
                 $.backstretch([
-                    'http://psdcab48n.bkt.clouddn.com/login_bg_1.jpg',
-                    'http://psdcab48n.bkt.clouddn.com/login-background.jpg',
-                    'http://psdcab48n.bkt.clouddn.com/login-background.jpg'
+                    '{$url}/login_bg_1.jpg',
+                    '{$url}/login-background.jpg',
+                    '{$url}/login-background.jpg'
                 ], { 
                     fade: 1000, 
                     duration: 8000 

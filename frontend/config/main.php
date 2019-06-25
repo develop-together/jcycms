@@ -11,6 +11,11 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'controllerMap' => [
+        'upload' => [
+            'class' => 'common\modules\attachment\actions\UploadFrontendController',
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf_frontend',

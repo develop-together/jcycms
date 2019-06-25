@@ -11,14 +11,15 @@ namespace common\modules\attachment\actions;
 
 use Yii;
 use yii\helpers\Url;
-use yii\web\Controller;
+// use yii\web\Controller;
+use common\components\BackendController;
 use yii\web\Response;
 use yii\helpers\ArrayHelper;
 use common\modules\attachment\models\Attachment;
 use yii\web\NotFoundHttpException;
 
 
-class UploadController extends Controller
+class UploadController extends BackendController
 {
     // public $enableCsrfValidation = false;
     public $config = [];

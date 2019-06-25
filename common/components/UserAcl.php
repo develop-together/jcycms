@@ -26,6 +26,7 @@ class UserAcl
 			'public/login:POST',
 			'admin-user/info:GET',
 			'admin-user/info:POST',
+			'site/error:GET'
 		];
 	}
 

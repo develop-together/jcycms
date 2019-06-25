@@ -12,13 +12,13 @@
  	public $sourcePath = '@frontend/web/static/common';
 
  	public $css = [
- 		'em' => 'css/sinaEmoji.css',
- 		'cos' => 'css/comment.css'
+ 		'em' => 'css/sinaEmoji.min.css',
+ 		'cos' => 'css/comment.min.css'
  	];
 
  	public $js = [
- 		'co' => 'plugins/comment.js',
- 		'em' => 'plugins/sinaEmoji.js'
+ 		'co' => 'plugins/comment.min.js',
+ 		'em' => 'plugins/sinaEmoji.min.js'
  	];
 
  	public $depends = [];

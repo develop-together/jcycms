@@ -7,7 +7,7 @@ class AttachmentUploadAsset extends AssetBundle
 {
     public $sourcePath = '@common/modules/attachment/static';
     public $css = [
-        'attachment-upload.css',
+        'attachment-upload.min.css',
     ];
     public $js = [
         'attachment-upload.min.js',

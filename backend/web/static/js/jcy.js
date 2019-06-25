@@ -31,21 +31,10 @@
             }
 
             if (type.toLowerCase() == 'post') {
-                if (Object.prototype.toString.call(data) === '[object FormData]' || isUpload) {
+                if (Object.prototype.toString.call(data) === "[object FormData]" || isUpload) {
                     data.append('_csrf_backend', $("meta[name='csrf-token']").attr('content'));
                     ajaxParams['processData'] = false;                
-                    ajaxParams['contentType'] = false;
-                    ajaxParams['xhr'] = function() {  // custom xhr  
-                        myXhr = $.ajaxSettings.xhr();  
-                        if (myXhr.upload) { // check if upload property exists  
-                            myXhr.upload.addEventListener('progress', function(evt) {  
-                                evt = window.event || evt;
-                                var percentComplete = Math.round(evt.loaded*100 / evt.total);  
-                                console.log('上传完成时间：', percentComplete);  
-                            }, false); // for handling the progress of the upload  
-                        }  
-                        return myXhr;  
-                    };             
+                    ajaxParams['contentType'] = false;     
                 } else {
                     data._csrf_backend = $("meta[name='csrf-token']").attr('content');
                 }
@@ -64,7 +53,9 @@
             ];
             var statusCode = 200;
             for (var p in config) {
-                if (state != config[p].state) continue;
+                if (state != config[p].state) {
+                    continue;
+                }
                 statusCode = config[p].statusCode;
                 message = this._null(message) || config[p].message;
             }
@@ -125,7 +116,6 @@
                 // async: true,
                 source: baseUtil.nflTeamsWithDefaults,/*.ttAdapter()*/
             }).on('typeahead:select', function(ev, suggestion) {
-                // console.log('Selection: ' + suggestion[options.valueKey]);
                 $("#" + options.selectedDomId).val(suggestion[options.valueKey]);
             }).on('typeahead:asyncrequest', function() {// beforeAjax
 
@@ -135,21 +125,16 @@
         },
         this.nflTeamsWithDefaults = function(query, sync, async) {
             this.datum.search(query, sync, async);
-            // if (query === '') {
-            //   this.datum.get('1');
-            // } else {
-            //   this.datum.search(query, sync, async);
-            // }
         }
     }
-    window.jcms = new jcms();
+    var jobj = new jcms();
+    window.jcms = jobj;
 })(window)
 
 yii.confirm = function(message, ok, cancel) {
     var url = $(this).attr('href');
     var if_pjax = $(this).attr('data-pjax') ? $(this).attr('data-pjax') : 0;
     var type = $(this).attr('data-method') ? $(this).attr('data-method') : "get";
-    // !url && $(this).attr('href', 'javascript:;');
     if (!url || url == 'javascript:;' || url == '#') {
         cancel();
     }
@@ -163,10 +148,10 @@ yii.confirm = function(message, ok, cancel) {
         confirmButtonText: tips.ok,
         closeOnConfirm: false
     }, function (isConfirm) {
-        if(isConfirm) {
-            if( parseInt( if_pjax ) ){
+        if (isConfirm) {
+            if ( parseInt( if_pjax ) ){
                 !ok || ok();
-            }else {
+            } else {
                 swal(tips.waitingAndNoRefresh, tips.operating + '...', "success");
                 $.ajax({
                     "url": url,
@@ -193,13 +178,11 @@ yii.confirm = function(message, ok, cancel) {
 
 function viewLayer(type, url, obj, cssoption) {
 	if (!type) {
-		 type = 2;
-	}
-
+        type = 2;
+    }
 	if (cssoption.length == 0) {
-		cssoption = {width : '800px', height : '500px'};
-	}
-
+        cssoption = {width : '800px', height : '500px'};
+    }
     layer.open({
         type: 2,
         title: obj.attr('title'),
@@ -214,12 +197,10 @@ function close_tab() {
     $(".J_menuTab", parent.document).each(function (index) {
         if ($(this).hasClass("active")) {
             if ($(this).prev("a.J_menuTab").length > 0) {
-                $(this).prev("a.J_menuTab").eq(0).addClass("active")
+                $(this).prev("a.J_menuTab").eq(0).addClass("active");
             }
             $(this).remove();
-            if (parent.$(".J_iframe").eq(index).prev("iframe.J_iframe").length > 0) {
-                parent.$(".J_iframe").eq(index).prev("iframe.J_iframe").eq(0).show()
-            }
+            if (parent.$(".J_iframe").eq(index).prev("iframe.J_iframe").length > 0) parent.$(".J_iframe").eq(index).prev("iframe.J_iframe").eq(0).show();
             parent.$(".J_iframe").eq(index).remove()
         }
     });
@@ -237,7 +218,7 @@ function showPhotos(obj, shift) {
 var curFiles = [];
 function reloadImageList(that, file) {
     if(that.parent().attr('class').indexOf("image") >= 0){
-        if(!/image\/\w+/.test(file.type)){
+        if(!/image\/\w+/.test(file.type)) {
             layer.tips(tips.onlyPictureCanBeSelected, that.parent());
             return false;
         }
@@ -246,18 +227,17 @@ function reloadImageList(that, file) {
         var multiple = that.attr('multiple');
         reader.onload = function (e) {
             var maxWidth = '200px', maxHeight = '200px';
-            if($(that).css('max-width')) {
+            if ($(that).css('max-width')) {
                 maxWidth = $(that).css('max-width');
             }
 
-            if($(that).css('max-width')) {
+            if ($(that).css('max-width')) {
                 maxHeight = $(that).css('max-height');
             }
-
+            var imageHtml = '<div class="multi-item col-lg-3 col-sm-3 col-md-3"><img class="upload_image_lists img-thumbnail" src="' + this.result + '"></div>';
             if (multiple) {
-                var imageHtml = '<div class="multi-item col-lg-3 col-sm-3 col-md-3"><i class="fa fa-trash cancels" style="position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;" data-file="'+ file.name +'" data-fid=""></i><img class="upload_image_lists img-thumbnail" src="' + this.result + '"></div>';                
+                imageHtml = '<div class="multi-item col-lg-3 col-sm-3 col-md-3"><i class="fa fa-trash cancels" style="position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;" data-file="'+ file.name +'" data-fid=""></i><img class="upload_image_lists img-thumbnail" src="' + this.result + '"></div>';                
             } else {
-                var imageHtml = '<div class="multi-item col-lg-3 col-sm-3 col-md-3"><img class="upload_image_lists img-thumbnail" src="' + this.result + '"></div>';
                 that.parents("div.image").find('div.multi-img-details').empty();
             }
 
@@ -276,13 +256,9 @@ function _clickRemoveImg() {
         var inputId = $(this).data('input');
         inputId = jcms._null(inputId) ? $(this).parent('div').parent('div').parent('div').find('input.feehi_html5_upload').attr('id') : inputId;
         var delHidden = $('#del_file_' + inputId);
-        // var delfiles = !jcms._null(delHidden.attr('data-del-file')) ? JSON.parse(delHidden.attr('data-del-file')) : [];
         if (fid != '' && fid != null && fid != undefined && fid != 'undefined') {
-           delHidden.val( delHidden.val() + fid + ',' );
+            delHidden.val( delHidden.val() + fid + ',' );
         }
-        // delfiles.push(file);
-        // delHidden.attr( 'data-del-file', JSON.stringify(delfiles) );
-        // console.log(delHidden, delHidden.val(), delHidden.data(), delHidden.attr('data-del-file'));
         var obj = $(this).parent()
             .parent('.multi-img-details')
             .prev('.input-append')
@@ -297,7 +273,9 @@ function _clickRemoveImg() {
             if (files) {
                 var fileList = files.split('、');
                 for (var i = 0; i < fileList.length; i++) {
-                    if (fileList[i] == file) continue;
+                    if (fileList[i] == file) {
+                        continue;
+                    }
                     newfiles += fileList[i] + '、';
                 }
                 obj.val(newfiles.substring(0, newfiles.length - 1));
@@ -307,15 +285,7 @@ function _clickRemoveImg() {
                 curFiles = curFiles.filter(function(fileObj) {
                     return fileObj.name !== file;
                 });
-                // var fd = new FormData(fobj.parent().parent().parent().parent().parent('form')[0]);
-                // console.log(fobj.attr('data-resize-name'));
-                // fd.delete(fobj.attr('data-resize-name'));
-                // for (var i = 0; i < curFiles.length; i++) {
-                //     console.log(curFiles[i]);
-                //     fd.append(fobj.attr('data-resize-name'), curFiles[i]);
-                // }
             }
-
         }
 
         $(this).parent().remove();            
@@ -442,17 +412,11 @@ $(document).ready(function(){
         var newFileContents  = '';
         var multiple = that.attr('multiple');
         var oldFileContents = that.parent('div').find('input.filename_lists').val();
-        if (multiple && oldFileContents) {
-            newFileContents = oldFileContents + '、';
-        }
-        // var fileContents = !that.parent('div').find('input.filename_lists').val() ? '' : that.parent('div').find('input.filename_lists').val();
+        if (multiple && oldFileContents) newFileContents = oldFileContents + '、';
         var file = null;
         if (files) {
             that.parent('div').find('img.none_image').hide();
-            if (files && files.length) {
-                // 原始FileList对象不可更改，所以将其赋予curFiles提供接下来的修改
-                Array.prototype.push.apply(curFiles, files);                
-            }
+            if (files && files.length) Array.prototype.push.apply(curFiles, files);// 原始FileList对象不可更改，所以将其赋予curFiles提供接下来的修改    
             for (var p in files) {
                 file = files[p];
                 if(typeof(file) == 'object') {
@@ -504,21 +468,19 @@ $(document).ready(function(){
         var form = $(this).parent().parent().parent('form')[0];
         var fd = new FormData(form);
         var ajaxUrl = form.getAttribute('action');
-        var fobj = $(form).find('input.feehi_html5_upload');
-        if (curFiles) {
+        if (curFiles && curFiles.length) {
+            var fobj = $(form).find('input.feehi_html5_upload');
             fd.delete(fobj.attr('name'));
             for (var i = 0; i < curFiles.length; i++) {
-                console.log(curFiles[i]);
                 fd.append(fobj.attr('name'), curFiles[i]);
             }            
         }
 
         jcms.ajax('POST', ajaxUrl, fd, 'JSON', function(response) {
-            console.log(response);
             if (200 == response.statusCode) {
                 layer.msg(response.message, {icon: 6});
                 curFiles = [];
-                setTimeout(() => {
+                setTimeout(function() {
                     location.href = response.href;
                 }, 300);
             } else {

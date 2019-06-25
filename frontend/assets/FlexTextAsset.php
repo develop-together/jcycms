@@ -14,7 +14,7 @@
  	public $css = [];
 
  	public $js = [
- 		'f' => 'plugins/jquery.flexText.js'
+ 		'f' => 'plugins/jquery.flexText.min.js'
  	];
 
  	public $depends = [];

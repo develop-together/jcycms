@@ -160,7 +160,6 @@ class BaseModel extends \yii\db\ActiveRecord
     public function uploadMultiple($field='thumb', $uploadAlias='@original/', $attribute='Thumb')
     {
         $uploads = UploadedFile::getInstances($this, $field);
-        var_dump($_FILES);exit;
         $result = [];
         if ($uploads) {
             foreach ($uploads as $upload) {
@@ -193,7 +192,7 @@ class BaseModel extends \yii\db\ActiveRecord
             }
 
             $clipping_img = \common\models\Config::getClippingImg();
-            if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb') && $fullName && $clipping_img === 1) {
+            if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb')  && $clipping_img === 1) {
                 // $relativePath = ImageHelper::thumbnail($fullName, $this->width, $this->height);
                 // file_exists($fullName) && @unlink($fullName);
                 $enableThumb = true;

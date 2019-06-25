@@ -22,8 +22,7 @@ AppAsset::register($this);
 
         <?php if (!$config['deny_external_access']): ?>
             <script type="text/javascript">
-                function denyExternalAccess(url)
-                {
+                function denyExternalAccess(url) {
                   // ，但是必须在页面加载前起作用，不然页面还是会一闪而过。   
                   if (parent.window.location.host != window.location.host && top.window.location.href != window.location.href) {
                         top.window.location.href = url;

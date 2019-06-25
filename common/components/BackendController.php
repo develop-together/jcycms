@@ -55,7 +55,6 @@ class BackendController extends BaseController
 		 */
 		try {
             $route = $this->route . ':' . strtoupper(Yii::$app->request->getMethod());
-            var_dump($route);
 			if (!UserAcl::hasAcl($route)) {
                 if (yii::$app->request->isAjax) {
                     yii::$app->getResponse()->content = json_encode(['code' => 1001, 'message' => Yii::t("app", "Permission denied")]);

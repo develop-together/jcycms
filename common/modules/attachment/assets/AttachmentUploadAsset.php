@@ -10,7 +10,7 @@ class AttachmentUploadAsset extends AssetBundle
         'attachment-upload.css',
     ];
     public $js = [
-        'attachment-upload.js',
+        'attachment-upload.min.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

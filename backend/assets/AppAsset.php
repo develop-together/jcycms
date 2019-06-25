@@ -36,7 +36,7 @@ class AppAsset extends \yii\web\AssetBundle
 		'static/js/plugins/toastr/toastr.min.js',
 		'static/js/plugins/image-picker/image-picker.min.js',
 		'static/js/jquery.backstretch.min.js',
-		'static/js/jcy.js',
+		'static/js/jcy.min.js',
 	];
 
 	public $depends = [

@@ -67,7 +67,7 @@ class PhotosController extends BackendController
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if (!$model->load($post)) {
-                    throw new \yii\web\BadRequestHttpException('数据提交出错');
+                    throw new \yii\web\BadRequestHttpException(Yii::t('app', 'Error in data submission!'));
                 }
 
                 if (!$model->save()) {
@@ -77,7 +77,7 @@ class PhotosController extends BackendController
                     }
                     throw new \yii\web\BadRequestHttpException(implode(",", $errors));
                 }
-                Yii::$app->session->setFlash('success', "操作成功");
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Success'));
                 $transaction->commit();
 
                 return $this->redirect(['index']);
@@ -101,10 +101,40 @@ class PhotosController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        if (Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if (!$model->load($post)) {
+                    throw new \yii\web\BadRequestHttpException(Yii::t('app', 'Error in data submission!'));
+                }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
-                return $this->redirect(['index']);
+                if (!$model->save()) {
+                    $errors = [];
+                    foreach ($model->errors as $error) {
+                        $errors[] = $error[0];
+                    }
+                    throw new \yii\web\BadRequestHttpException(implode(",", $errors));
+                }
+
+                $transaction->commit();
+                if (Yii::$app->request->isAjax) {
+                    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;       
+                    return ['statusCode' => 200, 'message' => Yii::t('app', 'Success'), 'href' => Url::toRoute('index')];
+                } else {
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'Success'));
+                    return $this->redirect(['index']);                    
+                }
+
+            } catch(\Expression $e) {
+                $transaction->rollBack();
+                if (Yii::$app->request->isAjax) {
+                    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                    return ['statusCode' => 300, 'message' => $e->getMessage()];
+                } else {
+                    Yii::$app->session->setFlash('error', $e->getMessage());
+                }
+            }
         }
 
         return $this->render('update', [

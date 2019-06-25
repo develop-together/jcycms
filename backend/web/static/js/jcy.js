@@ -64,18 +64,13 @@
             ];
             var statusCode = 200;
             for (var p in config) {
-                if (state != config[p].state) {
-                        continue;
-                }
-
+                if (state != config[p].state) continue;
                 statusCode = config[p].statusCode;
                 message = this._null(message) || config[p].message;
             }
             var icon = statusCode == 200 ? 1 : 2;
-            // console.log('正确返回后是否关闭layer', closeLayer && statusCode == 200);
             var alertIndex = layer.alert(message, {icon: icon}, function(){
                 closeLayer && statusCode == 200 && setTimeout(function () {
-                    // parent.layer.closeAll();
                     layer.close(alertIndex);
                     layer.closeAll('loading');
                 }, 1000);
@@ -83,7 +78,7 @@
         },
 
         this._null = function(value) {
-            if(value == null || value == 'undefined' || typeof(value) == 'undefined') {
+            if(value == '' || value == null || value == 'undefined' || typeof(value) == 'undefined') {
                 return true;
             } else {
                 return false;
@@ -91,7 +86,6 @@
         },
         this.datum = {},
         this.autocomplete = function (counter, options) {
-            // console.log('options:', options);
             if (!options.data && options.url) {// async
                 if(options.url.indexOf('?search=%QUERY') == -1) {
                     if (options.url.indexOf('&') != -1) {
@@ -100,7 +94,6 @@
                         options.url += '?keyword=%QUERY%';
                     }
                 }
-                console.log('options.displayKey', options.displayKey);
                 var params = {
                     datumTokenizer: Bloodhound.tokenizers.obj.whitespace(options.displayKey),
                     queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -110,7 +103,6 @@
                 } else {
                     params.remote = {url: options.url, wildcard: '%QUERY%'};
                 }
-                // console.log('params', params);
                 this.datum = new Bloodhound(params);
             } else {// sync
                 this.datum = new Bloodhound({
@@ -150,9 +142,7 @@
             // }
         }
     }
-
-    var jcmsobj = new jcms()
-    window.jcms = jcmsobj;
+    window.jcms = new jcms();
 })(window)
 
 yii.confirm = function(message, ok, cancel) {
@@ -244,6 +234,7 @@ function showPhotos(obj, shift) {
     });
 }
 
+var curFiles = [];
 function reloadImageList(that, file) {
     if(that.parent().attr('class').indexOf("image") >= 0){
         if(!/image\/\w+/.test(file.type)){
@@ -252,6 +243,7 @@ function reloadImageList(that, file) {
         }
         var reader = new FileReader();
         reader.readAsDataURL(file);
+        var multiple = that.attr('multiple');
         reader.onload = function (e) {
             var maxWidth = '200px', maxHeight = '200px';
             if($(that).css('max-width')) {
@@ -261,7 +253,14 @@ function reloadImageList(that, file) {
             if($(that).css('max-width')) {
                 maxHeight = $(that).css('max-height');
             }
-            var imageHtml = '<div class="multi-item col-lg-3 col-sm-3 col-md-3"><i class="fa fa-trash cancels" style="position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;" data-file="'+ file.name +'"></i><img class="upload_image_lists img-thumbnail" src="' + this.result + '"></div>';
+
+            if (multiple) {
+                var imageHtml = '<div class="multi-item col-lg-3 col-sm-3 col-md-3"><i class="fa fa-trash cancels" style="position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;" data-file="'+ file.name +'" data-fid=""></i><img class="upload_image_lists img-thumbnail" src="' + this.result + '"></div>';                
+            } else {
+                var imageHtml = '<div class="multi-item col-lg-3 col-sm-3 col-md-3"><img class="upload_image_lists img-thumbnail" src="' + this.result + '"></div>';
+                that.parents("div.image").find('div.multi-img-details').empty();
+            }
+
             that.parents("div.image").children("img.none_image").remove();
             that.parents("div.image").find('div.multi-img-details').append(imageHtml);
             _clickRemoveImg();
@@ -273,6 +272,17 @@ function reloadImageList(that, file) {
 function _clickRemoveImg() {
     $("div.multi-img-details").find('i.cancels').bind('click', function(evt) {
         var file = $(this).data('file');
+        var fid = $(this).data('fid');
+        var inputId = $(this).data('input');
+        inputId = jcms._null(inputId) ? $(this).parent('div').parent('div').parent('div').find('input.feehi_html5_upload').attr('id') : inputId;
+        var delHidden = $('#del_file_' + inputId);
+        // var delfiles = !jcms._null(delHidden.attr('data-del-file')) ? JSON.parse(delHidden.attr('data-del-file')) : [];
+        if (fid != '' && fid != null && fid != undefined && fid != 'undefined') {
+           delHidden.val( delHidden.val() + fid + ',' );
+        }
+        // delfiles.push(file);
+        // delHidden.attr( 'data-del-file', JSON.stringify(delfiles) );
+        // console.log(delHidden, delHidden.val(), delHidden.data(), delHidden.attr('data-del-file'));
         var obj = $(this).parent()
             .parent('.multi-img-details')
             .prev('.input-append')
@@ -281,20 +291,33 @@ function _clickRemoveImg() {
             .parent('.multi-img-details')
             .parent('div.image')
             .find("input.feehi_html5_upload");
-        var files = fobj[0].files;
-        console.log('files:', files);
+        var newfiles = '';
         if (obj && file) {
             var files = obj.val();
             if (files) {
                 var fileList = files.split('、');
-                var newfiles = '';
                 for (var i = 0; i < fileList.length; i++) {
                     if (fileList[i] == file) continue;
                     newfiles += fileList[i] + '、';
                 }
                 obj.val(newfiles.substring(0, newfiles.length - 1));
             }
+
+            if (curFiles) {
+                curFiles = curFiles.filter(function(fileObj) {
+                    return fileObj.name !== file;
+                });
+                // var fd = new FormData(fobj.parent().parent().parent().parent().parent('form')[0]);
+                // console.log(fobj.attr('data-resize-name'));
+                // fd.delete(fobj.attr('data-resize-name'));
+                // for (var i = 0; i < curFiles.length; i++) {
+                //     console.log(curFiles[i]);
+                //     fd.append(fobj.attr('data-resize-name'), curFiles[i]);
+                // }
+            }
+
         }
+
         $(this).parent().remove();            
     })
 }
@@ -374,6 +397,7 @@ $(document).ready(function(){
         }
 
     })
+
     _clickRemoveImg();
 
     // 刷新
@@ -416,14 +440,19 @@ $(document).ready(function(){
         var that = $(this);
         var files = $(this)[0].files;
         var newFileContents  = '';
+        var multiple = that.attr('multiple');
         var oldFileContents = that.parent('div').find('input.filename_lists').val();
-        if (oldFileContents) {
+        if (multiple && oldFileContents) {
             newFileContents = oldFileContents + '、';
         }
         // var fileContents = !that.parent('div').find('input.filename_lists').val() ? '' : that.parent('div').find('input.filename_lists').val();
         var file = null;
         if (files) {
             that.parent('div').find('img.none_image').hide();
+            if (files && files.length) {
+                // 原始FileList对象不可更改，所以将其赋予curFiles提供接下来的修改
+                Array.prototype.push.apply(curFiles, files);                
+            }
             for (var p in files) {
                 file = files[p];
                 if(typeof(file) == 'object') {
@@ -449,7 +478,7 @@ $(document).ready(function(){
     var container = $('.pjax-reload');
     if (container.length) {
         container.on('pjax:send',function(args){
-            layer.load(2);
+            layer.load();
         });
         container.on('pjax:complete',function(args){
             layer.closeAll('loading');
@@ -468,6 +497,39 @@ $(document).ready(function(){
         // $(this).closest('form').submit();
         var url = $(this).closest('form').attr('action');
         window.location.href = url;
+    });
+
+    //ajax form submit
+    $("button.ajax-form-submit").bind('click', function() {
+        var form = $(this).parent().parent().parent('form')[0];
+        var fd = new FormData(form);
+        var ajaxUrl = form.getAttribute('action');
+        var fobj = $(form).find('input.feehi_html5_upload');
+        if (curFiles) {
+            fd.delete(fobj.attr('name'));
+            for (var i = 0; i < curFiles.length; i++) {
+                console.log(curFiles[i]);
+                fd.append(fobj.attr('name'), curFiles[i]);
+            }            
+        }
+
+        jcms.ajax('POST', ajaxUrl, fd, 'JSON', function(response) {
+            console.log(response);
+            if (200 == response.statusCode) {
+                layer.msg(response.message, {icon: 6});
+                curFiles = [];
+                setTimeout(() => {
+                    location.href = response.href;
+                }, 300);
+            } else {
+                layer.msg(response.message, {icon: 5});
+            }
+            return false;
+        }, true, 10000, true, function(XMLHttpRequest, textStatus, errorThrown) {
+            if (200 !== XMLHttpRequest.status) {
+                layer.alert(XMLHttpRequest.status + '<br>' + XMLHttpRequest.readyState + '<br>' + textStatus, {icon: 5});
+            }
+        });
     });
 
 })

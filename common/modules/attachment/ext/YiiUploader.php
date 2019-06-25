@@ -224,13 +224,39 @@ class YiiUploader
         return $this->fileSize <= ($this->config["maxSize"]);
     }
 
+    private function checkIsUploadImg()
+    {
+        return strpos($this->fileMime, 'image') === 0 ? true : false;
+    }
+
     /**
      * [checkMime 文件mime检查]
      * @return [type] [description]
      */
-    private function checkMime()
+    private function checkMime($mime = null)
+    {   $mime = empty($mime) ? $this->fileMime : $mime;
+    	return in_array(strtolower($mime), $this->mimeMap);
+    }
+
+    private function checkRealType()
     {
-    	return in_array(strtolower($this->fileMime), $this->mimeMap);
+        if (function_exists('getimagesize')) {
+            return !@getimagesize($this->savePath) ? false : true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 文件MIME
+     */
+    private function getFileMime()
+    {
+        $finfo = finfo_open(FILEINFO_MIME);
+        $fileMime = finfo_file($finfo, $this->savePath);
+        finfo_close($finfo);
+
+        return explode(';', $fileMime)[0];
     }
 
     /**
@@ -346,6 +372,21 @@ class YiiUploader
 		    return false;
 		}
 
+         //检查上传后的文件的mimetype，防止修改文件后缀的文件上传
+        $real_mime = $this->getFileMime();
+        if (!$this->checkMime($real_mime)) {
+            $this->stateInfo = $this->returnStateInfo("ERROR_TYPE_NOT_ALLOWED");
+            @unlink($this->savePath);
+            return false;               
+        }
+
+        //图片文件再一次防止修改文件后缀的文件上传
+        if ($this->checkIsUploadImg() && !$this->checkRealType()) {
+            $this->stateInfo = $this->returnStateInfo("ERROR_TYPE_NOT_ALLOWED");
+            @unlink($this->savePath);
+            return false;             
+        }
+
 		if (true === $this->enableThumb) {
 			$this->thumbPath = ImageHelper::thumbnail($this->savePath, $this->thumbWidth, $this->thumbHeight);
 			if ($this->replacePath) {
@@ -414,7 +455,6 @@ class YiiUploader
             "title"         => $this->oldFileName,
             "mimeType"          => $this->fileMime,
             "size"          => $this->fileSize,
-            "mime"          => $this->fileMime,
             // "savePath"   => $this->savePath,
             "thumb_path"    => $this->thumbPath,
             'attachment_id' => $this->attachment_id

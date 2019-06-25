@@ -390,8 +390,9 @@ ADD COLUMN `filehash` CHAR(32) NULL DEFAULT '' COMMENT '文件散列值' AFTER `
 ALTER TABLE `jcycms`.`byt_user` 
 CHANGE COLUMN `avatar` `avatar` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL DEFAULT '' COMMENT '头像' ;
 
-
-
+#2019/06/24
+ALTER TABLE `jcycms`.`byt_article` 
+CHANGE COLUMN `photo_file_ids` `photo_file_ids` VARCHAR(100) NULL DEFAULT NULL COMMENT '相册文件' ;
 
 
 

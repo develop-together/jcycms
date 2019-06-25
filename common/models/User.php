@@ -83,10 +83,10 @@ class User extends BaseModel implements IdentityInterface
         ];
     }
 
-    public function getAvatarFormat()
-    {
-        return $this->avatar ? Yii::$app->request->baseUrl . '/' . $this->avatar : '/staic/common/face.jpg';
-    }
+    // public function getAvatarFormat()
+    // {
+    //     return $this->avatar ? Yii::$app->request->baseUrl . '/' . $this->avatar : '/staic/common/face.jpg';
+    // }
 
     /**
      * @inheritdoc

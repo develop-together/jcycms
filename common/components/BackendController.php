@@ -45,10 +45,7 @@ class BackendController extends BaseController
         if ((int)$user->userRole->role->id === AdminRoles::SUPER_ROLE_ID) {
             return true;
         }
-		// if (Yii::$app->user->id == User::SUPER_MANAGER) {
-		// 	return true;
-		// }
-
+        
 		/**
 		 * 权限检查
 		 * @var [type]

@@ -7,8 +7,7 @@ use yii\helpers\Json;
 use yii\helpers\Html;
 use yii\behaviors\TimestampBehavior;
 use yii\web\UploadedFile;
-use yii\helpers\FileHelper;
-use common\modules\attachment\models\Attachment;
+use common\modules\attachment\ext\YiiUploader;
 
 /**
  * base model
@@ -134,11 +133,11 @@ class BaseModel extends \yii\db\ActiveRecord
     public function getAvatarFormat()
     {
         if ($this->hasAttribute('avatar') && $this->avatar) {
-            if(strpos($this->avatar, Yii::$app->params['uploadSaveFilePath']) !== false) {
+            if(strpos($this->avatar, Yii::$app->params['uploadConfig']['uploadSaveFilePath']) !== false) {
                 return Yii::$app->request->baseUrl  . '/' . $this->avatar;
             }
 
-            return Yii::$app->request->baseUrl . '/' . Yii::$app->params['uploadSaveFilePath'] . '/' . $this->avatar;
+            return Yii::$app->request->baseUrl . '/' . Yii::$app->params['uploadConfig']['uploadSaveFilePath'] . '/' . $this->avatar;
         }
 
         return Yii::$app->request->baseUrl . '/static/img/noface.png';
@@ -180,63 +179,55 @@ class BaseModel extends \yii\db\ActiveRecord
         }
 
         if ($upload !== null) {
-            $uploadPath = yii::getAlias($uploadAlias);
-            if (! FileHelper::createDirectory($uploadPath)) {
-                $this->addError($field, "Create directory failed " . $uploadPath);
-                return false;
-            }
-
-            $baseName = $upload->baseName;
-            $extension = $upload->extension;
-            $uniqid = time() . '-' . uniqid();
-            // if (Utils::chinese($baseName)) {
-            //     $baseName = iconv('UTF-8', 'GBK', $baseName);
-            //     $baseName = mb_convert_encoding($basename, 'UTF-8', 'GBK');
-            // }
-
-            $fullName = $uploadPath . $uniqid . '_' . $baseName . '.' . $extension;
-            $filename = $uploadPath . $uniqid . '_' . $upload->baseName . '.' . $extension;
-            if(! $upload->saveAs($fullName)) {
-                $this->addError($field, Yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => Yii::t('app', $attribute)]) . ': ' . $filename);
-
-                return false;
-            }
-
-            $attachmentModel = new Attachment();
-            // $relativePath = str_replace(Yii::getAlias('@backend/web/'), '', $filename);
-            $relativePath = Utils::getRelativePath($filename);
-            if (!$attachmentModel->saveAttachments($upload, $relativePath, $uploadPath)) {
-                $this->addError($field, Yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => Yii::t('app', $attribute)]) . ': ' . $filename);
-
-                return false;
-            }
-
+            $config['maxSize'] = Yii::$app->params['uploadConfig']['imageMaxSize'];
+            $config['allowFiles'] = Yii::$app->params['uploadConfig']['imageAllowFiles']; 
             // 给需要裁剪的地方加入裁剪(两种情况：1、系统开启图片裁剪并设置裁剪尺寸2、对于广告设置了宽高)
             // 重点：删除原图
-            if ($this->formName() === 'Ad') {
-                if (!empty($this->width) && !empty($this->height)) {
-                    $this->thumbUrl = ImageHelper::thumbnail($fullName, $this->width, $this->height);
-                }
+            if ($this->formName() === 'Ad' && !empty($this->width) && !empty($this->height)) {
+                //     $this->thumbUrl = ImageHelper::thumbnail($fullName, $this->width, $this->height);
+                $enableThumb = true;
+                $replacePath = true;
+                $thumbWidth = $this->width;
+                $thumbHeight = $this->height;
             }
 
             $clipping_img = \common\models\Config::getClippingImg();
-            if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb') && $fullName && $clipping_img === 1) {
-                $relativePath = ImageHelper::thumbnail($fullName, $this->width, $this->height);
-                file_exists($fullName) && @unlink($fullName);
+            if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb')  && $clipping_img === 1) {
+                // $relativePath = ImageHelper::thumbnail($fullName, $this->width, $this->height);
+                // file_exists($fullName) && @unlink($fullName);
+                $enableThumb = true;
+                $thumbWidth = $this->width;
+                $thumbHeight = $this->height;
+            }
+
+            $uploader = new YiiUploader($upload, $config, date('Ym'), [
+                'field' => $field,
+                'attribute' => $attribute,
+                'uploadAlias' => Yii::getAlias($uploadAlias),
+                'enableThumb' => isset($enableThumb) ?? false,
+                'thumbWidth' => isset($thumbWidth) ? $thumbWidth : null,
+                'thumbHeight' => isset($thumbHeight) ? $thumbHeight : null,
+                'replacePath' => isset($replacePath) ?? false,
+            ]);
+            $res = $uploader->upload();
+            if (false === $res) {
+                // return ['stateInfo' => $uploader->getStateInfo(), 'statusCode' => 300];
+                $this->addError($field, $uploader->getStateInfo());
+                return '';
             }
 
             if (! $this->isNewRecord) {
-                if ($this->getOldAttribute($field) != $relativePath) {
+                if ($this->getOldAttribute($field) != $res['fullname']) {
                     $oldFile = str_replace("\\", '/', str_replace('uploads', '', Yii::getAlias('@uploads')) . $this->getOldAttribute($field));;
                     file_exists($oldFile) && @unlink($oldFile);
                 }
             }
 
             if (Yii::$app->id == 'app-api' || !$UploadedFile) {
-                return $relativePath;
+                return $res['fullname'];
             }
 
-            return $attachmentModel->id;
+            return $res['attachment_id'];
         }
 
         return !$this->isNewRecord ? $this->getOldAttribute($field) : '';

@@ -10,14 +10,9 @@ $config = [
     'language' => 'zh-CN', //默认语言
     'timeZone' => 'Asia/Shanghai', //默认时区
     'modules' => [
-            'attachment' => [
-                'class' => 'common\modules\attachment\Module',
-            ]
-    ],
-    'controllerMap' => [
-            'upload' => [
-                'class' => 'common\modules\attachment\actions\UploadController',
-            ],
+        'attachment' => [
+            'class' => 'common\modules\attachment\Module',
+        ]
     ],
     'components' => [
         'urlManager' => [

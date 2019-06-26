@@ -45,26 +45,21 @@ class BackendController extends BaseController
         if ((int)$user->userRole->role->id === AdminRoles::SUPER_ROLE_ID) {
             return true;
         }
-		// if (Yii::$app->user->id == User::SUPER_MANAGER) {
-		// 	return true;
-		// }
-
+        
 		/**
 		 * 权限检查
 		 * @var [type]
 		 */
 		try {
-			// in_array($action->id, ['index', 'create', 'update', 'delete', 'view']) &&
             $route = $this->route . ':' . strtoupper(Yii::$app->request->getMethod());
-
 			if (!UserAcl::hasAcl($route)) {
                 if (yii::$app->request->isAjax) {
-                    yii::$app->getResponse()->content = json_encode(['code' => 1001, 'message' => Yii::t("app", "Permission denied")]);
+                    yii::$app->getResponse()->content = json_encode(['statusCode' => 300, 'code' => 1001, 'message' => Yii::t("app", "Permission denied"), 'stateInfo' => Yii::t("app", "Permission denied")]);
                     return yii::$app->getResponse()->send();
                 } else {
                 	$error = '<div class="ibox-title"><strong>' . Yii::t("app", "Permission denied") . '</strong>';
                 	if ($action->id != 'assignment') {
-                		$error .= '<<<a style="text-decoration: none;cursor:pointer;color:#1ab394" href="'. Url::toRoute([Yii::$app->controller->id . '/index']) .'">返回</a>>>';
+                		$error .= '<<<a style="text-decoration: none;cursor:pointer;color:#1ab394" href="'. Url::toRoute([Yii::$app->controller->id . '/index']) .'">' . Yii::t('app', 'Back') .'</a>>>';
                 	}
 
                 	throw new ForbiddenHttpException($error . '</div>');

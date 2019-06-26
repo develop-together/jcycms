@@ -3,12 +3,9 @@ namespace common\modules\attachment\actions;
 
 use Yii;
 use yii\base\Action;
-use yii\base\Exception;
-use yii\web\BadRequestHttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
-use common\modules\attachment\models\Attachment;
-use common\components\Utils;
+use common\modules\attachment\ext\YiiUploader;
 
 class UploadAction extends Action
 {
@@ -47,42 +44,35 @@ class UploadAction extends Action
 	
 	public function run()
 	{
-		Yii::$app->response->format = Response::FORMAT_JSON;
 		if (Yii::$app->request->isAjax) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
 			$files = UploadedFile::getInstanceByName($this->uploadParam);
 			if (empty($files)) {
-				return ['error' => '找不到上传的文件'];
+				return ['stateInfo' => '找不到上传的文件', 'statusCode' => 300];
 			}
 
-			$res = $this->uploadOne($files);
-			
-			return $res;
-		} elseif (Yii::$app->request->isPost) {
-
+			return $this->uploadOne($files);
 		}
 	}
 
 	private function uploadOne(UploadedFile $file)
 	{
-		try{
-			 $attachmentModel = new Attachment();
-			 $result = $attachmentModel->uploadFormPost($this->path, $file);
-			 if ($result) {
-				return [
-					'id' => $attachmentModel->id, 
-					'filename' => $attachmentModel->filename, 
-					'extension' => $attachmentModel->extension, 
-					'filepath' => Yii::$app->request->baseUrl . '/' . $attachmentModel->filepath,
-					'filetype' => $attachmentModel->filetype,
-				];			 	
-			} else {
-				return [];
-			}
-		} catch(Exception $e) {
-			$result = ['error' => $e->getMessage()];
+        //默认设置
+		if ('image-upload' === $this->id) {
+			$config['maxSize'] = Yii::$app->params['uploadConfig']['imageMaxSize'];
+			$config['allowFiles'] = Yii::$app->params['uploadConfig']['imageAllowFiles'];
+			$config['mimeMap'] = Yii::$app->params['uploadConfig']['imgAllowFileMimes'];
+		} else {
+			$config['maxSize'] = Yii::$app->params['uploadConfig']['fileMaxSize'];
+			$config['allowFiles'] = Yii::$app->params['uploadConfig']['fileAllowFiles'];			
 		}
 
-		return $result;
+		$uploader = new YiiUploader($file, $config, $this->path);
+		$res = $uploader->upload();
+		if (false === $res) {
+			return ['stateInfo' => $uploader->getStateInfo(), 'statusCode' => 300];
+		}
 
+		return $res;
 	}
 }

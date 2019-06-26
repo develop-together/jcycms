@@ -386,5 +386,6 @@ return [
 	'Text' => '文字',
 	'Verify' => '审核',
 	'No pictures yet' => '暂无图片',
-	'Multiple keywords separated by "," up to a maximum of 10' => '多个关键字之间用“,”分隔，最多不超过10个'
+	'Multiple keywords separated by "," up to a maximum of 10' => '多个关键字之间用“,”分隔，最多不超过10个',
+	'Error in data submission!' => '数据提交错误！'
 ];

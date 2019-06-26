@@ -3,7 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\FriendLink;
+use backend\models\FriendLink;
 use backend\models\search\FriendLinkSearch;
 use common\components\BackendController;
 use backend\actions\DeleteAction;

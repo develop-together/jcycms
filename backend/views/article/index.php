@@ -331,45 +331,45 @@ $this->title = Yii::t('app', 'Article');
     </div>
 </div>
 <?php 
-$noPic = Yii::t('app', 'No picture');
-$this->registerJs(<<<EOT
-	var timer;
-    $('table tr td a.title').hover(function() {
-		showImage(this);
-    }, 
-    function(){
-    	// debugger;
-        clearTimeout(timer);
-    });
+// $noPic = Yii::t('app', 'No picture');
+// $this->registerJs(<<<EOT
+// 	var timer;
+//     $('table tr td a.title').hover(function() {
+// 		showImage(this);
+//     }, 
+//     function(){
+//     	// debugger;
+//         clearTimeout(timer);
+//     });
 
-    // var container = $('#pjax');
-    // container.on('pjax:send',function(args){
-    //     layer.load(2);
-    // });
-    // container.on('pjax:complete',function(args){
-    //     layer.closeAll('loading');
-    //     $('table tr td a.title').bind('mouseover mouseout', function() {
-    //     	showImage(this);
-    //     });
-    // });
+//     // var container = $('#pjax');
+//     // container.on('pjax:send',function(args){
+//     //     layer.load(2);
+//     // });
+//     // container.on('pjax:complete',function(args){
+//     //     layer.closeAll('loading');
+//     //     $('table tr td a.title').bind('mouseover mouseout', function() {
+//     //     	showImage(this);
+//     //     });
+//     // });
 
-	function showImage(obj)
-	{
-		timer = setTimeout(function() {
-			var node = $(obj).attr('title');
-			// console.log($(obj));return;
-			if (node.length) {
-				layer.tips('<img src="' + node + '" width="100" height="100">', $(obj), {
-					tips: [2, '#3595CC'],
-				});
-			} else {
-				layer.tips('$noPic', $(obj), {
-					tips: [2, '#3595CC'],
-				});
-			}
-		}, 200);
-	}
-EOT
-);
+// 	function showImage(obj)
+// 	{
+// 		timer = setTimeout(function() {
+// 			var node = $(obj).attr('title');
+// 			// console.log($(obj));return;
+// 			if (node.length) {
+// 				layer.tips('<img src="' + node + '" width="100" height="100">', $(obj), {
+// 					tips: [2, '#3595CC'],
+// 				});
+// 			} else {
+// 				layer.tips('$noPic', $(obj), {
+// 					tips: [2, '#3595CC'],
+// 				});
+// 			}
+// 		}, 200);
+// 	}
+// EOT
+// );
  ?>
 

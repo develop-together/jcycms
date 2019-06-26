@@ -21,14 +21,22 @@ $this->params['breadcrumbs'] = [
                     'model' => $model,
                     'attributes' => [
                         'id',
-            'name',
-            'image',
-            'url:url',
-            'target',
-            'sort',
-            'status',
-            'created_at',
-            'updated_at',
+                        'name',
+                        [
+                            'attribute' => 'image',
+                            'format' => [
+                                'image'
+                            ],
+                            'value' => function($model) {
+                                return $model->getImageFormat();
+                            }
+                        ],
+                        'url:url',
+                        'target',
+                        'sort',
+                        'status',
+                        'created_at',
+                        'updated_at',
                     ],
 ]) ?>  
             </div>

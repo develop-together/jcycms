@@ -26,6 +26,7 @@ class UserAcl
 			'public/login:POST',
 			'admin-user/info:GET',
 			'admin-user/info:POST',
+			'site/error:GET'
 		];
 	}
 
@@ -33,16 +34,18 @@ class UserAcl
 	{
         $user = Yii::$app->user->identity;
 		empty($userId) && $userId = $user->id;
-		// if (Yii::$app->user->id == User::SUPER_MANAGER) {
-		// 	return true;
-		// }
         if ((int)$user->userRole->role->id === AdminRoles::SUPER_ROLE_ID) {
             return true;
         }
 
 		$user = User::findOne($userId);
-
-		return !empty($user) && $user->hasAcl($acl);
+		if ((null !== $user) && $user->hasAcl($acl)) {
+			return true;
+		} elseif(strpos($acl, "/index:POST") !== false) {// 特殊权限处理：post查询
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**

@@ -312,10 +312,10 @@ class User extends BaseModel implements IdentityInterface
         $route = explode('/', $acl);
         $action = count($route) - 1;
         // 特殊权限处理
-        if ($route[$action] == 'view') {
-            $route[$action] = 'index';
-            $acl = implode('/', $route);
-        }
+        // if ($route[$action] == 'view') {
+        //     $route[$action] = 'index';
+        //     $acl = implode('/', $route);
+        // }
 
         return in_array($acl, $this->aclList);
     }

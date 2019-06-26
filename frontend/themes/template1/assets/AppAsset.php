@@ -9,15 +9,15 @@ class AppAsset extends AssetBundle
 	public $sourcePath = '@frontend/web/static/template1';
 
 	public $css = [
-		'a' => 'css/base.css',
-		'b' => 'css/index.css',
-		'c' => 'css/style.css',
-		'd' => 'css/new.css',
+		'a' => 'css/base.min.css',
+		'b' => 'css/index.min.css',
+		'c' => 'css/style.min.css',
+		'd' => 'css/new.min.css',
 	];
 
 	public $js = [
-		'a' => 'js/silder.js',
-		'b' => ['js/modernizr.js', 'condition' => 'lte IE9']
+		'a' => 'js/silder.min.js',
+		'b' => ['js/modernizr.min.js', 'condition' => 'lte IE9']
 	];
 
 	public $depends = [

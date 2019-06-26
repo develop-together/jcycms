@@ -12,7 +12,7 @@ $zh_cn = Yii::t('app', 'Verify');
 <div class="row">
     <div class="col-sm-12">
         <div class="ibox">
-            <?= $this->render('/widgets/_ibox-index-title') ?>
+            <?= $this->render('/widgets/_ibox-index-title', ['noAdd' => true]) ?>
             <div class="ibox-content">
                     <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
                         <?= (isset($searchModel)) ? $this->render('_search', ['model' => $searchModel]) : '' ?>

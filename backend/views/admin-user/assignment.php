@@ -13,13 +13,13 @@ $this->title = Yii::t('app', 'Assign Roles');
                 <div class="form-group">
                     <?php if ($roleLists): ?>
                         <?php foreach ($roleLists as $key => $role): ?>
-                            <label><input type="radio" name="assignmentRoles" value="<?= $key ?>"  <?= $key == @$model->userRole->role_id ? 'checked' : '' ?>/><?= $role ?></label>
+                            <label><input type="radio" name="assignmentRoles" value="<?= $key ?>"  <?= $key === $model->userRole->role_id ? 'checked' : '' ?>/><?= $role ?></label>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
 			    <div class="form-group">
 			    	<div class="col-sm-4 col-sm-offset-2">
-			        	<?= Html::Button(Yii::t('app', 'Assign Roles'), ['id' => 'assigned_' . Yii::$app->controller->_uniqid, 'class' => 'btn btn-primary', 'disabled' => @$model->userRole->role_id == AdminRoles::SUPER_ROLE_ID ? true : false]) ?>
+			        	<?= Html::Button(Yii::t('app', 'Assign Roles'), ['id' => 'assigned_' . Yii::$app->controller->_uniqid, 'class' => 'btn btn-primary', 'disabled' => $model->userRole->role_id == AdminRoles::SUPER_ROLE_ID ? true : false]) ?>
 			    	</div>
 			    </div>
         	</div>

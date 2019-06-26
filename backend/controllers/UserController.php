@@ -3,7 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
-use frontend\models\User;
+use backend\models\FrontendUser;
 use frontend\models\search\UserSearch;
 use common\components\BackendController;
 use backend\actions\DeleteAction;
@@ -20,7 +20,7 @@ class UserController extends BackendController
         return [
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => User::className(),
+                'modelClass' => FrontendUser::className(),
             ],
         ];
     }
@@ -60,7 +60,7 @@ class UserController extends BackendController
      */
     public function actionCreate()
     {
-        $model = new User();
+        $model = new FrontendUser();
         $model->setScenario('create');
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
@@ -78,7 +78,7 @@ class UserController extends BackendController
             }
         } 
 
-        $model->status = User::STATUS_ACTIVE;
+        $model->status = FrontendUser::STATUS_ACTIVE;
         
         return $this->render('create', [
             'model' => $model,
@@ -86,7 +86,7 @@ class UserController extends BackendController
     }
 
     /**
-     * Updates an existing User model.
+     * Updates an existing FrontendUser model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -99,7 +99,6 @@ class UserController extends BackendController
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
-
                 return $this->redirect(['index']);
             } else {
                 $errors = $model->getErrors();
@@ -117,15 +116,15 @@ class UserController extends BackendController
     }
 
     /**
-     * Finds the User model based on its primary key value.
+     * Finds the FrontendUser model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return User the loaded model
+     * @return FrontendUser the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne($id)) !== null) {
+        if (($model = FrontendUser::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

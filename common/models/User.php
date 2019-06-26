@@ -27,7 +27,8 @@ class User extends BaseModel implements IdentityInterface
     const STATUS_ACTIVE = 10;
     const AUTH_KEY = '666666';
 
-
+    public $password;
+    public $repeat_pwd;
     /**
      * @inheritdoc
      */
@@ -42,10 +43,50 @@ class User extends BaseModel implements IdentityInterface
     public function rules()
     {
         return [
+            [['username', 'password', 'repeat_pwd', 'password_hash', 'avatar'], 'string'],
+            [['username', 'email'], 'unique'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['email', 'email'],
+            [['repeat_pwd'], 'compare', 'compareAttribute' => 'password'],
+            [['username', 'email', 'password', 'repeat_pwd'], 'required', 'on' => ['create']],
+            [['username', 'email'], 'required', 'on' => ['update']],
+            // [['avatar'], 'avatar', 'enableClientValidation' => true,   'maxSize' => 1024, 'message' => '您上传的文件过大'],
         ];
     }
+
+    public function scenarios()
+    {
+        return [
+            'create' => ['username', 'password', 'avatar', 'email', 'status', 'password', 'repeat_pwd'],
+            'update' => ['username', 'password', 'avatar', 'email', 'status', 'password', 'repeat_pwd'],
+            'self-update' => [],
+            'avatar-setting' => ['avatar']
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => Yii::t('common', 'Username'),
+            'password' => yii::t('common', 'Password'),
+            'repeat_pwd' => yii::t('common', 'Duplicate Password'),
+            'email' => Yii::t('common', 'Email'),
+            'avatar' => Yii::t('common', 'Avatar'),
+            'status' => Yii::t('common', 'Status'),
+            'last_login_ip' => yii::t('common', 'Last Login IP'),
+            'login_count' => yii::t('common', 'Login Number'),
+            'last_login_at' => yii::t('common', 'Last Login Time'),
+            'created_at' => yii::t('common', 'Created At'),
+            'updated_at' => yii::t('common', 'Updated At'),
+        ];
+    }
+
+    // public function getAvatarFormat()
+    // {
+    //     return $this->avatar ? Yii::$app->request->baseUrl . '/' . $this->avatar : '/staic/common/face.jpg';
+    // }
 
     /**
      * @inheritdoc
@@ -203,5 +244,16 @@ class User extends BaseModel implements IdentityInterface
     public function getStatusFormat()
     {
         return self::loadStatusOptions()[$this->status];
+    }
+
+    public function getLoginAddress()
+    {
+        $url = "http://ip.taobao.com/service/getIpInfo.php?ip=" . $this->last_login_ip;
+        $ip = Json::decode(file_get_contents($url), true);
+        if (!$ip['data']['region']) {
+            return $this->last_login_ip;
+        } else {
+            return $ip['data']['country'] . '.' . $ip['data']['region'] . '.' . $ip['data']['city'];
+        }
     }
 }

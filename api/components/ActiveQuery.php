@@ -13,7 +13,7 @@
  		$model = Yii::createObject($this->modelClass);
  		$formName = $model->formName();
  		if ($formName === 'Article') {
- 			$this->andFilterWhere(['type' => $model::ARTICLE]);
+ 			$this->andCondition(['type' => $model::ARTICLE]);
  		}
  	}
  }

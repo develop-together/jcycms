@@ -35,7 +35,7 @@ class AdminLog extends \common\components\BaseModel
             [['route'], 'string', 'max' => 255],
         ];
     }
-
+        
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);

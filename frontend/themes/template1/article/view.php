@@ -85,10 +85,10 @@
 		    <div class="ad"> </div>
 			<div class="nextinfo">
 				<?php if ($prevModel): ?>
-					<p><?= Yii::t('frontend', 'previous') ?>：<?= Html::a($prevModel->title, Url::to(['acticle/view', 'id' => $prevModel->id]), ['title' => $prevModel->sub_title, 'target' => '_self']) ?></p>
+					<p><?= Yii::t('frontend', 'previous') ?>：<?= Html::a($prevModel->title, Url::to(['article/view', 'id' => $prevModel->id]), ['title' => $prevModel->sub_title, 'target' => '_self']) ?></p>
 				<?php endif ?>
 				<?php if ($nextModel): ?>
-				<p><?= Yii::t('frontend', 'next') ?>：<?= Html::a($nextModel->title, Url::to(['acticle/view', 'id' => $nextModel->id]), ['title' => $nextModel->sub_title, 'target' => '_self']) ?></p>
+				<p><?= Yii::t('frontend', 'next') ?>：<?= Html::a($nextModel->title, Url::to(['article/view', 'id' => $nextModel->id]), ['title' => $nextModel->sub_title, 'target' => '_self']) ?></p>
 				<?php endif ?>
 			</div>
 			<div class="otherlink">

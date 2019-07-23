@@ -20,7 +20,7 @@ return [
     	'imgAllowFileMimes' => [
 			'image/x-ms-bmp',
 			'image/jpeg',
-			'image/jpeg',
+			'image/jpg',
 			'image/gif',
 			'image/png',
 			'image/tiff',

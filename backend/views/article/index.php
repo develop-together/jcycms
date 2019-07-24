@@ -54,7 +54,7 @@ $this->title = Yii::t('app', 'Article');
 			                            }
 			                        ],
                                     'scan_count',
-                                    'can_comment',
+                                    'comment_count',
 									[
 										'attribute' => 'thumb',
 										'enableSorting' => false,

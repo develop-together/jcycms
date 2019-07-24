@@ -113,5 +113,7 @@ return [
     'Incorrect username or password.' => '用户名或密码错误',
     'Like Count' => '点赞量',
     'Superior comment' => '上级评论',
-    'Repeat Count' => '回复量'
+    'Repeat Count' => '回复量',
+    'Scan Count' => '阅读量',
+    'Comment Count' => '评论数'
 ];

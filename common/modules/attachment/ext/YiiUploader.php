@@ -286,7 +286,7 @@ class YiiUploader
         $arr = ['Byte', 'KB', 'MB', 'GB', 'TB', 'PB'];
         $e = floor(log($this->fileSize)/log(1024));
 
-        return number_format( ( $this->fileSize / pow( 1024,f loor( $e ) ) ), 2, '.', '') .' '.$arr[$e];
+        return number_format( ( $this->fileSize / pow( 1024,floor( $e ) ) ), 2, '.', '') .' '.$arr[$e];
     }
 
     // 自动转换字符集 支持数组转换

@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm AS BAF;
 /* @var $model common\models\Category */
 /* @var $form yii\widgets\ActiveForm */
 
-$categoryTree = Utils::tree_bulid(Category::find()->asArray()->all(), 'id', 'parent_id');
+$categoryTree = Utils::reference_delivery_tree(Category::find()->asArray()->all(), 'id', 'parent_id');
 ?>
 
 <div class="row">

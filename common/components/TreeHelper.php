@@ -75,7 +75,7 @@ class TreeHelper
 	{
 		$options = $this->_options;
 		if ($this->_createMode === 1) {
-			return Utils::tree_bulid($this->_array, $options['pk'], $options['pidKey'], $options['childKey'], $options['root']);
+			return Utils::reference_delivery_tree($this->_array, $options['pk'], $options['pidKey'], $options['childKey'], $options['root']);
 		} elseif ($this->_createMode === 2) {
 			return $this->spanningTree($this->_array, $options['fpid'], $options['root']);
 		} elseif ($this->_createMode === 3) {

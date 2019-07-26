@@ -81,7 +81,8 @@ class Menu extends \common\models\Menu
 	public static function loadMenus($adminRolePermissionLists = [], $role_id)
 	{
 		$query = self::getBackendQuery();
-        $menuData =  Utils::tree_bulid($query->orderBy(['sort' => SORT_ASC])                       
+		//tree_bulid
+        $menuData =  Utils::reference_delivery_tree($query->orderBy(['sort' => SORT_ASC])          
                     ->asArray()
                     ->all(), 'id', 'parent_id');
 

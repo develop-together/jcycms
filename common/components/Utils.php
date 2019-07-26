@@ -1264,7 +1264,15 @@ class Utils {
         return $tree;
     }
 
-    public static function reference_delivery_tree($list, $pk ='id', $pid = 'pid', $child = 'children')
+    /**
+     * [reference_delivery_tree 引用传值实现无限级分类]
+     * @param  [type] $list  [数据源]
+     * @param  string $pk    [主键key]
+     * @param  string $pid   [上级key]
+     * @param  string $child [子数据key]
+     * @return [array]        [无限级分类数据结构]
+     */
+    public static function reference_delivery_tree($list, $pk ='id', $pid = 'pid', $child = 'children0', $root = 0)
     {
         $tree = [];
         if (!is_array($list)) {

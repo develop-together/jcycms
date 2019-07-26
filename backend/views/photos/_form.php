@@ -9,7 +9,7 @@ use common\components\Utils;
 use common\components\BaseConfig;
 use common\widgets\fileUploadInput\FileUploadInputWidget;
 
-$categoryTree = Utils::tree_bulid(Category::find()->asArray()->all(), 'id', 'parent_id');
+$categoryTree = Utils::reference_delivery_tree(Category::find()->asArray()->all(), 'id', 'parent_id');
 $this->title = Yii::t('app', 'Photos');
 
 ?>

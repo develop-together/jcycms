@@ -6,7 +6,7 @@ use backend\models\Menu;
 use common\components\Utils;
 use yii\widgets\ActiveForm AS BAF;
 $lists = Menu::getFrontendQuery()->asArray()->all();
-$menuTree = Utils::tree_bulid($lists, 'id', 'parent_id');
+$menuTree = Utils::reference_delivery_tree($lists, 'id', 'parent_id');
 
 ?>
 

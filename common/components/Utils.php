@@ -1264,7 +1264,7 @@ class Utils {
         return $tree;
     }
 
-    public static function reference_delivery_tree($list, $pk='id', $pid = 'pid', $child = 'children')
+    public static function reference_delivery_tree($list, $pk ='id', $pid = 'pid', $child = 'children')
     {
         $tree = [];
         if (!is_array($list)) {
@@ -1272,13 +1272,16 @@ class Utils {
         }
 
         $data = array_column($list, null, $pk);
-        foreach ($data as $key => $value) {
-            if (isset($data[$value[$pid]])) {
-                $data[$value[$pid][$child]][] = & $data[$value[$pk]];
-            } else {
-                $tree[] = &$data[$value[$pk]];
+        foreach ($data as $key => $item) {
+            if (isset($data[$item[$pid]])) {//存在值则为二级分类
+                $data[$item[$pid]][$child][] = &$data[$item[$pk]];//传引用直接赋值与改变
+                //$data[$item['pid']]在这里被改变，tree里面引用，所以会一直变化
+            } else {// 由于是传引用思想，这里将不会有值;/至少三级分类;如果不存在表示pid为0，第一级
+                $tree[] = &$data[$item[$pk]];
             }
         }
+
+        return $tree;
     }
 
     public static function get_request_payload()

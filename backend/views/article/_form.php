@@ -13,6 +13,7 @@ use common\widgets\fileUploadInput\FileUploadInputWidget;
 /* @var $model common\models\Article */
 /* @var $form yii\widgets\ActiveForm */
 $categoryTree = Utils::reference_delivery_tree(Category::find()->asArray()->all(), 'id', 'parent_id');
+var_dump($categoryTree);
 $this->title = Yii::t('app', 'Articles');
 
 ?>

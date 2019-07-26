@@ -1272,7 +1272,7 @@ class Utils {
      * @param  string $child [子数据key]
      * @return [array]        [无限级分类数据结构]
      */
-    public static function reference_delivery_tree($list, $pk ='id', $pid = 'pid', $child = 'children0', $root = 0)
+    public static function reference_delivery_tree($list, $pk ='id', $pid = 'pid', $child = 'children', $root = 0)
     {
         $tree = [];
         if (!is_array($list)) {

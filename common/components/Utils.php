@@ -1228,7 +1228,7 @@ class Utils {
     }
 
     /**
-     * 把数据集转换成Tree
+     * 把数据集转换成Tree(引用)
      * @param $list
      * @param string $pk
      * @param string $pid
@@ -1262,6 +1262,23 @@ class Utils {
         }
 
         return $tree;
+    }
+
+    public static function reference_delivery_tree($list, $pk='id', $pid = 'pid', $child = 'children')
+    {
+        $tree = [];
+        if (!is_array($list)) {
+            return $tree;
+        }
+
+        $data = array_column($list, null, $pk);
+        foreach ($data as $key => $value) {
+            if (isset($data[$value[$pid]])) {
+                $data[$value[$pid][$child]][] = & $data[$value[$pk]];
+            } else {
+                $tree[] = &$data[$value[$pk]];
+            }
+        }
     }
 
     public static function get_request_payload()

@@ -27,7 +27,7 @@ class GridView extends \yii\grid\GridView
     public $tableOptions = ['class' => 'table table-hover table-bordered'];
 
     // public $layout = "{items}\n{pager}";
-    public $layout = "{items}\n<div class='row'><div class='pull-left' style='width:75%'><div class='col-sm-3' style='line-height: 5.2'>{summary}</div><div class='col-sm-9' style='padding-top: 13px;'><div class='dataTables_paginate paging_simple_numbers'>{pager}</div></div></div>{changePage}</div>";
+    public $layout = "{items}\n<div class='row'><div class='col-sm-3'>{summary}</div><div class='col-sm-6'><div class='dataTables_paginate paging_simple_numbers'>{pager}</div></div><div class='col-sm-3'>{changePage}</div></div>";
 
     public $changePageOptions = [5, 10, 20, 50];
 

@@ -81,7 +81,7 @@ class PhotosController extends BackendController
                 $transaction->commit();
 
                 return $this->redirect(['index']);
-            } catch(\Expression $e) {
+            } catch (\Expression $e) {
                 $transaction->rollBack();
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
@@ -119,14 +119,14 @@ class PhotosController extends BackendController
 
                 $transaction->commit();
                 if (Yii::$app->request->isAjax) {
-                    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;       
+                    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
                     return ['statusCode' => 200, 'message' => Yii::t('app', 'Success'), 'href' => Url::toRoute('index')];
                 } else {
                     Yii::$app->session->setFlash('success', Yii::t('app', 'Success'));
-                    return $this->redirect(['index']);                    
+                    return $this->redirect(['index']);
                 }
 
-            } catch(\Expression $e) {
+            } catch (\Expression $e) {
                 $transaction->rollBack();
                 if (Yii::$app->request->isAjax) {
                     Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

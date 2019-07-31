@@ -19,12 +19,12 @@ class BaseModel extends \yii\db\ActiveRecord
     const TAGET_PARENT = '_parent';
     const TAGET_TOP = '_top';
 
-	public static function getDb()
-	{
-		return Yii::$app->get('db');
-	}
+    public static function getDb()
+    {
+        return Yii::$app->get('db');
+    }
 
-	public function behaviors()
+    public function behaviors()
     {
         return [
             [
@@ -37,13 +37,13 @@ class BaseModel extends \yii\db\ActiveRecord
         ];
     }
 
-	public function attributeLabels()
-	{
-		return [
-			'created_at' => '创建时间',
-			'updated_at' => '修改时间',
-		];
-	}
+    public function attributeLabels()
+    {
+        return [
+            'created_at' => '创建时间',
+            'updated_at' => '修改时间',
+        ];
+    }
 
     public function image($attribute = '', $htmlOptions = [])
     {
@@ -55,7 +55,7 @@ class BaseModel extends \yii\db\ActiveRecord
 
     /**
      * 系统上传的图片、文件地址
-     * @param  string $attribute
+     * @param string $attribute
      * @return string
      */
     public function path($attribute = '')
@@ -73,22 +73,22 @@ class BaseModel extends \yii\db\ActiveRecord
         return $errors;
     }
 
-	/**
+    /**
      * 验证有错误时输出给前端回调函数
      * @return [type] [description]
      */
     public function afterValidate()
     {
-    	if ($this->hasErrors()) {
-    		$message = '<strong>' . Yii::t('common', 'The following form is mistaken') . ':</strong><br>';
-            if(Yii::$app->request->isAjax) {
+        if ($this->hasErrors()) {
+            $message = '<strong>' . Yii::t('common', 'The following form is mistaken') . ':</strong><br>';
+            if (Yii::$app->request->isAjax) {
                 exit(Json::encode(['code' => 10001, 'message' => implode('<br>', $this->getErrorFormat())]));
             }
 
             $errors = '';
-			foreach ($this->getErrors() as $value) {
-				$errors .= implode(",", $value) . '<br>';
-			}
+            foreach ($this->getErrors() as $value) {
+                $errors .= implode(",", $value) . '<br>';
+            }
 
             if (Yii::$app->id != 'app-console') {
                 Yii::$app->getSession()->setFlash('error', $message . $errors);
@@ -97,7 +97,7 @@ class BaseModel extends \yii\db\ActiveRecord
             }
 
 
-    	}
+        }
     }
 
     /**
@@ -133,8 +133,8 @@ class BaseModel extends \yii\db\ActiveRecord
     public function getAvatarFormat()
     {
         if ($this->hasAttribute('avatar') && $this->avatar) {
-            if(strpos($this->avatar, Yii::$app->params['uploadConfig']['uploadSaveFilePath']) !== false) {
-                return Yii::$app->request->baseUrl  . '/' . $this->avatar;
+            if (strpos($this->avatar, Yii::$app->params['uploadConfig']['uploadSaveFilePath']) !== false) {
+                return Yii::$app->request->baseUrl . '/' . $this->avatar;
             }
 
             return Yii::$app->request->baseUrl . '/' . Yii::$app->params['uploadConfig']['uploadSaveFilePath'] . '/' . $this->avatar;
@@ -143,12 +143,12 @@ class BaseModel extends \yii\db\ActiveRecord
         return Yii::$app->request->baseUrl . '/static/img/noface.png';
     }
 
-    public static function getDrowDownList($tree=[], &$result=[], $deep=0, $separator = "　　")
+    public static function getDrowDownList($tree = [], &$result = [], $deep = 0, $separator = "　　")
     {
         $deep++;
         foreach ($tree as $list) {
 
-            $result[$list['id']] = $deep == 1 ? str_repeat($separator, $deep-1) . $list['name'] : str_repeat($separator, $deep-1) . '├' . $list['name'];
+            $result[$list['id']] = $deep == 1 ? str_repeat($separator, $deep - 1) . $list['name'] : str_repeat($separator, $deep - 1) . '├' . $list['name'];
             if (isset($list['children'])) {
                 self::getDrowDownList($list['children'], $result, $deep);
             }
@@ -157,7 +157,7 @@ class BaseModel extends \yii\db\ActiveRecord
         return $result;
     }
 
-    public function uploadMultiple($field='thumb', $uploadAlias='@original/', $attribute='Thumb')
+    public function uploadMultiple($field = 'thumb', $uploadAlias = '@original/', $attribute = 'Thumb')
     {
         $uploads = UploadedFile::getInstances($this, $field);
         $result = [];
@@ -170,7 +170,7 @@ class BaseModel extends \yii\db\ActiveRecord
         return $result;
     }
 
-    public function uploadOpreate($field='thumb', $uploadAlias='@original/', $attribute='Thumb', $UploadedFile= null)
+    public function uploadOpreate($field = 'thumb', $uploadAlias = '@original/', $attribute = 'Thumb', $UploadedFile = null)
     {
         if (Yii::$app->id == 'app-api') {
             $upload = UploadedFile::getInstanceByName($field);
@@ -180,7 +180,7 @@ class BaseModel extends \yii\db\ActiveRecord
 
         if ($upload !== null) {
             $config['maxSize'] = Yii::$app->params['uploadConfig']['imageMaxSize'];
-            $config['allowFiles'] = Yii::$app->params['uploadConfig']['imageAllowFiles']; 
+            $config['allowFiles'] = Yii::$app->params['uploadConfig']['imageAllowFiles'];
             // 给需要裁剪的地方加入裁剪(两种情况：1、系统开启图片裁剪并设置裁剪尺寸2、对于广告设置了宽高)
             // 重点：删除原图
             if ($this->formName() === 'Ad' && !empty($this->width) && !empty($this->height)) {
@@ -192,7 +192,7 @@ class BaseModel extends \yii\db\ActiveRecord
             }
 
             $clipping_img = \common\models\Config::getClippingImg();
-            if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb')  && $clipping_img === 1) {
+            if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb') && $clipping_img === 1) {
                 // $relativePath = ImageHelper::thumbnail($fullName, $this->width, $this->height);
                 // file_exists($fullName) && @unlink($fullName);
                 $enableThumb = true;
@@ -216,7 +216,7 @@ class BaseModel extends \yii\db\ActiveRecord
                 return '';
             }
 
-            if (! $this->isNewRecord) {
+            if (!$this->isNewRecord) {
                 if ($this->getOldAttribute($field) != $res['fullname']) {
                     $oldFile = str_replace("\\", '/', str_replace('uploads', '', Yii::getAlias('@uploads')) . $this->getOldAttribute($field));;
                     file_exists($oldFile) && @unlink($oldFile);

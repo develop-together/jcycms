@@ -24,7 +24,7 @@ class CarouselItemController extends BackendController
             ],
         ];
     }
-    
+
     /**
      * Lists all CarouselItem models.
      * @return mixed
@@ -47,15 +47,15 @@ class CarouselItemController extends BackendController
         $query = CarouselItem::find()->where(['carousel_id' => $id]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' =>[
-                'defaultOrder' =>[
+            'sort' => [
+                'defaultOrder' => [
                     'created_at' => SORT_DESC,
                 ],
             ],
             'pagination' => [
                 'pageSize' => 5,
             ]
-        ]);     
+        ]);
 
         return $this->render('list', [
             'id' => $id,
@@ -108,12 +108,12 @@ class CarouselItemController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
+
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
-                
+
                 return $this->redirect(['list', 'id' => $model->carousel_id]);
             }
         }

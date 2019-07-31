@@ -83,8 +83,8 @@ class CategoryController extends BackendController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
-                return $this->redirect(['index']);
+            Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

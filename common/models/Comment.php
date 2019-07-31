@@ -37,7 +37,7 @@ class Comment extends \common\components\BaseModel
     public $lv = 0;
     public $childrens = [];
 
-    public  function getCommentStatusItems($key = null, $delDefault = false)
+    public function getCommentStatusItems($key = null, $delDefault = false)
     {
         $items = [
             self::STATUS_INIT => Yii::t('app', 'Not Audited'),
@@ -53,9 +53,9 @@ class Comment extends \common\components\BaseModel
     {
         $class = 'badge badge-rounded ';
         $value = $this->getCommentStatusItems($this->status);
-        if ( self::STATUS_PASSED === $this->status ) {
+        if (self::STATUS_PASSED === $this->status) {
             $class .= 'badge-success';
-        } elseif ( self::STATUS_UNPASS === $this->status ) {
+        } elseif (self::STATUS_UNPASS === $this->status) {
             $class .= 'badge-danger';
         } else {
             $class .= 'badge-info';
@@ -66,7 +66,7 @@ class Comment extends \common\components\BaseModel
 
     public function getCreated_at_format()
     {
-        return  Utils::tranDateTime($this->created_at);
+        return Utils::tranDateTime($this->created_at);
     }
 
     /**
@@ -88,7 +88,7 @@ class Comment extends \common\components\BaseModel
             [['status'], 'string', 'max' => 2],
             ['status', 'in', 'range' => [self::STATUS_INIT, self::STATUS_PASSED, self::STATUS_UNPASS]],
             [['contents'], 'string', 'max' => 255],
-            ['parent_id', function($attribute, $params) {
+            ['parent_id', function ($attribute, $params) {
                 $this->$attribute = (int)$this->$attribute;
                 if ($this->$attribute !== 0) {
                     if (self::findOne($this->$attribute) === null) {
@@ -169,7 +169,7 @@ class Comment extends \common\components\BaseModel
             $emotions = Json::decode(Yii::$app->cache->get('__comment_emotions'), true);
         }
 
-        $this->contents = preg_replace_callback("/\[.*?\]/i", function($matches) use ($emotions) {
+        $this->contents = preg_replace_callback("/\[.*?\]/i", function ($matches) use ($emotions) {
             foreach ($matches as &$match) {
                 $match = isset($emotions[$match]) ? "<img src=\"{$emotions[$match]}\" height=\"22\" width=\"22\" />" : $match;
             }

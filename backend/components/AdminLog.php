@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace backend\components;
 
 use Yii;
@@ -44,11 +45,11 @@ class AdminLog extends \yii\base\BaseObject
      */
     public static function update($event)
     {
-        if (! empty($event->changedAttributes)) {
+        if (!empty($event->changedAttributes)) {
             $desc = '<br>';
             $oldAttributes = $event->sender->oldAttributes;
             foreach ($event->changedAttributes as $name => $value) {
-                if( $oldAttributes[$name] == $value ) continue;
+                if ($oldAttributes[$name] == $value) continue;
                 $class = $event->sender->className();
                 if ($class::tableName() === '{{%article_content}}' && $name === 'content') continue;
                 $desc .= $event->sender->getAttributeLabel($name) . '(' . $name . ') : ' . $value . '=>' . $event->sender->oldAttributes[$name] . ',<br>';
@@ -88,8 +89,8 @@ class AdminLog extends \yii\base\BaseObject
             $model->description = '{{%ADMIN_USER%}} [ ' . Yii::$app->user->identity->username . ' ] {{%BY%}} ' . $class . ' [ ' . $class::tableName() . ' ] ' . " {{%DELETED%}} {$id_des} {{%RECORD%}}: " . $desc;
             $model->route = Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
             $model->user_id = Yii::$app->getUser()->id;
-            $model->save();            
+            $model->save();
         }
 
-    }	
+    }
 }

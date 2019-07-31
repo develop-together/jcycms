@@ -1,17 +1,18 @@
-<?php 
-	namespace common\widgets\fileUploadInput;
+<?php
 
-	use yii\helpers\Html;
-	use yii\helpers\Json;	
+namespace common\widgets\fileUploadInput;
 
-	class SingleWidget extends MultipleWidget
-	{
-		public $multiple = false;
+use yii\helpers\Html;
+use yii\helpers\Json;
 
-		public $maxNumberOfFiles = 1;
+class SingleWidget extends MultipleWidget
+{
+    public $multiple = false;
 
-		public function registerClientScript()
-		{
-			parent::registerClientScript();
-		}
-	}	
+    public $maxNumberOfFiles = 1;
+
+    public function registerClientScript()
+    {
+        parent::registerClientScript();
+    }
+}

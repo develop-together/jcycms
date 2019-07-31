@@ -20,36 +20,36 @@ use common\modules\attachment\models\Attachment;
 
 class FeehiWidget extends InputWidget
 {
-	//允许上传最大限制
-	public $maxFileSize;
+    //允许上传最大限制
+    public $maxFileSize;
 
-	//允许上传附件的类型
-	public $acceptFileTypes;
+    //允许上传附件的类型
+    public $acceptFileTypes;
 
-	public $parentDivId;
+    public $parentDivId;
 
-	public $wrapperOptions = [];
+    public $wrapperOptions = [];
 
-	public $inputId        = '';
+    public $inputId = '';
 
-	public $onlyUrl        = false;
+    public $onlyUrl = false;
 
-	public $multiple       = false;
+    public $multiple = false;
 
-	public $placeHolder    = '';
+    public $placeHolder = '';
 
-	public function init()
-	{
+    public function init()
+    {
         parent::init();
 
         if ($this->hasModel()) {
-            $this->name = $this->name ? : Html::getInputName($this->model, $this->attribute);
+            $this->name = $this->name ?: Html::getInputName($this->model, $this->attribute);
             $this->attribute = Html::getAttributeName($this->attribute);
             if ($this->attribute === 'photo_file_ids') {
-            	$value = $this->model->{$this->attribute};
-            	$this->value = $this->model->getPictures();
+                $value = $this->model->{$this->attribute};
+                $this->value = $this->model->getPictures();
             } else {
-            	$this->value = $this->model->{$this->attribute};
+                $this->value = $this->model->{$this->attribute};
             }
 
         }
@@ -57,56 +57,56 @@ class FeehiWidget extends InputWidget
         $this->acceptFileTypes = 'image/png, image/jpg, image/jpeg, image/gif, image/bmp';
         $this->inputId = strtolower($this->model->formName()) . '-' . $this->attribute;//'feehi-' . $this->name;
         $this->parentDivId = 'feehi-res-' . time();
-	}
+    }
 
-	public function run()
-	{
-		$imgHtml = '';
-		$inputValue = $this->value;
-		$inputName = $this->name;
-		$maxWidth = $maxHeight = '200px';
+    public function run()
+    {
+        $imgHtml = '';
+        $inputValue = $this->value;
+        $inputName = $this->name;
+        $maxWidth = $maxHeight = '200px';
 
-		if (isset($this->wrapperOptions['max-width'])) {
-			$maxWidth =  $this->wrapperOptions['max-width'];
-		}
+        if (isset($this->wrapperOptions['max-width'])) {
+            $maxWidth = $this->wrapperOptions['max-width'];
+        }
 
-		if (isset($this->wrapperOptions['max-height'])) {
-			$maxHeight =  $this->wrapperOptions['max-height'];
-		}
+        if (isset($this->wrapperOptions['max-height'])) {
+            $maxHeight = $this->wrapperOptions['max-height'];
+        }
 
-		if (is_array($this->value)) {
-			$inputValue = '';
-			array_walk($this->value, function($value) use (&$inputValue, &$imgHtml, $maxWidth, $maxHeight, $inputName) {
-				$src = Yii::$app->request->baseUrl . (!empty($value->filepath) ? '/' . $value->filepath : '/static/img/none.jpg');
-				$imgHtml .= "<div class='multi-item col-lg-3 col-sm-3 col-md-3'><i class='fa fa-trash cancels' style='position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;' data-file='{$value->filename}' data-fid='{$value->id}' data-input='{$this->inputId}'></i><img class='img-thumbnail' src='{$src}'/><input type='hidden' -name='{$inputName}' value='{$value->filepath}'></div>";
-				$inputValue .= $value->filename . '、';
-			});
-		} else {
-			$src = Yii::$app->request->baseUrl . (!empty($this->value) ? '/' . $this->value : '/static/img/none.jpg');
-			// <i class='fa fa-trash cancels' style='position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;' data-file='{$this->value}'></i>
-			$imgHtml = "<div class='multi-item col-lg-3 col-sm-3 col-md-3'>";
-			if ($this->multiple) {
-				$imgHtml .= "<i class='fa fa-trash cancels' style='position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;' data-file='{$this->value}'></i><img class='img-thumbnail' src='{$src}'/><input type='hidden' -name='{$inputName}' value='{$this->value}'></div>";
-			} else {
-				$imgHtml .= "<img class='img-thumbnail' src='{$src}'/><input type='hidden' -name='{$inputName}' value='{$this->value}'></div>";
-			}
-		}
+        if (is_array($this->value)) {
+            $inputValue = '';
+            array_walk($this->value, function ($value) use (&$inputValue, &$imgHtml, $maxWidth, $maxHeight, $inputName) {
+                $src = Yii::$app->request->baseUrl . (!empty($value->filepath) ? '/' . $value->filepath : '/static/img/none.jpg');
+                $imgHtml .= "<div class='multi-item col-lg-3 col-sm-3 col-md-3'><i class='fa fa-trash cancels' style='position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;' data-file='{$value->filename}' data-fid='{$value->id}' data-input='{$this->inputId}'></i><img class='img-thumbnail' src='{$src}'/><input type='hidden' -name='{$inputName}' value='{$value->filepath}'></div>";
+                $inputValue .= $value->filename . '、';
+            });
+        } else {
+            $src = Yii::$app->request->baseUrl . (!empty($this->value) ? '/' . $this->value : '/static/img/none.jpg');
+            // <i class='fa fa-trash cancels' style='position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;' data-file='{$this->value}'></i>
+            $imgHtml = "<div class='multi-item col-lg-3 col-sm-3 col-md-3'>";
+            if ($this->multiple) {
+                $imgHtml .= "<i class='fa fa-trash cancels' style='position: absolute;right:3px;top: -3px;z-index:999;font-size: 14px;color: red;' data-file='{$this->value}'></i><img class='img-thumbnail' src='{$src}'/><input type='hidden' -name='{$inputName}' value='{$this->value}'></div>";
+            } else {
+                $imgHtml .= "<img class='img-thumbnail' src='{$src}'/><input type='hidden' -name='{$inputName}' value='{$this->value}'></div>";
+            }
+        }
 
-		$content = '';
-		$this->wrapperOptions = ArrayHelper::merge(['id' => $this->parentDivId, 'class' => 'image'], $this->wrapperOptions);
-		$content .= Html::beginTag('div', $this->wrapperOptions);
-		// $inputValue
-		$content .= Html::fileInput($this->name, null, [
-			'id' => $this->inputId,
-			'class' => 'feehi_html5_upload',
-			'accept' => $this->acceptFileTypes,
-			'multiple' => $this->multiple,
-			'data-resize-name' => str_replace($this->attribute, 'resize_' . $this->attribute, $this->name),
-			'style' => 'max-width: ' . $maxWidth . '; max-height: ' . $maxHeight . '; display: none;',
-		]);
-		$content .= '<div class="input-append input-group"><span class="input-group-btn"><button class="btn btn-white" type="button">选择文件</button></span><input class="input-large form-control filename_lists" type="text" readonly placeHolder="' . $this->placeHolder . '" value="' . rtrim($inputValue, '、') . '" ><input type="hidden" name="' . str_replace([$this->attribute, '[]'], ['del_file_' . $this->attribute, ''], $this->name) . '" id="del_file_' . $this->inputId . '" data-del-file=""/></div><div class="multi-img-details">' . $imgHtml . '<div class="clearFix"></div></div>';// . '<div class="help-block m-b-none"></div>'
-		$content .= Html::endTag('div');
+        $content = '';
+        $this->wrapperOptions = ArrayHelper::merge(['id' => $this->parentDivId, 'class' => 'image'], $this->wrapperOptions);
+        $content .= Html::beginTag('div', $this->wrapperOptions);
+        // $inputValue
+        $content .= Html::fileInput($this->name, null, [
+            'id' => $this->inputId,
+            'class' => 'feehi_html5_upload',
+            'accept' => $this->acceptFileTypes,
+            'multiple' => $this->multiple,
+            'data-resize-name' => str_replace($this->attribute, 'resize_' . $this->attribute, $this->name),
+            'style' => 'max-width: ' . $maxWidth . '; max-height: ' . $maxHeight . '; display: none;',
+        ]);
+        $content .= '<div class="input-append input-group"><span class="input-group-btn"><button class="btn btn-white" type="button">选择文件</button></span><input class="input-large form-control filename_lists" type="text" readonly placeHolder="' . $this->placeHolder . '" value="' . rtrim($inputValue, '、') . '" ><input type="hidden" name="' . str_replace([$this->attribute, '[]'], ['del_file_' . $this->attribute, ''], $this->name) . '" id="del_file_' . $this->inputId . '" data-del-file=""/></div><div class="multi-img-details">' . $imgHtml . '<div class="clearFix"></div></div>';// . '<div class="help-block m-b-none"></div>'
+        $content .= Html::endTag('div');
 
-		return $content;
-	}
+        return $content;
+    }
 }

@@ -38,7 +38,7 @@ use backend\assets\UeditorAsset;
 
 class Ueditor extends yii\widgets\InputWidget
 {
-   /**
+    /**
      * 生成的ueditor对象的名称，默认为editor。
      * 主要用于同一个页面的多个editor实例的管理。
      *
@@ -65,7 +65,7 @@ class Ueditor extends yii\widgets\InputWidget
         $asset = UeditorAsset::register($this->getView());
 
         //设置UEditor实例的名字
-        if (! $this->name) {
+        if (!$this->name) {
             $this->name = $this->hasModel() ? $this->model->formName() . '_' . $this->attribute : 'ueditor_' . $this->id;
         }
 
@@ -100,7 +100,7 @@ class Ueditor extends yii\widgets\InputWidget
         if (empty($this->config['toolbars'])) {
             //为了避免每次使用都输入乱七八糟的按钮，这里预先定义一些常用的编辑器按钮。
             //这是一个丑陋的二维数组
-            $template =  ['source', 'fontsize', 'fontfamily', 'forecolor', 'bold', 'removeformat', 'justifyleft', 'justifycenter', 'justifyright', 'link', 'simpleupload', 'inserttable','insertvideo', 'template', 'fullscreen', 'insertcode'];
+            $template = ['source', 'fontsize', 'fontfamily', 'forecolor', 'bold', 'removeformat', 'justifyleft', 'justifycenter', 'justifyright', 'link', 'simpleupload', 'inserttable', 'insertvideo', 'template', 'fullscreen', 'insertcode'];
 
             $this->config['toolbars'] = [$template];
         }
@@ -135,5 +135,5 @@ UEDITOR;
         } else {
             return Html::textarea($this->name, $this->value, ['id' => $id]);
         }
-    }	
+    }
 }

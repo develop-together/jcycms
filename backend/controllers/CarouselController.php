@@ -27,7 +27,7 @@ class CarouselController extends BackendController
             ],
         ];
     }
-    
+
     /**
      * Lists all Carousel models.
      * @return mixed
@@ -87,7 +87,7 @@ class CarouselController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
+
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {

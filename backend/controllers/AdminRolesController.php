@@ -35,7 +35,7 @@ class AdminRolesController extends BackendController
             'query' => AdminRoles::find(),
             'sort' => [
                 'defaultOrder' => [
-                        'created_at' => SORT_ASC,
+                    'created_at' => SORT_ASC,
                 ],
             ],
             'pagination' => [
@@ -114,6 +114,7 @@ class AdminRolesController extends BackendController
 
             $transaction = Yii::$app->db->beginTransaction();
             try {
+                // TODO: 这里应该封装到model层
                 // if ($postData['menuLists']) {
                 //     $menuLists = explode(',', $postData['menuLists']);
                 //     $delFlag = $this->deleteOldRolePermissions($id);
@@ -147,7 +148,7 @@ class AdminRolesController extends BackendController
                         $postData['rabcLists'] = [];
                     }
 
-                    if($postData['rabcLists']) {
+                    if ($postData['rabcLists']) {
                         foreach ($postData['rabcLists'] as $key => $value) {
                             // $value = Json::decode($json, false);
                             $adminRolePermissionModel = $this->findAdminRolePermissionModel($value);
@@ -169,7 +170,7 @@ class AdminRolesController extends BackendController
                 $transaction->commit();
 
                 return $this->redirect(['assign', 'id' => $id]);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $transaction->rollBack();
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
@@ -187,7 +188,7 @@ class AdminRolesController extends BackendController
 
     private function deleteOldRolePermissions($role_id)
     {
-        $adminRolePermissionModels = AdminRolePermission::find() ->where(['role_id' => $role_id]) ->all();
+        $adminRolePermissionModels = AdminRolePermission::find()->where(['role_id' => $role_id])->all();
         $tmp = 0;
         if (!$adminRolePermissionModels) {
             return $tmp;

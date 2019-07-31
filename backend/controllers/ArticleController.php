@@ -76,7 +76,7 @@ class ArticleController extends BackendController
                 $transaction->commit();
 
                 return $this->redirect(['index']);
-            } catch(\Expression $e) {
+            } catch (\Expression $e) {
                 $transaction->rollBack();
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
@@ -109,7 +109,7 @@ class ArticleController extends BackendController
                 $transaction->commit();
 
                 return $this->redirect(['index']);
-            } catch(\Expression $e) {
+            } catch (\Expression $e) {
                 $transaction->rollBack();
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }

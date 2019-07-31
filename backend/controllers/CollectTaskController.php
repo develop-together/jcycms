@@ -24,7 +24,7 @@ class CollectTaskController extends BackendController
             ],
         ];
     }
-    
+
     /**
      * Lists all CollectTask models.
      * @return mixed
@@ -61,7 +61,7 @@ class CollectTaskController extends BackendController
     public function actionCreate()
     {
         $model = new CollectTask();
-        
+
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {
@@ -84,7 +84,7 @@ class CollectTaskController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
+
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {

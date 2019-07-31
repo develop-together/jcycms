@@ -27,7 +27,7 @@ class GridView extends \yii\grid\GridView
     public $tableOptions = ['class' => 'table table-hover table-bordered'];
 
     // public $layout = "{items}\n{pager}";
-    public $layout = "{items}\n<div class='row'><div class='pull-left' style='width:75%'><div class='col-sm-3' style='line-height: 567%'>{summary}</div><div class='col-sm-9'><div class='dataTables_paginate paging_simple_numbers'>{pager}</div></div></div>{changePage}</div>";
+    public $layout = "{items}\n<div class='row'><div class='pull-left' style='width:75%'><div class='col-sm-3' style='line-height: 5.2'>{summary}</div><div class='col-sm-9' style='padding-top: 13px;'><div class='dataTables_paginate paging_simple_numbers'>{pager}</div></div></div>{changePage}</div>";
 
     public $changePageOptions = [5, 10, 20, 50];
 
@@ -51,12 +51,12 @@ class GridView extends \yii\grid\GridView
         $changePageHtml = '';
         $params = Yii::$app->request->get();
         $pageSize = isset($params['pageSize']) ? $params['pageSize'] : 10;
-        foreach ($this->changePageOptions as  $option) {
+        foreach ($this->changePageOptions as $option) {
             $selected = $pageSize == $option ? 'selected' : '';
             $changePageHtml .= '<option value=\'' . $option . '\' ' . $selected . '>' . $option . '</option>';
         }
 
-        $this->layout = str_replace('{changePage}', "<div class='pull-right' ><span>". Yii::t('app', 'Each page') . "" . Yii::t('app', 'Display') . "</span><select class='form-control change-page-size' style='width:100px;display:inline !important'>{$changePageHtml}</select><span>" . Yii::t('app', 'Bar') . "</span></div>", $this->layout);
+        $this->layout = str_replace('{changePage}', "<div class='pull-right' ><span>" . Yii::t('app', 'Each page') . "" . Yii::t('app', 'Display') . "</span><select class='form-control change-page-size' style='width:100px;display:inline !important'>{$changePageHtml}</select><span>" . Yii::t('app', 'Bar') . "</span></div>", $this->layout);
 
         $this->pagerOptions = [
             'firstPageLabel' => Yii::t('app', 'first'),

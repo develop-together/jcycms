@@ -87,16 +87,16 @@ class ConfigController extends BackendController
             try {
                 $result = BaseMail::send(
                     $get['email'],
-                    Yii::t('app', 'Test Email({email})',['email' => $get['email']]),
+                    Yii::t('app', 'Test Email({email})', ['email' => $get['email']]),
                     Yii::t('app', 'Test Number:{number} .This is a test mail. When you receive this mail, it indicates that your sending mailbox is configured correctly.', ['number' => $number])
-                    );
+                );
                 if ($result[0]) {
                     return ['statusCode' => 200, 'message' => Yii::t('app', 'A test email numbered {number} has been sent to mailbox {email}. Please check it.', ['number' => $number, 'email' => $get['email']])];
                 } else {
                     return ['statusCode' => 300, 'message' => $result[1]];
                 }
-            } catch(\Expression $e) {
-                 return ['statusCode' => 300, 'message' => $e->getMessage()];
+            } catch (\Expression $e) {
+                return ['statusCode' => 300, 'message' => $e->getMessage()];
             }
 
         }
@@ -144,8 +144,8 @@ class ConfigController extends BackendController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
-                return $this->redirect(['index']);
+            Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

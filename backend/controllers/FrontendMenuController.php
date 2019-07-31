@@ -24,7 +24,7 @@ class FrontendMenuController extends BackendController
             ],
         ];
     }
-    
+
     /**
      * Lists all Menu models.
      * @return mixed
@@ -59,7 +59,7 @@ class FrontendMenuController extends BackendController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($parent_id='')
+    public function actionCreate($parent_id = '')
     {
         $model = new Menu();
         $model->is_absolute_url = Menu::NOT_ABSOLUTE_URL;
@@ -88,8 +88,8 @@ class FrontendMenuController extends BackendController
         $model = $this->findModel($id);
         $model->scenario = 'frontend';
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
-                return $this->redirect(['index']);
+            Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

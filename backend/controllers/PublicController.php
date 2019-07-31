@@ -1,58 +1,59 @@
 <?php
- namespace backend\controllers;
 
- use Yii;
- use backend\models\LoginForm;
- use common\components\BaseController;
+namespace backend\controllers;
 
- class PublicController extends BaseController
- {
+use Yii;
+use backend\models\LoginForm;
+use common\components\BaseController;
+
+class PublicController extends BaseController
+{
 
     public function actionIndex()
     {
         return $this->render('index');
     }
 
-	/**
-	 * Login action.
-	 *
-	 * @return string
-	 */
-	public function actionLogin()
-	{
-		$this->layout = false;
-		if (!Yii::$app->user->isGuest) {
-			return $this->goHome();
-		}
+    /**
+     * Login action.
+     *
+     * @return string
+     */
+    public function actionLogin()
+    {
+        $this->layout = false;
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
 
-		$model = new LoginForm();
-		if (Yii::$app->request->getIsPost()) {
-			if ($model->load(Yii::$app->request->post()) && $model->login()) {
-				return $this->goBack();
-			} else {
-				$errors = $model->getErrors();
-				$err = [];
-				foreach ($errors as $error) {
-					$err[] = $error[0];
-				}
-				Yii::$app->session->setFlash('error', implode('<br>', $err));
-			}
-		}
+        $model = new LoginForm();
+        if (Yii::$app->request->getIsPost()) {
+            if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                return $this->goBack();
+            } else {
+                $errors = $model->getErrors();
+                $err = [];
+                foreach ($errors as $error) {
+                    $err[] = $error[0];
+                }
+                Yii::$app->session->setFlash('error', implode('<br>', $err));
+            }
+        }
 
-		return $this->render('login', [
-			'model' => $model,
-		]);
-	}
+        return $this->render('login', [
+            'model' => $model,
+        ]);
+    }
 
-	/**
-	 * Logout action.
-	 *
-	 * @return string
-	 */
-	public function actionLogout()
-	{
-		Yii::$app->user->logout();
+    /**
+     * Logout action.
+     *
+     * @return string
+     */
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
 
-		return $this->goHome();
-	}
- }
+        return $this->goHome();
+    }
+}

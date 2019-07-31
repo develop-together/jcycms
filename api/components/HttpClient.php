@@ -9,6 +9,7 @@ use Yii;
 use yii\httpclient\Client;
 use yii\web\Request;
 use yii\web\Response;
+
 // use common\models\UserIotApi;
 // use api\models\UserAccessToken;
 use yii\helpers\ArrayHelper;
@@ -50,14 +51,13 @@ class HttpClient extends Client
 
         ksort($data);
         $normalized = array();
-        foreach($data as $key => $val)
-        {
-            $normalized[] = $key."=".$val;
+        foreach ($data as $key => $val) {
+            $normalized[] = $key . "=" . $val;
         }
 
         $signData = implode("&", $normalized);
         $data['_sign'] = hash_hmac(Yii::$app->params['algo'], $signData, Yii::$app->parmas['app_secret'], false);
-        
+
         return $data;
     }
 
@@ -73,19 +73,19 @@ class HttpClient extends Client
         $appResponse->data = isset($data['data']) ? $data['data'] : $data;
     }
 
-/*    public static function getApiInfo()
-    {
-        $params = ArrayHelper::merge(yii::$app->request->getQueryParams(), yii::$app->request->getBodyParams());
-        $userAccessToken = UserAccessToken::findOne(['access_token' => $params['access-token'], 'app_key' => $params['_key']]);
-        if (!$userAccessToken) {
-            return $this->responseJson('Token 失效或过期');
-        }
+    /*    public static function getApiInfo()
+        {
+            $params = ArrayHelper::merge(yii::$app->request->getQueryParams(), yii::$app->request->getBodyParams());
+            $userAccessToken = UserAccessToken::findOne(['access_token' => $params['access-token'], 'app_key' => $params['_key']]);
+            if (!$userAccessToken) {
+                return $this->responseJson('Token 失效或过期');
+            }
 
-        $apiInfo = UserIotApi::findOne(['user_id' => $userAccessToken->user_id]);
-        if (!$apiInfo) {
-            return $this->responseJson('未查询到相关信息！');
-        }
+            $apiInfo = UserIotApi::findOne(['user_id' => $userAccessToken->user_id]);
+            if (!$apiInfo) {
+                return $this->responseJson('未查询到相关信息！');
+            }
 
-        return $apiInfo;
-    }*/
+            return $apiInfo;
+        }*/
 }

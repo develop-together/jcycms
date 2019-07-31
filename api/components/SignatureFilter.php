@@ -19,11 +19,11 @@ class SignatureFilter extends ActionFilter
     public function init()
     {
         parent::init();
-        if ($this->timeOut === null ) {
+        if ($this->timeOut === null) {
             $this->timeOut = Yii::$app->params['requestTimeOut'];
         }
-        
-        if ($this->algo === null ) {
+
+        if ($this->algo === null) {
             $this->algo = Yii::$app->params['algo'];
         }
     }
@@ -37,7 +37,7 @@ class SignatureFilter extends ActionFilter
         if (Yii::$app->getRequest()->getMethod() === 'OPTIONS') {
             return true;
         }
-  
+
         $params = $this->getParams();
 
         // 参数完整性验证
@@ -52,9 +52,9 @@ class SignatureFilter extends ActionFilter
             // exit('请求参数不全, 或参数不规范');
         }
 
-        if(Yii::$app->params['app_key'] !== $params['_key']) {
-             throw new BadRequestHttpException('非法的app_key');
-             // exit('非法的app_key') ;
+        if (Yii::$app->params['app_key'] !== $params['_key']) {
+            throw new BadRequestHttpException('非法的app_key');
+            // exit('非法的app_key') ;
         }
 
         if (!isset($params['_time']) || $this->getIsTimeOut($params['_time'])) {
@@ -68,35 +68,39 @@ class SignatureFilter extends ActionFilter
         $toSignString = $this->getNormalizedString($params);
         $signature = $this->getSignature($toSignString, Yii::$app->params['app_secret']);
         if ($requestSignature != $signature) {
-            throw new BadRequestHttpException('签名错误' );
+            throw new BadRequestHttpException('签名错误');
             // exit('签名错误') ;
         }
 
         return true;
     }
 
-    public function checkTime() {
+    public function checkTime()
+    {
 
     }
 
-    public function checkSignature() {
+    public function checkSignature()
+    {
 
     }
 
-    public function getIsTimeOut($time) {
+    public function getIsTimeOut($time)
+    {
 
         return abs($time - time()) > $this->timeOut;
     }
 
-    public function getParams() {
+    public function getParams()
+    {
         if (!$this->_params) {
             $request = Yii::$app->getRequest();
             $this->_params = $this->getParamsToVue();
-/*            $this->_params = ArrayHelper::merge(
-                $request->getQueryParams(),
-                $request->getBodyParams(),
-                $this->getParamsToVue()
-            );*/
+            /*            $this->_params = ArrayHelper::merge(
+                            $request->getQueryParams(),
+                            $request->getBodyParams(),
+                            $this->getParamsToVue()
+                        );*/
         }
 
         return $this->_params;
@@ -122,9 +126,8 @@ class SignatureFilter extends ActionFilter
         }
         ksort($params);
         $normalized = array();
-        foreach($params as $key => $val)
-        {
-            $normalized[] = $key."=".$val;
+        foreach ($params as $key => $val) {
+            $normalized[] = $key . "=" . $val;
         }
 
         return implode("&", $normalized);

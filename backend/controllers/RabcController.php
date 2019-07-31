@@ -24,7 +24,7 @@ class RabcController extends BackendController
             ],
         ];
     }
-    
+
     /**
      * Lists all AuthItem models.
      * @return mixed
@@ -53,6 +53,7 @@ class RabcController extends BackendController
             'dataProvider' => $dataProvider,
         ]);
     }
+
     /**
      * Displays a single AuthItem model.
      * @param integer $id
@@ -73,7 +74,7 @@ class RabcController extends BackendController
     public function actionCreate($pid = '')
     {
         $model = new AuthItem();
-        
+
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {
@@ -97,7 +98,7 @@ class RabcController extends BackendController
     public function actionUpdate($id, $pid = '')
     {
         $model = $this->findModel($id);
-        
+
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {

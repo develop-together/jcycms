@@ -1,25 +1,25 @@
-<?php 
+<?php
 
- namespace common\widgets\captcha;
+namespace common\widgets\captcha;
 
- use Yii;
+use Yii;
 
- class CaptchaAction extends \yii\captcha\CaptchaAction
- {
-     protected function generateVerifyCode()
-     {
+class CaptchaAction extends \yii\captcha\CaptchaAction
+{
+    protected function generateVerifyCode()
+    {
         if ($this->minLength > $this->maxLength) {
             $this->maxLength = $this->minLength;
         }
-        
+
         if ($this->minLength < 3) {
             $this->minLength = 3;
         }
-        
+
         if ($this->maxLength > 20) {
             $this->maxLength = 20;
         }
-        
+
         $length = mt_rand($this->minLength, $this->maxLength);
 
         $letters = '23456789bcdfghjklmnpqrstvwxyz';
@@ -34,5 +34,5 @@
         }
 
         return $code;
-    }	
- }
+    }
+}

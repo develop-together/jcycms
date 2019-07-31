@@ -24,7 +24,7 @@ class UserController extends BackendController
             ],
         ];
     }
-    
+
     /**
      * Lists all User models.
      * @return mixed
@@ -74,12 +74,12 @@ class UserController extends BackendController
                 foreach ($errors as $v) {
                     $err .= $v[0] . '<br>';
                 }
-                Yii::$app->getSession()->setFlash('error', $err);                 
+                Yii::$app->getSession()->setFlash('error', $err);
             }
-        } 
+        }
 
         $model->status = FrontendUser::STATUS_ACTIVE;
-        
+
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -106,9 +106,9 @@ class UserController extends BackendController
                 foreach ($errors as $v) {
                     $err .= $v[0] . '<br>';
                 }
-                Yii::$app->getSession()->setFlash('error', $err);                 
+                Yii::$app->getSession()->setFlash('error', $err);
             }
-        } 
+        }
 
         return $this->render('update', [
             'model' => $model,

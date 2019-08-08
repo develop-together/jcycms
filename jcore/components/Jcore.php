@@ -82,11 +82,19 @@ class Jcore extends Component
     public static function frontendBeforeSend($event)
     {
         $response = $event->sender;
-        if (is_string($response->data)) {
+        if (is_string($response->data) && !empty($response->data)) {
             $response->data = preg_replace(
                 "/(<img.*?src=[\"|\']?)(\/?)uploads((.*?)[\"|\']?\s.*?>)/i",
                 '$1' . Yii::$app->params['backendUrl'] . '/uploads$3',
                 $response->data);
+        }
+
+        //TODO: ajax or pjax Yii::$app->request->getIsPjax()
+        if (is_string($response->content) && !empty($response->content)) {
+            $response->content = preg_replace(
+                "/(<img.*?src=[\"|\']?)(\/?)uploads((.*?)[\"|\']?\s.*?>)/i",
+                '$1' . Yii::$app->params['backendUrl'] . '/uploads$3',
+                $response->content);
         }
 
         if ($response->format === 'json') {

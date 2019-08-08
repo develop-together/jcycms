@@ -2,6 +2,7 @@
 
 namespace frontend\widgets;
 
+use Yii;
 use yii\helpers\Json;
 
 class Pjax extends \yii\widgets\Pjax
@@ -27,9 +28,9 @@ class Pjax extends \yii\widgets\Pjax
             $submitEvent = Json::htmlEncode($this->submitEvent);
             $js .= "\njQuery(document).on($submitEvent, $formSelector, function (event) {jQuery.pjax.submit(event, $options);});";
         }
+
         $view = $this->getView();
         // PjaxAsset::register($view);
-
         if ($js !== '') {
             $view->registerJs($js);
         }

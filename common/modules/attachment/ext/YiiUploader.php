@@ -410,7 +410,7 @@ class YiiUploader
         ];
         if (!($this->attachment_id = $attachment->saveData($params))) {
             if (!empty($this->attribute)) {
-                $this->stateInfo = Yii::t('app', 'Upload {attribute} error: ' . $this->uploadedFile->error, ['attribute' => Yii::t('app', $thisattribute)]);
+                $this->stateInfo = Yii::t('app', 'Upload {attribute} error: ' . $this->uploadedFile->error, ['attribute' => Yii::t('app', $this->attribute)]);
             } else {
                 $this->stateInfo = $this->returnStateInfo("ERROR_SAVE_MYSQL");
             }

@@ -31,9 +31,8 @@ class ArticleController extends BackendController
      */
     public function actionIndex()
     {
-        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
-
         $searchModel = new ArticleSearch();
+        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
         $dataProvider = $searchModel->search(Yii::$app->request->post());
 
         return $this->render('index', [

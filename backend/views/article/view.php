@@ -13,10 +13,10 @@ $this->params['breadcrumbs'] = [
 
 ?>
 <style type="text/css" media="screen">
-.article-title {
-    text-align: center;
-    margin: 60px 0 40px 0;
-}
+    .article-title {
+        text-align: center;
+        margin: 60px 0 40px 0;
+    }
 </style>
 <div class="wrapper wrapper-content  animated fadeInRight article">
     <div class="row">
@@ -26,18 +26,15 @@ $this->params['breadcrumbs'] = [
                 <div class="ibox-content">
                     <?php if ($model->tagFormat): ?>
                         <div class="pull-right">
-                        <?php foreach ($model->tagFormat as $tag): ?>
-                            <button class="btn btn-white btn-xs" type="button"><?= $tag ?></button>
-                        <?php endforeach ?>
+                            <?php foreach ($model->tagFormat as $tag): ?>
+                                <button class="btn btn-white btn-xs" type="button"><?= $tag ?></button>
+                            <?php endforeach ?>
                         </div>
                     <?php endif ?>
                     <div class="text-center article-title">
                         <h1><?= $model->title ?></h1>
                     </div>
                     <?= $model->content ?>
-<!--                     <div class="align-content-center modal-content" style="text-indent: 1em">
-
-                     </div> -->
                 </div>
             </div>
         </div>

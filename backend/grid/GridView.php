@@ -125,7 +125,6 @@ class GridView extends \yii\grid\GridView
         $options = Json::htmlEncode($this->getClientOptions());
         $view = $this->getView();
         GridViewAsset::register($view);
-        // $url = Url::current();
         $view->registerJs(<<<JS
             jQuery('#$id').yiiGridView($options);
             jQuery('select.change-page-size').bind('change', function() {
@@ -139,18 +138,8 @@ class GridView extends \yii\grid\GridView
                 } else {
                     url += '?page=1&pageSize=' + pageSize;
                 }
-
-                // console.log(url);
                 // jQuery(document).pjax({url: url, container: '#adminLog-pjax'});
                 window.location.href = url;
-                // jQuery.ajax({
-                //     type: 'GET',
-                //     url: '',
-                //     data: {pageSize:pageSize, page: 1},
-                //     success: function(response) {
-                //         html[0].innerHTML = response;
-                //     }
-                // });
             });
 JS
         );

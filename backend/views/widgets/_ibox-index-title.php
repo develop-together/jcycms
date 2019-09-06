@@ -5,13 +5,20 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 
 $controller = strtolower(Yii::$app->controller->id);
+$pjax = isset($pjax) ?? false;
 
 ?>
 <div class="ibox-title">
     <div class="mail-tools tooltip-demo m-t-md">
-        <a href="<?=Url::toRoute(['refresh'])?>" class="btn btn-primary btn-sm refresh" title="<?= Yii::t('app', 'Refresh');?>" data-pjax="0">
+        <?php if(!$pjax): ?>
+        <a href="<?php echo Url::toRoute(['refresh'])?>" class="btn btn-primary btn-sm  refresh" title="<?= Yii::t('app', 'Refresh');?>" data-pjax="0">
             <i class="fa fa-refresh"></i> <?= Yii::t('app', 'Refresh');?>
         </a>
+        <?php else: ?>
+            <a href="javascript:;" class="btn btn-primary btn-sm pjax-refresh" title="<?= Yii::t('app', 'Refresh');?>" data-pjax="0">
+                <i class="fa fa-refresh"></i> <?= Yii::t('app', 'Refresh');?>
+            </a>
+        <?php endif; ?>
         <?php if (!isset($noAdd) || !$noAdd): ?>
             <a href="<?= Url::toRoute(['create']) ?>" class="btn  btn-sm btn-success" title="<?= Yii::t('app', 'Create');?>" data-pjax="0">
                 <i class="fa fa-plus"></i> <?= Yii::t('app', 'Create');?>

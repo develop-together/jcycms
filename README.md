@@ -94,5 +94,66 @@ environments/           环境文件
  3. 运行 `composer install`,然后再在项目根目录运行 `php init` 进行项目初始化配置
  4. 导入数据库文件，数据库文件在jcycms下的data/yii2_jcycms-2018-11-30.sql，直接导入，如不是最新数据结构请查看data/updata.sql日志更新数据表
  5. 修改数据库配置
- 6. 部署好之后需要配置Nginx或者Apache项 此处有好多人不会设置，其实就是把Nginx或者Apache解析到项目的backend/web目录下面。
+ 6. 部署好之后需要配置Nginx或者Apache项 此处有好多人不会设置，其实就是把Nginx或者Apache解析到项目的backend/web目录下面。下面提供了两个yii2nginx站点的常用配置方式，作参考
+ ```shell
+ server {
+        listen       80;
+        server_name  www.yiifrontend.com.cn;
+        root   "E:\wwwroot\jcycms\frontend\web";
+        location / {
+            index  index.html index.htm index.php;
+            #autoindex  on;
+            try_files $uri $uri/ /index.php?$args;
+        }
+        
+        location ~ \.php(.*)$ {
+            fastcgi_pass   127.0.0.1:9000;
+            fastcgi_index  index.php;
+            fastcgi_split_path_info  ^((?U).+\.php)(/?.+)$;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            fastcgi_param  PATH_INFO  $fastcgi_path_info;
+            fastcgi_param  PATH_TRANSLATED  $document_root$fastcgi_path_info;
+            include        fastcgi_params;
+            try_files $uri =404;
+        }
+        location ~ ^/assets/.*\.php$ {
+            deny all;
+        }
+}
+ ```
+ ```shell
+ server {
+        listen       80;
+        server_name  crops-tracker.com.cn;
+        set $base_root "E:\wwwroot\crops-tracker\frontend\web";
+        root $base_root;
+        index  index.html index.htm index.php;
+        #root   "E:\wwwroot\crops-tracker\frontend\web";
+        location / {
+            #autoindex  on;
+            root $base_root;
+            #try_files $uri $uri/ /frontend/web/index.php$is_args$args;
+            try_files $uri $uri/ /index.php?$args;
+        }
+        location /admin {
+            try_files $uri $uri/ /admin/index.php?$args;
+        }
+        location /api {
+            try_files $uri $uri/ /api/index.php?$args;
+        }
+        location ~ \.php(.*)$ {
+            fastcgi_pass   127.0.0.1:9000;
+            fastcgi_index  index.php;
+            fastcgi_split_path_info  ^((?U).+\.php)(/?.+)$;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            fastcgi_param  PATH_INFO  $fastcgi_path_info;
+            fastcgi_param  PATH_TRANSLATED  $document_root$fastcgi_path_info;
+            include        fastcgi_params;
+            try_files $uri =404;
+        }
+        location ~ ^/assets/.*\.php$ {
+            deny all;
+        }
+}
+ ```
  7. 装好之后的演示账号：demo 密码：123456  默认管理员账号可先删除数据表byt_admin_user表的admin（此时我也忘记admin密码了，就换个法子）那行记录，然后执行php yii init/createAdministrator(具体看console代码)创建新管理员

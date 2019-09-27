@@ -285,6 +285,7 @@ $this->registerJs(<<<JS
 					return false;
 				}
 				var self = this;
+				var textareaObj = $(this).parent('.submit-btn').parent('.tools-box').siblings('.cont-box').children('textarea.comment-input');
 				var content = textareaObj.val();
 				contents = contents.trim();
 				if (content === '' || content === null || content === undefined || content === 'undefined') {
@@ -292,8 +293,6 @@ $this->registerJs(<<<JS
 					return false;
 				}
 				// this.removeEventListener('click', function(){alert(222)}, false);
-				var textareaObj = $(this).parent('.submit-btn').parent('.tools-box').siblings('.cont-box').children('textarea.comment-input');
-				// debugger;
 				var pid = textareaObj.attr('data-pid') ? parseInt(textareaObj.attr('data-pid')) : 0;
 				$(this).parent('.submit-btn').siblings(".comt-loading").show();
 				$(this).attr('disabled', true)

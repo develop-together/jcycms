@@ -287,7 +287,7 @@ $this->registerJs(<<<JS
 				var self = this;
 				var textareaObj = $(this).parent('.submit-btn').parent('.tools-box').siblings('.cont-box').children('textarea.comment-input');
 				var content = textareaObj.val();
-				contents = contents.trim();
+				content = content.trim();
 				if (content === '' || content === null || content === undefined || content === 'undefined') {
 					$(this).parent('.submit-btn').siblings(".comt-loading").html("<span style='color:red'>$i18n3</span>");
 					return false;

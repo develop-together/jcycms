@@ -51,7 +51,7 @@ class ArticleSearch extends Article
      */
     public function search($params)
     {
-        $query = Article::find()->article()->with('category');
+        $query = Article::find()->article()->with(['category', 'comments']);
 
         // add conditions that should always apply here
 

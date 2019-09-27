@@ -58,7 +58,7 @@ $this->title = Yii::t('app', 'Article');
                             'attribute' => 'comment_count',
                             'format' => 'html',
                             'value' => function ($model, $key, $index, $column) {
-                                return Html::a($model->comment_count, Url::to(['comment/list', 'aid' => $model->id]));
+                                return count($model->comments) > 0 ? Html::a($model->comment_count, Url::to(['comment/list', 'aid' => $model->id])) : $model->comment_count;
                             }
                         ],
                         ['attribute' => 'thumb',

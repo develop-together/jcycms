@@ -73,7 +73,7 @@ class ArticleController extends FrontendController
     public function actionView($id)
     {
         // Yii::$app->getUser()->setReturnUrl(['article/view', 'id' => $id]);
-        $model = Article::find()->with(['category', 'user', 'comments'])->where(['id' => $id])->one();
+        $model = Article::find()->with(['category', 'user', 'passwdComments'])->where(['id' => $id])->one();
         $model->updateScanCount();
         $prevModel = Article::find()
             ->with(['category', 'user'])

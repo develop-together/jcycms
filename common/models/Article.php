@@ -230,9 +230,14 @@ class Article extends \common\components\BaseModel
 
     public function getComments()
     {
-        // ->where(['parent_id' => 0])
         return $this->hasMany(Comment::class, ['article_id' => 'id'])
-//            ->where(['status' => Comment::STATUS_PASSED])
+            ->orderBy('id DESC');
+    }
+
+    public function getPasswdComments()
+    {
+        return $this->hasMany(Comment::class, ['article_id' => 'id'])
+            ->where(['status' => Comment::STATUS_PASSED])
             ->orderBy('id DESC');
     }
 

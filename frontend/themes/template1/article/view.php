@@ -48,7 +48,7 @@ $i18n5 = Yii::t('frontend', 'Please input...');
 $i18n6 = Yii::t('frontend', 'reply');
 $i18n7 = Yii::t('frontend', 'praise');
 $i18n8 = Yii::t('frontend', 'forwarding');
-$comments = Comment::chilrdenDatas($model->comments, 0);
+$comments = Comment::chilrdenDatas($model->passwdComments, 0);
 // var_dump($comments);exit;
 // DB依赖（数据库依赖）【依赖的为数据库查询条数，一但文章被修改，缓存失效】
 $dependency = new DbDependency([

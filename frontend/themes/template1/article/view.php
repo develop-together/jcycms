@@ -284,19 +284,18 @@ $this->registerJs(<<<JS
 				if (isComment) {
 					return false;
 				}
-				// this.removeEventListener('click', function(){alert(222)}, false);
 				var self = this;
-				var textareaObj = $(this).parent('.submit-btn').parent('.tools-box').siblings('.cont-box').children('textarea.comment-input');
 				var content = textareaObj.val();
-				// debugger;
-				var pid = textareaObj.attr('data-pid') ? parseInt(textareaObj.attr('data-pid')) : 0;
-				$(this).parent('.submit-btn').siblings(".comt-loading").show();
-				contents = trim(contents);
+				contents = contents.trim();
 				if (content === '' || content === null || content === undefined || content === 'undefined') {
 					$(this).parent('.submit-btn').siblings(".comt-loading").html("<span style='color:red'>$i18n3</span>");
 					return false;
 				}
-				
+				// this.removeEventListener('click', function(){alert(222)}, false);
+				var textareaObj = $(this).parent('.submit-btn').parent('.tools-box').siblings('.cont-box').children('textarea.comment-input');
+				// debugger;
+				var pid = textareaObj.attr('data-pid') ? parseInt(textareaObj.attr('data-pid')) : 0;
+				$(this).parent('.submit-btn').siblings(".comt-loading").show();
 				$(this).attr('disabled', true)
 				$(this).attr('readonly', true)
 				isComment = true

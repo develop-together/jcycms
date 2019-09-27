@@ -25,24 +25,24 @@ $assign = function ($url, $model) {
     <div class="col-sm-12">
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-index-title') ?>
-             <div class="ibox-content">
-            <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                'columns' => [
-                    [
-                        'class' => '\yii\grid\CheckboxColumn',
-                    ],                    
-                    'role_name',
-                    'remark',
-                    'created_at:datetime',
-                    [
-                        'class' => 'backend\grid\ActionColumn',
-                        'template' => '{assign}{update}{delete}',
-                        'buttons' => ['assign' => $assign],
+            <div class="ibox-content">
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'columns' => [
+                        [
+                            'class' => '\yii\grid\CheckboxColumn',
+                        ],
+                        'role_name',
+                        'remark',
+                        'created_at:datetime',
+                        [
+                            'class' => 'backend\grid\ActionColumn',
+                            'template' => '{assign}{update}{delete}',
+                            'buttons' => ['assign' => $assign],
+                        ],
                     ],
-                ],
-            ]); ?>                 
-             </div>
+                ]); ?>
+            </div>
         </div>
     </div>
 </div>

@@ -8,7 +8,7 @@ use backend\grid\ActionColumn;
 use common\components\BaseConfig;
 use backend\models\Article;
 
-$showPicture = function($url, $model, $uniqid) {
+$showPicture = function ($url, $model, $uniqid) {
     return Html::a('<i class="fa fa-image"></i> ' . Yii::t('app', 'View'), 'javacript:;', [
         'title' => Yii::t('app', 'View'),
         'class' => 'btn btn-white btn-sm',
@@ -24,86 +24,86 @@ $showPicture = function($url, $model, $uniqid) {
     <div class="col-sm-12">
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-index-title') ?>
-                        <div class="ibox-content">
+            <div class="ibox-content">
                 <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
-                    <?= $this->render('_search', ['model' => $searchModel])?>
+                    <?= $this->render('_search', ['model' => $searchModel]) ?>
                 </div>
-                    <?= GridView::widget([
-                        'dataProvider' => $dataProvider,
-                        'columns' => [
-                                [
-                                    'class' => 'yii\grid\CheckboxColumn'
-                                ],
-                                'id',
-								[
-									'attribute' => 'category_id',
-									'enableSorting' => false,
-									'value' => function($model) {
-										return  $model->catename;
-									},
-								],
-								[
-									'attribute' => 'user_id',
-									'enableSorting' => false,
-									'value' => function($model) {
-										return  $model->user->username;
-									},
-								],
-								[
-									'attribute' => 'title',
-									'enableSorting' => false,
-								],
-		                        [
-		                            'attribute' => 'status',
-		                            'format' => 'raw',
-		                            'value' => function ($model, $key, $index, $column) {
-		                                if ($model->status == Article::ARTICLE_PUBLISHED) {
-		                                    $url = Url::to([
-		                                        'status',
-		                                        'id' => $model->id,
-		                                        'status' => 0,
-		                                        'field' => 'status'
-		                                    ]);
-		                                    $class = 'btn btn-info btn-xs btn-rounded';
-		                                    $confirm = Yii::t('app', 'Are you sure you want to cancel release?');
-		                                } else {
-		                                    $url = Url::to([
-		                                        'status',
-		                                        'id' => $model->id,
-		                                        'status' => 1,
-		                                        'field' => 'status'
-		                                    ]);
-		                                    $class = 'btn btn-default btn-xs btn-rounded';
-		                                    $confirm = Yii::t('app', 'Are you sure you want to publish?');
-		                                }
-		                                return Html::a(BaseConfig::getArticleStatus($model->status), $url, [
-		                                    'class' => $class,
-		                                    'data-confirm' => $confirm,
-		                                    'data-method' => 'post',
-		                                    'data-pjax' => '0',
-		                                ]);
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'columns' => [
+                        [
+                            'class' => 'yii\grid\CheckboxColumn'
+                        ],
+                        'id',
+                        [
+                            'attribute' => 'category_id',
+                            'enableSorting' => false,
+                            'value' => function ($model) {
+                                return $model->catename;
+                            },
+                        ],
+                        [
+                            'attribute' => 'user_id',
+                            'enableSorting' => false,
+                            'value' => function ($model) {
+                                return $model->user->username;
+                            },
+                        ],
+                        [
+                            'attribute' => 'title',
+                            'enableSorting' => false,
+                        ],
+                        [
+                            'attribute' => 'status',
+                            'format' => 'raw',
+                            'value' => function ($model, $key, $index, $column) {
+                                if ($model->status == Article::ARTICLE_PUBLISHED) {
+                                    $url = Url::to([
+                                        'status',
+                                        'id' => $model->id,
+                                        'status' => 0,
+                                        'field' => 'status'
+                                    ]);
+                                    $class = 'btn btn-info btn-xs btn-rounded';
+                                    $confirm = Yii::t('app', 'Are you sure you want to cancel release?');
+                                } else {
+                                    $url = Url::to([
+                                        'status',
+                                        'id' => $model->id,
+                                        'status' => 1,
+                                        'field' => 'status'
+                                    ]);
+                                    $class = 'btn btn-default btn-xs btn-rounded';
+                                    $confirm = Yii::t('app', 'Are you sure you want to publish?');
+                                }
+                                return Html::a(BaseConfig::getArticleStatus($model->status), $url, [
+                                    'class' => $class,
+                                    'data-confirm' => $confirm,
+                                    'data-method' => 'post',
+                                    'data-pjax' => '0',
+                                ]);
 
-		                            },
-		                            'filter' => BaseConfig::getArticleStatus(),
-		                        ],
-								'created_at:datetime',
-								'updated_at:datetime',
+                            },
+                            'filter' => BaseConfig::getArticleStatus(),
+                        ],
+                        'created_at:datetime',
+                        'updated_at:datetime',
 
-                                [
-                                    'class' => 'backend\grid\ActionColumn',
-                                    'template' => '{showPicture}{update}{delete}',
-                                    'buttons' => ['showPicture' => $showPicture],
-                                ],
-                            ]
-                        ]); ?>
-                            </div>
-                    </div>
+                        [
+                            'class' => 'backend\grid\ActionColumn',
+                            'template' => '{showPicture}{update}{delete}',
+                            'buttons' => ['showPicture' => $showPicture],
+                        ],
+                    ]
+                ]); ?>
+            </div>
+        </div>
     </div>
 </div>
 <?php
-	$zh_cn = Yii::t('app', 'No pictures yet');
-	$url = Url::toRoute(['photos/show-pictures']);
-	$this->registerJs(<<<EOT
+$zh_cn = Yii::t('app', 'No pictures yet');
+$url = Url::toRoute(['photos/show-pictures']);
+$this->registerJs(<<<EOT
 		$("#show_picture").on('click', function(event) {
 			if (!$(this).data('fids')) {
 				layer.tips('{$zh_cn}', this, {

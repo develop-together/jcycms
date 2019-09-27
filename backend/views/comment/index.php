@@ -14,57 +14,57 @@ $zh_cn = Yii::t('app', 'Verify');
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-index-title', ['noAdd' => true]) ?>
             <div class="ibox-content">
-                    <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
-                        <?= (isset($searchModel)) ? $this->render('_search', ['model' => $searchModel]) : '' ?>
-                    </div>
-                    <?= GridView::widget([
-                            'dataProvider' => $dataProvider,
-                             'columns' => [
-                                    [
-                                        'class' => 'yii\grid\CheckboxColumn'
-                                    ],
-                                    'id',
-    								'nickname',
-    								'ip',
-    								[
-                                        'attribute' => 'status',
-                                        'format' => 'raw',
-                                        'value' => function($model) {
-                                            return $model->getStatusFormat();
-                                        }
-                                    ],
-    								'like_count',
-    								'repeat_count',
-                                    'contents:raw',
-                                    [
-                                        'attribute' => 'created_at',
-                                        'value' => function ($model) {
-                                            return $model->created_at_format;
-                                        }
-                                    ],
-                                    'updated_at:datetime',
-                                [
-                                    'class' => 'backend\grid\ActionColumn',
-                                    'buttons' => [
-                                        'audit' => function($url, $model, $key) use ($zh_cn) {
-                                            if (Comment::STATUS_INIT !== $model->status || !Yii::$app->jcore->open_comment_verify) {
-                                                return '';
-                                            }
+                <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
+                    <?= (isset($searchModel)) ? $this->render('_search', ['model' => $searchModel]) : '' ?>
+                </div>
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'columns' => [
+                        [
+                            'class' => 'yii\grid\CheckboxColumn'
+                        ],
+                        'id',
+                        'nickname',
+                        'ip',
+                        [
+                            'attribute' => 'status',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return $model->getStatusFormat();
+                            }
+                        ],
+                        'like_count',
+                        'repeat_count',
+                        'contents:raw',
+                        [
+                            'attribute' => 'created_at',
+                            'value' => function ($model) {
+                                return $model->created_at_format;
+                            }
+                        ],
+                        'updated_at:datetime',
+                        [
+                            'class' => 'backend\grid\ActionColumn',
+                            'buttons' => [
+                                'audit' => function ($url, $model, $key) use ($zh_cn) {
+                                    if (Comment::STATUS_INIT !== $model->status || !Yii::$app->jcore->open_comment_verify) {
+                                        return '';
+                                    }
 
-                                            return Html::a('<i class="fa fa-check" aria-hidden="true"></i> ' . $zh_cn, 'javascript:;', ['data-url' => Url::toRoute(['audit', 'id' => $model->id]), 'class' => 'btn  btn-danger btn-sm audit-btn', 'style' => 'margin:5px 0px;']);
-                                        }
-                                    ],
-                                    'template' => '{view}{audit}{delete}',
-                                ],
-                            ]
-                        ]); ?>
+                                    return Html::a('<i class="fa fa-check" aria-hidden="true"></i> ' . $zh_cn, 'javascript:;', ['data-url' => Url::toRoute(['audit', 'id' => $model->id]), 'class' => 'btn  btn-danger btn-sm audit-btn', 'style' => 'margin:5px 0px;']);
+                                }
+                            ],
+                            'template' => '{view}{audit}{delete}',
+                        ],
+                    ]
+                ]); ?>
             </div>
         </div>
     </div>
 </div>
 <?php
-    $btn_cn = Yii::t('app', 'Verify');
-    $this->registerJs(<<<JS
+$btn_cn = Yii::t('app', 'Verify');
+$this->registerJs(<<<JS
             $("a.audit-btn").bind('click', function() {
                 layer.open({
                     type: 2,
@@ -113,7 +113,7 @@ $zh_cn = Yii::t('app', 'Verify');
                 });
             })
 JS
-        );
- ?>
+);
+?>
 
 

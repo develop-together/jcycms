@@ -1,8 +1,8 @@
 <?php
 
 if (Yii::$app->getSession()->hasFlash('success')) {
-    $successTitle = addslashes( Yii::t('app', 'Success') );
-    $info = addslashes( Yii::$app->getSession()->getFlash('success') );
+    $successTitle = addslashes(Yii::t('app', 'Success'));
+    $info = addslashes(Yii::$app->getSession()->getFlash('success'));
     $str = <<<EOF
        toastr.options = {
           "closeButton": true,
@@ -24,8 +24,8 @@ EOF;
 }
 
 if (Yii::$app->getSession()->hasFlash('error')) {
-    $errorTitle = addslashes( Yii::t('app', 'Error') );
-    $info = addslashes( Yii::$app->getSession()->getFlash('error') );
+    $errorTitle = addslashes(Yii::t('app', 'Error'));
+    $info = addslashes(Yii::$app->getSession()->getFlash('error'));
     $str = <<<EOF
        toastr.options = {
           "closeButton": true,

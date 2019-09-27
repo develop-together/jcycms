@@ -9,7 +9,7 @@ use yii\helpers\Url;
 
 $this->title = 'Admin';
 $assignment = function ($url, $model) {
-    return @$model->userRole->role_id != AdminRoles::SUPER_ROLE_ID  ? Html::a('<i class="fa fa-tablet"></i> ' . Yii::t('app', 'Assign Roles'), 'javacript:;', [
+    return @$model->userRole->role_id != AdminRoles::SUPER_ROLE_ID ? Html::a('<i class="fa fa-tablet"></i> ' . Yii::t('app', 'Assign Roles'), 'javacript:;', [
         'title' => 'assignment',
         'class' => 'btn btn-white btn-sm',
         'onclick' => 'assignRole(this)',
@@ -25,93 +25,92 @@ $assignment = function ($url, $model) {
             <?= $this->render('/widgets/_ibox-index-title') ?>
             <div class="ibox-content">
                 <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
-                    <?= $this->render('_search', ['model' => $searchModel])?>
+                    <?= $this->render('_search', ['model' => $searchModel]) ?>
                 </div>
                 <?= GridView::widget([
-                        'dataProvider' => $dataProvider,
-                        'columns' => [
-                            [
-                                'class' => '\yii\grid\CheckboxColumn',
-                            ],
-                            [
-                                'attribute' => 'avatar',
-                                'format' => 'raw',
-                                'value' => function($model) {
-                                    return Html::img($model->getAvatarFormat(), ['width' => '100' , 'height' => '100']);
-                                },
-                                'options' => ['width' => '100' , 'height' => '100'],
-                                'filter' => '',
-                                'enableSorting' => false,
-                            ],
-                            [
-                                'attribute' => 'username',
-                                'filter' => '',
-                                'enableSorting' => false,
-                            ],
-                            [
-                                'attribute' => 'email',
-                                'format' => 'email',
-                                'filter' => '',
-                                'enableSorting' => false,
-                            ],
-                            [
-                                'attribute' => 'status',
-                                'filter' => '',//User::loadStatusOptions()
-                                'value' => function ($model) {
-                                    return $model->statusFormat;
-                                },
-                                'enableSorting' => true,
-                            ],
-                            [
-                                'attribute' => 'role_name',
-                                'filter' => '',
-                                'value' => function($model) {
-                                    return @$model->userRole->role->role_name;
-                                }
-                            ],
-                            [
-                                'attribute' => 'last_login_ip',
-                                'filter' => '',
-                                'enableSorting' => false,
-                            ],
-                            'login_count',
-                            [
-                                'attribute' => 'last_login_at',
-                                'filter' => '',
-                                'value' => function($model) {
-                                    return $model->last_login_at ? date('Y-m-d H:i:s', $model->last_login_at) : '';
-                                }
-                            ],
-                            [
-                                'attribute' => 'created_at',
-                                'format' => 'datetime',
-                                'filter' => '',
-                            ],
-
-                            [
-                                'class' => ActionColumn::className(),
-                                'template' => '{assignment}{view}{update}{delete}',
-                                'buttons' => ['assignment' => $assignment],
-                            ],
+                    'dataProvider' => $dataProvider,
+                    'columns' => [
+                        [
+                            'class' => '\yii\grid\CheckboxColumn',
                         ],
-                    ]); ?>
+                        [
+                            'attribute' => 'avatar',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Html::img($model->getAvatarFormat(), ['width' => '100', 'height' => '100']);
+                            },
+                            'options' => ['width' => '100', 'height' => '100'],
+                            'filter' => '',
+                            'enableSorting' => false,
+                        ],
+                        [
+                            'attribute' => 'username',
+                            'filter' => '',
+                            'enableSorting' => false,
+                        ],
+                        [
+                            'attribute' => 'email',
+                            'format' => 'email',
+                            'filter' => '',
+                            'enableSorting' => false,
+                        ],
+                        [
+                            'attribute' => 'status',
+                            'filter' => '',//User::loadStatusOptions()
+                            'value' => function ($model) {
+                                return $model->statusFormat;
+                            },
+                            'enableSorting' => true,
+                        ],
+                        [
+                            'attribute' => 'role_name',
+                            'filter' => '',
+                            'value' => function ($model) {
+                                return @$model->userRole->role->role_name;
+                            }
+                        ],
+                        [
+                            'attribute' => 'last_login_ip',
+                            'filter' => '',
+                            'enableSorting' => false,
+                        ],
+                        'login_count',
+                        [
+                            'attribute' => 'last_login_at',
+                            'filter' => '',
+                            'value' => function ($model) {
+                                return $model->last_login_at ? date('Y-m-d H:i:s', $model->last_login_at) : '';
+                            }
+                        ],
+                        [
+                            'attribute' => 'created_at',
+                            'format' => 'datetime',
+                            'filter' => '',
+                        ],
+
+                        [
+                            'class' => ActionColumn::className(),
+                            'template' => '{assignment}{view}{update}{delete}',
+                            'buttons' => ['assignment' => $assignment],
+                        ],
+                    ],
+                ]); ?>
             </div>
         </div>
     </div>
 </div>
 <script type="text/javascript">
-    function assignRole(obj)
-    {
+    function assignRole(obj) {
         var id = $(obj).data('id') ? $(obj).data('id') : $(obj).attr('data-id');
         var url = $(obj).data('url') ? $(obj).data('url') : $(obj).attr('data-url');
         layer.open({
-          type: 2,
-          title: '<?= Yii::t('app', 'Assign Permission') ?>',
-          shadeClose: true,
-          shade: 0.8,
-          area: ['600px', '90%'],
-          maxmin:true,
-          content: url //iframe的url
+            type: 2,
+            title: '<?= Yii::t('app', 'Assign Permission') ?>',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['600px', '90%'],
+            maxmin: true,
+            content: url //iframe的url
         });
     }
 

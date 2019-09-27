@@ -15,6 +15,6 @@ use yii\widgets\Breadcrumbs;
     <?= Breadcrumbs::widget([
         'homeLink' => false,
         'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ])
-    ?>  
+    ])
+    ?>
 </div>

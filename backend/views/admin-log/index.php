@@ -13,31 +13,31 @@ use yii\widgets\Pjax;
         <div class="ibox">
             <div class="ibox-content">
                 <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
-                    <?= $this->render('_search', ['model' => $searchModel])?>
+                    <?= $this->render('_search', ['model' => $searchModel]) ?>
                 </div>
                 <?php Pjax::begin(['id' => 'adminLog-pjax', 'enablePushState' => false, 'options' => ['class' => 'pjax-reload']]); ?>
-                    <?= GridView::widget([
+                <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [
-                            [
-                                'class' => 'yii\grid\CheckboxColumn'
-                            ],
-                            'id',
-							[
-                                'attribute' => 'user_id',
-                                'value' => function($model) {
-                                    return $model->user->username;
-                                }
-                            ],
-							'route',
-							'description:raw',
-							'created_at:datetime',
-                            [
-                                'class' => 'backend\grid\ActionColumn',
-                                'template' => '{delete}',
-                            ],
-                        ]
-                    ]); ?>
+                        [
+                            'class' => 'yii\grid\CheckboxColumn'
+                        ],
+                        'id',
+                        [
+                            'attribute' => 'user_id',
+                            'value' => function ($model) {
+                                return $model->user->username;
+                            }
+                        ],
+                        'route',
+                        'description:raw',
+                        'created_at:datetime',
+                        [
+                            'class' => 'backend\grid\ActionColumn',
+                            'template' => '{delete}',
+                        ],
+                    ]
+                ]); ?>
                 <?php Pjax::end(); ?>
             </div>
         </div>

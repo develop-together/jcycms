@@ -24,24 +24,26 @@ use common\widgets\ActiveForm AS BAF;
         'method' => 'post',
         'options' => ['class' => 'form-inline'],
         'fieldConfig' => [
-            'template' =>"{label}\n{input}\n{error}\n{hint}",
-            'labelOptions' => ['class' => 'control-label'],                          
-        ],
+        'template' =>"{label}\n{input}\n{error}\n{hint}",
+        'labelOptions' => ['class' => 'control-label'],
+    ],
     ]); ?>
 
-<?php
-$count = 0;
-foreach ($generator->getColumnNames() as $attribute) {
-    if (++$count < 6) {
-        echo "    <?= " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
-    } else {
-        echo "    <?php // echo " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
+    <?php
+    $count = 0;
+    foreach ($generator->getColumnNames() as $attribute) {
+        if (++$count < 6) {
+            $tab = $count === 1 ? '' : "\t\t\t";
+            echo "{$tab}<?= " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
+        } else {
+            echo "\t\t\t?php // echo " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
+        }
     }
-}
-?>
+    ?>
     <div class="form-group" style="padding-bottom:10px;">
         <?= "<?= " ?>Html::submitButton('<?= Yii::t('app', 'Search') ?>', ['class' => 'btn btn-primary']) ?>
-        <?= "<?= " ?>Html::resetButton('<i class="fa fa-undo"></i> <?= Yii::t('app', 'Clear Query') ?>', ['class' => 'btn btn-default clear-search']) ?>
+        <?= "<?= " ?>Html::resetButton('<i class="fa fa-undo"></i> <?= Yii::t('app', 'Clear Query') ?>', ['class' =>
+        'btn btn-default clear-search']) ?>
     </div>
 
     <?= "<?php " ?>BAF::end(); ?>

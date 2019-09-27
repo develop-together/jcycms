@@ -54,9 +54,14 @@ $this->title = Yii::t('app', 'Article');
                             }
                         ],
                         'scan_count',
-                        'comment_count',
                         [
-                            'attribute' => 'thumb',
+                            'attribute' => 'comment_count',
+                            'format' => 'html',
+                            'value' => function ($model, $key, $index, $column) {
+                                return Html::a($model->comment_count, Url::to(['comment/list', 'aid' => $model->id]));
+                            }
+                        ],
+                        ['attribute' => 'thumb',
                             'enableSorting' => false,
                             'value' => function ($model) {
                                 return $model->thumb ? '有' : '无';

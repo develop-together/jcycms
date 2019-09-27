@@ -13,31 +13,31 @@ use backend\grid\ActionColumn;
             <?= $this->render('/widgets/_ibox-index-title') ?>
             <div class="ibox-content">
                 <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
-                    <?= $this->render('_search', ['model' => $searchModel])?>
+                    <?= $this->render('_search', ['model' => $searchModel]) ?>
                 </div>
-                                    <?= GridView::widget([
-                        'dataProvider' => $dataProvider,
-                        'columns' => [
-                                [
-                                    'class' => 'yii\grid\CheckboxColumn'
-                                ],
-                                'id',
-                                [
-                                    'attribute' => 'name',
-                                    'format' => 'html',
-                                    'enableSorting' => false,
-                                    'value' => function($model) {
-                                        return $model->nameFormat;
-                                    }
-                                ],
-								'sort',
-                                [
-                                    'class' => 'backend\grid\ActionColumn',
-                                    'template' => '{view}{update}{delete}',
-                                ],
-                            ]
-                        ]); ?>
-                            </div>
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'columns' => [
+                        [
+                            'class' => 'yii\grid\CheckboxColumn'
+                        ],
+                        'id',
+                        [
+                            'attribute' => 'name',
+                            'format' => 'html',
+                            'enableSorting' => false,
+                            'value' => function ($model) {
+                                return $model->nameFormat;
+                            }
+                        ],
+                        'sort',
+                        [
+                            'class' => 'backend\grid\ActionColumn',
+                            'template' => '{view}{update}{delete}',
+                        ],
+                    ]
+                ]); ?>
+            </div>
         </div>
     </div>
 

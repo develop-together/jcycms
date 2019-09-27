@@ -41,6 +41,19 @@ class CommentController extends BackendController
         ]);
     }
 
+    public function actionList($aid)
+    {
+        Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
+        $searchModel = new CommentSearch();
+        $searchModel->article_id = $aid;
+        $dataProvider = $searchModel->search(Yii::$app->request->post());
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Displays a single Comment model.
      * @param string $id

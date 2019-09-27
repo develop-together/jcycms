@@ -13,38 +13,38 @@ use backend\grid\ActionColumn;
             <?= $this->render('/widgets/_ibox-index-title') ?>
             <div class="ibox-content">
                 <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
-                    <?= $this->render('_search', ['model' => $searchModel])?>
+                    <?= $this->render('_search', ['model' => $searchModel]) ?>
                 </div>
                 <?= GridView::widget([
-                        'dataProvider' => $dataProvider,
-                        'columns' => [
-                                [
-                                    'class' => 'yii\grid\CheckboxColumn'
-                                ],
-                                'id',
-								'title',
-								[
-									'attribute' => 'user_id',
-									'value' => function($model) {
-										return $model->user->username;
-									}
- 								],
- 								[
- 									'attribute' => 'linkUrl',
- 									'format' => 'raw',
- 									'value' => function($model) {
- 										return Html::a($model->linkUrl, $model->linkUrl, ['target' => '_blank']);
- 									}
- 								],
-								'created_at:datetime',
-								'updated_at:datetime',
-                                [
-                                    'class' => 'backend\grid\ActionColumn',
-                                    'template' => '{view}{update}{delete}',
-                                ],
-                            ]
-                        ]); ?>
-                            </div>
+                    'dataProvider' => $dataProvider,
+                    'columns' => [
+                        [
+                            'class' => 'yii\grid\CheckboxColumn'
+                        ],
+                        'id',
+                        'title',
+                        [
+                            'attribute' => 'user_id',
+                            'value' => function ($model) {
+                                return $model->user->username;
+                            }
+                        ],
+                        [
+                            'attribute' => 'linkUrl',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Html::a($model->linkUrl, $model->linkUrl, ['target' => '_blank']);
+                            }
+                        ],
+                        'created_at:datetime',
+                        'updated_at:datetime',
+                        [
+                            'class' => 'backend\grid\ActionColumn',
+                            'template' => '{view}{update}{delete}',
+                        ],
+                    ]
+                ]); ?>
+            </div>
         </div>
     </div>
 

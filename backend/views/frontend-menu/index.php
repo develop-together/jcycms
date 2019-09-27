@@ -18,53 +18,53 @@ $createSub = function ($url, $model) {
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-index-title') ?>
             <div class="ibox-content">
-               <?= GridView::widget([
+                <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [
-                            [
-                                'class' => 'yii\grid\CheckboxColumn'
-                            ],
-                            [
-                                'attribute' => 'name',
-                                'format' => 'html',
-                                'enableSorting' => false,
-                                'value' => function($model) {
-                                    return $model->nameFormat;
-                                }
-                            ],
-                            [
-                                'attribute' => 'icon',
-                                'format' => 'html',
-                                'enableSorting' => false,
-                                'value' => function ($model) {
-                                    return $model->iconFormat;
-                                }
-                            ],
-                            [
-                                'attribute' =>'url',
-                                'enableSorting' => false,
-                            ],
-                            'sort',
-                            [
-                                'attribute' => 'is_display',
-                                'enableSorting' => false,
-                                'value' => function($model) {
-                                    return $model->displayFormat;
-                                }
-                            ],
-                            [
-                                'attribute' => 'target',
-                                'enableSorting' => false,
-                            ],
-                            'created_at:date',
-                            'updated_at:date',
-                            [
-                                'class' => 'backend\grid\ActionColumn',
-                                'template' => '{createSub}{update}{delete}',
-                                'buttons' => ['createSub' => $createSub],
-                            ],
-                        ]
-                    ]); ?>
+                        [
+                            'class' => 'yii\grid\CheckboxColumn'
+                        ],
+                        [
+                            'attribute' => 'name',
+                            'format' => 'html',
+                            'enableSorting' => false,
+                            'value' => function ($model) {
+                                return $model->nameFormat;
+                            }
+                        ],
+                        [
+                            'attribute' => 'icon',
+                            'format' => 'html',
+                            'enableSorting' => false,
+                            'value' => function ($model) {
+                                return $model->iconFormat;
+                            }
+                        ],
+                        [
+                            'attribute' => 'url',
+                            'enableSorting' => false,
+                        ],
+                        'sort',
+                        [
+                            'attribute' => 'is_display',
+                            'enableSorting' => false,
+                            'value' => function ($model) {
+                                return $model->displayFormat;
+                            }
+                        ],
+                        [
+                            'attribute' => 'target',
+                            'enableSorting' => false,
+                        ],
+                        'created_at:date',
+                        'updated_at:date',
+                        [
+                            'class' => 'backend\grid\ActionColumn',
+                            'template' => '{createSub}{update}{delete}',
+                            'buttons' => ['createSub' => $createSub],
+                        ],
+                    ]
+                ]); ?>
             </div>
         </div>
     </div>

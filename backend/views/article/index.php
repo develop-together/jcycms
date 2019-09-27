@@ -58,7 +58,7 @@ $this->title = Yii::t('app', 'Article');
                             'attribute' => 'comment_count',
                             'format' => 'html',
                             'value' => function ($model, $key, $index, $column) {
-                                return count($model->comments) > 0 ? Html::a($model->comment_count, Url::to(['comment/list', 'aid' => $model->id])) : $model->comment_count;
+                                return count($model->comments) > 0 ? Html::a($model->comment_count, 'javascript:;', ['title' => Yii::t('app', 'Can Comment'), 'class' => 'cat-comment', 'data-url' => Url::to(['comment/list', 'aid' => $model->id])]) : $model->comment_count;
                             }
                         ],
                         ['attribute' => 'thumb',
@@ -337,4 +337,20 @@ $this->title = Yii::t('app', 'Article');
         </div>
     </div>
 </div>
+<?php
+$this->registerJs(<<<JS
+            $("a.cat-comment").bind('click', function() {
+                layer.open({
+                    type: 2,
+                    title: $(this).attr('title'),
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['600px', '90%'],
+                    maxmin:true,
+                    content: $(this).data('url')
+                });
+            })
+JS
+);
+?>
 

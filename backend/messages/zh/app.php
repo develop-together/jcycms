@@ -389,5 +389,6 @@ return [
 	'Multiple keywords separated by "," up to a maximum of 10' => '多个关键字之间用“,”分隔，最多不超过10个',
 	'Error in data submission!' => '数据提交错误！',
     'Scan Count' => '阅读量',
-    'Comment Count' => '评论数'
+    'Comment Count' => '评论数',
+    'Commented article' => '被评文章'
 ];

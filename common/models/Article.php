@@ -232,7 +232,7 @@ class Article extends \common\components\BaseModel
     {
         // ->where(['parent_id' => 0])
         return $this->hasMany(Comment::class, ['article_id' => 'id'])
-            ->where(['status' => Comment::STATUS_PASSED])
+//            ->where(['status' => Comment::STATUS_PASSED])
             ->orderBy('id DESC');
     }
 

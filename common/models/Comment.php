@@ -123,6 +123,7 @@ class Comment extends \common\components\BaseModel
             'contents' => Yii::t('app', 'Comments'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+            'article.title' => Yii::t('app', 'Commented article'),
         ]);
     }
 

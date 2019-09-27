@@ -33,6 +33,7 @@ $zh_cn = Yii::t('app', 'Verify');
                                 return $model->getStatusFormat();
                             }
                         ],
+                        'article.title',
                         'like_count',
                         'repeat_count',
                         'contents:raw',

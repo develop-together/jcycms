@@ -271,6 +271,7 @@ $dependency = new DbDependency([
         </aside>
     </article>
 <?php
+$zhCn = Yii::t('frontend', 'Cannot submit empty comments');
 $this->registerJs(<<<JS
 	    function keyUP(t) {
 	        var len = $(t).val().length;
@@ -290,6 +291,7 @@ $this->registerJs(<<<JS
 				content = content.trim();
 				if (content === '' || content === null || content === undefined || content === 'undefined') {
 					$(this).parent('.submit-btn').siblings(".comt-loading").html("<span style='color:red'>$i18n3</span>");
+					layer.msg('{$zhCn}', {icon:5});
 					return false;
 				}
 				// this.removeEventListener('click', function(){alert(222)}, false);

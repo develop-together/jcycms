@@ -119,7 +119,7 @@ $this->title = Yii::t('app', 'Website Setting');
 </div>
 <?php
     $this->registerJs(<<<JS
-        $('#Config_web_templates').imagepicker({
+        $('#Config_web_templatesConfig_web_templates').imagepicker({
             hide_select : true,
             show_label : true
         });

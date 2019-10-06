@@ -201,7 +201,7 @@ h2.title_tj p { background: #fff; width: 90px }
 .bloglist figure { float: left; width: 183px; }
 .bloglist figure img { padding: 4px; border: #f4f2f2 1px solid; width: 175px; }
 .bloglist div.sub_title { float: left; width: 250px; margin: 10px 0px 0 15px; overflow:hidden;line-height: 20px; }
-.dateview { width: 695px; overflow: hidden; clear: both; margin: 10px 0 0 0; display: inline-block; background: #f6f6f6 url(../images/time.jpg) 15px center no-repeat; line-height: 26px; height: 26px; color: #838383; padding-left: 25px }
+.dateview { width: 695px; overflow: hidden; clear: both; margin: 10px 0 0 0; display: inline-block; background: #f6f6f6 url(../images/time.jpg) 5px center no-repeat; line-height: 26px; height: 26px; color: #838383; padding-left: 25px }
 .dateview span { margin: 0 10px; }
 .dateview span a { color: #099B43; }
 a.readmore { background: #fd8a61; color: #fff; padding: 5px 10px; float: right; margin: 20px 0 0 0 }

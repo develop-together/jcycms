@@ -171,9 +171,9 @@ class BaseConfig
     public static function getDataImgSrc($key = null)
     {
         $items = [
-            self::WEB_TEMPLATE_BASE => ['data-img-src' => Yii::$app->params['qiniuConfig']['staticSourceUrl'] . '/basic.png', 'data-img-class' => 'picker200'],
-            self::WEB_TEMPLATE_ONE => ['data-img-src' => Yii::$app->params['qiniuConfig']['staticSourceUrl'] . '/qingxin.png', 'data-img-class' => 'picker200'],
-            self::WEB_TEMPLATE_TWO => ['data-img-src' => Yii::$app->params['qiniuConfig']['staticSourceUrl'] . '/gudian.png', 'data-img-class' => 'picker200'],
+            self::WEB_TEMPLATE_BASE => ['data-img-src' => Yii::$app->params['qiniuConfig']['staticSourceUrl'] . '/theme/basic.png', 'data-img-class' => 'picker200'],
+            self::WEB_TEMPLATE_ONE => ['data-img-src' => Yii::$app->params['qiniuConfig']['staticSourceUrl'] . '/theme/qingxin.png', 'data-img-class' => 'picker200'],
+            self::WEB_TEMPLATE_TWO => ['data-img-src' => Yii::$app->params['qiniuConfig']['staticSourceUrl'] . '/theme/gudian.png', 'data-img-class' => 'picker200'],
         ];
 
         return self::getItems($items, $key);

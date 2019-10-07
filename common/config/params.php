@@ -5,7 +5,7 @@ return [
     'user.passwordResetTokenExpire' => 3600,
     'mailerEncryption' => 'tls',
     'qiniuConfig' => [
-    	'staticSourceUrl' => Yii::$app->request->baseUrl . '/static/img'//"http://psdcab48n.bkt.clouddn.com"
+    	'staticSourceUrl' => ""//http://psdcab48n.bkt.clouddn.com
     ],
     'uploadConfig' => [
     	'uploadSaveFilePath' => 'uploads',

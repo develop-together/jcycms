@@ -6,9 +6,9 @@ use yii;
 use yii\base\InvalidParamException;
 
 /**
-* 基础数据配置类
-* @author atuxe <atuxe@boyuntong.com>
-*/
+ * 基础数据配置类
+ * @author atuxe <atuxe@boyuntong.com>
+ */
 class BaseConfig
 {
     const YesNo_Yes = 1;
@@ -65,10 +65,10 @@ class BaseConfig
         return self::getItems($items, $key);
     }
 
-	public static function statusOption()
-	{
-		return ['1'=>'激活', '2'=>'锁定',];
-	}
+    public static function statusOption()
+    {
+        return ['1' => '激活', '2' => '锁定',];
+    }
 
     public static function getWebsiteStatusItems($key = null)
     {
@@ -142,7 +142,7 @@ class BaseConfig
             if (key_exists($key, $items)) {
                 return $items[$key];
             }
-            throw new InvalidParamException( 'Unknown key:' . $key );
+            throw new InvalidParamException('Unknown key:' . $key);
         }
         return $items;
     }
@@ -170,10 +170,11 @@ class BaseConfig
 
     public static function getDataImgSrc($key = null)
     {
+        $source = empty(Yii::$app->params['qiniuConfig']['staticSourceUrl']) ? Yii::$app->request->baseUrl . '/static/img' : Yii::$app->params['qiniuConfig']['staticSourceUrl'];
         $items = [
-            self::WEB_TEMPLATE_BASE => ['data-img-src' => Yii::$app->params['qiniuConfig']['staticSourceUrl'] . '/theme/basic.png', 'data-img-class' => 'picker200'],
-            self::WEB_TEMPLATE_ONE => ['data-img-src' => Yii::$app->params['qiniuConfig']['staticSourceUrl'] . '/theme/qingxin.png', 'data-img-class' => 'picker200'],
-            self::WEB_TEMPLATE_TWO => ['data-img-src' => Yii::$app->params['qiniuConfig']['staticSourceUrl'] . '/theme/gudian.png', 'data-img-class' => 'picker200'],
+            self::WEB_TEMPLATE_BASE => ['data-img-src' => $source . '/theme/basic.png', 'data-img-class' => 'picker200'],
+            self::WEB_TEMPLATE_ONE => ['data-img-src' => $source . '/theme/qingxin.png', 'data-img-class' => 'picker200'],
+            self::WEB_TEMPLATE_TWO => ['data-img-src' => $source . '/theme/gudian.png', 'data-img-class' => 'picker200'],
         ];
 
         return self::getItems($items, $key);
@@ -181,7 +182,7 @@ class BaseConfig
 
     public static function loadThemes($key = null)
     {
-        if (! $key) {
+        if (!$key) {
             $configData = \common\models\Config::loadData();
             $key = $configData['web_templates'];
         }

@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <?php $this->endBody();?>
         <?php 
-            $url = Yii::$app->params['qiniuConfig']['staticSourceUrl'];
+            $url = empty(Yii::$app->params['qiniuConfig']['staticSourceUrl']) ? Yii::$app->request->baseUrl . '/static/img' : Yii::$app->params['qiniuConfig']['staticSourceUrl'];
             $jsStr = <<<JS
                 $.backstretch([
                     '{$url}/login_bg_1.jpg',

@@ -157,3 +157,15 @@ environments/           环境文件
 }
  ```
  7. 装好之后的演示账号：demo 密码：123456  默认管理员账号可先删除数据表byt_admin_user表的admin（此时我也忘记admin密码了，就换个法子）那行记录，然后执行php yii init/createAdministrator(具体看console代码)创建新管理员
+ 
+ 8. 2019-12-27：最近发现系统存在一个bug，出现bug的原因是：由于系统里面的列表搜索都是POST提交，而列表默认的action是index，因此我在权限检测的时候作了处理，但是有个历史因素是系统设置的action也是index，这样就导致系统设置提交保存权限被泄露了。对于这个问题，我过滤了系统设置的action，目前最好的方法是查询改成get请求，但是出于get的限制，我建议还是post，这样的话就需要使用者建立action时，一定是需要查询的列表的action用index，其它地方建议不使用
+ 
+9. 2019-12-27：感觉忙了好久了，细想还是不忙的嘛，主要是懒了，好久都没学习新知识，开源新东西了。总结下这段时间忙的事吧：
+
+    >做c#.net项目了，目前只会crud
+    
+    >写了一个yii2组件：[https://github.com/jiechengyang/i-secure-center/]
+    
+    >公司项目：Yii2、Yii1、nodejs切换着做
+    
+写完公司项目，对Yii2理解又多了许多，觉得新年重写这个cms系统，全部使用独立action，然后完善接口

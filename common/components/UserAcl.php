@@ -43,7 +43,7 @@ class UserAcl
         $user = User::findOne($userId);
         if ((null !== $user) && $user->hasAcl($acl)) {
             return true;
-        } elseif (strpos($acl, "/index:POST") !== false) {// 特殊权限处理：post查询
+        } elseif ('config/index:POST' !== $acl && strpos($acl, "/index:POST") !== false) {// 特殊权限处理：post查询
             return true;
         } else {
             return false;

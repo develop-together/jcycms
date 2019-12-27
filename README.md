@@ -163,6 +163,8 @@ environments/           环境文件
 9. 2019-12-27：感觉忙了好久了，细想还是不忙的嘛，主要是懒了，好久都没学习新知识，开源新东西了。总结下这段时间忙的事吧：
 
     >做c#.net项目了，目前只会crud
+    >workerman写office转pdf服务，workerman还要深入学习
+    >学习使用swoole，用swoole写了一个简单聊天室，用easyswoole写公司项目api（写了一部分），swoole还要继续学习
     
     >写了一个yii2组件：[https://github.com/jiechengyang/i-secure-center/]
     

@@ -89,9 +89,9 @@ environments/           环境文件
 ```
 **安装教程**
 
- 1. 使用本系统之前先安装composer工具
+ 1. 使用本系统之前先安装composer工具,记得换成阿里云镜像
  2. 把本项目克隆下来
- 3. 运行 `composer install`,然后再在项目根目录运行 `php init` 进行项目初始化配置
+ 3. 运行 `composer install -vvv` ,然后再在项目根目录运行 `php init` 进行项目初始化配置
  4. 导入数据库文件，数据库文件在jcycms下的data/yii2_jcycms-2018-11-30.sql，直接导入，如不是最新数据结构请查看data/updata.sql日志更新数据表
  5. 修改数据库配置
  6. 部署好之后需要配置Nginx或者Apache项 此处有好多人不会设置，其实就是把Nginx或者Apache解析到项目的backend/web目录下面。下面提供了两个yii2nginx站点的常用配置方式，作参考
@@ -156,4 +156,19 @@ environments/           环境文件
         }
 }
  ```
- 7. 装好之后的演示账号：demo 密码：123456  默认管理员账号可先删除数据表byt_admin_user表的admin（此时我也忘记admin密码了，就换个法子）那行记录，然后执行php yii init/createAdministrator(具体看console代码)创建新管理员
+ 7. 装好之后的演示账号：demo 密码：`123456 ` 默认管理员账号可先删除数据表`byt_admin_user`表的admin（此时我也忘记admin密码了，就换个法子）那行记录，然后执行`php yii init/createAdministrator`(具体看console代码)创建新管理员
+
+ 8. 2019-12-27：最近发现系统存在一个bug，出现bug的原因是：由于系统里面的列表搜索都是POST提交，而列表默认的action是index，因此我在权限检测的时候作了处理，但是有个历史因素是系统设置的action也是index，这样就导致系统设置提交保存权限被泄露了。对于这个问题，我过滤了系统设置的action，目前最好的方法是查询改成get请求，但是出于get的限制，我建议还是post，这样的话就需要使用者建立action时，一定是需要查询的列表的action用index，其它地方建议不使用
+
+9. 2019-12-27：感觉忙了好久了，细想还是不忙的嘛，主要是懒了，好久都没学习新知识，开源新东西了。总结下这段时间忙的事吧：
+
+    >做c#.net项目了，目前只会crud
+    >workerman写office转pdf服务，workerman还要深入学习
+    >学习使用swoole，用swoole写了一个简单聊天室，用easyswoole写公司项目api（写了一部分），swoole还要继续学习
+    
+    >写了一个yii2组件：[https://github.com/jiechengyang/i-secure-center/]
+    
+    >公司项目：Yii2、Yii1、nodejs切换着做
+    
+
+写完公司项目，对Yii2理解又多了许多，觉得新年重写这个cms系统，全部使用独立action，然后修改文件结构，然后完善接口

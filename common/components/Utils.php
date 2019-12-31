@@ -559,8 +559,7 @@ class Utils
     {
         if (empty($str))
             return true;
-//    #(http|https|ftp|ftps)://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?#i
-        return preg_match('^(http|https|ftp|ftps)s? ://(www\.)?.+(com|net|org)$', $str) ? true : false;
+        return preg_match("#(http|https|ftp|ftps)://([-\w]+\.)+[-\w]+(/[-\w./?%&=]*)?#i", $str) ? true : false;
     }
 
     /**

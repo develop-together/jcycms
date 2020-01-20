@@ -163,14 +163,14 @@ class BaseModel extends \yii\db\ActiveRecord
         $result = [];
         if ($uploads) {
             foreach ($uploads as $upload) {
-                $result[] = $this->uploadOpreate($field, $uploadAlias, $attribute, $upload);
+                $result[] = $this->uploadOperate($field, $uploadAlias, $attribute, $upload);
             }
         }
 
         return $result;
     }
 
-    public function uploadOpreate($field = 'thumb', $uploadAlias = '@original/', $attribute = 'Thumb', $UploadedFile = null)
+    public function uploadOperate($field = 'thumb', $uploadAlias = '@original/', $attribute = 'Thumb', $UploadedFile = null)
     {
         if (Yii::$app->id == 'app-api') {
             $upload = UploadedFile::getInstanceByName($field);
@@ -192,6 +192,7 @@ class BaseModel extends \yii\db\ActiveRecord
             }
 
             $clipping_img = \common\models\Config::getClippingImg();
+            var_dump($clipping_img);exit;
             if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb') && $clipping_img === 1) {
                 // $relativePath = ImageHelper::thumbnail($fullName, $this->width, $this->height);
                 // file_exists($fullName) && @unlink($fullName);

@@ -80,7 +80,7 @@ class CarouselItem extends \common\components\BaseModel
     public function beforeValidate()
     {
         if (($this->isNewRecord && empty($this->image)) || (!$this->isNewRecord)) {
-            $this->image = $this->uploadOpreate('image', '@banner/', 'Image');
+            $this->image = $this->uploadOperate('image', '@banner/', 'Image');
         }
 
         return parent::beforeValidate();

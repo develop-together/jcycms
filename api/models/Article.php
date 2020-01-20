@@ -13,7 +13,7 @@ class Article extends CommArticle
             return false;
         }
 
-        $this->thumb = $this->uploadOpreate();
+        $this->thumb = $this->uploadOperate();
 
         return true;
     }

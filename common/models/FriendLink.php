@@ -69,7 +69,7 @@ class FriendLink extends \common\components\BaseModel
             return false;
         }
 
-        $this->image = $this->uploadOpreate('image', '@friendlylink/', 'Image');
+        $this->image = $this->uploadOperate('image', '@friendlylink/', 'Image');
 
         return true;
     }

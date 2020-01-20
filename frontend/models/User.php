@@ -10,7 +10,7 @@
  {
 	public function beforeSave($insert) {
 		if (!$insert) {
-			$this->avatar = $this->uploadOpreate('avatar', '@backend/web/uploads/user-avatar/' . date('Ymd') . '/', 'Image');
+			$this->avatar = $this->uploadOperate('avatar', '@backend/web/uploads/user-avatar/' . date('Ymd') . '/', 'Image');
 		}
 
 		return parent::beforeSave($insert);

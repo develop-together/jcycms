@@ -58,7 +58,7 @@ class Article extends \common\models\Article
             return false;
         }
 
-        $this->thumb = $this->uploadOpreate();
+        $this->thumb = $this->uploadOperate();
 
         return true;
     }

@@ -29,8 +29,8 @@ $this->params['breadcrumbs'] = [
         'class' => 'n1'
     ],
     [
-        'label' => $model->category->name,
-        'url' => '/article/index/' . $model->category->name,
+        'label' => $model->catename,
+        'url' => '/article/index/' . $model->catename,
         'class' => 'n1'
     ],
     ['label' => $this->title],

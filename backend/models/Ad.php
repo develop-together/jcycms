@@ -90,7 +90,7 @@ class Ad extends \common\models\Options
     		return false;
     	}
 
-        $this->imgUrl = $this->uploadOpreate('imgUrl', '@ad' . '/' . date('Ymd') . '/', 'Image');
+        $this->imgUrl = $this->uploadOperate('imgUrl', '@ad' . '/' . date('Ymd') . '/', 'Image');
         if (!$insert) {
             $imgUrl = $this->getOldAttribute('imgUrl');
             $thumbUrl = $this->getOldAttribute('thumbUrl');

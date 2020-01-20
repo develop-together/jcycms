@@ -207,7 +207,7 @@ class BaseModel extends \yii\db\ActiveRecord
                 'enableThumb' => isset($enableThumb) ?? false,
                 'thumbWidth' => isset($thumbWidth) ? $thumbWidth : null,
                 'thumbHeight' => isset($thumbHeight) ? $thumbHeight : null,
-                'replacePath' => isset($replacePath) ?? false,
+                'replacePath' => true,//isset($replacePath) ?? false
             ]);
             $res = $uploader->upload();
             if (false === $res) {

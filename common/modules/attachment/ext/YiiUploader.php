@@ -392,7 +392,6 @@ class YiiUploader
 
         if (true === $this->enableThumb) {
             $this->thumbPath = ImageHelper::thumbnail($this->savePath, $this->thumbWidth, $this->thumbHeight);
-            var_dump($this->replacePath, $this->thumbPath);exit;
             if ($this->replacePath) {
                 $this->fullName = $this->thumbPath;
             }

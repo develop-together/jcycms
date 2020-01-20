@@ -192,7 +192,6 @@ class BaseModel extends \yii\db\ActiveRecord
             }
 
             $clipping_img = \common\models\Config::getClippingImg();
-            var_dump($clipping_img);exit;
             if (self::tableName() === "{{%article}}" && $this->hasAttribute('thumb') && $clipping_img === 1) {
                 // $relativePath = ImageHelper::thumbnail($fullName, $this->width, $this->height);
                 // file_exists($fullName) && @unlink($fullName);
@@ -200,7 +199,7 @@ class BaseModel extends \yii\db\ActiveRecord
                 $thumbWidth = $this->width;
                 $thumbHeight = $this->height;
             }
-
+            var_dump($enableThumb);exit;
             $uploader = new YiiUploader($upload, $config, date('Ym'), [
                 'field' => $field,
                 'attribute' => $attribute,

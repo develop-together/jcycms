@@ -145,7 +145,6 @@ class YiiUploader
         $this->uploadedFile = $uploadedFile;
         $this->mimeMap = isset($this->config['mimeMap']) ? $this->config['mimeMap'] : $this->mimeMap;
         $this->path = $path ? $path : date('Ym');
-        var_dump($others);exit;
         isset($others['attribute']) && $this->attribute = $others['attribute'];
         isset($others['base64Str']) && $this->base64Str = $others['base64Str'];
         isset($others['enableThumb']) && $this->enableThumb = $others['enableThumb'];

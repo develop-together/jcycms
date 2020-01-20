@@ -199,8 +199,8 @@ class BaseModel extends \yii\db\ActiveRecord
                 $thumbWidth = $this->width;
                 $thumbHeight = $this->height;
             }
-            
-            $uploader = new YiiUploader($upload, $config, date('Ym'), [
+
+            $uploader = new YiiUploader($upload, $config, date('Ym'), 'upload', [
                 'field' => $field,
                 'attribute' => $attribute,
                 'uploadAlias' => Yii::getAlias($uploadAlias),

@@ -199,7 +199,7 @@ class BaseModel extends \yii\db\ActiveRecord
                 $thumbWidth = $this->width;
                 $thumbHeight = $this->height;
             }
-            var_dump($enableThumb);exit;
+            
             $uploader = new YiiUploader($upload, $config, date('Ym'), [
                 'field' => $field,
                 'attribute' => $attribute,

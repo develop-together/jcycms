@@ -37,8 +37,8 @@ $this->params['breadcrumbs'] = [
                                 },
                                 'enableSorting' => true,
                         ],
-                        'created_at',
-                        'updated_at',
+                        'created_at:datetime',
+                        'updated_at:datetime',
                     ],
                 ]) ?>                 
             </div>      

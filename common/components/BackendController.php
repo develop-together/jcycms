@@ -59,7 +59,8 @@ class BackendController extends BaseController
                 } else {
                 	$error = '<div class="ibox-title"><strong>' . Yii::t("app", "Permission denied") . '</strong>';
                 	if ($action->id != 'assignment') {
-                		$error .= '<<<a style="text-decoration: none;cursor:pointer;color:#1ab394" href="'. Url::toRoute([Yii::$app->controller->id . '/index']) .'">' . Yii::t('app', 'Back') .'</a>>>';
+                	    // TODO: 考虑有module的时候
+                		$error .= '<<<a style="text-decoration: none;cursor:pointer;color:#1ab394" href="'. Url::toRoute([Yii::$app->controller->id . '/' . (Yii::$app->controller->action->id ? Yii::$app->controller->action->id : 'index')]) .'">' . Yii::t('app', 'Back') .'</a>>>';
                 	}
 
                 	throw new ForbiddenHttpException($error . '</div>');

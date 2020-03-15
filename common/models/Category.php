@@ -35,7 +35,7 @@ class Category extends \common\components\BaseModel
     {
         return [
             [['name'], 'required'],
-            [['id', 'parent_id', 'sort', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'parent_id', 'sort', 'created_at', 'updated_at', 'type'], 'integer'],
             [['name', 'remark'], 'string', 'max' => 255],
         ];
     }
@@ -50,6 +50,7 @@ class Category extends \common\components\BaseModel
             'parent_id' => Yii::t('app', 'Parent Id'),
             'name' => Yii::t('app', 'Name'),
             'sort' => Yii::t('app', 'Sort'),
+            'type' => Yii::t('app', 'Type'),
             'remark' => Yii::t('app', 'Remark'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),

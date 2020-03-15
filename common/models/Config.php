@@ -24,6 +24,9 @@ class Config extends \common\components\BaseModel
         return '{{%config}}';
     }
 
+    /**
+     * @return array
+     */
     public function behaviors()
     {
         return [
@@ -50,7 +53,14 @@ class Config extends \common\components\BaseModel
         ];
     }
 
-    public static function loadData($refresh = false, $key='_config')
+    /**
+     * 加载系统配置
+     * @param bool $refresh
+     * @param string $key
+     * @param string $scope
+     * @return mixed
+     */
+    public static function loadData($refresh = false, $key='_config', $scope = 'base')
     {
         if ($refresh) {
             Yii::$app->cache->delete($key);
@@ -58,7 +68,7 @@ class Config extends \common\components\BaseModel
 
         $data = Yii::$app->cache->get($key);
         if (empty($data)) {
-            $lists = self::find()->all();
+            $lists = self::find()->where(['scope' => $scope])->all();
             foreach ($lists as $key => $value) {
                 $data[$value->variable] = $value->value;
             }
@@ -101,6 +111,9 @@ class Config extends \common\components\BaseModel
         return Yii::$app->db->createCommand("REPLACE INTO " . self::tableName() . "(`scope`, `variable`, `value`) VALUES('$scope', '$variable', '$value')")->execute();
     }
 
+    /**
+     * @return string
+     */
     public function getSystem_logo()
     {
         $logo = self::findOne(['variable' => 'system_logo', 'scope' => 'base']);
@@ -108,6 +121,9 @@ class Config extends \common\components\BaseModel
         return $logo ? $logo->value : '';
     }
 
+    /**
+     * @return int
+     */
     public static function getClippingImg(): int
     {
         $valve = self::findOne(['variable' => 'clipping_img', 'scope' => 'base']);

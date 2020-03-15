@@ -174,3 +174,13 @@ environments/           环境文件
     
 
 写完公司项目，对Yii2理解又多了许多，觉得新年重写这个cms系统，全部使用独立action，然后修改文件结构，然后完善接口
+10. 2020-03-06:更新必要的参数配置
+    >common\config\params-local.php
+                             
+        ```php
+            return [
+                'site' => [
+                    'url' => 'http://jcycms.boomyang.cn/',
+                ],
+            ];  
+        ```

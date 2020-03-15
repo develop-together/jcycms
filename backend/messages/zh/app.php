@@ -390,5 +390,10 @@ return [
 	'Error in data submission!' => '数据提交错误！',
     'Scan Count' => '阅读量',
     'Comment Count' => '评论数',
-    'Commented article' => '被评文章'
+    'Commented article' => '被评文章',
+    'Linkman' => '联系人',
+    'Wechat' => '微信',
+    'QQ' => 'QQ',
+    'Base Addr' => '产地',
+    'Mall Manage Setting' => '经营设置'
 ];

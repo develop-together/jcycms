@@ -394,8 +394,97 @@ CHANGE COLUMN `avatar` `avatar` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_
 ALTER TABLE `byt_article` 
 CHANGE COLUMN `photo_file_ids` `photo_file_ids` VARCHAR(100) NULL DEFAULT NULL COMMENT '相册文件' ;
 
+#2020-03-06
+
+ALTER TABLE `byt_category` ADD `type` TINYINT(2) NOT NULL DEFAULT '1' COMMENT '类型：1：技术，2：产品' AFTER `name`;
 
 
+#2020-03-15
 
+CREATE TABLE `byt_mall_spec_group` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `cid` INT(10) NOT NULL DEFAULT 0 COMMENT '商品分类id，一个分类下有多个模板，指定该组在哪个分类下',
+  `name` VARCHAR(45) NOT NULL COMMENT '该规格组的名称',
+  `created_at` INT(11) NOT NULL,
+  `updated_at` INT(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+COMMENT = '参数规格分组表';
 
+CREATE TABLE `byt_mall_spec_param` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `cid` INT(10) NOT NULL DEFAULT 0 COMMENT '商品分类',
+  `group_id` INT(10) NOT NULL DEFAULT 0 COMMENT '参数规格分组id',
+  `name` VARCHAR(255) NOT NULL COMMENT '参数名',
+  `numeric` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否是数字类型参数(0:否，1：是)',
+  `unit` VARCHAR(16) NULL DEFAULT '' COMMENT '数字类型参数的单位，非数字类型可以为空',
+  `generic` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否是sku通用属性(0否：1是)（规格参数中有一部分是 SKU的通用属性，一部分是SKU的特有属性，而且其中会有一些将来用作搜索过滤，这些信息都需要标记出来）',
+  `searching` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否用于搜索过滤（0：否，1：是）',
+  `segments` VARCHAR(500) NULL COMMENT '值类型参数，如果需要搜索，则添加分段间隔值，如CPU频率间隔：0.5-1.0',
+  PRIMARY KEY (`id`),
+  INDEX `key_group` (`group_id` ASC),
+  INDEX `key_category` (`cid` ASC))
+COMMENT = '参数规格参数信息表';
 
+CREATE TABLE `byt_mall_brand` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL COMMENT '品牌名称',
+  `brand_code` CHAR(16) NOT NULL COMMENT '品牌编码',
+  `image` VARCHAR(255) NULL DEFAULT '' COMMENT '品牌图片地址',
+  `letter` CHAR(1) NULL DEFAULT '' COMMENT '品牌的首字母',
+  `sort` INT(10) NOT NULL DEFAULT 0,
+  `created_at` INT(11) NOT NULL DEFAULT 0,
+  `updated_at` INT(11) NULL DEFAULT 0,
+  PRIMARY KEY (`id`))
+COMMENT = '品牌表';
+
+CREATE TABLE `byt_mall_category_brand` (
+  `category_id` INT(11) NOT NULL COMMENT '商品类目id',
+  `brand_id` INT(11) NOT NULL COMMENT '品牌id',
+  PRIMARY KEY (`category_id`))
+COMMENT = '商品分类和品牌的中间表';
+
+CREATE TABLE `byt_mall_sku` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `spu_id` INT(10) NOT NULL COMMENT 'spu的id',
+  `sku_code` CHAR(16) NOT NULL COMMENT 'SKU唯一码',
+  `title` VARCHAR(100) NOT NULL COMMENT '商品的标题',
+  `cost_price` DECIMAL(6,2) NOT NULL DEFAULT 0 COMMENT '成本价',
+  `price` DECIMAL(6,2) NOT NULL COMMENT '销售价',
+  `special_price` DECIMAL(6,2) NULL DEFAULT 0 COMMENT '销售特价',
+  `images` VARCHAR(500) NULL DEFAULT '' COMMENT '商品的图片，多个图片以\',\'分开（可以存放attachment ID）',
+  `indexes` VARCHAR(255) NULL DEFAULT '',
+  `own_spec` TEXT NULL COMMENT 'sku的特有规格参数键值对，json格式,保证有序',
+  `enable` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否有效，0无效，1有效',
+  `sort` INT(10) NOT NULL DEFAULT 0,
+  `created_at` INT(11) NOT NULL DEFAULT 0,
+  `updated_at` INT(11) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `sku_code_UNIQUE` (`sku_code` ASC))
+COMMENT = 'sku表(表示具体的商品实体,如黑色的 64g的iphone 8)';
+
+ALTER TABLE `byt_mall_sku`
+ADD COLUMN `stock` INT(10) NOT NULL DEFAULT 0 COMMENT '库存' AFTER `special_price`,
+ADD COLUMN `weight` DECIMAL(4,2) NULL DEFAULT 0 COMMENT '重量' AFTER `stock`;
+
+CREATE TABLE `byt_mall_spu` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `spu_code` CHAR(16) NOT NULL COMMENT 'spu唯一码',
+  `title` VARCHAR(200) NOT NULL DEFAULT '' COMMENT '标题',
+  `sub _title` VARCHAR(200) NULL DEFAULT '' COMMENT '子标题',
+  `cid1` INT(10) NOT NULL DEFAULT 0 COMMENT '一级目录id',
+  `cid2` INT(10) NULL DEFAULT 0 COMMENT '二级目录id',
+  `cid3` INT(10) NULL DEFAULT 0 COMMENT '三级目录id',
+  `brand_id` INT(10) NULL DEFAULT 0 COMMENT '商品所属品牌id',
+  `brand_name` VARCHAR(100) NULL DEFAULT '' COMMENT '商品所属品牌名称',
+  `weight` DECIMAL(4,2) NULL DEFAULT 0 COMMENT '毛重\\重量(KG)',
+  `dim` VARCHAR(200) NULL DEFAULT '' COMMENT '产地',
+  `saleable` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否上架(0下架，1上架)',
+  `valid` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否有效，0已删除，1有效',
+  `sort` INT(10) NOT NULL DEFAULT 0,
+  `created_at` INT(11) NOT NULL DEFAULT 0,
+  `updated_at` INT(11) NULL DEFAULT 0,
+  `deleted_at` INT(11) NULL DEFAULT 0 COMMENT '删除时间',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `spu_code_UNIQUE` (`spu_code` ASC))
+COMMENT = '抽象性的商品表(如 iphone8)';

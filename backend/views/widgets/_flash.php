@@ -26,6 +26,15 @@ EOF;
 if (Yii::$app->getSession()->hasFlash('error')) {
     $errorTitle = addslashes(Yii::t('app', 'Error'));
     $info = addslashes(Yii::$app->getSession()->getFlash('error'));
+    $info = str_replace([
+        "\n",
+        "\r",
+        "\r\n"
+    ], [
+        "<br>",
+        "<br>",
+        "<br>"
+    ], $info);
     $str = <<<EOF
        toastr.options = {
           "closeButton": true,

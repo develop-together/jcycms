@@ -4,6 +4,9 @@ return [
     'supportEmail' => 'support@example.com',
     'user.passwordResetTokenExpire' => 3600,
     'mailerEncryption' => 'tls',
+    'site' => [
+        'url' => 'http://jcycms.boomyang.cn/',
+    ],
     'qiniuConfig' => [
     	'staticSourceUrl' => ""//http://psdcab48n.bkt.clouddn.com
     ],

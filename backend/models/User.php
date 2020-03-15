@@ -309,8 +309,8 @@ class User extends BaseModel implements IdentityInterface
      */
     public function hasAcl($acl='')
     {
-        $route = explode('/', $acl);
-        $action = count($route) - 1;
+//        $route = explode('/', $acl);
+//        $action = count($route) - 1;
         // 特殊权限处理
         // if ($route[$action] == 'view') {
         //     $route[$action] = 'index';

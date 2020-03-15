@@ -210,6 +210,15 @@ function close_tab() {
     });
 }
 
+function EscapeChar(HaveSpecialval) {
+    //转换半角单引号
+    HaveSpecialval = HaveSpecialval.replace(/\'/g, "\\\'");
+
+    //也可以使用&acute;
+    HaveSpecialval = HaveSpecialval.replace(/\'/g, "&acute;");
+    return HaveSpecialval;
+}
+
 function showPhotos(obj, shift) {
     if (!jcms._null($(obj).attr('data'))) {
         shift = shift || 5;

@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\models\search;
+namespace common\models\search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\AuthItem;
+use common\models\MallSpecGroup;
 
 /**
- * AuthItemSearch represents the model behind the search form about `backend\models\AuthItem`.
+ * MallSpecGroupSearch represents the model behind the search form about `common\models\MallSpecGroup`.
  */
-class AuthItemSearch extends AuthItem
+class MallSpecGroupSearch extends MallSpecGroup
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class AuthItemSearch extends AuthItem
     public function rules()
     {
         return [
-            [['id', 'menu_id', 'created_at', 'updated_at'], 'integer'],
-            [['rule_name', 'method', 'description'], 'safe'],
+            [['id', 'cid', 'created_at', 'updated_at'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -39,15 +39,15 @@ class AuthItemSearch extends AuthItem
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $menuId = '')
+    public function search($params)
     {
-        $query = AuthItem::find()->with('menu');
+        $query = MallSpecGroup::find();
 
         // add conditions that should always apply here
 
         $this->load($params);
 
-        $pageSize = 20;
+        $pageSize = 10;
         $pageCurrent = 0;
         $field = 'id';
         $sort = SORT_DESC;
@@ -55,10 +55,6 @@ class AuthItemSearch extends AuthItem
         $pageCurrent = 0;
         if (isset($getParams['page'])) {
             $pageCurrent = $getParams['page'] - 1;
-        }
-
-        if (isset($getParams['pageSize'])) {
-            $pageSize = $getParams['pageSize'];
         }
         /*if (isset($params['pageSize'])) {
             $pageSize = $params['pageSize'];
@@ -82,9 +78,11 @@ class AuthItemSearch extends AuthItem
             ],
             'sort' =>[
                 'defaultOrder' =>[
-                    'menu_id' => SORT_ASC,
                     $field => $sort,
                 ],
+            ],
+            'pagination' => [
+                'pageSize' => 10,
             ]
         ]);
 
@@ -97,18 +95,12 @@ class AuthItemSearch extends AuthItem
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'menu_id' => $this->menu_id,
+            'cid' => $this->cid,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'rule_name', $this->rule_name])
-            ->andFilterWhere(['like', 'method', $this->method])
-            ->andFilterWhere(['like', 'description', $this->description]);
-
-        if ($menuId) {
-            $query->andFilterWhere(['menu_id' => $menuId]);
-        }
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

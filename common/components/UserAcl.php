@@ -75,7 +75,7 @@ class UserAcl
         $user = Yii::$app->user->identity;
         !$userId && $userId = $user->id;
         $query = Menu::getBackendQuery(true);
-        $data = $query->orderBy(['sort' => SORT_ASC])->asArray()->all();
+        $data = $query->orderBy(['sort' => SORT_ASC, 'parent_id' => SORT_ASC])->asArray()->all();
         $tree = new TreeHelper($data, true, 2);
         if ((int)$user->userRole->role->id !== AdminRoles::SUPER_ROLE_ID && $data) {//$userId != User::SUPER_MANAGER && $data)
             $user = User::findOne($userId);
@@ -84,7 +84,7 @@ class UserAcl
                 if (empty($value['url']) || (strpos($value['url'], 'javascript') !== false) || ($value['url'] === '/')) {
                     continue;
                 }
-                $route = $value['url'] . ':GET';
+                $route = ltrim($value['url'], '/') . ':GET';
                 if ($user->hasAcl($route)) {
                     $parentTree = $tree->spanningParentTree($value['id'], $data);
                     $newData = array_merge($newData, $parentTree);
@@ -96,7 +96,6 @@ class UserAcl
             unset($newData);
         }
 
-        // var_dump($data);exit;
         return self::recurrenceCreateMenu(Utils::tree_bulid(Utils::mult_unique($data), 'id', 'parent_id'));
     }
 
@@ -111,7 +110,7 @@ class UserAcl
             }
 
             $url = Menu::generateUrl($list['url'], $list['is_absolute_url']);
-            $listr .= '<li><a  class="J_menuItem" href=" ' . $url . ' "><i class="fa ' . $list['icon'] . '"></i><span class="nav-label">' . $list['name'] . '</span>';
+            $listr .= '<li><a  class="J_menuItem" href=" ' . $url . ' " title="' . $list['name'] . '"><i class="fa ' . $list['icon'] . '"></i><span class="nav-label">' . $list['name'] . '</span>';
             if (isset($list['children'])) {
                 $listr = str_replace($url, 'javascript:;', $listr);
                 $listr = str_replace('J_menuItem', '', $listr);

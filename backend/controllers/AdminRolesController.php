@@ -115,23 +115,6 @@ class AdminRolesController extends BackendController
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 // TODO: 这里应该封装到model层
-                // if ($postData['menuLists']) {
-                //     $menuLists = explode(',', $postData['menuLists']);
-                //     $delFlag = $this->deleteOldRolePermissions($id);
-                //     foreach ($menuLists as $value) {
-                //         $adminRolePermissionModel = $this->findAdminRolePermissionModel();
-                //         $adminRolePermissionModel->role_id = $id;
-                //         $adminRolePermissionModel->menu_id = $value;
-                //         if (!$adminRolePermissionModel->save()) {
-                //             $errors = [];
-                //             foreach ($adminRolePermissionModel->errors as $error) {
-                //                 $errors[] = $error[0];
-                //             }
-
-                //             throw new \yii\web\BadRequestHttpException(implode(",", $errors));
-                //         }
-                //     }
-                // }
                 if ($postData['rabcLists']) {
                     $diffA = $diffB = [];
                     $oldRabcLists = $postData['rabcLists'];

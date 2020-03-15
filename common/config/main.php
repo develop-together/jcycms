@@ -12,7 +12,10 @@ $config = [
     'modules' => [
         'attachment' => [
             'class' => 'common\modules\attachment\Module',
-        ]
+        ],
+        'mall' => [
+            'class' => 'common\modules\mall\Module',
+        ],
     ],
     'components' => [
         'urlManager' => [

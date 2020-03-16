@@ -395,5 +395,6 @@ return [
     'Wechat' => '微信',
     'QQ' => 'QQ',
     'Base Addr' => '产地',
-    'Mall Manage Setting' => '经营设置'
+    'Mall Manage Setting' => '经营设置',
+    'Mall Brand' => '产品品牌'
 ];

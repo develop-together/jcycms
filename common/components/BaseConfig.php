@@ -56,8 +56,8 @@ class BaseConfig
     const WATERMARK_STYLE_TEXT = 1;
     const WATERMARK_STYLE_IMG = 2;
 
-    const IT_CATaLOG_ID = 1;
-    const PRODUCT_CATaLOG_ID = 2;
+    const ARTICLE_CATALOG_ID = 1;
+    const PRODUCT_CATALOG_ID = 2;
 
     public static function getYesNoItems($key = null)
     {

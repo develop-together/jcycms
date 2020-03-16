@@ -44,7 +44,7 @@ class Menu extends \common\models\Menu
 
 	}
 
-	protected function chilrdenDatasToObject($object, $parent_id, $lv = 0)
+	protected function childesToObject($object, $parent_id, $lv = 0)
 	{
 		$tree = new TreeHelper($object, true, 3,  [
 			'fpid' => $parent_id,

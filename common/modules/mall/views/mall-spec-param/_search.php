@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use common\widgets\ActiveForm AS BAF;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\search\MallSpecGroupSearch */
+/* @var $model common\models\search\MallSpecParamSearch */
 /* @var $form common\widgets\ActiveForm */
 ?>
 
-<div class="mall-spec-group-search">
+<div class="mall-spec-param-search">
 
     <?php $form = BAF::begin([
         'action' => ['index'],
@@ -24,11 +24,19 @@ use common\widgets\ActiveForm AS BAF;
 
 			<?= $form->field($model, 'cid') ?>
 
+			<?= $form->field($model, 'group_id') ?>
+
 			<?= $form->field($model, 'name') ?>
 
-			<?= $form->field($model, 'created_at') ?>
+			<?= $form->field($model, 'numeric') ?>
 
-			<?= $form->field($model, 'updated_at') ?>
+			<?php // echo $form->field($model, 'unit') ?>
+
+			<?php // echo $form->field($model, 'generic') ?>
+
+			<?php // echo $form->field($model, 'searching') ?>
+
+			<?php // echo $form->field($model, 'segments') ?>
 
     <div class="form-group" style="padding-bottom:10px;">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>

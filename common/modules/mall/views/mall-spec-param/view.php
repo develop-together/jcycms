@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 
 $this->title = $model->id;
 $this->params['breadcrumbs'] = [
-    ['label' => Yii::t('app', 'Mall Spec Group'), 'url' =>  Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
+    ['label' => Yii::t('app', 'Mall Spec Param'), 'url' => Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
     ['label' => $this->title],
 ];
 
@@ -14,18 +14,22 @@ $this->params['breadcrumbs'] = [
 <div class="row">
     <div class="col-sm-12">
         <div class="ibox">
-            <?= $this->render('/widgets/_ibox-title') ?>
+            <?= $this->render('@backend/views/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
                         'id',
-            'cid',
-            'name',
-            'created_at',
-            'updated_at',
+                        'cid',
+                        'group_id',
+                        'name',
+                        'numeric',
+                        'unit',
+                        'generic',
+                        'searching',
+                        'segments',
                     ],
-]) ?>  
+                ]) ?>
             </div>
         </div>
     </div>

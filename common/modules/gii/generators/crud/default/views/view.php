@@ -17,33 +17,34 @@ use yii\widgets\DetailView;
 
 $this->title = $model->id;
 $this->params['breadcrumbs'] = [
-    ['label' => Yii::t('app', '<?=Inflector::camel2words(StringHelper::basename($generator->modelClass))?>'), 'url' =>  Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
-    ['label' => $this->title],
+['label' => Yii::t('app', '<?= Inflector::camel2words(StringHelper::basename($generator->modelClass)) ?>'), 'url' =>  Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
+['label' => $this->title],
 ];
 
 ?>
 <div class="row">
     <div class="col-sm-12">
         <div class="ibox">
-            <?= '<?=' ?> $this->render('/widgets/_ibox-title') ?>
+            <?= '<?=' ?> $this->render('@backend/views/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <?= "<?= " ?>DetailView::widget([
-                    'model' => $model,
-                    'attributes' => [
-            <?php
-            if (($tableSchema = $generator->getTableSchema()) === false) {
-                foreach ($generator->getColumnNames() as $name) {
-                    echo "            '" . $name . "',\n";
-                }
-            } else {
-                foreach ($generator->getTableSchema()->columns as $column) {
-                    $format = $generator->generateColumnFormat($column);
-                    echo "            '" . $column->name . ($format === 'text' ? "" : ":" . $format) . "',\n";
-                }
-            }
-            ?>
-                    ],
-]) ?>  
+                'model' => $model,
+                'attributes' => [
+                <?php
+                    $i = 0;
+                    if (($tableSchema = $generator->getTableSchema()) === false) {
+                        foreach ($generator->getColumnNames() as $name) {
+                            echo ($i++ > 0 ? "\t\t\t\t\t\t'" : "\t\t'") . $name . "',\n";
+                        }
+                    } else {
+                        foreach ($generator->getTableSchema()->columns as $column) {
+                            $format = $generator->generateColumnFormat($column);
+                            echo ($i++ > 0 ? "\t\t\t\t\t\t'" : "\t\t'") . $column->name . ($format === 'text' ? "" : ":" . $format) . "',\n";
+                        }
+                    }
+                ?>
+                ],
+                ]) ?>
             </div>
         </div>
     </div>

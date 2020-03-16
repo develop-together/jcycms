@@ -1,18 +1,24 @@
 <?php
+declare(strict_types=1);
+/**
+ * Created by PhpStorm
+ * User: Administrator
+ * Author: JieChengYang
+ * Date: 2020/3/16
+ * Time: 20:15
+ */
 
-namespace backend\models\search;
+namespace common\models\search;
 
 use Yii;
+use common\components\BaseConfig;
+use common\models\MallCategory;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Category;
 use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 
-/**
- * CategorySearch represents the model behind the search form about `common\models\Category`.
- */
-class CategorySearch extends Category
+class MailCatalogSearch extends  MallCategory
 {
     /**
      * @inheritdoc
@@ -43,7 +49,12 @@ class CategorySearch extends Category
      */
     public function search($params)
     {
-        $query = Category::find()->article();
+        $query = MallCategory::find()->product();
+
+        // add conditions that should always apply here
+
+        $this->load($params);
+
         $this->load($params);
 
         if ($this->name) {

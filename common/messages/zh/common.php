@@ -115,5 +115,10 @@ return [
     'Superior comment' => '上级评论',
     'Repeat Count' => '回复量',
     'Scan Count' => '阅读量',
-    'Comment Count' => '评论数'
+    'Comment Count' => '评论数',
+    'Letter' => '首字母',
+    'Brand Name' => '品牌名',
+    'Brand Code' => '品牌唯一码',
+    'Sort' => '排序',
+    'Mall Brand' => '产品品牌'
 ];

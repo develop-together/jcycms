@@ -36,7 +36,7 @@ use common\widgets\ActiveForm AS BAF;
             $tab = $count === 1 ? '' : "\t\t\t";
             echo "{$tab}<?= " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
         } else {
-            echo "\t\t\t?php // echo " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
+            echo "\t\t\t<?php // echo " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
         }
     }
     ?>

@@ -1,22 +1,20 @@
 <?php
 
 use yii\helpers\Html;
-use yii\helpers\Url;
-use common\models\Category;
-use common\components\Utils;
+use common\models\MallCategory;
 use yii\widgets\ActiveForm AS BAF;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Category */
 /* @var $form yii\widgets\ActiveForm */
 
-$categoryTree = Category::loadDataTree();
+$categoryTree = MallCategory::loadDataTree();
 ?>
 
 <div class="row">
     <div class="col-sm-12">
         <div class="ibox">
-            <?= $this->render('/widgets/_ibox-title') ?>
+            <?= $this->render('@backend/views/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <?php $form = BAF::begin([
                             'fieldConfig' => [
@@ -29,13 +27,13 @@ $categoryTree = Category::loadDataTree();
                             'options' => ['class' => 'form-horizontal'],
                 ]); ?>    
 
-                    <?= $form->field($model, 'parent_id')->dropDownList(Category::getDrowDownList($categoryTree), ['prompt' => '请选择']) ?>
+                    <?= $form->field($model, 'parent_id')->dropDownList(MallCategory::getDrowDownList($categoryTree), ['prompt' => '请选择']) ?>
                     <div class="hr-line-dashed"></div>
                     <?= $form->field($model, 'name')->textInput(['maxlength' => true]); ?>
                     <div class="hr-line-dashed"></div>
                     <?= $form->field($model, 'sort')->textInput(['maxlength' => true]); ?>
                     <div class="hr-line-dashed"></div>
-                    <?= $form->field($model, 'remark')->textInput(['maxlength' => true]); ?>
+                    <?= $form->field($model, 'remark')->textarea(['style' => 'min-height:160px;']); ?>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">

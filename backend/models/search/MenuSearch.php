@@ -136,7 +136,7 @@ class MenuSearch extends Menu
 
         $query->orderBy(['sort' => SORT_ASC]);
         $lists = $query->all();
-        $menuTree = ArrayHelper::index($this->chilrdenDatasToObject($lists, 0), 'id');
+        $menuTree = ArrayHelper::index($this->childesToObject($lists, 0), 'id');
 
         $dataProvider = new ArrayDataProvider([
             'allModels' => $menuTree,

@@ -14,16 +14,35 @@ use common\modules\attachment\ext\YiiUploader;
  */
 class BaseModel extends \yii\db\ActiveRecord
 {
+    /**
+     *
+     */
     const TARGET_BLANK = '_blank';
+    /**
+     *
+     */
     const TARGET_SELF = '_self';
+    /**
+     *
+     */
     const TAGET_PARENT = '_parent';
+    /**
+     *
+     */
     const TAGET_TOP = '_top';
 
+    /**
+     * @return object|\yii\db\Connection|null
+     * @throws \yii\base\InvalidConfigException
+     */
     public static function getDb()
     {
         return Yii::$app->get('db');
     }
 
+    /**
+     * @return array
+     */
     public function behaviors()
     {
         return [
@@ -37,15 +56,24 @@ class BaseModel extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [
-            'created_at' => '创建时间',
-            'updated_at' => '修改时间',
+            'created_at' => Yii::t('common', 'Created At'),
+            'updated_at' => Yii::t('common', 'Updated At'),
         ];
     }
 
-    public function image($attribute = '', $htmlOptions = [])
+    /**
+     * @param string $attribute
+     * @param array $htmlOptions
+     * @param string $type
+     * @return string
+     */
+    public function image($attribute = '', $htmlOptions = [], $type = '')
     {
         $src = $this->path($attribute);
         $alt = isset($htmlOptions['alt']) ? $htmlOptions['alt'] : '';
@@ -56,13 +84,17 @@ class BaseModel extends \yii\db\ActiveRecord
     /**
      * 系统上传的图片、文件地址
      * @param string $attribute
+     * @param string $type 类型（本地、七牛...）
      * @return string
      */
-    public function path($attribute = '')
+    public function path($attribute = '', $type = '')
     {
-        return Utils::photoUrl($this->$attribute);
+        return Utils::photoUrl($this->$attribute, $type);
     }
 
+    /**
+     * @return array
+     */
     public function getErrorFormat()
     {
         $errors = [];
@@ -122,6 +154,9 @@ class BaseModel extends \yii\db\ActiveRecord
         return true;
     }
 
+    /**
+     * @return mixed
+     */
     public function getStatusFormat()
     {
         $statusOption = BaseConfig::statusOption();
@@ -130,6 +165,9 @@ class BaseModel extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * @return string
+     */
     public function getAvatarFormat()
     {
         if ($this->hasAttribute('avatar') && $this->avatar) {
@@ -143,6 +181,13 @@ class BaseModel extends \yii\db\ActiveRecord
         return Yii::$app->request->baseUrl . '/static/img/noface.png';
     }
 
+    /**
+     * @param array $tree
+     * @param array $result
+     * @param int $deep
+     * @param string $separator
+     * @return array
+     */
     public static function getDrowDownList($tree = [], &$result = [], $deep = 0, $separator = "　　")
     {
         $deep++;
@@ -157,6 +202,12 @@ class BaseModel extends \yii\db\ActiveRecord
         return $result;
     }
 
+    /**
+     * @param string $field
+     * @param string $uploadAlias
+     * @param string $attribute
+     * @return array
+     */
     public function uploadMultiple($field = 'thumb', $uploadAlias = '@original/', $attribute = 'Thumb')
     {
         $uploads = UploadedFile::getInstances($this, $field);
@@ -170,6 +221,14 @@ class BaseModel extends \yii\db\ActiveRecord
         return $result;
     }
 
+    /**
+     * @param string $field
+     * @param string $uploadAlias
+     * @param string $attribute
+     * @param null $UploadedFile
+     * @return mixed|string
+     * @throws \yii\base\InvalidConfigException
+     */
     public function uploadOperate($field = 'thumb', $uploadAlias = '@original/', $attribute = 'Thumb', $UploadedFile = null)
     {
         if (Yii::$app->id == 'app-api') {
@@ -233,6 +292,9 @@ class BaseModel extends \yii\db\ActiveRecord
         return !$this->isNewRecord ? $this->getOldAttribute($field) : '';
     }
 
+    /**
+     * @return array
+     */
     public static function loadTragetOptions()
     {
         return [

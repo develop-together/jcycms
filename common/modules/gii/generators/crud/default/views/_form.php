@@ -28,7 +28,7 @@ use common\widgets\ActiveForm AS BAF;
 <div class="row">
     <div class="col-sm-12">
         <div class="ibox">
-            <?= '<?='; ?> $this->render('/widgets/_ibox-title') ?>
+            <?= '<?='; ?> $this->render('@backend/views/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <?= "<?php " ?>$form = BAF::begin(); ?>    
                 <?php foreach ($generator->getColumnNames() as $attribute) {

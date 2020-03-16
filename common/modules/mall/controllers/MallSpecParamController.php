@@ -1,39 +1,40 @@
 <?php
 
-namespace backend\controllers;
+namespace common\modules\mall\controllers;
 
 use Yii;
-use backend\models\Menu;
-use backend\models\search\MenuSearch;
+use common\models\MallSpecParam;
+use common\models\search\MallSpecParamSearch;
 use common\components\BackendController;
 use backend\actions\DeleteAction;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Url;
 
 /**
- * MenuController implements the CRUD actions for Menu model.
+ * MallSpecParamController implements the CRUD actions for MallSpecParam model.
  */
-class MenuController extends BackendController
+class MallSpecParamController extends BackendController
 {
     public function actions()
     {
         return [
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => Menu::className(),
+                'modelClass' => MallSpecParam::className(),
             ],
         ];
     }
-
+    
     /**
-     * Lists all Menu models.
+     * Lists all MallSpecParam models.
      * @return mixed
      */
     public function actionIndex()
     {
         Url::remember(Url::current(), 'BackendDynamic-' . $this->id);
-        $searchModel = new MenuSearch();
-        $dataProvider = $searchModel->backendSearch(Yii::$app->request->post());
+        $searchModel = new MallSpecParamSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->post());
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -41,7 +42,7 @@ class MenuController extends BackendController
     }
 
     /**
-     * Displays a single Menu model.
+     * Displays a single MallSpecParam model.
      * @param integer $id
      * @return mixed
      */
@@ -53,26 +54,16 @@ class MenuController extends BackendController
     }
 
     /**
-     * Creates a new Menu model.
+     * Creates a new MallSpecParam model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Menu();
-        $model->is_absolute_url = Menu::NOT_ABSOLUTE_URL;
-        $model->is_display = Menu::DISPLAY_SHOW;
-        $model->method = Menu::REQUEST_METHOD_ON_GET;
-        $model->scenario = 'backend';
-        $model->target = '';
-        $pid = Yii::$app->request->get('pid', 0);
-        $pid && $model->parent_id = $pid;
+        $model = new MallSpecParam();
+        
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
-            if (empty($params['Menu']['parent_id']) && empty($params['Menu']['url'])) {
-                $params['Menu']['url'] = Menu::DEFAULT_URL;
-            }
-            $model->isAddRoute = $params['Menu']['isAddRoute'];
             if ($model->load($params) && $model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
@@ -85,7 +76,7 @@ class MenuController extends BackendController
     }
 
     /**
-     * Updates an existing Menu model.
+     * Updates an existing MallSpecParam model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -93,13 +84,9 @@ class MenuController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->scenario = 'backend';
+        
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
-            if (empty($params['Menu']['parent_id']) && empty($params['Menu']['url'])) {
-                $params['Menu']['url'] = Menu::DEFAULT_URL;
-            }
-            $model->isAddRoute = $params['Menu']['isAddRoute'];
             if ($model->load($params) && $model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
@@ -112,15 +99,15 @@ class MenuController extends BackendController
     }
 
     /**
-     * Finds the Menu model based on its primary key value.
+     * Finds the MallSpecParam model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Menu the loaded model
+     * @return MallSpecParam the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Menu::findOne($id)) !== null) {
+        if (($model = MallSpecParam::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

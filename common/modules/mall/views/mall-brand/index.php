@@ -10,27 +10,30 @@ use backend\grid\ActionColumn;
 <div class="row">
     <div class="col-sm-12">
         <div class="ibox">
-            <?= $this->render('/widgets/_ibox-index-title') ?>
+            <?= $this->render('@backend/views/widgets/_ibox-index-title') ?>
             <div class="ibox-content">
                 <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
-                    <?= $this->render('_search', ['model' => $searchModel]) ?>
+                    <?= (isset($searchModel)) ? $this->render('_search', ['model' => $searchModel]) : '' ?>
                 </div>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'layout' => '{items}',
                     'columns' => [
                         [
                             'class' => 'yii\grid\CheckboxColumn'
                         ],
+                        'letter',
+                        'name',
+                        'brand_code',
                         [
-                            'attribute' => 'name',
-                            'format' => 'html',
-                            'enableSorting' => false,
+                            'attribute' => 'image',
+                            'format' => 'raw',
                             'value' => function ($model) {
-                                return $model->nameFormat;
+                                return $model->image('image');
                             }
                         ],
                         'sort',
+                        'created_at:datetime',
+                        // 'updated_at',
                         [
                             'class' => 'backend\grid\ActionColumn',
                             'template' => '{view}{update}{delete}',
@@ -40,8 +43,6 @@ use backend\grid\ActionColumn;
             </div>
         </div>
     </div>
-
-
 </div>
 
 

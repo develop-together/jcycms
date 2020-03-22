@@ -22,17 +22,46 @@ use backend\grid\ActionColumn;
                             'class' => 'yii\grid\CheckboxColumn'
                         ],
                         'id',
-                        'cid',
-                        'group_id',
                         'name',
-                        'numeric',
-                        // 'unit',
-                        // 'generic',
-                        // 'searching',
+                        [
+                            'attribute' => 'group_id',
+                            'value' => 'group.name',
+                        ],
+                        [
+                            'attribute' => 'cid',
+                            'value' => 'category.name',
+                        ],
+                        [
+                            'attribute' => 'data_type',
+                            'value' => function ($model) {
+                                return $model->dataTypeFormat;
+                            },
+                        ],
+                        [
+                            'attribute' => 'segments',
+                            'value' => function ($model) {
+                                return $model->getIsSelectDis() ? '' : $model->segments;
+                            },
+                        ],
+                         'unit',
+                        [
+                            'attribute' => 'generic',
+                            'value' => function ($model) {
+                                return $model->genericFormat;
+                            },
+                        ],
+                        [
+                            'attribute' => 'searching',
+                            'value' => function ($model) {
+                                return $model->searchingFormat;
+                            },
+                        ],
                         // 'segments',
+                        'created_at:datetime',
+                        'updated_at:datetime',
                         [
                             'class' => 'backend\grid\ActionColumn',
-                            'template' => '{view}{update}{delete}',
+                            'template' => '{update}{delete}',
                         ],
                     ]
                 ]); ?>

@@ -23,7 +23,7 @@ $this->params['breadcrumbs'] = [
                         'cid',
                         'group_id',
                         'name',
-                        'numeric',
+                        'data_type',
                         'unit',
                         'generic',
                         'searching',

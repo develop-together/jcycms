@@ -5,8 +5,8 @@ use yii\helpers\Url;
 /* @var $model common\models\MallSpecParam */
 
 $this->params['breadcrumbs'] = [
-    ['label' => Yii::t('app', 'Mall Spec Param'), 'url' => Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
-    ['label' => Yii::t('app', 'Create') . Yii::t('app', 'Mall Spec Param')],
+    ['label' => Yii::t('mall', 'Mall Spec Param'), 'url' => Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
+    ['label' => Yii::t('app', 'Create') . Yii::t('mall', 'Mall Spec Param')],
 ];
 ?>
 

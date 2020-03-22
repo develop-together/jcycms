@@ -51,6 +51,13 @@ $config = [
                         'common' => 'common.php',
                     ],
                 ],
+                'mall' => [
+                    'class' => yii\i18n\PhpMessageSource::className(),
+                    'basePath' => '@common/messages',
+                    'fileMap' => [
+                        'mall' => 'mall.php',
+                    ],
+                ],
             ],
         ],
     ],

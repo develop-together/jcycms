@@ -28,7 +28,7 @@ use common\widgets\ActiveForm AS BAF;
 
 			<?= $form->field($model, 'name') ?>
 
-			<?= $form->field($model, 'numeric') ?>
+			<?= $form->field($model, 'data_type') ?>
 
 			<?php // echo $form->field($model, 'unit') ?>
 

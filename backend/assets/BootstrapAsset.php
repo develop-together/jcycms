@@ -17,6 +17,7 @@ class BootstrapAsset extends \yii\web\AssetBundle
 
 	public $js = [
 		"static/js/bootstrap.min.js?v=3.3.6",
+//		"static/js/plugins/bootstrap-table/dist/bootstrap-table.min.js?v=3.3.6",
 	];
 
 	public $depends = [

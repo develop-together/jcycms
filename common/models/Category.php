@@ -117,7 +117,7 @@ class Category extends \common\components\BaseModel
 
     public static function loadDataTree()
     {
-        return Utils::reference_delivery_tree(static::loadData(), 'id', 'parent_id');;
+        return Utils::reference_delivery_tree(static::loadData(), 'id', 'parent_id');
     }
 
     protected function childesToObject($object, $parent_id, $lv = 0)

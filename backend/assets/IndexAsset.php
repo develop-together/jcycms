@@ -15,7 +15,8 @@ class IndexAsset extends \yii\web\AssetBundle
 
 	public $css = [
 		'static/css/font-awesome.min.css?v=4.4.0',
-		'static/css/style.min.css?v=4.1.0',
+//		'static/css/style.min.css?v=4.1.0',
+        'static/css/style-4.1.0.min.css?v=1.0.0',
 	];
 
 	public $js = [

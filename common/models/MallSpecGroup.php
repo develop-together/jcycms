@@ -32,7 +32,7 @@ class MallSpecGroup extends \common\components\BaseModel
     {
         return [
             [['cid', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'created_at'], 'required'],
+            [['name'], 'required'],
             [['name'], 'string', 'max' => 45],
         ];
     }
@@ -44,10 +44,25 @@ class MallSpecGroup extends \common\components\BaseModel
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
             'id' => 'ID',
-            'cid' => 'Cid',
-            'name' => 'Name',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'cid' => Yii::t('mall', 'Category'),
+            'name' => Yii::t('mall', 'Group Name'),
         ]);
+    }
+
+    public function getCategory()
+    {
+        return $this->hasOne(MallCategory::class, ['id' => 'cid']);
+    }
+
+    public static  function loadData()
+    {
+        $models = self::find()->select(['id', 'name'])
+            ->where(1)
+            ->asArray()
+            ->all();
+
+        return ArrayHelper::map($models, 'id', 'name');
+
+
     }
 }

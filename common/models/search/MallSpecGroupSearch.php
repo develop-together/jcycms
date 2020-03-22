@@ -41,7 +41,7 @@ class MallSpecGroupSearch extends MallSpecGroup
      */
     public function search($params)
     {
-        $query = MallSpecGroup::find();
+        $query = MallSpecGroup::find()->with(['category']);
 
         // add conditions that should always apply here
 

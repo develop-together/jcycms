@@ -4,8 +4,6 @@ return [
 	/*public*/
 	'ID' => '编号',
 	'Home' => '首页',
-	'Created At' => '创建时间',
-	'Updated At' => '最后更新',
 	'User' => '用户',
 	'Friendly Links' => '友情链接',
 	'Latest Comments' => '最新评论',
@@ -91,10 +89,8 @@ return [
 	'The following form is mistaken' => '以下表单填写有误',
 	'Login Failed' => '登录失败',
 	'Username' => '用户名',
-	'Password' => '密码',
 	'If you forgot your password you can' => '如果你忘记了密码，你可以',
 	'reset it' => '重置它',
-	'Follow the link below to reset your password' => '点击以下链接重置密码',
 	'Last Login IP' => '登录IP',
 	'Login Number' => '登录次数',
 	'Last Login Time' => '最后登录时间',
@@ -120,5 +116,7 @@ return [
     'Brand Name' => '品牌名',
     'Brand Code' => '品牌唯一码',
     'Sort' => '排序',
-    'Mall Brand' => '产品品牌'
+    'Mall Brand' => '产品品牌',
+    'Number' => '数字',
+    'String' => '字符串'
 ];

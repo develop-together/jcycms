@@ -23,7 +23,7 @@ use backend\grid\ActionColumn;
 <div class="row">
     <div class="col-sm-12">
         <div class="ibox">
-            <?= '<?=' ?> $this->render('@backend/views//widgets/_ibox-index-title') ?>
+            <?= '<?=' ?> $this->render('@backend/views/widgets/_ibox-index-title') ?>
             <?= $generator->enablePjax ? "<?php Pjax::begin(['options' => ['class' => 'pjax-reload']]); ?>\n" : '' ?>
             <div class="ibox-content">
                 <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">

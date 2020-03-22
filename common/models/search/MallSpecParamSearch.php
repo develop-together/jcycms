@@ -18,7 +18,7 @@ class MallSpecParamSearch extends MallSpecParam
     public function rules()
     {
         return [
-            [['id', 'cid', 'group_id', 'numeric', 'generic', 'searching'], 'integer'],
+            [['id', 'cid', 'group_id', 'data_type', 'generic', 'searching'], 'integer'],
             [['name', 'unit', 'segments'], 'safe'],
         ];
     }
@@ -41,7 +41,7 @@ class MallSpecParamSearch extends MallSpecParam
      */
     public function search($params)
     {
-        $query = MallSpecParam::find();
+        $query = MallSpecParam::find()->with(['category', 'group']);
 
         // add conditions that should always apply here
 
@@ -97,7 +97,7 @@ class MallSpecParamSearch extends MallSpecParam
             'id' => $this->id,
             'cid' => $this->cid,
             'group_id' => $this->group_id,
-            'numeric' => $this->numeric,
+            'data_type' => $this->data_type,
             'generic' => $this->generic,
             'searching' => $this->searching,
         ]);

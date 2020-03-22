@@ -2,6 +2,8 @@
 
 namespace common\modules\mall\controllers;
 
+use common\components\Utils;
+use common\models\MallCategory;
 use Yii;
 use common\models\MallSpecGroup;
 use common\models\search\MallSpecGroupSearch;
@@ -72,6 +74,7 @@ class MallSpecGroupController extends BackendController
 
         return $this->render('create', [
             'model' => $model,
+            'categoryTree' => Utils::reference_delivery_tree(MallCategory::loadData(), 'id', 'parent_id'),
         ]);
     }
 
@@ -95,6 +98,7 @@ class MallSpecGroupController extends BackendController
 
         return $this->render('update', [
             'model' => $model,
+            'categoryTree' => Utils::reference_delivery_tree(MallCategory::loadData(), 'id', 'parent_id'),
         ]);
     }
 

@@ -232,4 +232,34 @@ class BaseConfig
 
         return self::getItems($items, $key);
     }
+    
+    const Number_DATA_TYPE = 2;
+    const String_DATA_TYPE = 1;
+
+    public static function getDataTypes($key = null)
+    {
+        $items = [
+            self::String_DATA_TYPE => Yii::t('common', 'String'),
+            self::Number_DATA_TYPE => Yii::t('common', 'Number')
+        ];
+
+        return self::getItems($items, $key);
+    }
+
+    const FORM_INPUT_STRING = 'inputString';
+    const FORM_INPUT_DATE = 'inputDate';
+    const FORM_INPUT_EMAIL = 'inputEmail';
+    const FORM_SELECT = 'select';
+
+    public static function getSpecParDisType($key = null)
+    {
+        $items = [
+            self::FORM_INPUT_STRING => Yii::t('mall', 'InputString'),
+            self::FORM_INPUT_DATE => Yii::t('mall', 'InputDate'),
+            self::FORM_INPUT_EMAIL => Yii::t('mall', 'InputEmail'),
+            self::FORM_SELECT => Yii::t('mall', 'DropList'),
+        ];
+
+        return self::getItems($items, $key);
+    }
 }

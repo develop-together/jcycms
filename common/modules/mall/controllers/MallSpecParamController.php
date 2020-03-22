@@ -7,6 +7,8 @@ use common\models\MallSpecParam;
 use common\models\search\MallSpecParamSearch;
 use common\components\BackendController;
 use backend\actions\DeleteAction;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Url;
 
@@ -64,7 +66,7 @@ class MallSpecParamController extends BackendController
         
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
-            if ($model->load($params) && $model->save()) {
+            if ($model->submitData($params)) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
             }
@@ -84,10 +86,9 @@ class MallSpecParamController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
-            if ($model->load($params) && $model->save()) {
+            if ($model->submitData($params)) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
             }

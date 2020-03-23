@@ -7,6 +7,7 @@ use common\widgets\ActiveForm AS BAF;
 /* @var $this yii\web\View */
 /* @var $model common\models\MallBrand */
 /* @var $form common\widgets\ActiveForm */
+/* @var $form common\widgets\ActiveField */
 ?>
 
 <div class="row">
@@ -23,6 +24,9 @@ use common\widgets\ActiveForm AS BAF;
                 <?= $form->field($model, 'brand_code')->textInput(['maxlength' => true]); ?>
 
                 <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'cateGoryBrandList')->chosenSelect($categories, true, [
+                    'disable_search_threshold' => 3,
+                ]); ?>
                 <?= $form->field($model, 'sort')->textInput(['type' => 'number', 'min' => 0]); ?>
 
                 <div class="hr-line-dashed"></div>

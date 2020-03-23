@@ -11,7 +11,7 @@ use yii\helpers\ArrayHelper;
  * @property integer $id
  * @property string $spu_code
  * @property string $title
- * @property string $sub _title
+ * @property string $sub_title
  * @property integer $cid1
  * @property integer $cid2
  * @property integer $cid3
@@ -21,6 +21,7 @@ use yii\helpers\ArrayHelper;
  * @property string $dim
  * @property integer $saleable
  * @property integer $valid
+ * @property string $image_ids
  * @property integer $sort
  * @property integer $created_at
  * @property integer $updated_at
@@ -43,12 +44,12 @@ class MallSpu extends \common\components\BaseModel
     public function rules()
     {
         return [
-            [['spu_code'], 'required'],
+            [['spu_code', 'title', 'keyword'], 'required'],
             [['cid1', 'cid2', 'cid3', 'brand_id', 'saleable', 'valid', 'sort', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
             [['weight'], 'number'],
             [['spu_code'], 'string', 'max' => 16],
-            [['title', 'sub _title', 'dim'], 'string', 'max' => 200],
-            [['brand_name'], 'string', 'max' => 100],
+            [['title', 'sub_title', 'dim'], 'string', 'max' => 200],
+            [['brand_name', 'image_ids'], 'string', 'max' => 100],
             [['spu_code'], 'unique'],
         ];
     }
@@ -60,22 +61,21 @@ class MallSpu extends \common\components\BaseModel
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
             'id' => 'ID',
-            'spu_code' => 'Spu Code',
-            'title' => 'Title',
-            'sub _title' => 'Sub Title',
-            'cid1' => 'Cid1',
-            'cid2' => 'Cid2',
-            'cid3' => 'Cid3',
-            'brand_id' => 'Brand ID',
-            'brand_name' => 'Brand Name',
-            'weight' => 'Weight',
-            'dim' => 'Dim',
-            'saleable' => 'Saleable',
-            'valid' => 'Valid',
-            'sort' => 'Sort',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'deleted_at' => 'Deleted At',
+            'spu_code' => Yii::t('mall', 'Spu Code'),
+            'title' => Yii::t('mall', 'Goods Title'),
+            'sub_title' => Yii::t('mall', 'Sub Goods Title'),
+            'cid1' => Yii::t('mall', 'Category'),
+            'cid2' => Yii::t('mall', 'Category'),
+            'cid3' => Yii::t('mall', 'Category'),
+            'brand_id' => Yii::t('mall', 'Mall Brand'),
+            'brand_name' => Yii::t('mall', 'Mall Brand'),
+            'weight' => Yii::t('mall', 'Weight'),
+            'dim' => Yii::t('mall', 'Base Addr'),
+            'saleable' => Yii::t('mall', 'Saleable'),
+            'valid' => Yii::t('mall', 'Valid'),
+            'image_ids' => Yii::t('mall', 'Goods Image'),
+            'keyword' => Yii::t('app', 'Keyword'),
+            'sort' => Yii::t('app', 'Sort'),
         ]);
     }
 }

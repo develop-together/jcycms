@@ -26,5 +26,14 @@ return [
     'InputEmail' => '邮件文本框',
     'DropList' => '选择框',
     'InsertRow' => '新增项',
-    'Item Name' => '选项'
+    'Item Name' => '选项',
+    'Base Addr' => '产地',
+    'Mall Brand' => '产品品牌',
+    'Goods Title' => '商品标题',
+    'Sub Goods Title' => '商品副标题',
+    'Saleable' => '上架',
+    'Valid' => '合格',
+    'Goods Image' => '商品展示图片',
+    'Weight' => '重量',
+    'Goods' => '商品'
 ];

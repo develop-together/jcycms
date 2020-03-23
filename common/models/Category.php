@@ -120,6 +120,13 @@ class Category extends \common\components\BaseModel
         return Utils::reference_delivery_tree(static::loadData(), 'id', 'parent_id');
     }
 
+    public static function loadOptions($level = null)
+    {
+        $models = static::loadData($level);
+        return ArrayHelper::map($models , 'id', 'name');
+    }
+
+
     protected function childesToObject($object, $parent_id, $lv = 0)
     {
         $tree = new TreeHelper($object, true, 3, [

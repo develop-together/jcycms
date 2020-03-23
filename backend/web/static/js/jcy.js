@@ -1,6 +1,7 @@
 (function () {
     var jcms = function () {
         var self = this;
+        this.isMobile = false;
         this.ajax = function (type, url, data, dataType, callback, async, timeout, isUpload, errCallback) {
             timeout = timeout || 30000;
             async = async || true;
@@ -42,7 +43,6 @@
 
             var ajaxRequest = jQuery.ajax(ajaxParams);
         }
-
         this.callback = function (message, state, closeLayer) {
             state = !this._null(state) || 'ok';
             closeLayer = !this._null(closeLayer) || false;
@@ -66,74 +66,99 @@
                     layer.closeAll('loading');
                 }, 1000);
             });
-        },
+        };
 
-            this._null = function (value) {
-                if (value == '' || value == null || value == 'undefined' || typeof (value) == 'undefined') {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            this.datum = {},
-            this.autocomplete = function (counter, options) {
-                if (!options.data && options.url) {// async
-                    if (options.url.indexOf('?search=%QUERY') == -1) {
-                        if (options.url.indexOf('&') != -1) {
-                            options.url += '&keyword=%QUERY%';
-                        } else {
-                            options.url += '?keyword=%QUERY%';
-                        }
-                    }
-                    var params = {
-                        datumTokenizer: Bloodhound.tokenizers.obj.whitespace(options.displayKey),
-                        queryTokenizer: Bloodhound.tokenizers.whitespace,
-                    }
-                    if (options.isCache) {
-                        params.prefetch = options.url;
-                    } else {
-                        params.remote = {url: options.url, wildcard: '%QUERY%'};
-                    }
-                    this.datum = new Bloodhound(params);
-                } else {// sync
-                    this.datum = new Bloodhound({
-                        datumTokenizer: function (d) {
-                            return d[options.displayKey];
-                        },
-                        queryTokenizer: Bloodhound.tokenizers.whitespace,
-                        local: options.data,
-                        identify: function (obj) {
-                            return obj[options.valueKey];
-                        },
-                    });
-                }
-
-                this.datum.initialize();
-                var jqueryTypeahead = jQuery('.typeahead-' + counter).typeahead({
-                    // minLength: 0, //设置该项后鼠标放入输入框就会显示列表
-                    hint: true,
-                    highlight: true
-                }, {
-                    name: options.name,
-                    displayKey: options.displayKey,
-                    limit: parseInt(options.limit),
-                    // async: true,
-                    source: baseUtil.nflTeamsWithDefaults,/*.ttAdapter()*/
-                }).on('typeahead:select', function (ev, suggestion) {
-                    $("#" + options.selectedDomId).val(suggestion[options.valueKey]);
-                }).on('typeahead:asyncrequest', function () {// beforeAjax
-
-                }).on('typeahead:asynccancel typeahead:asyncreceive', function (type) {// completed
-                });
-
-            },
-            this.nflTeamsWithDefaults = function (query, sync, async) {
-                this.datum.search(query, sync, async);
+        this._null = function (value) {
+            if (value == '' || value == null || value == 'undefined' || typeof (value) == 'undefined') {
+                return true;
+            } else {
+                return false;
             }
+        };
+        this.datum = {};
+        this.autocomplete = function (counter, options) {
+            if (!options.data && options.url) {// async
+                if (options.url.indexOf('?search=%QUERY') == -1) {
+                    if (options.url.indexOf('&') != -1) {
+                        options.url += '&keyword=%QUERY%';
+                    } else {
+                        options.url += '?keyword=%QUERY%';
+                    }
+                }
+                var params = {
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace(options.displayKey),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                }
+                if (options.isCache) {
+                    params.prefetch = options.url;
+                } else {
+                    params.remote = {url: options.url, wildcard: '%QUERY%'};
+                }
+                this.datum = new Bloodhound(params);
+            } else {// sync
+                this.datum = new Bloodhound({
+                    datumTokenizer: function (d) {
+                        return d[options.displayKey];
+                    },
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    local: options.data,
+                    identify: function (obj) {
+                        return obj[options.valueKey];
+                    },
+                });
+            }
+
+            this.datum.initialize();
+            var jqueryTypeahead = jQuery('.typeahead-' + counter).typeahead({
+                // minLength: 0, //设置该项后鼠标放入输入框就会显示列表
+                hint: true,
+                highlight: true
+            }, {
+                name: options.name,
+                displayKey: options.displayKey,
+                limit: parseInt(options.limit),
+                // async: true,
+                source: baseUtil.nflTeamsWithDefaults,/*.ttAdapter()*/
+            }).on('typeahead:select', function (ev, suggestion) {
+                $("#" + options.selectedDomId).val(suggestion[options.valueKey]);
+            }).on('typeahead:asyncrequest', function () {// beforeAjax
+
+            }).on('typeahead:asynccancel typeahead:asyncreceive', function (type) {// completed
+            });
+
+        };
+        this.nflTeamsWithDefaults = function (query, sync, async) {
+            this.datum.search(query, sync, async);
+        }
+        this.adaptPhone = function () {
+            var windowWidth = $(window).width();
+            var tables = document.getElementsByTagName("table");
+            if (tables.length <= 0) return;
+            var table = tables[0];
+            var rows = table.rows;
+            var columns = rows[0].cells.length;
+            var displayColumns = 4;
+            var lastColumnIndex = columns - 1;
+            var i, j = 0;
+            var display = "";
+            if (columns > displayColumns) {
+                if (windowWidth < 640 || this.isMobile) {
+                    display = "none";
+                }
+                for (i = 0; i < rows.length; i++) {
+                    for (j = displayColumns; j < lastColumnIndex; j++) {
+                        if (!rows.hasOwnProperty(i)) continue;
+                        if (!rows[i].cells.hasOwnProperty(j)) continue;
+                        rows[i].cells[j].style.display = display;
+                    }
+
+                }
+            }
+        }
     }
     var jobj = new jcms();
     window.jcms = jobj;
-})(window)
+})(window);
 
 yii.confirm = function (message, ok, cancel) {
     var url = $(this).attr('href');
@@ -320,7 +345,18 @@ function showImage(obj) {
     }, 200);
 }
 
+var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+for (var v = 0; v < Agents.length; v++) {
+    if (navigator.userAgent.indexOf(Agents[v]) > 0) {
+        jcms.isMobile = true;
+        break;
+    }
+}
+
 $(document).ready(function () {
+    //适配手机
+    jcms.adaptPhone();
+    $(window).resize(jcms.adaptPhone());
     // 批量操作
     $(".multi-operate").click(function () {
         var url = $(this).attr('href');
@@ -481,7 +517,14 @@ $(document).ready(function () {
             });
         });
     }
-
+    $(".pjax-refresh").bind('click', function () {
+        var currentHref = $(".pagination").find("li.active > a").attr('href');
+        if (currentHref) {
+            $.pjax.reload('.pjax-reload', {url: currentHref});
+        } else {
+            $.pjax.reload('.pjax-reload');
+        }
+    });
     // 清空查询
     $('.clear-search').on('click', function () {
         // var csrfParam = $('meta[name="csrf-param"]').attr('content');
@@ -524,6 +567,7 @@ $(document).ready(function () {
         });
     });
 
+    // 列表显示图片
     var articleShowImgTimer;
     $('table tr td a.title').hover(
         function () {
@@ -534,15 +578,85 @@ $(document).ready(function () {
         }
     );
 
-    $(".pjax-refresh").bind('click', function () {
-        var currentHref = $(".pagination").find("li.active > a").attr('href');
-        if (currentHref) {
-            $.pjax.reload('.pjax-reload', {url: currentHref});
-        } else {
-            $.pjax.reload('.pjax-reload');
-        }
+
+    //在顶部导航栏打开tab
+    $(".openContab").click(function () {
+        parent.openConTab($(this));
+        return false;
     });
 
+    //提交表单后除form为none-loading的class显示loading效果
+    $("form:not(.none-loading)").bind("beforeSubmit", function () {
+        $(this).find("button[type=submit]").attr("disabled", true);
+        layer.load(2, {
+            shade: [0.1, '#fff'] //0.1透明度的白色背景
+        });
+    });
+
+    //美化日期laydate插件
+    $('.date-time').each(function () {
+        var config = {
+            elem: this,
+            type: this.getAttribute('dateType'),
+            range: this.getAttribute('range') === 'true' ? true : (this.getAttribute('range') === 'false' ? false : this.getAttribute('range')),
+            format: this.getAttribute('format'),
+            value: this.getAttribute('val') === 'new Date()' ? new Date() : this.getAttribute('val'),
+            isInitValue: this.getAttribute('isInitValue') != 'false',
+            min: this.getAttribute('min'),
+            max: this.getAttribute('max'),
+            trigger: this.getAttribute('trigger'),
+            show: this.getAttribute('show') != 'false',
+            position: this.getAttribute('position'),
+            zIndex: parseInt(this.getAttribute('zIndex')),
+            showBottom: this.getAttribute('showBottom') != 'false',
+            btns: this.getAttribute('btns').replace(/\[/ig, '').replace(/\]/ig, '').replace(/'/ig, '').replace(/\s/ig, '').split(','),
+            lang: this.getAttribute('lang'),
+            theme: this.getAttribute('theme'),
+            calendar: this.getAttribute('calendar') != 'false',
+            mark: JSON.parse(this.getAttribute('mark'))
+        };
+
+        if (!this.getAttribute('search')) {//搜素
+            config.done = function (value, date, endDate) {
+                setTimeout(function () {
+                    $(this).val(value);
+                    var e = $.Event("keydown");
+                    e.keyCode = 13;
+                    $(".date-time[search!='true']").trigger(e);
+                }, 100)
+            }
+        }
+        delete config['val'];
+
+        laydate.render(config);
+    });
+
+    //美化select选框jquery chosen
+    $(".chosen-select").each(function () {
+        var config = {
+            allow_single_deselect: this.getAttribute('allow_single_deselect') !== 'false',
+            disable_search: this.getAttribute('disable_search') !== 'false',
+            disable_search_threshold: this.getAttribute('disable_search_threshold'),
+            enable_split_word_search: this.getAttribute('enable_split_word_search') !== 'false',
+            inherit_select_classes: this.getAttribute('inherit_select_classes') !== 'false',
+            max_selected_options: this.getAttribute('max_selected_options'),
+            no_results_text: this.getAttribute('no_results_text'),
+            placeholder_text_multiple: this.getAttribute('placeholder_text_multiple'),
+            placeholder_text_single: this.getAttribute('placeholder_text_single'),
+            search_contains: this.getAttribute('search_contains') !== 'false',
+            group_search: this.getAttribute('group_search') !== 'false',
+            single_backstroke_delete: this.getAttribute('single_backstroke_delete') !== 'false',
+            width: this.getAttribute('width'),
+            display_disabled_options: this.getAttribute('display_disabled_options') !== 'false',
+            display_selected_options: this.getAttribute('display_selected_options') !== 'false',
+            include_group_label_in_selected: this.getAttribute('include_group_label_in_selected') !== 'false',
+            max_shown_results: this.getAttribute('max_shown_results'),
+            case_sensitive_search: this.getAttribute('case_sensitive_search') !== 'false',
+            hide_results_on_select: this.getAttribute('hide_results_on_select') !== 'false',
+            rtl: this.getAttribute('rtl') !== 'false'
+        };
+        $(this).chosen(config);
+    })
 
 });
 

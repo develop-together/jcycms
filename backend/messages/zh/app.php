@@ -396,5 +396,7 @@ return [
     'QQ' => 'QQ',
     'Base Addr' => '产地',
     'Mall Manage Setting' => '经营设置',
-    'Mall Brand' => '产品品牌'
+    'Mall Brand' => '产品品牌',
+    'Please select some' => '请选择',
+    'Keyword' => '关键字',
 ];

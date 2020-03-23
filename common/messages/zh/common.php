@@ -116,7 +116,8 @@ return [
     'Brand Name' => '品牌名',
     'Brand Code' => '品牌唯一码',
     'Sort' => '排序',
+    'Deleted At' => '删除时间',
     'Mall Brand' => '产品品牌',
     'Number' => '数字',
-    'String' => '字符串'
+    'String' => '字符串',
 ];

@@ -5,12 +5,12 @@ namespace common\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\MallBrand;
+use common\models\MallSpu;
 
 /**
- * MallBrandSearch represents the model behind the search form about `common\models\MallBrand`.
+ * MallSpuSearch represents the model behind the search form about `common\models\MallSpu`.
  */
-class MallBrandSearch extends MallBrand
+class MallSpuSearch extends MallSpu
 {
     /**
      * @inheritdoc
@@ -18,8 +18,9 @@ class MallBrandSearch extends MallBrand
     public function rules()
     {
         return [
-            [['id', 'sort', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'brand_code', 'image', 'letter'], 'safe'],
+            [['id', 'cid1', 'cid2', 'cid3', 'brand_id', 'saleable', 'valid', 'sort', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
+            [['spu_code', 'title', 'sub_title', 'brand_name', 'dim', 'image_ids'], 'safe'],
+            [['weight'], 'number'],
         ];
     }
 
@@ -41,7 +42,7 @@ class MallBrandSearch extends MallBrand
      */
     public function search($params)
     {
-        $query = MallBrand::find();
+        $query = MallSpu::find();
 
         // add conditions that should always apply here
 
@@ -76,10 +77,8 @@ class MallBrandSearch extends MallBrand
                 'pageSize' => $pageSize,
                 'page' => $pageCurrent,
             ],
-            'sort' => [
-                'defaultOrder' => [
-                    'sort' => SORT_ASC,
-                    'letter' => SORT_ASC,
+            'sort' =>[
+                'defaultOrder' =>[
                     $field => $sort,
                 ],
             ],
@@ -97,15 +96,25 @@ class MallBrandSearch extends MallBrand
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'cid1' => $this->cid1,
+            'cid2' => $this->cid2,
+            'cid3' => $this->cid3,
+            'brand_id' => $this->brand_id,
+            'weight' => $this->weight,
+            'saleable' => $this->saleable,
+            'valid' => $this->valid,
             'sort' => $this->sort,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'brand_code', $this->brand_code])
-            ->andFilterWhere(['like', 'image', $this->image])
-            ->andFilterWhere(['like', 'letter', $this->letter]);
+        $query->andFilterWhere(['like', 'spu_code', $this->spu_code])
+            ->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'sub_title', $this->sub_title])
+            ->andFilterWhere(['like', 'brand_name', $this->brand_name])
+            ->andFilterWhere(['like', 'dim', $this->dim])
+            ->andFilterWhere(['like', 'image_ids', $this->image_ids]);
 
         return $dataProvider;
     }

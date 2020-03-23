@@ -62,6 +62,7 @@ class BaseModel extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'Sort' => Yii::t('common', 'Sort'),
             'created_at' => Yii::t('common', 'Created At'),
             'updated_at' => Yii::t('common', 'Updated At'),
         ];

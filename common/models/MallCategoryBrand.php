@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -30,7 +31,6 @@ class MallCategoryBrand extends \common\components\BaseModel
         return [
             [['category_id', 'brand_id'], 'required'],
             [['category_id', 'brand_id'], 'integer'],
-            [['category_id'], 'unique'],
         ];
     }
 
@@ -44,4 +44,30 @@ class MallCategoryBrand extends \common\components\BaseModel
             'brand_id' => 'Brand ID',
         ]);
     }
+
+    /**
+     * @param $brandId
+     * @param array $needAdds
+     * @param array $needRemoves
+     */
+    public static function addDataByBrand($brandId, $needAdds = [], $needRemoves = [])
+    {
+        if ($needAdds) {
+            foreach ($needAdds as $item) {
+                $model = new self();
+                $model->setAttributes([
+                    'category_id' => $item,
+                    'brand_id' => $brandId
+                ]);
+                if (!$model->save()) {
+                    throw new Exception("save mall-brand error");
+                }
+            }
+        }
+
+        if ($needRemoves) {
+            self::deleteAll(['category_id' => $needRemoves, 'brand_id' => $brandId]);
+        }
+    }
+
 }

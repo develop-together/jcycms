@@ -47,14 +47,16 @@ class MultipleWidget extends InputWidget
 
     public $many = false;
 
+    public $notes = '';
+
     public function init()
     {
         parent::init();
         if (empty($this->url)) {
             if ($this->onlyImage === false) {
-                $this->url = $this->multiple ? 'upload/backend-files-upload' : 'upload/file-upload';
+                $this->url = $this->multiple ? '/upload/backend-files-upload' : '/upload/file-upload';
             } else {
-                $this->url = $this->multiple ? 'upload/images-upload' : 'upload/image-upload';
+                $this->url = $this->multiple ? '/upload/images-upload' : '/upload/image-upload';
                 $this->acceptFileTypes = 'image/png, image/jpg, image/jpeg, image/gif, image/bmp';
             }
         }
@@ -125,8 +127,11 @@ class MultipleWidget extends InputWidget
             'onchange' => "ajaxUpload(this,'" . $this->parentDivId . "')",
             'data-options' => $options,
         ]);
-        $content .= Html::endTag('div');
 
+        $content .= Html::endTag('div');
+        if (!empty($this->notes)) {
+            $content .= Html::tag('span', $this->notes);
+        }
         return $content;
     }
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @author: yjc
  * @email: 2064320087@qq.com
@@ -7,66 +7,66 @@
 
 namespace common\widgets;
 
-use Yii; 
+use Yii;
 use yii\helpers\Html;
 use yii\helpers\Json;
 
 class ActiveField extends \yii\widgets\ActiveField
 {
-	
-	public $options = ['class' => 'form-group'];
 
-	// public $labelOptions = ['class' => 'col-sm-2 control-label];
-	
-	public $size = 10;
+    public $options = ['class' => 'form-group'];
 
-	// public $template = "{label}\n<div class=\"col-sm-{size}\">{input}\n{error}</div>\n{hint}";
+    // public $labelOptions = ['class' => 'col-sm-2 control-label];
+
+    public $size = 10;
+
+    // public $template = "{label}\n<div class=\"col-sm-{size}\">{input}\n{error}</div>\n{hint}";
 
     // public $errorOptions = ['class' => 'help-block m-b-none'];
-    
+
     public function init()
     {
-    	parent::init();
-		if (method_exists($this->model, 'autoCompleteOptions')) {
-			$autoCompleteOptions = $this->model->autoCompleteOptions();
-			if (isset($autoCompleteOptions[$this->attribute])) {
-				if (is_callable($autoCompleteOptions[$this->attribute])) {
-					$this->autoComplete(call_user_func($autoCompleteOptions[$this->attribute]));
-				} else {
-					$this->autoComplete($autoCompleteOptions[$this->attribute]);
-				}
-			}
-		}
+        parent::init();
+        if (method_exists($this->model, 'autoCompleteOptions')) {
+            $autoCompleteOptions = $this->model->autoCompleteOptions();
+            if (isset($autoCompleteOptions[$this->attribute])) {
+                if (is_callable($autoCompleteOptions[$this->attribute])) {
+                    $this->autoComplete(call_user_func($autoCompleteOptions[$this->attribute]));
+                } else {
+                    $this->autoComplete($autoCompleteOptions[$this->attribute]);
+                }
+            }
+        }
     }
 
     /**
      * autoComplete
-     * options 插件参数: 
-     * 	@param data:数据源--同步请求直接传递数据源
-     *	@param url:异步请求数据来源的地址（*json）
-     *	@param isCache: 是否缓存 true使用prefetch[url为静态json文件] false使用remote
-     *	@param selectedByField: 选中后赋值的字段，该字段参与表单提交
-     *  @param selectedDomId:用于赋值
-     *	@param name: 数据集的名称
-     *	@param displayKey: 列表展示的字段
-     *	@param valueKey: 选中赋值到selectedByField的key
-     *  @param limit 显示条数    
+     * options 插件参数:
+     * @param data:数据源--同步请求直接传递数据源
+     * @param url:异步请求数据来源的地址（*json）
+     * @param isCache: 是否缓存 true使用prefetch[url为静态json文件] false使用remote
+     * @param selectedByField: 选中后赋值的字段，该字段参与表单提交
+     * @param selectedDomId:用于赋值
+     * @param name: 数据集的名称
+     * @param displayKey: 列表展示的字段
+     * @param valueKey: 选中赋值到selectedByField的key
+     * @param limit 显示条数
      * @author yjc
      */
     public function autoComplete($options)
     {
-    	static $counter = 0;
-    	$this->inputOptions['class'] .= ' typeahead typeahead-' . (++$counter);
-    	!isset($options['data']) && $options['data'] = null;
-    	!isset($options['url']) && $options['url'] = '';
-    	!isset($options['limit']) && $options['limit'] = 5;
-    	!isset($options['isCache']) && $options['isCache'] = false;
-    	if (isset($options['selectedByField']) && !empty($options['selectedByField'])) {
-    		$field = $this->form->field($this->model, $options['selectedByField']);
-    		$field->options['class'] .= ' hide';
-    		$field->inputOptions['id'] = $options['selectedDomId'];
-    		echo $field->hiddenInput()->label(false);
-    	}
+        static $counter = 0;
+        $this->inputOptions['class'] .= ' typeahead typeahead-' . (++$counter);
+        !isset($options['data']) && $options['data'] = null;
+        !isset($options['url']) && $options['url'] = '';
+        !isset($options['limit']) && $options['limit'] = 5;
+        !isset($options['isCache']) && $options['isCache'] = false;
+        if (isset($options['selectedByField']) && !empty($options['selectedByField'])) {
+            $field = $this->form->field($this->model, $options['selectedByField']);
+            $field->options['class'] .= ' hide';
+            $field->inputOptions['id'] = $options['selectedDomId'];
+            echo $field->hiddenInput()->label(false);
+        }
 
         $this->form->getView()->registerJs("jcms.autocomplete($counter, " . Json::htmlEncode($options) . ");");
         return $this;
@@ -80,7 +80,7 @@ class ActiveField extends \yii\widgets\ActiveField
         static $i = 1;
         $unique = uniqid() . $i;
         $i++;
-        if($i >= 10000) $i = 1;
+        if ($i >= 10000) $i = 1;
         $for = 'inlineCheckbox' . $unique;
         $options['id'] = $for;
         $options['tag'] = 'a';
@@ -104,15 +104,15 @@ class ActiveField extends \yii\widgets\ActiveField
         $this->selectors = ['input' => "#$inputId input"];
 
         $options['class'] = 'da-form-list inline';
-        $encode = ! isset($options['encode']) || $options['encode'];
+        $encode = !isset($options['encode']) || $options['encode'];
         $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
 
         $unique = uniqid();
-        $options['item'] = function ($index, $label, $name, $checked, $value) use ($encode, $itemOptions, $unique){
+        $options['item'] = function ($index, $label, $name, $checked, $value) use ($encode, $itemOptions, $unique) {
             static $i = 1;
             $unique .= rand(1, 99999) . $i;
             $i++;
-            if($i >= 10000) $i = 1;
+            if ($i >= 10000) $i = 1;
             $checkbox = Html::checkbox($name, $checked, array_merge($itemOptions, [
                 'value' => $value,
                 'id' => 'inlineCheckbox' . $unique,
@@ -134,7 +134,7 @@ class ActiveField extends \yii\widgets\ActiveField
     {
         if (!isset($options['class'])) {
             $options['class'] = 'pretty-file';
-        }else{
+        } else {
             $options['class'] .= ' pretty-file';
         }
         !isset($options['text']) && $options['text'] = Yii::t("app", 'Choose File');
@@ -147,7 +147,7 @@ class ActiveField extends \yii\widgets\ActiveField
      */
     public function imgInput($options = [])
     {
-        if( $this->template === "{label}\n<div class=\"col-sm-{size}\">{input}\n{error}</div>\n{hint}" ) {
+        if ($this->template === "{label}\n<div class=\"col-sm-{size}\">{input}\n{error}</div>\n{hint}") {
             $this->template = "{label}\n<div class=\"col-sm-{size} image\">{input}<div style='position: relative'>{img}{actions}</div>\n{error}</div>\n{hint}";
         }
         $attribute = $this->attribute;
@@ -155,23 +155,23 @@ class ActiveField extends \yii\widgets\ActiveField
         $baseUrl = Yii::$app->request->baseUrl;
         $nonePicUrl = isset($options['default']) ? $options['default'] : $baseUrl . 'static/images/none.jpg';
         if ($src != '') {
-            if( strpos($src, $baseUrl) !== 0 ){
+            if (strpos($src, $baseUrl) !== 0) {
                 $temp = parse_url($src);
 //                $src = (! isset($temp['host'])) ? $cdn->getCdnUrl($src) : $src;
             }
             $delete = Yii::t('app', 'Delete');
             $this->parts['{actions}'] = "<div onclick=\"$(this).parents('.image').find('input[type=hidden]').val(0);$(this).prev().attr('src', '$nonePicUrl');$(this).remove()\" style='position: absolute;width: 50px;padding: 5px 3px 3px 5px;top:5px;left:6px;background: black;opacity: 0.6;color: white;cursor: pointer'><i class='fa fa-trash' aria-hidden='true'> {$delete}</i></div>";
-        }else{
+        } else {
             $src = $nonePicUrl;
             $this->parts['{actions}'] = '';
         }
         if (!isset($options['class'])) {
             $options['class'] = 'pretty-file img-responsive';
-        }else{
+        } else {
             $options['class'] .= ' pretty-file img-responsive';
         }
         !isset($options['text']) && $options['text'] = Yii::t("app", 'Choose Image');
-        $this->parts['{img}'] = Html::img($src, array_merge($options, ["nonePicUrl"=>$nonePicUrl]));
+        $this->parts['{img}'] = Html::img($src, array_merge($options, ["nonePicUrl" => $nonePicUrl]));
         return parent::fileInput($options); // TODO: Change the autogenerated stub
     }
 
@@ -182,17 +182,17 @@ class ActiveField extends \yii\widgets\ActiveField
      * @param array $options
      * - val: string 值，替代html的value属性，设置此val会在页面加载完成后由js把value改为val，此处与laydate不同之处，需要注意
      * - type: string，输入框类型，默认date。可选值：
-    year	年选择器	只提供年列表选择
-    month	年月选择器	只提供年、月选择
-    date	日期选择器	可选择：年、月、日。type默认值，一般可不填
-    time	时间选择器	只提供时、分、秒选择
-    datetime	日期时间选择器	可选择：年、月、日、时、分、秒
+     * year    年选择器    只提供年列表选择
+     * month    年月选择器    只提供年、月选择
+     * date    日期选择器    可选择：年、月、日。type默认值，一般可不填
+     * time    时间选择器    只提供时、分、秒选择
+     * datetime    日期时间选择器    可选择：年、月、日、时、分、秒
      * - range: bool/string， 开启左右面板范围选择，默认false。如果设置 true，将默认采用 “ ~ ” 分割。 你也可以直接设置 分割字符。五种选择器类型均支持左右面板的范围选择。
      * - theme: string，主题，默认值：default。可选值有：default（默认简约）、molv（墨绿背景）、#颜色值（自定义颜色背景）、grid（格子主题）
      * ...更多的设置请直接参考laydate官方文档: https://www.layui.com/doc/modules/laydate.html
      * @return $this
      */
-    public function date($options=[])
+    public function date($options = [])
     {
         !isset($options['elem']) && $options['elem'] = 'this';
         !isset($options['type']) && $options['type'] = 'datetime';
@@ -200,7 +200,7 @@ class ActiveField extends \yii\widgets\ActiveField
         $options['range'] === true && $options['range'] = '~';
         $options['range'] === false && $options['range'] = 'false';
         !isset($options['format']) && $options['format'] = 'yyyy-MM-dd HH:mm:ss';
-        !isset($options['val']) && $options['val'] = $this->model->{$this->attribute} ? $this->model->{$this->attribute} : ( strpos(get_class($this->model), 'Search' ) !== false ? '' : 'new Date()' );
+        !isset($options['val']) && $options['val'] = $this->model->{$this->attribute} ? $this->model->{$this->attribute} : (strpos(get_class($this->model), 'Search') !== false ? '' : 'new Date()');
         !isset($options['isInitValue']) && $options['isInitValue'] = false;
         $options['isInitValue'] === true && $options['isInitValue'] = 'true';
         $options['isInitValue'] === false && $options['isInitValue'] = 'false';
@@ -216,7 +216,7 @@ class ActiveField extends \yii\widgets\ActiveField
         $options['showBottom'] === true && $options['showBottom'] = 'true';
         $options['showBottom'] === false && $options['showBottom'] = 'false';
         !isset($options['btns']) && $options['btns'] = "['clear', 'now', 'confirm']";
-        !isset($options['lang']) && $options['lang'] = ( strpos( Yii::$app->language, 'en' ) === 0 ? 'en' : 'cn' );
+        !isset($options['lang']) && $options['lang'] = (strpos(Yii::$app->language, 'en') === 0 ? 'en' : 'cn');
         !isset($options['theme']) && $options['theme'] = 'molv';
         !isset($options['calendar']) && $options['calendar'] = true;
         $options['calendar'] === true && $options['calendar'] = "true";
@@ -231,7 +231,7 @@ class ActiveField extends \yii\widgets\ActiveField
 
         if (!isset($options['class'])) {
             $options['class'] = 'form-control date-time';
-        }else{
+        } else {
             $options['class'] .= ' form-control date-time';
         }
         $this->parts['{input}'] = Html::activeTextInput($this->model, $this->attribute, $options);
@@ -250,9 +250,9 @@ class ActiveField extends \yii\widgets\ActiveField
      */
     public function chosenSelect($items, $multiple = false, $options = [], $generateDefault = true)
     {
-        if( isset( $options['class'] ) ){
+        if (isset($options['class'])) {
             $options['class'] .= " chosen-select";
-        }else{
+        } else {
             $options['class'] = "chosen-select";
         }
         $multiple && $options['multiple'] = "1";
@@ -303,6 +303,71 @@ class ActiveField extends \yii\widgets\ActiveField
         $options['trl'] === true && $options['trl'] = 'true';
         $options['trl'] === false && $options['trl'] = 'false';
         return $this->dropDownList($items, $options, $generateDefault);
+    }
+
+    public function dropDownList($items, $options = [], $generateDefault = true)
+    {
+        if ($generateDefault === true && !isset($options['prompt'])) {
+            $options['prompt'] = Yii::t('app', 'Please select');
+        }
+        return parent::dropDownList($items, $options);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function readOnly($value = null, $options = [])
+    {
+        $options = array_merge($this->inputOptions, $options);
+
+        $this->adjustLabelFor($options);
+        $value = $value === null ? Html::getAttributeValue($this->model, $this->attribute) : $value;
+        $options['class'] = 'da-style';
+        $options['style'] = 'display: inline-block;';
+        $this->parts['{input}'] = Html::activeHiddenInput($this->model, $this->attribute) . Html::tag('span', $value, $options);
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function radioList($items, $options = [])
+    {
+        $options['tag'] = 'div';
+
+        $inputId = Html::getInputId($this->model, $this->attribute);
+        $this->selectors = ['input' => "#$inputId input"];
+
+        $options['class'] = 'radio';
+        $encode = !isset($options['encode']) || $options['encode'];
+        $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
+
+        $options['item'] = function ($index, $label, $name, $checked, $value) use ($encode, $itemOptions) {
+            static $i = 1;
+            $radio = Html::radio($name, $checked, array_merge($itemOptions, [
+                'value' => $value,
+                'id' => $name . $i,
+                //'label' => $encode ? Html::encode($label) : $label,
+            ]));
+            $radio .= "<label for=\"$name$i\"> $label </label>";
+            $radio = "<div class='radio radio-success radio-inline'>{$radio}</div>";
+            //var_dump($radio);die;
+            $i++;
+            return $radio;
+        };
+        return parent::radioList($items, $options);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function textarea($options = [])
+    {
+        if (!isset($options['rows'])) {
+            $options['rows'] = 5;
+        }
+        return parent::textarea($options);
     }
 
 }

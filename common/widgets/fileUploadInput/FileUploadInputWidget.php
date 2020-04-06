@@ -17,6 +17,8 @@ class FileUploadInputWidget extends InputWidget
 
     public $widgetOptions = [];
 
+    public $notes = '';
+
     public function init()
     {
         parent::init();

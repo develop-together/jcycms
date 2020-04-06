@@ -488,3 +488,23 @@ CREATE TABLE `byt_mall_spu` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `spu_code_UNIQUE` (`spu_code` ASC))
 COMMENT = '抽象性的商品表(如 iphone8)';
+
+
+#2020-04-06
+ALTER TABLE `byt_mall_spu`
+CHANGE COLUMN `saleable` `flag_saleable` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否上架(0下架，1上架)' ,
+CHANGE COLUMN `valid` `flag_valid` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '是否有效，0已删除，1有效' ,
+CHANGE COLUMN `sort` `sort` INT(10) NOT NULL DEFAULT '0' COMMENT '排序' ,
+ADD COLUMN `flag_new` SMALLINT(6) NULL COMMENT '新品' AFTER `flag_saleable`,
+ADD COLUMN `flag_hot` SMALLINT(6) NULL COMMENT '热销' AFTER `flag_new`,
+ADD COLUMN `flag_recommend` SMALLINT(6) NULL COMMENT '推荐' AFTER `flag_hot`,
+ADD COLUMN `min_stock` INT(10) NULL COMMENT '库存预警' AFTER `flag_valid`,
+ADD COLUMN `content` TEXT NULL COMMENT '内容' AFTER `image_ids`;
+
+ALTER TABLE `byt_mall_spu`
+ADD COLUMN `cost_price` DECIMAL(6,2) NULL DEFAULT 0 COMMENT '成本价' AFTER `brand_name`,
+ADD COLUMN `price` DECIMAL(6,2) NULL DEFAULT 0 COMMENT '销售价' AFTER `cost_price`,
+ADD COLUMN `unit` CHAR(4) NULL DEFAULT '' COMMENT '单位' AFTER `weight`;
+
+ALTER TABLE `byt_mall_spu`
+ADD COLUMN `stock` INT(10) NULL DEFAULT 0 COMMENT '库存' AFTER `flag_valid`;

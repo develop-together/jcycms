@@ -116,6 +116,7 @@ class Ueditor extends yii\widgets\InputWidget
 
         $config = Json::encode($this->config);
 
+
         //ready部分代码，是为了缩略图管理。UEditor本身就很大，在后台直接加载大文件图片会很卡。
         $script = <<<UEDITOR
             UE.delEditor('{$id}');

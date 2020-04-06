@@ -232,7 +232,7 @@ class BaseConfig
 
         return self::getItems($items, $key);
     }
-    
+
     const Number_DATA_TYPE = 2;
     const String_DATA_TYPE = 1;
 
@@ -262,4 +262,29 @@ class BaseConfig
 
         return self::getItems($items, $key);
     }
+
+    public static function getMallUnits($key = null)
+    {
+        $items = [
+            '瓶' => '瓶',
+            '盒' => '盒',
+            '篓' => '篓',
+            '箱' => '箱',
+            '个' => '个',
+            '包' => '包',
+            '支' => '支',
+            '条' => '条',
+            '本' => '本',
+            '块' => '块',
+            '片' => '片',
+            '把' => '把',
+            '组' => '组',
+            '双' => '双',
+            '台' => '台',
+            '件' => '件',
+        ];
+
+        return self::getItems($items, $key);
+    }
+
 }

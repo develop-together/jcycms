@@ -61,7 +61,8 @@ class MallSpuController extends BackendController
     public function actionCreate()
     {
         $model = new MallSpu();
-        
+        $model->spu_code = $model->generateSpuCode();
+        $model->flag_saleable = true;
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {

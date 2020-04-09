@@ -34,4 +34,22 @@ class MallCategory extends Category
 
         return $query->asArray()->all();
     }
+
+    public static function getCatalogList($pid = 0)
+    {
+        $rows = self::find()->product()
+            ->select(['id', 'parent_id', 'name'])
+            ->andWhere(['parent_id' => $pid])
+            ->orderBy(['sort' => SORT_ASC])
+            ->asArray()
+            ->all();
+        $data = [];
+        foreach ($rows as $row) {
+            $row['level'] = $row['parent_id'];
+            unset($row['parent_id']);
+            $data[] = $row;
+        }
+
+        return $data;
+    }
 }

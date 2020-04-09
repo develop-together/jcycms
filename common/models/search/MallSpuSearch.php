@@ -18,7 +18,7 @@ class MallSpuSearch extends MallSpu
     public function rules()
     {
         return [
-            [['id', 'cid1', 'cid2', 'cid3', 'brand_id', 'saleable', 'valid', 'sort', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
+            [['id', 'cid1', 'cid2', 'cid3', 'brand_id', 'flag_saleable', 'flag_valid', 'sort', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
             [['spu_code', 'title', 'sub_title', 'brand_name', 'dim', 'image_ids'], 'safe'],
             [['weight'], 'number'],
         ];
@@ -88,7 +88,7 @@ class MallSpuSearch extends MallSpu
         ]);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
+            // uncomment the following line if you do not want to return any records when flag_validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
@@ -101,8 +101,8 @@ class MallSpuSearch extends MallSpu
             'cid3' => $this->cid3,
             'brand_id' => $this->brand_id,
             'weight' => $this->weight,
-            'saleable' => $this->saleable,
-            'valid' => $this->valid,
+            'flag_saleable' => $this->flag_saleable,
+            'flag_valid' => $this->flag_valid,
             'sort' => $this->sort,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

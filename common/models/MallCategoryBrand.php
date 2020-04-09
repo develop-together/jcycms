@@ -70,4 +70,28 @@ class MallCategoryBrand extends \common\components\BaseModel
         }
     }
 
+    public function getCategories()
+    {
+        return $this->hasMany(MallCategory::class, ['id' => 'category_id']);
+    }
+
+    public static function getBrandList($cid = 0, $brandId = 0)
+    {
+        $query = self::find();
+        if ($cid) {
+            $query->andWhere(['category_id' => $cid]);
+        }
+
+        if ($brandId) {
+            $query->andWhere(['brand_id' => $brandId]);
+        }
+
+        $ids = array_unique(array_values($query->select('brand_id')->column()));
+
+        return $ids ? MallBrand::find()
+            ->select(['id', 'name', 'letter'])
+            ->where(['id' => $ids]
+            )->asArray()
+            ->all() : [];
+    }
 }

@@ -2,6 +2,10 @@
 
 namespace common\modules\mall\controllers;
 
+use common\components\Utils;
+use common\models\MallCategory;
+use common\models\MallCategoryBrand;
+use PHPUnit\Framework\Constraint\Callback;
 use Yii;
 use common\models\MallSpu;
 use common\models\search\MallSpuSearch;
@@ -97,6 +101,18 @@ class MallSpuController extends BackendController
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+
+    public function actionAjaxCatalog($cid = 0, $brandId = 0)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $catalogList = MallCategory::getCatalogList($cid);
+        $brandList = MallCategoryBrand::getBrandList($cid, $brandId);
+        return Utils::returnJson([
+            'catalogList' => $catalogList,
+            'brandList' => $brandList,
+        ]);
+
     }
 
     /**

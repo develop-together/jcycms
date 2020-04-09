@@ -68,6 +68,8 @@ class MallBrand extends \common\components\BaseModel
         return $this->hasMany(MallCategoryBrand::class, ['brand_id' => 'id']);
     }
 
+
+
     public function beforeSave($insert)
     {
         $this->letter = Utils::letterWord($this->name);

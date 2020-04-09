@@ -79,6 +79,11 @@ class Utils
         return $return;
     }
 
+    /**
+     * @param $string
+     * @param $string_encoding
+     * @return bool
+     */
     public static function checkEncoding($string, $string_encoding)
     {
         $fs = $string_encoding == 'UTF-8' ? 'UTF-32' : $string_encoding;
@@ -92,6 +97,11 @@ class Utils
      * $time 发布时间 如 1356973323
      * $str 输出格式 如 Y-m-d H:i:s
      * 半年的秒数为15552000，1年为31104000，此处用半年的时间
+     */
+    /**
+     * @param $datetime
+     * @param string $str
+     * @return false|string
      */
     public static function datetimeToText($datetime, $str = '')
     {
@@ -115,6 +125,10 @@ class Utils
         return $r;
     }
 
+    /**
+     * @param $timestamp
+     * @return bool
+     */
     public static function isTimestamp($timestamp)
     {
         if (strtotime(date('Y-m-d H:i:s', $timestamp)) === (int)$timestamp) {
@@ -124,6 +138,10 @@ class Utils
         return false;
     }
 
+    /**
+     * @param $datetime
+     * @return false|string
+     */
     public static function tranDateTime($datetime)
     {
         $time = self::isTimestamp($datetime) ? $datetime : strtotime($datetime);
@@ -220,11 +238,12 @@ class Utils
         }
     }
 
+
     /**
      * 操作完成后输出的内容
-     * @param integer $status 200:ok; 300:error; 301:timeout
-     * @param array $json {status  int; message    string; tabid   string; dialogid    string; divid   string; closeCurrent    boolea; forward string; forwardConfirm  string}
-     * @return [type]              [description]
+     * @param array $json
+     * @param string $status
+     * @throws \yii\base\ExitException
      */
     public static function callback($json = array(), $status = 'ok')
     {
@@ -243,6 +262,30 @@ class Utils
         Yii::$app->end();
     }
 
+    /**
+     * @param array $data
+     * @param string $status
+     * @return array
+     */
+    public static function returnJson($data = [], $status = 'ok')
+    {
+        $config = [
+            'ok' =>[10002, '操作成功'],
+            'error' => [10001, '操作失败'],
+            'timeout' => [10003, '操作超时'],
+        ];
+        $data['code'] = $config[$status][0];
+
+        if (!isset($data['message'])) {
+            $data['message'] = $config[$status][1];
+        }
+
+        return $data;
+    }
+
+    /**
+     * @return array
+     */
     public static function statusOption()
     {
         return array('激活' => '激活', '锁定' => '锁定',);
@@ -689,6 +732,11 @@ class Utils
         return $_Res;
     }
 
+    /**
+     * @param $_Num
+     * @param $_Data
+     * @return int|string
+     */
     public static function Pinyins($_Num, $_Data)
     {
         if ($_Num > 0 && $_Num < 160) {
@@ -702,6 +750,10 @@ class Utils
         }
     }
 
+    /**
+     * @param $_C
+     * @return bool|false|string
+     */
     public static function U2_Utf8_Gb($_C)
     {
         $_String = '';
@@ -877,6 +929,10 @@ class Utils
     /*
         标题样式格式化
     */
+    /**
+     * @param $style
+     * @return array
+     */
     public static function titleStyle($style)
     {
         $text = '';
@@ -900,6 +956,13 @@ class Utils
     }
 
     // 自动转换字符集 支持数组转换
+
+    /**
+     * @param $string
+     * @param string $from
+     * @param string $to
+     * @return array|bool|false|string|string[]|null
+     */
     static public function autoCharset($string, $from = 'gbk', $to = 'utf-8')
     {
         $from = strtoupper($from) == 'UTF8' ? 'utf-8' : $from;
@@ -932,6 +995,11 @@ class Utils
     /*
         标题样式恢复
     */
+    /**
+     * @param $serialize
+     * @param string $scope
+     * @return string
+     */
     public static function titleStyleRestore($serialize, $scope = 'bold')
     {
         $unserialize = unserialize($serialize);
@@ -1184,6 +1252,10 @@ class Utils
 
     }
 
+    /**
+     * @param $zh
+     * @return string
+     */
     public static function shortSpell($zh)
     {
 
@@ -1241,6 +1313,11 @@ class Utils
         $writer->save($filename . '.xlsx');
     }
 
+    /**
+     * @param string $filePath
+     * @param string $title
+     * @return bool
+     */
     public static function downloadFile($filePath = '', $title = '')
     {
         if (empty($filePath)) {
@@ -1337,11 +1414,18 @@ class Utils
         return $tree;
     }
 
+    /**
+     * @return mixed
+     */
     public static function get_request_payload()
     {
         return Json::decode(Yii::$app->getRequest()->getRawBody(), true);
     }
 
+    /**
+     * @param $arr
+     * @return string
+     */
     public static function arrayToXml($arr)
     {
         $xml = "<xml>";
@@ -1358,6 +1442,10 @@ class Utils
         return $xml;
     }
 
+    /**
+     * @param $key
+     * @return mixed|string
+     */
     public static function numberToChinese($key)
     {
         $arr = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
@@ -1365,6 +1453,11 @@ class Utils
         return array_key_exists($key, $arr) ? $arr[$key] : '';
     }
 
+    /**
+     * @param string $absolutePath
+     * @param string $needle
+     * @return bool|false|string
+     */
     public static function getRelativePath(string $absolutePath, string $needle = 'uploads')
     {
         if (false !== $fIndex = stripos($absolutePath, $needle))
@@ -1373,6 +1466,10 @@ class Utils
         return false;
     }
 
+    /**
+     * @param $base64String
+     * @return mixed
+     */
     public static function getBase64Ext($base64String)
     {
         $base64String = explode(',', $base64String); //data:image/jpeg;base64,
@@ -1384,6 +1481,12 @@ class Utils
         return $fileExt;
     }
 
+    /**
+     * @param $base64String
+     * @param $uploadPath
+     * @param $outputFile
+     * @return bool|string
+     */
     public static function base64ToFile($base64String, $uploadPath, $outputFile)
     {
         // $base64String = base64_decode($base64String);
@@ -1401,6 +1504,10 @@ class Utils
         return rtrim('uploads/', 'uploads/' . $outputFile);
     }
 
+    /**
+     * @param bool $isTimestamp
+     * @return array
+     */
     public static function getBetweenWeek($isTimestamp = true)
     {
         $weekday = date('w');//获取周几

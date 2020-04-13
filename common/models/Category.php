@@ -42,6 +42,7 @@ class Category extends \common\components\BaseModel
             [['name'], 'required'],
             [['id', 'parent_id', 'sort', 'created_at', 'updated_at', 'type'], 'integer'],
             [['name', 'remark'], 'string', 'max' => 255],
+            [['path'], 'string', 'max' => 45],
         ];
     }
 
@@ -92,6 +93,13 @@ class Category extends \common\components\BaseModel
             $this->parent_id = 0;
         }
 
+        if ($this->parent === null) {
+            $this->path = $this->id;
+        } else {
+            $this->path = $this->id . ',' . $this->parent->path;
+        }
+
+
         return true;
     }
 
@@ -123,7 +131,7 @@ class Category extends \common\components\BaseModel
     public static function loadOptions($level = null)
     {
         $models = static::loadData($level);
-        return ArrayHelper::map($models , 'id', 'name');
+        return ArrayHelper::map($models, 'id', 'name');
     }
 
 

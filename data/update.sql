@@ -508,3 +508,7 @@ ADD COLUMN `unit` CHAR(4) NULL DEFAULT '' COMMENT '单位' AFTER `weight`;
 
 ALTER TABLE `byt_mall_spu`
 ADD COLUMN `stock` INT(10) NULL DEFAULT 0 COMMENT '库存' AFTER `flag_valid`;
+
+#2020-04-13
+ALTER TABLE `byt_category`
+ADD COLUMN `path` VARCHAR(45) NULL DEFAULT '' COMMENT '面包屑路径' AFTER `type`;

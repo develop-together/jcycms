@@ -74,6 +74,11 @@ use common\widgets\JsBlock;
 
         .selectDiv p {
             margin-bottom: 0;
+            font-size: 14px;
+        }
+
+        .selectItem {
+            cursor: pointer;
         }
 
         .selectItem span {
@@ -90,7 +95,7 @@ use common\widgets\JsBlock;
             width: 300px;
             margin: 0;
             padding: 0;
-            max-height: 120px;
+            max-height: 100px;
             overflow-y: scroll;
         }
 
@@ -98,6 +103,10 @@ use common\widgets\JsBlock;
             position: relative;
             background: #0880FF;
             color: #fff !important;
+        }
+
+        .formInputDiv li:hover {
+            color: #0880FF;
         }
 
         .formInputDiv li {
@@ -172,23 +181,12 @@ use common\widgets\JsBlock;
                                                             class="form-control"
                                                             aria-required="true"
                                                             style="margin-right: 0px;">
-                                                        <!--                                                        <option selected="selected" value="309"></option>-->
                                                         <option selected="selected" value="0">请选择商品类别</option>
                                                     </select>
-                                                    <div id="div_text">
-                                                        <!--                                                        <p class="selectItem" id="p1" tyid="309"-->
-                                                        <!--                                                           onclick="del_sel(this,0,309)">精美箱包-->
-                                                        <!--                                                        </p>-->
-                                                        <!--                                                        <p class="selectItem del_sel" id="p2" onclick="del_sel(this)">-->
-                                                        <!--                                                            <span>&gt;</span>请选择</p>-->
-                                                    </div>
+                                                    <div id="div_text"></div>
                                                 </div>
                                                 <div id="selectData" class="formInputDiv" style="display: none;">
-                                                    <ul id="selectData_1">
-                                                        <!--                                                        <li value="34" onclick="class_level(this,1,34,'')">女包</li>-->
-                                                        <!--                                                        <li value="165" onclick="class_level(this,1,165,'')">男包</li>-->
-                                                        <!--                                                        <li value="167" onclick="class_level(this,1,167,'')">旅行箱包</li>-->
-                                                    </ul>
+                                                    <ul id="selectData_1"></ul>
                                                 </div>
                                             </div>
                                             <div class="help-block m-b-none"></div>
@@ -326,6 +324,8 @@ use common\widgets\JsBlock;
             selectDivDom: $('.selectDiv'),
             selectDataDom: $("#selectData"),
             selectDataOneDom: $("#selectData_1"),
+            selectTextDom: $('.selectDiv').find("div#div_text"),
+            selectDelSelDom: $('.del_sel'),
             brandDom: $("#mallspu-brand_id"),
             selectClass: function () {
                 var that = this || selectDiv;
@@ -342,7 +342,7 @@ use common\widgets\JsBlock;
                             cid: cid,
                             brandId: brandId
                         }, function (response) {
-                            console.log('response:', response);
+                            // console.log('response:', response);
                             if (response.code === 10002) {
                                 that.brandDom.empty();
                                 that.selectDataOneDom.empty();
@@ -355,18 +355,26 @@ use common\widgets\JsBlock;
                             that.selectFlag = true
                         })
                     }
+                } else {
+                    that.selectDataDom.css('display', 'none');
                 }
             },
             createLiList: function (dom, data, key, vKey) {
                 key = key || 'id';
                 vKey = vKey || 'value';
+                var that = this || selectDiv;
                 var str = '';
-                for (var i = 0; i < data.length; i++) {
-                    var da = data[i];
-                    var classStr = i === 0 ? 'selectDataOneLi active' : 'selectDataOneLi';
-                    str += "<li class='" + classStr + "' value='" + da[key] + "' '+selectedStr+'>" + da[vKey] + "</li>";
+                if (data.length) {
+                    for (var i = 0; i < data.length; i++) {
+                        var da = data[i];
+                        var classStr = i === 0 ? 'selectDataOneLi active' : 'selectDataOneLi';
+                        str += "<li class='" + classStr + "' data-cid='" + da[key] + "' data-level='" + da['level'] + "' onclick='selectDiv.choseCatalog(this)'>" + da[vKey] + "</li>";
+                    }
+                    $(dom).append(str);
+                    // that.bindCatalogLiEvent(dom);
+                } else {
+                    $(dom).empty();
                 }
-                $(dom).append(str);
             },
             createOptions: function (dom, data, key, vKey, selected, tips) {
                 key = key || 'id';
@@ -382,6 +390,116 @@ use common\widgets\JsBlock;
                 }
 
                 $(dom).append(str);
+            },
+            bindCatalogLiEvent: function (parentDom) {
+                var that = this || selectDiv;
+                $(parentDom).children('li').on('click', function () {
+                    that.choseCatalog(this);
+                })
+            },
+            choseCatalog: function (me, level, cid, type) {
+                var that = this || selectDiv;
+                type = type || '';
+                var data = $(me).data();
+                var text = $(me).html();
+                var txtNum = that.selectTextDom.find('>p').length;
+                if (data.hasOwnProperty('cid')) {
+                    cid = data['cid'];
+                }
+                if (data.hasOwnProperty('level')) {
+                    level = data['level'];
+                }
+                that.selectDivDom.find('option').text('').attr('val', cid);
+                $(this).addClass('active').siblings().removeClass('active');
+                var brandId = that.brandDom.find('option:selected').val();
+                var num = that.selectDataOneDom.find('ul').length;
+                if (that.selectFlag && that.choseClass) {
+                    var url = that.selectDivDom.data('url');
+                    that.choseClass = false;
+                    that.request(url, 'GET', {
+                        cid: cid,
+                        brandId: brandId
+                    }, function (response) {
+                        if (response.code === 10002) {
+                            that.brandDom.empty();
+                            that.selectDataOneDom.empty();
+                            var catalogList = response.catalogList;
+                            var brandList = response.brandList;
+                            var str = '';
+                            var selectP = that.selectTextDom;
+                            if (type === '') {
+                                if (txtNum - 2 == level) {// 当切换一级分类时，先取消之前的选择，在加载新的一级分类
+                                    var txtNum1 = txtNum - 1;
+                                    var parent = selectP.get(0);
+                                    var son0 = document.getElementById("p" + txtNum);
+                                    var son1 = document.getElementById("p" + txtNum1);
+                                    son0 && parent.removeChild(son0);
+                                    son1 && parent.removeChild(son1);
+                                    that.appendSelectText(catalogList.length, selectP, cid, level, text, txtNum1);
+                                } else {
+                                    that.appendSelectText(catalogList.length, selectP, cid, level, text, txtNum);
+                                }
+                            }
+
+                            that.createLiList(that.selectDataOneDom, catalogList, 'id', 'name');
+                            that.createOptions(that.brandDom, brandList, 'id', 'name', null, '请选择品牌');
+                        }
+                    }, function (XHR, TS) {
+                        that.choseClass = true;
+                    })
+                }
+            },
+            appendSelectText: function (catalogLen, selectP, cid, level, text, txtNum) {
+                var that = this || selectDiv;
+                var str = '';
+                if (catalogLen == 0) {// 该分类没有下级
+                    if (selectP.html() === '') {
+                        str = `<p class='selectItem' id='p1' tyid='${cid}' onclick='selectDiv.delSel(this,${level},${cid})'>${text}</p><p class='selectItem del_sel' id='p2' onclick='selectDiv.delSel(this)'></p>`;
+                    } else {
+                        $('.del_sel').remove();
+                        str = `<p class='selectItem' id="p${txtNum}" tyid='${cid}' onclick='selectDiv.delSel(this, ${level}, ${cid})'><span>&gt;</span>${text}</p><p class='selectItem del_sel' id='p${txtNum + 1}' onclick='selectDiv.delSel(this)'></p>`;
+                    }
+                    that.selectDataDom.css('display', 'none');
+                } else {
+                    if (selectP.html() === '') {
+                        str = `<p class='selectItem' id='p1' tyid='${cid}' onclick='selectDiv.delSel(this,${level}, ${cid})'>${text}</p><p class='selectItem del_sel' id='p2' onclick='selectDiv.delSel(this)'><span>&gt;</span>请选择</p>`;
+                    } else {
+                        $('.del_sel').remove();
+                        str = `<p class='selectItem' id="p${txtNum}" tyid='${cid}' onclick='selectDiv.delSel(this, ${level},${cid})'><span>&gt;</span>${text}</p><p class='selectItem del_sel' id="p${txtNum + 1}" onclick='selectDiv.delSel(this)'><span>&gt;</span>请选择</p>`
+                    }
+                }
+
+                selectP.append(str);
+            },
+            delSel: function (me, level, cid) {
+                // 删除选中的类别
+                // 如果有选择的分类，重置为请选择状态，此时当前的分类id为上级id，然后在选择
+                var that = this || selectDiv;
+                if (cid) {
+                    if (level == 0) {
+                        var cid1 = 0;
+                        that.choseCatalog(me, level, cid1, 'type');
+                    } else {
+                        var cid1 = $('#p' + level).eq(0).attr('tyid');
+                        that.choseCatalog(me, level - 1, cid1, 'type');
+                    }
+                    $(me).nextAll().remove();
+                    $(me).remove();
+                    if (that.selectTextDom.html() == '') {
+                        that.selectDivDom.find('option').text('请选择商品类别').attr('value', 0);
+                    } else {
+                        if (cid1 == 0) {
+                            that.selectDivDom.find('option').text('请选择商品类别').attr('value', cid1);
+                        } else {
+                            that.selectDivDom.find('option').text('').attr('value', cid1);
+                            that.selectTextDom.append(`<p class='selectItem del_sel' onclick='selectDiv.delSel(this)'><span>&gt;</span>请选择</p>`);
+                        }
+                    }
+
+                    if (level) {
+                        event.stopPropagation();
+                    }
+                }
             },
             request: function (url, type, data, successCallback, completeCallBack) {
                 var that = this || selectDiv;
@@ -429,27 +547,6 @@ use common\widgets\JsBlock;
                 });
 
             }
-        }
-
-
-        // var selectFlag = true
-        // var choose_class = true
-        // function select_class() {
-        //     var class_str = $('.selectDiv option').val()
-        //     var brand_str = $("#brand_class option:selected").val();
-        //     if ($('#selectData').css('display') == 'none') {
-        //         $('#selectData').css('display', 'flex')
-        //
-        //         if (selectFlag && choose_class) {
-        //             selectFlag = false
-        //         }
-        //     } else {
-        //         $('#selectData').css('display', 'none')
-        //     }
-        // }
-
-        // 选择分类
-        function class_level(obj, level, cid, type) {
         }
     </script>
 <?php JsBlock::end(); ?>

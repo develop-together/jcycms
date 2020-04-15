@@ -159,51 +159,53 @@
     var jobj = new jcms();
     window.jcms = jobj;
 })(window);
-
-yii.confirm = function (message, ok, cancel) {
-    var url = $(this).attr('href');
-    var if_pjax = $(this).attr('data-pjax') ? $(this).attr('data-pjax') : 0;
-    var type = $(this).attr('data-method') ? $(this).attr('data-method') : "get";
-    if (!url || url == 'javascript:;' || url == '#') {
-        cancel();
-    }
-    swal({
-        title: message,
-        text: tips.realyToDo,
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        cancelButtonText: tips.cancel,
-        confirmButtonText: tips.ok,
-        closeOnConfirm: false
-    }, function (isConfirm) {
-        if (isConfirm) {
-            if (parseInt(if_pjax)) {
-                !ok || ok();
-            } else {
-                swal(tips.waitingAndNoRefresh, tips.operating + '...', "success");
-                $.ajax({
-                    "url": url,
-                    "dataType": "json",
-                    "type": type,
-                    "success": function (data) {
-                        if (data.code == 200) {
-                            swal(tips.success + '!', tips.operatingSuccess + '.', "success");
-                            location.reload();
-                        } else {
-                            swal(tips.error + ': ' + data.message, tips.operatingFailed + '.', "error");
-                        }
-                    },
-                    "error": function (jqXHR, textStatus, errorThrown) {
-                        swal(tips.error + ': ' + jqXHR.responseJSON.message, tips.operatingFailed + '.', "error");
-                    }
-                });
-            }
-        } else {
-            !cancel || cancel();
+if (typeof yii === 'object') {
+    yii.confirm = function (message, ok, cancel) {
+        var url = $(this).attr('href');
+        var if_pjax = $(this).attr('data-pjax') ? $(this).attr('data-pjax') : 0;
+        var type = $(this).attr('data-method') ? $(this).attr('data-method') : "get";
+        if (!url || url == 'javascript:;' || url == '#') {
+            cancel();
         }
-    });
+        swal({
+            title: message,
+            text: tips.realyToDo,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            cancelButtonText: tips.cancel,
+            confirmButtonText: tips.ok,
+            closeOnConfirm: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                if (parseInt(if_pjax)) {
+                    !ok || ok();
+                } else {
+                    swal(tips.waitingAndNoRefresh, tips.operating + '...', "success");
+                    $.ajax({
+                        "url": url,
+                        "dataType": "json",
+                        "type": type,
+                        "success": function (data) {
+                            if (data.code == 200) {
+                                swal(tips.success + '!', tips.operatingSuccess + '.', "success");
+                                location.reload();
+                            } else {
+                                swal(tips.error + ': ' + data.message, tips.operatingFailed + '.', "error");
+                            }
+                        },
+                        "error": function (jqXHR, textStatus, errorThrown) {
+                            swal(tips.error + ': ' + jqXHR.responseJSON.message, tips.operatingFailed + '.', "error");
+                        }
+                    });
+                }
+            } else {
+                !cancel || cancel();
+            }
+        });
+    }
 }
+
 
 function viewLayer(type, url, obj, cssoption) {
     if (!type) {

@@ -86,6 +86,21 @@ return [
 				// ],
 			],
 		],
+        'assetManager' => [
+            'forceCopy' => true,
+            'linkAssets' => false,//若为unix like系统这里可以修改成true则创建css js文件软链接到assets而不是拷贝css js到assets目录
+            'bundles' => [
+                'yii\web\YiiAsset' => [
+                    'depends' => [
+                        'backend\assets\JqueryAsset'
+                    ],  // 去除 yii.js
+                ],
+                'yii\web\JqueryAsset' => [
+                    'js' => [],  // 去除 yii.js
+                    'sourcePath' => null,  // 防止在 frontend/web/asset 下生产文件
+                ],
+            ]
+        ]
 	],
 	'on beforeRequest' => [jcore\components\jCore::className(), 'backendInit'],
 	'params' => $params,

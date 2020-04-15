@@ -145,7 +145,7 @@ use common\widgets\JsBlock;
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane active" id="tab-1">
+                            <div class="tab-pane fade in active" id="tab-1">
                                 <div class="panel-body">
                                     <?= $form->field($model, 'title')->textInput(['maxlength' => true]); ?>
 
@@ -207,7 +207,7 @@ use common\widgets\JsBlock;
                                     ]); ?>
                                 </div>
                             </div>
-                            <div class="tab-pane " id="tab-2">
+                            <div class="tab-pane fade" id="tab-2">
                                 <div class="panel-body">
                                     <div class="form-group field-mallspu-cost_price required">
                                         <label class="col-sm-2 control-label" for="mallspu-cost_price">
@@ -248,12 +248,15 @@ use common\widgets\JsBlock;
                                             <?= $model->getAttributeLabel('mallAttributes') ?>
                                         </label>
                                         <div class="col-sm-10">
-                                            <button type="button" class="btn btn-success">添加属性</button>
+                                            <button type="button" class="btn btn-success"
+                                                    data-url="<?= Url::to(['mall-spu/chose-attr']) ?>" id="addAttribute">
+                                                添加属性
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane " id="tab-3">
+                            <div class="tab-pane fade" id="tab-3">
                                 <div class="panel-body">
                                     <?= $form->field($model, 'min_stock')->textInput(['maxlength' => true, 'placeholder' => '当前库存量小于改值时，商品库存报警
 （可在库存列表中查看明细，预警数据将以红色加粗显示）']); ?>
@@ -271,7 +274,7 @@ use common\widgets\JsBlock;
                                     <div class="hr-line-dashed"></div>
                                 </div>
                             </div>
-                            <div class="tab-pane " id="tab-4">
+                            <div class="tab-pane fade" id="tab-4">
                                 <div class="panel-body">
                                     <?= $form->field($model, 'content')->widget(\common\widgets\Ueditor::class, [
                                         'config' => [
@@ -297,6 +300,7 @@ use common\widgets\JsBlock;
                 </div>
                 <div class="fixed-footer">
                     <div class="form-group">
+                        <?= Html::button(Yii::t('app', 'Next Step'), ['class' => 'btn btn-primary', 'id' => 'nextStep', 'data-next' => 1]) ?>
                         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 
                         <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']); ?>
@@ -505,39 +509,10 @@ use common\widgets\JsBlock;
                 var that = this || selectDiv;
                 type = type || 'GET';
                 data = data || {};
-                // {
-                //     'class_str': class_str,
-                //     'brand_str': brand_str
-                // }
                 successCallback = successCallback || function (response) {
                 };
-                // function (msg) {
-                //     $('#brand_class').empty()
-                //     $('#selectData_1').empty()
-                //     obj = JSON.parse(msg)
-                //     var brand_list = obj.brand_list
-                //     var class_list = obj.class_list
-                //     var rew = '';
-                //     if (class_list.length != 0) {
-                //         var num = class_list.length - 1;
-                //         display(class_list[num])
-                //     }
-                //
-                //     for (var i = 0; i < brand_list.length; i++) {
-                //         if (brand_list[i].status == true) {
-                //             rew += `<option selected value="${brand_list[i].brand_id}">${brand_list[i].brand_name}</option>`;
-                //         } else {
-                //             rew += `<option value="${brand_list[i].brand_id}">${brand_list[i].brand_name}</option>`;
-                //         }
-                //     }
-                //     $('#brand_class').append(rew)
-                // }
                 completeCallBack = completeCallBack || function (XHR, TS) {
                 };
-                // (XHR, TS) {
-                //     // 无论请求成功还是失败,都要把判断条件改回去
-                //     that.selectFlag = true
-                // }
                 $.ajax({
                     type: type,
                     url: url,
@@ -548,5 +523,63 @@ use common\widgets\JsBlock;
 
             }
         }
+
+        // tab切换-标签页显示时触发,但是必须在某个标签页已经显示之后
+        var currentTabIndex = 0;
+        var prevTxt = '<?= Yii::t('app', 'Previous Step') ?>';
+        var nextTxt = '<?= Yii::t('app', 'Next Step') ?>';
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            // 获取已激活的标签页的名称e.target
+            // 获取前一个激活的标签页的名称 e.relatedTarget
+            var href = $(e.target).attr('href');
+            var tabId = parseInt(href.replace('#tab-', ''));
+            if (tabId === 4) {
+                $("#nextStep").attr('data-next', 0);
+                $("#nextStep").text(prevTxt);
+            } else if (tabId === 1) {
+                $("#nextStep").attr('data-next', 1);
+                $("#nextStep").text(nextTxt);
+            }
+            currentTabIndex = tabId - 1;
+        });
+
+        // 下一步
+        $("#nextStep").on('click', function () {
+            var isNext = parseInt($(this).attr('data-next'));
+            if (isNext) {
+                currentTabIndex += 1;
+            } else {
+                currentTabIndex -= 1;
+            }
+
+            $('ul.nav-tabs li:eq(' + currentTabIndex + ') a').tab('show');
+        })
+
+        // 添加属性
+        $('#addAttribute').bind('click', function () {
+            var url = $(this).data('url');
+            layer.open({
+                type: 2,
+                title: false,
+                closeBtn: 1, //不显示关闭按钮
+                // shade: [0],// 遮罩
+                area: ['680px', '454px'],
+                // area: ['340px', '215px'],//'893px', '600px'
+                // offset: 'rb', //右下角弹出
+                // time: 2000, //2秒后自动关闭
+                anim: 2,
+                shadeClose: true,
+                content: [url, 'no'], //iframe的url，no代表不显示滚动条
+                btn: ['添加'],
+                yes: function (index, layero) {
+                    //按钮【按钮一】的回调
+                    var body = layer.getChildFrame('body', index);
+                    var attributes = body.find("select#attributes option:selected").val();
+                    layer.close(index)
+                },
+                end: function () { //此处用于演示
+                }
+            });
+        })
     </script>
 <?php JsBlock::end(); ?>

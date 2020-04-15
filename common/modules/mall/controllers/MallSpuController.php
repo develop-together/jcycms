@@ -28,7 +28,7 @@ class MallSpuController extends BackendController
             ],
         ];
     }
-    
+
     /**
      * Lists all MallSpu models.
      * @return mixed
@@ -89,7 +89,7 @@ class MallSpuController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
+
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->load($params) && $model->save()) {
@@ -112,7 +112,11 @@ class MallSpuController extends BackendController
             'catalogList' => $catalogList,
             'brandList' => $brandList,
         ]);
+    }
 
+    public function actionChoseAttr($cid = 0)
+    {
+        return $this->render('chose-attr', []);
     }
 
     /**

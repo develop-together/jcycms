@@ -19,5 +19,7 @@ class JqueryAsset extends \yii\web\AssetBundle
 		"static/js/jquery.min.js?v=2.1.4",
 	];
 
-	public $depends = [];
+	public $depends = [
+//	    'backend\assets\YiiAsset'
+    ];
 }

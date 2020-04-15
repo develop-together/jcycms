@@ -399,4 +399,6 @@ return [
     'Mall Brand' => '产品品牌',
     'Please select some' => '请选择',
     'Keyword' => '关键字',
+    'Next Step' => '下一步',
+    'Previous Step' => '上一步',
 ];

@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\helpers\Html;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -54,7 +55,7 @@ class MallSpecGroup extends \common\components\BaseModel
         return $this->hasOne(MallCategory::class, ['id' => 'cid']);
     }
 
-    public static  function loadData()
+    public static function loadData()
     {
         $models = self::find()->select(['id', 'name'])
             ->where(1)
@@ -62,7 +63,36 @@ class MallSpecGroup extends \common\components\BaseModel
             ->all();
 
         return ArrayHelper::map($models, 'id', 'name');
+    }
 
+    public static function loadGroupAttributes($cid = null)
+    {
+        $models = self::find()
+            ->select(['id', 'cid', 'name'])
+            ->andFilterWhere(['cid' => $cid])
+            ->all();
+        $attributesByGid = MallSpecParam::loadAllAttributes(2);
+        $attributesByOther = MallSpecParam::loadAllAttributes(3);
+        $attrByCatalog = ArrayHelper::index($attributesByGid, 'group_id');
+        $rows = [];
+        foreach ($models as $model) {
+            $child = [];
+            if (isset($attrByCatalog[$model->id])) {
+                $row = $attrByCatalog[$model->id];
+                $child[] = $row;
+            }
 
+            $rows[$model->id] = [
+                'name' => $model->name,
+                'attributes' => $child
+            ];
+        }
+
+        $rows['other'] = [
+            'name' => '未分类',
+            'attributes' => $attributesByOther
+        ];
+
+        return $rows;
     }
 }

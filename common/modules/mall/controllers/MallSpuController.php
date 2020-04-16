@@ -5,6 +5,7 @@ namespace common\modules\mall\controllers;
 use common\components\Utils;
 use common\models\MallCategory;
 use common\models\MallCategoryBrand;
+use common\models\MallSpecGroup;
 use PHPUnit\Framework\Constraint\Callback;
 use Yii;
 use common\models\MallSpu;
@@ -114,9 +115,11 @@ class MallSpuController extends BackendController
         ]);
     }
 
-    public function actionChoseAttr($cid = 0)
+    public function actionChoseAttr($cid = null)
     {
-        return $this->render('chose-attr', []);
+        return $this->render('chose-attr', [
+            'attributes' => MallSpecGroup::loadGroupAttributes($cid)
+        ]);
     }
 
     /**

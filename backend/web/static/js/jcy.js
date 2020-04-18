@@ -136,6 +136,7 @@
             if (tables.length <= 0) return;
             var table = tables[0];
             var rows = table.rows;
+            if (!rows[0].hasOwnProperty('cells')) return;
             var columns = rows[0].cells.length;
             var displayColumns = 4;
             var lastColumnIndex = columns - 1;

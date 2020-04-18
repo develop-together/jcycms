@@ -9,6 +9,7 @@ use common\widgets\JsBlock;
 /* @var $model common\models\MallSpu */
 /* @var $form common\widgets\ActiveForm */
 \backend\assets\BootstrapAsset::register($this);
+
 ?>
     <style>
         /*::-webkit-scrollbar-thumb {*/
@@ -563,7 +564,7 @@ use common\widgets\JsBlock;
                 title: false,
                 closeBtn: 1, //不显示关闭按钮
                 // shade: [0],// 遮罩
-                area: ['680px', '454px'],
+                area: ['780px', '554px'],
                 // area: ['340px', '215px'],//'893px', '600px'
                 // offset: 'rb', //右下角弹出
                 // time: 2000, //2秒后自动关闭
@@ -571,6 +572,7 @@ use common\widgets\JsBlock;
                 shadeClose: true,
                 content: [url, 'no'], //iframe的url，no代表不显示滚动条
                 btn: ['添加'],
+                // zIndex:2,
                 yes: function (index, layero) {
                     //按钮【按钮一】的回调
                     var body = layer.getChildFrame('body', index);

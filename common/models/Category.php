@@ -93,12 +93,13 @@ class Category extends \common\components\BaseModel
             $this->parent_id = 0;
         }
 
-        if ($this->parent === null) {
-            $this->path = $this->id;
-        } else {
-            $this->path = $this->id . ',' . $this->parent->path;
+        if (!$insert) {
+            if (!$this->parent) {
+                $this->path = $this->id;
+            } else {
+                $this->path = $this->id . ',' . $this->parent->path;
+            }
         }
-
 
         return true;
     }

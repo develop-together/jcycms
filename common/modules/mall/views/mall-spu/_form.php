@@ -9,7 +9,19 @@ use common\widgets\JsBlock;
 /* @var $model common\models\MallSpu */
 /* @var $form common\widgets\ActiveForm */
 \backend\assets\BootstrapAsset::register($this);
-
+$this->registerCssFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstrap-table/dist/bootstrap-table.min.css');
+$this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstrap-table/dist/bootstrap-table.js', [
+    'depends' => \backend\assets\AppAsset::class,
+    'position' => $this::POS_END
+]);
+$this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstrap-table/dist/locale/bootstrap-table-en-US.min.js', [
+    'depends' => \backend\assets\AppAsset::class,
+    'position' => $this::POS_END
+]);
+$this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js', [
+    'depends' => \backend\assets\AppAsset::class,
+    'position' => $this::POS_END
+]);
 ?>
     <style>
         /*::-webkit-scrollbar-thumb {*/
@@ -250,11 +262,14 @@ use common\widgets\JsBlock;
                                         </label>
                                         <div class="col-sm-10">
                                             <button type="button" class="btn btn-success"
-                                                    data-url="<?= Url::to(['mall-spu/chose-attr']) ?>" id="addAttribute">
+                                                    data-url="<?= Url::to(['mall-spu/chose-attr']) ?>"
+                                                    id="addAttribute">
                                                 添加属性
                                             </button>
+                                            <span class="text-warning">多规格商品可添加属性，单规格商品可不用点击</span>
                                         </div>
                                     </div>
+                                    <div class="form-group" id="mall-sku"></div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="tab-3">
@@ -301,6 +316,7 @@ use common\widgets\JsBlock;
                 </div>
                 <div class="fixed-footer">
                     <div class="form-group">
+                        <?= Html::button(Yii::t('app', 'Previous Step'), ['class' => 'btn btn-primary ', 'id' => 'prevStep', 'data-prev' => 0, 'disabled' => true]) ?>
                         <?= Html::button(Yii::t('app', 'Next Step'), ['class' => 'btn btn-primary', 'id' => 'nextStep', 'data-next' => 1]) ?>
                         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 
@@ -313,13 +329,87 @@ use common\widgets\JsBlock;
     </div>
 <?php JsBlock::begin(); ?>
     <script>
-        function selectBrand() {
-            var class_str = $("[name=product_class]").val();
-            if (class_str == '' || class_str <= 0) {
-                layer.msg("请先选择商品类别！", {
-                    time: 2000
-                });
-            }
+        // function selectBrand() {
+        //     var class_str = $("[name=product_class]").val();
+        //     if (class_str == '' || class_str <= 0) {
+        //         layer.msg("请先选择商品类别！", {
+        //             time: 2000
+        //         });
+        //     }
+        // }
+
+        function selectAttributes() {
+
+        }
+
+        function operateFormatter(value, row, index) {
+            return [
+                '<a class="remove" href="javascript:void(0)" title="Remove">',
+                '<i class="fa fa-trash"></i>',
+                '</a>'
+            ].join('')
+        }
+
+        function creatAttrTable(columns, data) {
+            data = data || [];
+            columns = $.extend(columns, [
+                {
+                    field: 'cost_price',
+                    title: '成本价',
+                    align: 'center',
+                },
+                {
+                    field: 'price',
+                    title: '销售价',
+                    align: 'center',
+                },
+                {
+                    field: 'special_price',
+                    title: '销售特价',
+                    align: 'center',
+                },
+                {
+                    field: 'stock',
+                    title: '库存',
+                    align: 'center',
+                },
+                {
+                    field: 'weight',
+                    title: '重量(单位：kg)',
+                    align: 'center',
+                },
+                {
+                    field: 'bar_code',
+                    title: '条形码',
+                    align: 'center',
+                },
+                {
+                    field: 'bar_code',
+                    title: '条形码',
+                    align: 'center',
+                },
+                {
+                    field: 'images',
+                    title: '图片',
+                    align: 'center',
+                },
+                {
+                    field: 'operate',
+                    title: '<?= Yii::t('app', 'Action') ?>',
+                    align: 'center',
+                    clickToSelect: false,
+                    // events: window.operateEvents,
+                    formatter: operateFormatter
+                }
+            ]);
+            var params = {
+                pagination: false,
+                search: false,
+                locale: locale,
+                columns: columns,
+                data: data
+            };
+            $table.bootstrapTable('destroy').bootstrapTable(params)
         }
 
         // 点击分类框
@@ -527,38 +617,66 @@ use common\widgets\JsBlock;
 
         // tab切换-标签页显示时触发,但是必须在某个标签页已经显示之后
         var currentTabIndex = 0;
-        var prevTxt = '<?= Yii::t('app', 'Previous Step') ?>';
-        var nextTxt = '<?= Yii::t('app', 'Next Step') ?>';
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             // 获取已激活的标签页的名称e.target
             // 获取前一个激活的标签页的名称 e.relatedTarget
             var href = $(e.target).attr('href');
             var tabId = parseInt(href.replace('#tab-', ''));
             if (tabId === 4) {
-                $("#nextStep").attr('data-next', 0);
-                $("#nextStep").text(prevTxt);
-            } else if (tabId === 1) {
-                $("#nextStep").attr('data-next', 1);
-                $("#nextStep").text(nextTxt);
+                $("#nextStep").attr('disabled', true);
+                $("#prevStep").attr('disabled', false);
+            } else if (tabId > 1) {
+                $("#nextStep").attr('disabled', false);
+                $("#prevStep").attr('disabled', false);
+            } else {
+                $("#prevStep").attr('disabled', true);
+                $("#nextStep").attr('disabled', false);
             }
+
             currentTabIndex = tabId - 1;
+        });
+
+        // 上一步
+        $("#prevStep").on('click', function () {
+            currentTabIndex -= 1;
+            $('ul.nav-tabs li:eq(' + currentTabIndex + ') a').tab('show');
         });
 
         // 下一步
         $("#nextStep").on('click', function () {
-            var isNext = parseInt($(this).attr('data-next'));
-            if (isNext) {
-                currentTabIndex += 1;
-            } else {
-                currentTabIndex -= 1;
-            }
-
+            currentTabIndex += 1;
             $('ul.nav-tabs li:eq(' + currentTabIndex + ') a').tab('show');
-        })
+        });
 
         // 添加属性
         $('#addAttribute').bind('click', function () {
             var url = $(this).data('url');
+            var defaultCostPrice = $("#mallspu-cost_price").val();
+            var defaultPrice = $("#mallspu-price").val();
+            var defaultUnit = $("#mallspu-unit").val();
+            var defaultStock = $("#mallspu-stock").val();
+            if (!defaultCostPrice) {
+                layer.alert("默认成本价必须填写");
+                $("#mallspu-cost_price").focus();
+                return false;
+            }
+            if (!defaultPrice) {
+                layer.alert("默认销售价必须填写");
+                $("#mallspu-mallspu-price").focus();
+                return false;
+            }
+            if (!defaultUnit) {
+                layer.alert("默认单位必须填写");
+                $("#mallspu-mallspu-unit").focus();
+                return false;
+            }
+            if (!defaultStock) {
+                layer.alert("默认库存必须填写");
+                $("#mallspu-mallspu-stock").focus();
+                return false;
+            }
+
+            // TODO: 传递商品分类过滤属性：商品分类最多向上溯源3级
             layer.open({
                 type: 2,
                 title: false,
@@ -576,7 +694,62 @@ use common\widgets\JsBlock;
                 yes: function (index, layero) {
                     //按钮【按钮一】的回调
                     var body = layer.getChildFrame('body', index);
-                    var attributes = body.find("select#attributes option:selected").val();
+                    var selectAttr = body.find("select#attributes").val();
+                    var attributes = [];
+                    body.find(".attr-list input.attr:checked").each(function () {
+                        // console.log($(this));
+                        var attrName = $(this).val();
+                        var attrGroupName = $(this).attr('title');
+                        var idStr = $(this).attr('id').replace("attribute_", '');
+                        var ids = idStr.split('-');
+                        var gid = ids[0];
+                        var id = ids[1];
+                        attributes.push({
+                            attrId: id,
+                            attrName: attrName,
+                            gid: gid,
+                            attrGroupName: attrGroupName
+                        });
+                    });
+                    var columns = [], data = [], shift = [];
+                    for (var i = 0; i < selectAttr.length; i++) {
+                        var name = body.find("select#attributes").find("option[value='" + selectAttr[i] + "']").text();
+                        columns.push([
+                            {
+                                field: 'gid' + selectAttr[i],
+                                title: name,
+                                align: 'center',
+                            },
+                        ]);
+                        for (var k in attributes) {
+                            var attr = attributes[k];
+                            if (attr.gid !== selectAttr[i]) continue;
+                            if (!data[i])
+                                data[i] = [];
+                            data[i].push(attr);
+                        }
+                        if (i === 0) shift = data[i];
+                    }
+
+                    var tmps = [];
+                    for (var p in shift) {
+                        if (data.length - 1) {
+                            for (var i = 1; i < data.length; i++) {
+                                var da = data[i];
+                                for (var k in da) {
+                                    var a = [shift[p].attrName, da[k].attrName];
+                                    tmps.push(a);
+                                }
+                            }
+                        } else {
+                            tmps.push(shift[p].attrName);
+                        }
+
+                    }
+                    // 红色 绿色
+                    // M XL
+                    // k k
+                    console.log(tmps);
                     layer.close(index)
                 },
                 end: function () { //此处用于演示

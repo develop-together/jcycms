@@ -73,13 +73,15 @@ class MallSpecGroup extends \common\components\BaseModel
             ->all();
         $attributesByGid = MallSpecParam::loadAllAttributes(2);
         $attributesByOther = MallSpecParam::loadAllAttributes(3);
-        $attrByCatalog = ArrayHelper::index($attributesByGid, 'group_id');
+        $attrByCatalog = ArrayHelper::index($attributesByGid, null,'group_id');
         $rows = [];
         foreach ($models as $model) {
             $child = [];
             if (isset($attrByCatalog[$model->id])) {
                 $row = $attrByCatalog[$model->id];
-                $child[] = $row;
+                foreach ($row as $item) {
+                    $child[] = $item;
+                }
             }
 
             $rows[$model->id] = [

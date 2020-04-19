@@ -4,6 +4,7 @@ namespace common\models;
 
 use common\components\BaseConfig;
 use common\components\BaseController;
+use common\components\Utils;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -59,6 +60,7 @@ class MallSpecParam extends \common\components\BaseModel
             [['cid', 'group_id', 'data_type', 'generic', 'searching'], 'integer'],
             [['name'], 'required'],
             [['name'], 'string', 'max' => 255],
+            ['data_type', 'default', 'value' => 1],
             [['unit', 'display_type'], 'string', 'max' => 16],
             [['segments'], 'string', 'max' => 500],
         ];
@@ -92,7 +94,7 @@ class MallSpecParam extends \common\components\BaseModel
     public function submitData($params, $fromName = null)
     {
         $fromName === null && $fromName = $this->formName();
-        $segmentsSortName = $segmentsSort = [];
+        $segmentsSortName = $segmentsSort = $segments = [];
         if (isset($params[$fromName]['items'])) {
             isset($params[$fromName]['items']['sort']) && $segmentsSort = $params[$fromName]['items']['sort'];
             isset($params[$fromName]['items']['name']) && $segmentsSortName = $params[$fromName]['items']['name'];
@@ -105,7 +107,11 @@ class MallSpecParam extends \common\components\BaseModel
                 $segments[] = $arr;
             }
         }
+
+//        $arrayLowercase = array_map('strtolower', $segments);
 //        $segments = array_combine($segmentsSortName, $segmentsSort);
+        $segments = Utils::multiSortArray($segments, 'sort');
+//        $segments = ArrayHelper::multisort($segments, 'sort');
         if (!empty($segments)) $params[$fromName]['segments'] = Json::encode($segments);
 
         return $this->load($params) && $this->save();

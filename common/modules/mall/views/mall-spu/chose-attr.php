@@ -135,7 +135,7 @@ use common\widgets\JsBlock;
                         <label for="">请选择属性名称：</label>
                     </div>
                     <div class="pull-left">
-                        <select class="attributes" multiple>
+                        <select class="attributes" multiple id="attributes">
                             <option value="">请选择属性</option>
                             <?php if ($attributes): ?>
                                 <?php foreach ($attributes as $gid => $attribute): ?>
@@ -155,41 +155,6 @@ use common\widgets\JsBlock;
                 </div>
                 <div class="clear"></div>
                 <div class="attr-list"></div>
-                <!--                <div class="form-group attr-group">-->
-                <!--                    <div class="attr-size" id="attribute_0">颜色</div>-->
-                <!--                    <div class="form_new_r" id="attribute-0" style="margin-left: 2px;">-->
-                <!--                        <div class="ra1">-->
-                <!--                            <input name="attribute[]" id="attribute_0-0" type="checkbox" value="蓝色" title="颜色"-->
-                <!--                                   class="inputC">-->
-                <!--                            <label for="attribute_0-0">蓝色</label>-->
-                <!--                        </div>-->
-                <!--                        <div class="ra1">-->
-                <!--                            <input name="attribute[]" id="attribute_0-1" type="checkbox" value="黑色" title="颜色"-->
-                <!--                                   class="inputC">-->
-                <!--                            <label for="attribute_0-1">黑色</label>-->
-                <!--                        </div>-->
-                <!--                        <div class="ra1">-->
-                <!--                            <input name="attribute[]" id="attribute_0-2" type="checkbox" value="红色" title="颜色"-->
-                <!--                                   class="inputC">-->
-                <!--                            <label for="attribute_0-2">红色</label>-->
-                <!--                        </div>-->
-                <!--                        <div class="ra1">-->
-                <!--                            <input name="attribute[]" id="attribute_0-3" type="checkbox" value="黄色" title="颜色"-->
-                <!--                                   class="inputC">-->
-                <!--                            <label for="attribute_0-3">黄色</label>-->
-                <!--                        </div>-->
-                <!--                        <div class="ra1">-->
-                <!--                            <input name="attribute[]" id="attribute_0-4" type="checkbox" value="粉色" title="颜色"-->
-                <!--                                   class="inputC">-->
-                <!--                            <label for="attribute_0-4">粉色</label>-->
-                <!--                        </div>-->
-                <!--                        <div class="ra1">-->
-                <!--                            <input name="attribute[]" id="attribute_0-5" type="checkbox" value="天蓝" title="颜色"-->
-                <!--                                   class="inputC">-->
-                <!--                            <label for="attribute_0-5">天蓝</label>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
             </div>
         </div>
     </div>
@@ -267,7 +232,7 @@ use common\widgets\JsBlock;
             var param = params[i];
             var sid = idStr + '-' + param.index;
             str += '<div class="ra1">' +
-                '<input name="attribute[]" id="' + sid + '" type="checkbox" value="黑色" title="颜色" class = "inputC" > ' +
+                '<input  id="' + sid + '" type="checkbox" value="' + param.name + '" title="' + attrName + '" class = "inputC attr" > ' +
                 '<label for="' + sid + '">' + param.name + '</label>' +
                 '</div>';
         }

@@ -21,6 +21,64 @@ use yii\web\UploadedFile;
 class Utils
 {
 
+//    /**
+//     * 多维数组排序
+//     * @param $items [optional] 原数组
+//     * @param $by [optional] 排序依照
+//     * @param int $sort 排序方式，默认从小到大
+//     * @return null|array
+//     */
+//    public static function multiSortArray(array $items, $by, $sort = SORT_ASC)
+//    {
+//        $orderData = [];
+//        foreach ($items as $key => $item) {
+//            if (empty($item[$by])) continue;
+//            $orderData[$key] = $item[$by];
+//        }
+//
+//        array_multisort($orderData, $sort, $items);
+//
+//        return $items;
+//    }
+
+    /**
+     * 多维数组排序
+     * @param array $data
+     * @param string|array $sortCriteria
+     * @param int $defaultSort
+     * @param bool $caseInSensitive
+     * @return bool|mixed
+     */
+    public static function multiSortArray(array $data, $sortCriteria, $defaultSort = SORT_ASC, $caseInSensitive = true)
+    {
+        if (is_string($sortCriteria)) {
+            $sortCriteria = [
+                $sortCriteria => [$defaultSort, SORT_NUMERIC]
+            ];
+        }
+
+        $args = [];
+        $i = 0;
+        foreach ($sortCriteria as $sortColumn => $sortAttributes) {
+            $colList = [];
+            foreach ($data as $key => $row) {
+                $convertToLower = $caseInSensitive && (in_array(SORT_STRING, $sortAttributes) || in_array(SORT_REGULAR, $sortAttributes));
+                $rowData = $convertToLower ? strtolower($row[$sortColumn]) : $row[$sortColumn];
+                $colLists[$sortColumn][$key] = $rowData;
+            }
+            $args[] = &$colLists[$sortColumn];
+
+            foreach ($sortAttributes as $sortAttribute) {
+                $tmp[$i] = $sortAttribute;
+                $args[] = &$tmp[$i];
+                $i++;
+            }
+        }
+        $args[] = &$data;
+        call_user_func_array('array_multisort', $args);
+        return end($args);
+    }
+
     /**
      * 获取中文字符拼音首字母
      * @param $str
@@ -270,7 +328,7 @@ class Utils
     public static function returnJson($data = [], $status = 'ok')
     {
         $config = [
-            'ok' =>[10002, '操作成功'],
+            'ok' => [10002, '操作成功'],
             'error' => [10001, '操作失败'],
             'timeout' => [10003, '操作超时'],
         ];

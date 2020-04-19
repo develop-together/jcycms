@@ -78,6 +78,7 @@ class MallSpecParamSearch extends MallSpecParam
             ],
             'sort' =>[
                 'defaultOrder' =>[
+                    'group_id' => SORT_ASC,
                     $field => $sort,
                 ],
             ],

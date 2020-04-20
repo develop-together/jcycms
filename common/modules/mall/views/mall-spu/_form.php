@@ -24,18 +24,6 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
 ]);
 ?>
     <style>
-        /*::-webkit-scrollbar-thumb {*/
-        /*    background: rgba(0, 0, 0, 0.4);*/
-        /*    padding: 0;*/
-        /*    border: none;*/
-        /*}*/
-        /*::-webkit-scrollbar-thumb {*/
-        /*    background-color: rgba(180, 180, 180, 0.2);*/
-        /*    border-radius: 12px;*/
-        /*    background-clip: padding-box;*/
-        /*    border: 1px solid rgba(180, 180, 180, 0.4);*/
-        /*    min-height: 28px;*/
-        /*}*/
         body {
             overflow-y: hidden;
         }
@@ -269,7 +257,9 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                                             <span class="text-warning">多规格商品可添加属性，单规格商品可不用点击</span>
                                         </div>
                                     </div>
-                                    <div class="form-group" id="mall-sku"></div>
+                                    <div class="form-group" id="mall-sku">
+                                        <table id="mall-sku-table"></table>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="tab-3">
@@ -327,6 +317,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
             </div>
         </div>
     </div>
+    <!-- 表单操作 -->
 <?php JsBlock::begin(); ?>
     <script>
         // function selectBrand() {
@@ -337,6 +328,8 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
         //         });
         //     }
         // }
+        var $table = $('#mall-sku-table');
+        var locale = "<?= Yii::$app->language ?>";
 
         function selectAttributes() {
 
@@ -352,7 +345,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
 
         function creatAttrTable(columns, data) {
             data = data || [];
-            columns = $.extend(columns, [
+            columns = $.extend([
                 {
                     field: 'cost_price',
                     title: '成本价',
@@ -379,8 +372,8 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     align: 'center',
                 },
                 {
-                    field: 'bar_code',
-                    title: '条形码',
+                    field: 'unit',
+                    title: '单位',
                     align: 'center',
                 },
                 {
@@ -401,7 +394,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     // events: window.operateEvents,
                     formatter: operateFormatter
                 }
-            ]);
+            ], columns);
             var params = {
                 pagination: false,
                 search: false,
@@ -662,23 +655,23 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
             }
             if (!defaultPrice) {
                 layer.alert("默认销售价必须填写");
-                $("#mallspu-mallspu-price").focus();
+                $("#mallspu-price").focus();
                 return false;
             }
             if (!defaultUnit) {
                 layer.alert("默认单位必须填写");
-                $("#mallspu-mallspu-unit").focus();
+                $("#mallspu-unit").focus();
                 return false;
             }
             if (!defaultStock) {
                 layer.alert("默认库存必须填写");
-                $("#mallspu-mallspu-stock").focus();
+                $("#mallspu-stock").focus();
                 return false;
             }
 
             // TODO: 传递商品分类过滤属性：商品分类最多向上溯源3级
             layer.open({
-                type: 2,
+                type: 2,//2
                 title: false,
                 closeBtn: 1, //不显示关闭按钮
                 // shade: [0],// 遮罩
@@ -688,7 +681,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                 // time: 2000, //2秒后自动关闭
                 anim: 2,
                 shadeClose: true,
-                content: [url, 'no'], //iframe的url，no代表不显示滚动条
+                content: [url, 'no'],//[url, 'no'], //iframe的url，no代表不显示滚动条$("#div-attrList").html()
                 btn: ['添加'],
                 // zIndex:2,
                 yes: function (index, layero) {
@@ -697,7 +690,6 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     var selectAttr = body.find("select#attributes").val();
                     var attributes = [];
                     body.find(".attr-list input.attr:checked").each(function () {
-                        // console.log($(this));
                         var attrName = $(this).val();
                         var attrGroupName = $(this).attr('title');
                         var idStr = $(this).attr('id').replace("attribute_", '');
@@ -711,16 +703,14 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                             attrGroupName: attrGroupName
                         });
                     });
-                    var columns = [], data = [], shift = [];
+                    var columnList = [], data = [], shift = [], tmps = [];
                     for (var i = 0; i < selectAttr.length; i++) {
                         var name = body.find("select#attributes").find("option[value='" + selectAttr[i] + "']").text();
-                        columns.push([
-                            {
-                                field: 'gid' + selectAttr[i],
-                                title: name,
-                                align: 'center',
-                            },
-                        ]);
+                        columnList.push({
+                            field: 'gid' + selectAttr[i],
+                            title: name,
+                            align: 'center',
+                        });
                         for (var k in attributes) {
                             var attr = attributes[k];
                             if (attr.gid !== selectAttr[i]) continue;
@@ -728,33 +718,68 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                                 data[i] = [];
                             data[i].push(attr);
                         }
-                        if (i === 0) shift = data[i];
                     }
-
-                    var tmps = [];
+                    shift = data[0];
                     for (var p in shift) {
                         if (data.length - 1) {
                             for (var i = 1; i < data.length; i++) {
                                 var da = data[i];
                                 for (var k in da) {
-                                    var a = [shift[p].attrName, da[k].attrName];
+                                    var a = [
+                                        {
+                                            gid: shift[p].gid,
+                                            attrId: shift[p].attrId,
+                                            attrName: shift[p].attrName
+                                        },
+                                        {
+                                            gid: da[k].gid,
+                                            attrId: da[k].attrId,
+                                            attrName: da[k].attrName
+                                        }];
                                     tmps.push(a);
                                 }
                             }
                         } else {
-                            tmps.push(shift[p].attrName);
+                            tmps.push([
+                                {
+                                    gid: shift[p].gid,
+                                    attrId: shift[p].attrId,
+                                    attrName: shift[p].attrName
+                                }
+                            ]);
+                        }
+                    }
+
+                    var rows = [];
+                    for (var k in tmps) {
+                        var item = tmps[k];
+                        var da = {
+                            cost_price: '',
+                            price: '',
+                            special_price: '',
+                            stock: '',
+                            weight: '',
+                            unit: '',
+                            bar_code: '',
+                            images: '',
+                        };
+                        for (var j in item) {
+                            var val = item[j];
+                            da['gid' + val.gid] = val.attrName;
                         }
 
+                        rows.push(da);
                     }
-                    // 红色 绿色
-                    // M XL
-                    // k k
-                    console.log(tmps);
+                    console.log('tmps:', tmps);
+                    tmps = [];
+                    console.log('rows:', rows);
+                    creatAttrTable(columnList, rows);
                     layer.close(index)
                 },
                 end: function () { //此处用于演示
                 }
             });
-        })
+
+        });
     </script>
 <?php JsBlock::end(); ?>

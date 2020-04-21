@@ -642,15 +642,11 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
         });
 
         // 添加属性
-        localStorage.removeItem('selectedAttrs');
+        var selectedAttrStr = '';
         $('#addAttribute').bind('click', function () {
             var url = $(this).data('url');
-            var selectedAttrs = localStorage.getItem('selectedAttrs');
-            if (selectedAttrs) {
-                selectedAttrs = selectedAttrs.substring(0, selectedAttrs.length - 1);
-                url += '?selectedAttrs=' + selectedAttrs;
-                console.log(url);
-
+            if (selectedAttrStr) {
+                url += '?selectedAttrs=' + selectedAttrStr.substring(0, selectedAttrStr.length - 1);
             }
             var defaultCostPrice = $("#mallspu-cost_price").val();
             var defaultPrice = $("#mallspu-price").val();
@@ -697,7 +693,8 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     var body = layer.getChildFrame('body', index);
                     var selectAttr = body.find("select#attributes").val();
                     var attributes = [];
-                    var selectedAttrs = '';
+                    // var selectedAttrs = '';
+                    selectedAttrStr = '';
                     body.find(".attr-list input.attr:checked").each(function () {
                         var attrName = $(this).val();
                         var attrGroupName = $(this).attr('title');
@@ -711,9 +708,8 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                             gid: gid,
                             attrGroupName: attrGroupName
                         });
-                        selectedAttrs += gid + '_' + id + ',';
+                        selectedAttrStr += gid + '_' + id + ',';
                     });
-                    localStorage.setItem('selectedAttrs', selectedAttrs);
                     createAttr(selectAttr, attributes, body);
                     layer.close(index)
                 },

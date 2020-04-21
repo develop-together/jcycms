@@ -115,10 +115,23 @@ class MallSpuController extends BackendController
         ]);
     }
 
-    public function actionChoseAttr($cid = null)
+    public function actionChoseAttr($cid = null, $selectedAttrs = '')
     {
+        $ids = [];
+        if (!empty($selectedAttrs)) {
+            $selectedAttrs = explode(',', $selectedAttrs);
+//            $selectedAttrs = array_reverse($selectedAttrs);
+            foreach ($selectedAttrs as $selectedAttr) {
+                $attr = explode('_', $selectedAttr);
+                if(count($attr) !== 2) continue;
+                $key = sprintf('attr%s', $attr[0]);
+                if (!isset($ids[$key])) $ids[$key] = [];
+                $ids[$key][] = $attr[1];
+            }
+        }
         return $this->render('chose-attr', [
-            'attributes' => MallSpecGroup::loadGroupAttributes($cid)
+            'attributes' => MallSpecGroup::loadGroupAttributes($cid),
+            'selectedAttrs' => $ids
         ]);
     }
 

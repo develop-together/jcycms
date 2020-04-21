@@ -642,8 +642,16 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
         });
 
         // 添加属性
+        localStorage.removeItem('selectedAttrs');
         $('#addAttribute').bind('click', function () {
             var url = $(this).data('url');
+            var selectedAttrs = localStorage.getItem('selectedAttrs');
+            if (selectedAttrs) {
+                selectedAttrs = selectedAttrs.substring(0, selectedAttrs.length - 1);
+                url += '?selectedAttrs=' + selectedAttrs;
+                console.log(url);
+
+            }
             var defaultCostPrice = $("#mallspu-cost_price").val();
             var defaultPrice = $("#mallspu-price").val();
             var defaultUnit = $("#mallspu-unit").val();
@@ -689,6 +697,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     var body = layer.getChildFrame('body', index);
                     var selectAttr = body.find("select#attributes").val();
                     var attributes = [];
+                    var selectedAttrs = '';
                     body.find(".attr-list input.attr:checked").each(function () {
                         var attrName = $(this).val();
                         var attrGroupName = $(this).attr('title');
@@ -702,84 +711,89 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                             gid: gid,
                             attrGroupName: attrGroupName
                         });
+                        selectedAttrs += gid + '_' + id + ',';
                     });
-                    var columnList = [], data = [], shift = [], tmps = [];
-                    for (var i = 0; i < selectAttr.length; i++) {
-                        var name = body.find("select#attributes").find("option[value='" + selectAttr[i] + "']").text();
-                        columnList.push({
-                            field: 'gid' + selectAttr[i],
-                            title: name,
-                            align: 'center',
-                        });
-                        for (var k in attributes) {
-                            var attr = attributes[k];
-                            if (attr.gid !== selectAttr[i]) continue;
-                            if (!data[i])
-                                data[i] = [];
-                            data[i].push(attr);
-                        }
-                    }
-                    shift = data[0];
-                    for (var p in shift) {
-                        if (data.length - 1) {
-                            for (var i = 1; i < data.length; i++) {
-                                var da = data[i];
-                                for (var k in da) {
-                                    var a = [
-                                        {
-                                            gid: shift[p].gid,
-                                            attrId: shift[p].attrId,
-                                            attrName: shift[p].attrName
-                                        },
-                                        {
-                                            gid: da[k].gid,
-                                            attrId: da[k].attrId,
-                                            attrName: da[k].attrName
-                                        }];
-                                    tmps.push(a);
-                                }
-                            }
-                        } else {
-                            tmps.push([
-                                {
-                                    gid: shift[p].gid,
-                                    attrId: shift[p].attrId,
-                                    attrName: shift[p].attrName
-                                }
-                            ]);
-                        }
-                    }
-
-                    var rows = [];
-                    for (var k in tmps) {
-                        var item = tmps[k];
-                        var da = {
-                            cost_price: '',
-                            price: '',
-                            special_price: '',
-                            stock: '',
-                            weight: '',
-                            unit: '',
-                            bar_code: '',
-                            images: '',
-                        };
-                        for (var j in item) {
-                            var val = item[j];
-                            da['gid' + val.gid] = val.attrName;
-                        }
-
-                        rows.push(da);
-                    }
-                    console.log('tmps:', tmps);
-                    tmps = [];
-                    console.log('rows:', rows);
-                    creatAttrTable(columnList, rows);
+                    localStorage.setItem('selectedAttrs', selectedAttrs);
+                    createAttr(selectAttr, attributes, body);
                     layer.close(index)
                 },
                 end: function () { //此处用于演示
                 }
             });
-
         });
+
+        function createAttr(selectAttr, attributes, body) {
+            var columnList = [], data = [], shift = [], tmps = [];
+            for (var i = 0; i < selectAttr.length; i++) {
+                var name = body.find("select#attributes").find("option[value='" + selectAttr[i] + "']").text();
+                columnList.push({
+                    field: 'gid' + selectAttr[i],
+                    title: name,
+                    align: 'center',
+                });
+                for (var k in attributes) {
+                    var attr = attributes[k];
+                    if (attr.gid !== selectAttr[i]) continue;
+                    if (!data[i])
+                        data[i] = [];
+                    data[i].push(attr);
+                }
+            }
+            shift = data[0];
+            for (var p in shift) {
+                if (data.length - 1) {
+                    for (var i = 1; i < data.length; i++) {
+                        var da = data[i];
+                        for (var k in da) {
+                            var a = [
+                                {
+                                    gid: shift[p].gid,
+                                    attrId: shift[p].attrId,
+                                    attrName: shift[p].attrName
+                                },
+                                {
+                                    gid: da[k].gid,
+                                    attrId: da[k].attrId,
+                                    attrName: da[k].attrName
+                                }];
+                            tmps.push(a);
+                        }
+                    }
+                } else {
+                    tmps.push([
+                        {
+                            gid: shift[p].gid,
+                            attrId: shift[p].attrId,
+                            attrName: shift[p].attrName
+                        }
+                    ]);
+                }
+            }
+
+            var rows = [];
+            for (var k in tmps) {
+                var item = tmps[k];
+                var da = {
+                    cost_price: '',
+                    price: '',
+                    special_price: '',
+                    stock: '',
+                    weight: '',
+                    unit: '',
+                    bar_code: '',
+                    images: '',
+                };
+                for (var j in item) {
+                    var val = item[j];
+                    da['gid' + val.gid] = val.attrName;
+                }
+
+                rows.push(da);
+            }
+            console.log('tmps:', tmps);
+            tmps = [];
+            console.log('rows:', rows);
+            creatAttrTable(columnList, rows);
+        }
     </script>
 <?php JsBlock::end(); ?>

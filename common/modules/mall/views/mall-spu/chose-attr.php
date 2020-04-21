@@ -145,6 +145,7 @@ use common\widgets\JsBlock;
                                                     data-display='<?= $option['display_type'] ?>'
                                                     data-unit='<?= $option['unit'] ?>'
                                                     data-segments='<?= $option['segments'] ?>'
+                                                    <?= !empty($selectedAttrs) && isset($selectedAttrs['attr' . $option['id']]) ? 'selected' : '' ?>
                                                     <?= empty($option['segments']) ? 'disabled' : '' ?>><?= $option['name'] ?></option>
                                         <?php endforeach; ?>
                                     </optgroup>
@@ -191,6 +192,24 @@ use common\widgets\JsBlock;
 
 
     // 属性选择
+
+    //var selectedAttrs = '<?php //echo \yii\helpers\Json::encode($selectedAttrs)?>//';
+    <?php if($selectedAttrs): ?>
+    <?php foreach ($selectedAttrs as $key => $attr): ?>
+        console.log('<?= $key ?>'.replace('attr', ''));
+        createDiv($('.attributes').get(0), '<?= $key ?>'.replace('attr', ''), JSON.parse('<?= json_encode(array_filter($attr)) ?>'));
+    <?php endforeach;?>
+    <?php endif ?>
+    // if (selectedAttrs) {
+    //     console.log(selectedAttrs);
+    //     selectedAttrs = JSON.parse(selectedAttrs);
+    //     console.log(selectedAttrs)
+    //     for (var attrId in selectedAttrs) {
+    //         createDiv($('.attributes').get(0), attrId.replace('attr', ''), selectedAttrs[attrId]);
+    //     }
+    //     alreadyAttr = true;
+    // }
+
     function chosenAttr(el, params) {
         var selected = true;
         if (params.hasOwnProperty('deselected')) {
@@ -204,6 +223,7 @@ use common\widgets\JsBlock;
 
         if (attrId) {
             if (selected) {
+                $("#attr_group_" + attrId).remove();
                 createDiv(el, attrId);
             } else {
                 $("#attr_group_" + attrId).remove();
@@ -213,7 +233,8 @@ use common\widgets\JsBlock;
         }
     }
 
-    function createDiv(el, attrId) {
+    function createDiv(el, attrId, checkeds) {
+        checkeds = checkeds || [];
         var $select = $(el).find('option[value="' + attrId + '"]');
         var params = $select.data('segments');
         if (!params) return;
@@ -231,8 +252,10 @@ use common\widgets\JsBlock;
         for (var i = 0; i < params.length; i++) {
             var param = params[i];
             var sid = idStr + '-' + param.index;
+            console.log(checkeds, param.index, checkeds.indexOf(param.index));
+            var checked = checkeds.indexOf(param.index.toString()) >= 0 ? 'checked' : '';
             str += '<div class="ra1">' +
-                '<input  id="' + sid + '" type="checkbox" value="' + param.name + '" title="' + attrName + '" class = "inputC attr" > ' +
+                '<input  id="' + sid + '" type="checkbox" value="' + param.name + '" title="' + attrName + '" class = "inputC attr" ' + checked + '> ' +
                 '<label for="' + sid + '">' + param.name + '</label>' +
                 '</div>';
         }

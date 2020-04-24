@@ -134,8 +134,8 @@ function _createImg(res, data, hiddenInputId, many) {
 	$(newObj).addClass('upload-kit-item done');		
 	newObj.style.cssFloat = 'left';
 	var newImg = new Image();
-	newImg.style.width = '150px';
-	newImg.style.height = '150px';	
+	// newImg.style.width = '150px';
+	// newImg.style.height = '150px';
 	$(newObj).append('<span class=\'fa fa-trash remove\' data-id =\' ' + fid + '\' onclick=\'removeFile(this)\' data-temp =\' '+ hiddenInputId+ '\' data-resid  = \' '+ res +' \'></span>');							 		
 	if (!/image\/\w+/.test(ftype)) {//如果不是图片格式
 		newImg.src = '/static/img/file.png';

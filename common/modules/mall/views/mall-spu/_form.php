@@ -1,5 +1,6 @@
 <?php
 
+use common\modules\attachment\assets\AttachmentUploadAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use common\widgets\ActiveForm AS BAF;
@@ -9,6 +10,7 @@ use common\widgets\JsBlock;
 /* @var $model common\models\MallSpu */
 /* @var $form common\widgets\ActiveForm */
 \backend\assets\BootstrapAsset::register($this);
+AttachmentUploadAsset::register($this);
 $this->registerCssFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstrap-table/dist/bootstrap-table.min.css');
 $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstrap-table/dist/bootstrap-table.js', [
     'depends' => \backend\assets\AppAsset::class,
@@ -124,6 +126,10 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
         }
 
         /*selectDiv*/
+        .upload-kit-item img {
+            width: 90px;
+            height: 90px;
+        }
     </style>
     <div class="row">
         <div class="col-sm-12">
@@ -350,41 +356,82 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     field: 'cost_price',
                     title: '成本价',
                     align: 'center',
+                    formatter: function (value, row, index) {
+                        return '<input class="form-control" name="attrs[cost_price][]" value="' + value + '" style="width:90px"/>'
+                    }
                 },
                 {
                     field: 'price',
                     title: '销售价',
                     align: 'center',
+                    formatter: function (value, row, index) {
+                        return '<input class="form-control" name="attrs[price][]" value="' + value + '" style="width:90px"/>'
+                    }
                 },
                 {
                     field: 'special_price',
                     title: '销售特价',
                     align: 'center',
+                    formatter: function (value, row, index) {
+                        return '<input class="form-control" name="attrs[special_price][]" value="' + value + '" style="width:90px"/>'
+                    }
                 },
                 {
                     field: 'stock',
                     title: '库存',
                     align: 'center',
+                    formatter: function (value, row, index) {
+                        return '<input class="form-control" name="attrs[stock][]" value="' + value + '" min="1" style="width:90px"/>'
+                    }
                 },
                 {
                     field: 'weight',
                     title: '重量(单位：kg)',
                     align: 'center',
+                    formatter: function (value, row, index) {
+                        return '<input class="form-control" name="attrs[weight][]" value="' + value + '" style="width:90px"/>'
+                    }
                 },
                 {
                     field: 'unit',
                     title: '单位',
                     align: 'center',
+                    formatter: function (value, row, index) {
+                        return '<input class="form-control" name="attrs[unit][]" value="' + value + '" style="width:90px"/>'
+                    }
                 },
                 {
                     field: 'bar_code',
                     title: '条形码',
                     align: 'center',
+                    formatter: function (value, row, index) {
+                        return '<input class="form-control" name="attrs[cost_price][]" value="' + value + '" />'
+                    }
                 },
                 {
                     field: 'images',
                     title: '图片',
                     align: 'center',
+                    formatter: function (value, row, index) {
+                        var divId = 'attr-div' + index;
+                        var fileId = 'attr-img-' + index;
+                        var hideId = 'attr-img-url' + index;
+                        var options = JSON.stringify({
+                            hiddenInputId: hideId,
+                            url: "/upload/image-upload?fileparam=" + fileId,
+                            deleteUrl: "<?= urlencode(Url::toRoute(['/upload/delete'])) ?>",
+                            multiple: false,
+                            maxNumberOfFiles: 1,
+                            maxFileSize: null,
+                            acceptFileTypes: "image/png, image/jpg, image/jpeg, image/gif, image/bmp",
+                            many: false,
+                            files: [[]]
+                        });
+                        return '<div><input type="hidden" name="attrs[images][]" id="' + hideId + '">' +
+                            '<div class="upload-kit-input" id="' + divId + '">' +
+                            '<input type="file" name="' + fileId + '" accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp" onchange="ajaxUpload(this,\'' + divId + '\')" data-options=\'' + options + '\'>' +
+                        '</div>';
+                    }
                 },
                 {
                     field: 'operate',

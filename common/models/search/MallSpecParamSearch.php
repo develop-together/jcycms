@@ -18,7 +18,7 @@ class MallSpecParamSearch extends MallSpecParam
     public function rules()
     {
         return [
-            [['id', 'cid', 'group_id', 'data_type', 'generic', 'searching'], 'integer'],
+            [['id', 'cid', 'group_id', 'data_type', 'generic', 'searching', 'sort'], 'integer'],
             [['name', 'unit', 'segments'], 'safe'],
         ];
     }
@@ -79,6 +79,7 @@ class MallSpecParamSearch extends MallSpecParam
             'sort' =>[
                 'defaultOrder' =>[
                     'group_id' => SORT_ASC,
+                    'sort' => SORT_ASC,
                     $field => $sort,
                 ],
             ],

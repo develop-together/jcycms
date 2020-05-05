@@ -1,4 +1,5 @@
 <?php
+
 namespace common\modules\attachment\ext;
 
 use Yii;
@@ -32,19 +33,19 @@ class Uploader
         "文件未被完整上传",
         "没有文件被上传",
         "上传文件为空",
-        "ERROR_TMP_FILE"           => "临时文件错误",
+        "ERROR_TMP_FILE" => "临时文件错误",
         "ERROR_TMP_FILE_NOT_FOUND" => "找不到临时文件",
-        "ERROR_SIZE_EXCEED"        => "文件大小超出网站限制",
-        "ERROR_TYPE_NOT_ALLOWED"   => "文件类型不允许",
-        "ERROR_CREATE_DIR"         => "目录创建失败",
-        "ERROR_DIR_NOT_WRITEABLE"  => "目录没有写权限",
-        "ERROR_FILE_MOVE"          => "文件保存时出错",
-        "ERROR_FILE_NOT_FOUND"     => "找不到上传文件",
-        "ERROR_WRITE_CONTENT"      => "写入文件内容错误",
-        "ERROR_UNKNOWN"            => "未知错误",
-        "ERROR_DEAD_LINK"          => "链接不可用",
-        "ERROR_HTTP_LINK"          => "链接不是http链接",
-        "ERROR_HTTP_CONTENTTYPE"   => "链接contentType不正确"
+        "ERROR_SIZE_EXCEED" => "文件大小超出网站限制",
+        "ERROR_TYPE_NOT_ALLOWED" => "文件类型不允许",
+        "ERROR_CREATE_DIR" => "目录创建失败",
+        "ERROR_DIR_NOT_WRITEABLE" => "目录没有写权限",
+        "ERROR_FILE_MOVE" => "文件保存时出错",
+        "ERROR_FILE_NOT_FOUND" => "找不到上传文件",
+        "ERROR_WRITE_CONTENT" => "写入文件内容错误",
+        "ERROR_UNKNOWN" => "未知错误",
+        "ERROR_DEAD_LINK" => "链接不可用",
+        "ERROR_HTTP_LINK" => "链接不是http链接",
+        "ERROR_HTTP_CONTENTTYPE" => "链接contentType不正确"
     );
 
     /**
@@ -206,8 +207,8 @@ class Uploader
 
         $heads['Content-Type'] = isset($heads['Content-Type']) ? $heads['Content-Type'] : $heads[3];
         //格式验证(扩展名验证和Content-Type验证)
-        $fileType = strtolower(strrchr($imgUrl, '.'));
-        if (!in_array($fileType, $this->config['allowFiles']) || stristr($heads['Content-Type'], "image")) {
+        $fileType = strtolower( strrchr ($imgUrl, '.') );
+        if (!in_array($fileType, $this->config['allowFiles']) || !isset($heads['Content-Type']) || !stristr($heads['Content-Type'], "image")) {
             $this->stateInfo = $this->getStateInfo("ERROR_HTTP_CONTENTTYPE");
             return;
         }
@@ -371,9 +372,10 @@ class Uploader
     }
 
     // 自动转换字符集 支持数组转换
-    private function autoCharset($fContents, $from='gbk', $to='utf-8') {
-        $from   = strtoupper($from) == 'UTF8' ? 'utf-8' : $from;
-        $to     = strtoupper($to) == 'UTF8' ? 'utf-8' : $to;
+    private function autoCharset($fContents, $from = 'gbk', $to = 'utf-8')
+    {
+        $from = strtoupper($from) == 'UTF8' ? 'utf-8' : $from;
+        $to = strtoupper($to) == 'UTF8' ? 'utf-8' : $to;
         if (strtoupper($from) === strtoupper($to) || empty($fContents) || (is_scalar($fContents) && !is_string($fContents))) {
             //如果编码相同或者非字符串标量则不转换
             return $fContents;
@@ -392,9 +394,9 @@ class Uploader
      */
     private function getFileHash()
     {
-        if(function_exists($this->hashType)) {
-            $fun =  $this->hashType;
-            return $fun($this->autoCharset($this->filePath,'utf-8','gbk'));
+        if (function_exists($this->hashType)) {
+            $fun = $this->hashType;
+            return $fun($this->autoCharset($this->filePath, 'utf-8', 'gbk'));
         }
     }
 
@@ -404,16 +406,16 @@ class Uploader
     private function getThumbPath($width, $height)
     {
 
-    	$type = trim($this->fileType, '.');
-    	if ($type == 'jpg') {
-    		$type = 'jpeg';
-    	}
-    	$fun = 'imagecreatefrom' . $type;
+        $type = trim($this->fileType, '.');
+        if ($type == 'jpg') {
+            $type = 'jpeg';
+        }
+        $fun = 'imagecreatefrom' . $type;
 
-    	$im = $fun($this->filePath);
+        $im = $fun($this->filePath);
         $thumbPath = Yii::$app->params['thumbPath'] . $this->thumbPrefix . $this->fileName;
 
-		$width_im = imagesx($im);
+        $width_im = imagesx($im);
         $height_im = imagesy($im);
         $ratio = 1;
         $RESIZEWIDTH = $RESIZEHEIGHT = $res = false;
@@ -473,17 +475,17 @@ class Uploader
     public function getFileInfo()
     {
         return array(
-            "state"    => $this->stateInfo,
-            "statusCode"    => 200,
-            "url"      => $this->fullName,
-            "title"    => $this->fileName,
+            "state" => $this->stateInfo,
+            "statusCode" => 200,
+            "url" => $this->fullName,
+            "title" => $this->fileName,
             "original" => $this->oriName,
-            "type"     => $this->fileType,
-            "size"     => $this->fileSize,
+            "type" => $this->fileType,
+            "size" => $this->fileSize,
 
-            "mime"     => $this->fileMime,
+            "mime" => $this->fileMime,
             "savePath" => $this->savePath,
-            "hash"     => $this->fileHash,
+            "hash" => $this->fileHash,
             "thumb_path" => $this->thumbPath,
         );
     }

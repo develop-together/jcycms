@@ -114,7 +114,7 @@ class MallSpuSearch extends MallSpu
             ->andFilterWhere(['like', 'sub_title', $this->sub_title])
             ->andFilterWhere(['like', 'brand_name', $this->brand_name])
             ->andFilterWhere(['like', 'dim', $this->dim])
-            ->andFilterWhere(['like', 'image_ids', $this->image_ids]);
+            ->andFilterWhere(['like', 'images', $this->images]);
 
         return $dataProvider;
     }

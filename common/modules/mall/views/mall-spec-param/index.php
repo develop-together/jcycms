@@ -56,7 +56,7 @@ use backend\grid\ActionColumn;
                                 return $model->searchingFormat;
                             },
                         ],
-                        // 'segments',
+                         'sort',
                         'created_at:datetime',
                         'updated_at:datetime',
                         [

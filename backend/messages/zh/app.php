@@ -90,6 +90,7 @@ return [
 	/*Article*/
 	'Article' => '文章',
 	'Category Id' => '分类ID',
+    'Add subordinate' => '新增下级',
 	'Category' => '分类',
 	'Title' => '标题',
 	'Sub Title' => '副标题',

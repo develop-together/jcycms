@@ -2,8 +2,8 @@
 
 namespace common\models;
 
-use common\components\Utils;
 use Yii;
+use common\components\Utils;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 

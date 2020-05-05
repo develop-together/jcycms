@@ -91,6 +91,9 @@ class UploadController extends BackendController
             Yii::$app->response->format = Response::FORMAT_JSON;
             $post = Yii::$app->request->post();
             $model = $this->findModel($post['fileId']);
+            if ($model === false) {// 未找到附件就直接返回成功
+                return ['code' => 200 , 'message' => '删除成功!'];
+            }
             //  Yii::$app->params['uploadSaveFilePath'] . '/'
             $filePath = Yii::getAlias('@backend') . '/web/'  . $post['filepath'];
             $filePath = str_replace('', "\\", $filePath);
@@ -129,7 +132,8 @@ class UploadController extends BackendController
         if ($model) {
             return $model;
         } else {
-             throw new NotFoundHttpException('The requested page does not exist.');
+            return false;
+             //throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 }

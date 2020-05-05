@@ -5,8 +5,8 @@ use yii\helpers\Url;
 /* @var $model common\models\MallSpu */
 
 $this->params['breadcrumbs'] = [
-    ['label' => Yii::t('app', 'Mall Spu'), 'url' => Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
-    ['label' => Yii::t('app', 'Update') . Yii::t('app', 'Mall Spu')],
+    ['label' => Yii::t('mall', 'Goods'), 'url' => Url::previous('BackendDynamic-' . Yii::$app->controller->id)],
+    ['label' => Yii::t('app', 'Update') . Yii::t('mall', 'Goods')],
 ];
 ?>
 

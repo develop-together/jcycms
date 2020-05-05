@@ -2,6 +2,8 @@
 
 namespace common\modules\mall;
 
+use Yii;
+
 /**
  * mall module definition class
  */
@@ -18,7 +20,7 @@ class Module extends \yii\base\Module
     public function init()
     {
         parent::init();
-
+        Yii::configure($this, require  __DIR__ . DIRECTORY_SEPARATOR . 'config.php');
         // custom initialization code goes here
     }
 }

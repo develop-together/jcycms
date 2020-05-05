@@ -44,6 +44,7 @@ use common\widgets\JsBlock;
 
                         </div>
                         <div class="col-sm-6">
+                            <?= $form->field($model, 'sort')->textInput(['style' => 'width:50%', 'type' => 'number', 'min' => 0]); ?>
                             <?= $form->field($model, 'data_type')->dropDownList(\common\components\BaseConfig::getDataTypes(), [
                                 'style' => 'width:50%'
                             ]); ?>

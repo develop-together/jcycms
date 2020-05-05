@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace common\modules\attachment\actions;
 
 use Yii;
@@ -7,72 +8,119 @@ use yii\web\Response;
 use yii\web\UploadedFile;
 use common\modules\attachment\ext\YiiUploader;
 
+/**
+ * Class UploadAction
+ * @package common\modules\attachment\actions
+ */
 class UploadAction extends Action
 {
-	public $path;
+    /**
+     * @var
+     */
+    public $path;
 
-	public $uploadOnlyImage = true;
+    /**
+     * @var bool
+     */
+    public $uploadOnlyImage = true;
 
-	public $multiple  = false;
+    /**
+     * @var bool
+     */
+    public $multiple = false;
 
-	public $base64Data = null;
+    /**
+     * @var null
+     */
+    public $base64Data = null;
 
-	public $deleteUrl = ['/upload/delete'];
+    /**
+     * @var array
+     */
+    public $deleteUrl = ['/upload/delete'];
 
-	public $uploadQueryParam = 'fileparam';
+    /**
+     * @var string
+     */
+    public $uploadQueryParam = 'fileparam';
 
-	public $uploadParam = '';
+    /**
+     * @var string
+     */
+    public $uploadParam = '';
 
-	public $uploadData = [];
+    /**
+     * @var array
+     */
+    public $uploadData = [];
 
-	public $allowUploadFileType = '';
+    /**
+     * @var string
+     */
+    public $allowUploadFileType = '';
 
-	private $_validator = 'image';
+    /**
+     * @var string
+     */
+    private $_validator = 'image';
 
-	public $validatorOptions = [];
+    /**
+     * @var array
+     */
+    public $validatorOptions = [];
 
-	public function init()
-	{
-        if (Yii::$app->request->get($this->uploadQueryParam)) {
-        	$this->uploadParam = Yii::$app->request->get($this->uploadQueryParam);
+    public $itemCallback = null;
+
+    /**
+     *
+     */
+    public function init()
+    {
+        $uploadParam = Yii::$app->request->get($this->uploadQueryParam, '');
+        if ($uploadParam) $this->uploadParam = $uploadParam;
+        if ($this->uploadOnlyImage !== true) $this->_validator = 'file';
+        $pathFix = Yii::$app->request->get('pathFix', '');
+        if ($pathFix && $this->path) $this->path = $pathFix . '/' . $this->path;
+    }
+
+    /**
+     * @return array|bool
+     */
+    public function run()
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $files = UploadedFile::getInstanceByName($this->uploadParam);
+            if (empty($files)) {
+                return ['stateInfo' => '找不到上传的文件', 'statusCode' => 300];
+            }
+
+            return $this->uploadOne($files);
         }
-		
-		if ($this->uploadOnlyImage !== true) {
-		    $this->_validator = 'file';
-		}		
-	}
-	
-	public function run()
-	{
-		if (Yii::$app->request->isAjax) {
-			Yii::$app->response->format = Response::FORMAT_JSON;
-			$files = UploadedFile::getInstanceByName($this->uploadParam);
-			if (empty($files)) {
-				return ['stateInfo' => '找不到上传的文件', 'statusCode' => 300];
-			}
+    }
 
-			return $this->uploadOne($files);
-		}
-	}
-
-	private function uploadOne(UploadedFile $file)
-	{
+    /**
+     * @param UploadedFile $file
+     * @return array|bool
+     */
+    private function uploadOne(UploadedFile $file)
+    {
         //默认设置
-		if ('image-upload' === $this->id) {
-			$config['maxSize'] = Yii::$app->params['uploadConfig']['imageMaxSize'];
-			$config['allowFiles'] = Yii::$app->params['uploadConfig']['imageAllowFiles'];
-			$config['mimeMap'] = Yii::$app->params['uploadConfig']['imgAllowFileMimes'];
-		} else {
-			$config['maxSize'] = Yii::$app->params['uploadConfig']['fileMaxSize'];
-			$config['allowFiles'] = Yii::$app->params['uploadConfig']['fileAllowFiles'];			
-		}
+        if ('image-upload' === $this->id) {
+            $config['maxSize'] = Yii::$app->params['uploadConfig']['imageMaxSize'];
+            $config['allowFiles'] = Yii::$app->params['uploadConfig']['imageAllowFiles'];
+            $config['mimeMap'] = Yii::$app->params['uploadConfig']['imgAllowFileMimes'];
+        } else {
+            $config['maxSize'] = Yii::$app->params['uploadConfig']['fileMaxSize'];
+            $config['allowFiles'] = Yii::$app->params['uploadConfig']['fileAllowFiles'];
+        }
 
-		$uploader = new YiiUploader($file, $config, $this->path);
-		$res = $uploader->upload();
-		if (false === $res) {
-			return ['stateInfo' => $uploader->getStateInfo(), 'statusCode' => 300];
-		}
+        $uploader = new YiiUploader($file, $config, $this->path);
+        $res = $uploader->upload();
+        if (false === $res) {
+            return ['stateInfo' => $uploader->getStateInfo(), 'statusCode' => 300];
+        }
 
-		return $res;
-	}
+        return $res;
+    }
 }

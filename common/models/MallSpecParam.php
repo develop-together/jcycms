@@ -57,7 +57,7 @@ class MallSpecParam extends \common\components\BaseModel
     public function rules()
     {
         return [
-            [['cid', 'group_id', 'data_type', 'generic', 'searching'], 'integer'],
+            [['cid', 'group_id', 'data_type', 'generic', 'searching', 'sort'], 'integer'],
             [['name'], 'required'],
             [['name'], 'string', 'max' => 255],
             ['data_type', 'default', 'value' => 1],
@@ -81,6 +81,7 @@ class MallSpecParam extends \common\components\BaseModel
             'generic' => Yii::t('mall', 'Generic'),
             'searching' => Yii::t('mall', 'Searching'),
             'segments' => Yii::t('mall', 'Segments'),
+            'sort' => Yii::t('app', 'Sort'),
             'display_type' => Yii::t('app', 'Type'),
         ]);
     }
@@ -144,7 +145,7 @@ class MallSpecParam extends \common\components\BaseModel
             Yii::$app->cache->delete($cacheKey);
         $data = Yii::$app->cache->get($cacheKey);
         if (empty($data)) {
-            $data = $query->orderBy(['created_at' => SORT_DESC])
+            $data = $query->orderBy(['sort' => SORT_ASC, 'created_at' => SORT_DESC])
                 ->asArray()
                 ->all();
             Yii::$app->cache->set($cacheKey, $data);

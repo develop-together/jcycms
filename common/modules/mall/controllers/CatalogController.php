@@ -61,11 +61,13 @@ class CatalogController extends BackendController
     /**
      * Creates a new Category model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     * @param int $pid
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($pid = 0)
     {
         $model = new MallCategory();
+        $model->parent_id = $pid;
         $model->sort = 0;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));

@@ -517,3 +517,37 @@ ADD COLUMN `path` VARCHAR(45) NULL DEFAULT '' COMMENT '面包屑路径' AFTER `t
 
 ALTER TABLE `byt_mall_sku`
 ADD COLUMN `bar_code` CHAR(16) NULL DEFAULT '' COMMENT '条形码' AFTER `sku_code`;
+
+#2020-05-04
+
+ALTER TABLE `byt_mall_sku`
+ADD COLUMN `spec_gid` INT(11) NULL DEFAULT 0 COMMENT '产品规格属性分组ID' AFTER `sort`,
+ADD COLUMN `spec_id` INT(11) NULL DEFAULT 0 COMMENT '产品规格属性ID' AFTER `spec_gid`;
+
+ALTER TABLE `byt_mall_spec_param`
+ADD COLUMN `sort` INT(11) NULL DEFAULT 0 COMMENT '排序' AFTER `segments`;
+
+ALTER TABLE `byt_mall_spu`
+CHANGE COLUMN `image_ids` `images` VARCHAR(500) NULL DEFAULT '' COMMENT '商品展示图片（附件ID）' ;
+
+ALTER TABLE `byt_mall_spu`
+CHANGE COLUMN `weight` `weight` DECIMAL(10,2) NULL DEFAULT '0.00' COMMENT '毛重\\重量(KG)' ;
+
+ALTER TABLE `byt_mall_sku`
+ENGINE = InnoDB ;
+
+ALTER TABLE `byt_mall_spu`
+ENGINE = InnoDB ;
+
+ALTER TABLE `byt_mall_spec_param`
+ENGINE = InnoDB ;
+
+ALTER TABLE `byt_mall_brand`
+ENGINE = InnoDB ;
+
+ALTER TABLE `byt_mall_sku`
+CHANGE COLUMN `weight` `weight` DECIMAL(10,2) NULL DEFAULT '0.00' COMMENT '重量' ;
+
+
+
+

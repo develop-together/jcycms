@@ -22,13 +22,14 @@ class UserAcl
             'site/index:GET',
             'site/desktop:GET',
             'site/test:GET',
+            'site/error:GET',
+            'site/error:POST',
             'public/captcha:GET',
             'public/logout:GET',
             'public/login:GET',
             'public/login:POST',
             'admin-user/info:GET',
             'admin-user/info:POST',
-            'site/error:GET'
         ];
     }
 

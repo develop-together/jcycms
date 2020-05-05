@@ -15,8 +15,7 @@ $(document).ready(function(){
 	}
 })
 
-function ajaxUpload(obj, res)
-{
+function ajaxUpload(obj, res) {
 	var options = $(obj).data('options') ? $(obj).data('options') : $(obj).attr('data-options');
 	deleteAjaxUrl = decodeURIComponent(options.deleteUrl);
 	var maxNumberOfFiles = options.maxNumberOfFiles;

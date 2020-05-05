@@ -20,20 +20,42 @@ use backend\grid\ActionColumn;
                     'layout' => '{items}',
                     'columns' => [
                         [
-                            'class' => 'yii\grid\CheckboxColumn'
+                            'class' => 'yii\grid\CheckboxColumn',
+                            'options' => ['style' => 'width:90px'],
                         ],
                         [
                             'attribute' => 'name',
                             'format' => 'html',
+                            'options' => ['style' => 'width:180px'],
                             'enableSorting' => false,
                             'value' => function ($model) {
                                 return $model->nameFormat;
                             }
                         ],
-                        'sort',
+                        [
+                            'attribute' => 'sort',
+                            'options' => ['style' => 'width:90px']
+                        ],
+                        [
+                            'attribute' => 'remark',
+                            'contentOptions' => [
+                            ],
+                            'format' => function($value, $formatter) {
+                                /* @var \yii\i18n\Formatter $formatter */
+                                return \yii\helpers\StringHelper::truncate($value, 32);
+                            },
+                            'options' => ['style' => 'width:180px']
+                        ],
                         [
                             'class' => 'backend\grid\ActionColumn',
-                            'template' => '{view}{update}{delete}',
+                            'width' => '250px',
+                            'buttons' => [
+                                'add-sub' => function ($url, $model) {
+                                    $title = Yii::t('app', 'Add subordinate');
+                                    return '<a href="' . Url::to(['create', 'pid' => $model->id]) . '" class="btn  btn-sm btn-white" title="' . $title . '" data-pjax="0"><i class="fa fa-plus"></i> ' . $title . ' </a>';
+                                }
+                            ],
+                            'template' => '{add-sub}{view}{update}{delete}',
                         ],
                     ]
                 ]); ?>

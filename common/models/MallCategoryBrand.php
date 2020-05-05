@@ -79,7 +79,9 @@ class MallCategoryBrand extends \common\components\BaseModel
     {
         $query = self::find();
         if ($cid) {
+            $catalog = MallCategory::findOne($cid);
             $query->andWhere(['category_id' => $cid]);
+            !empty($catalog->path) && $query->orFilterWhere(['category_id' => explode(',', $catalog->path)]);
         }
 
         if ($brandId) {

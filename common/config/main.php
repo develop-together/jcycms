@@ -12,6 +12,11 @@ $config = [
     'modules' => [
         'attachment' => [
             'class' => 'common\modules\attachment\Module',
+//            'controllerMap' => [
+//                'upload' => [
+//                    'class' => 'common\modules\attachment\actions\UploadController',
+//                ],
+//            ]
         ],
         'mall' => [
             'class' => 'common\modules\mall\Module',

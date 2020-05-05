@@ -90,7 +90,7 @@ class BaseModel extends \yii\db\ActiveRecord
      */
     public function path($attribute = '', $type = '')
     {
-        return Utils::photoUrl($this->$attribute, $type);
+        return Utils::photoUrl($this->{$attribute}, $type);
     }
 
     /**

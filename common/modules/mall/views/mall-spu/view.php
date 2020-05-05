@@ -32,7 +32,6 @@ $this->params['breadcrumbs'] = [
 						'dim',
 						'flag_saleable',
 						'flag_valid',
-						'image_ids',
 						'sort',
 						'created_at',
 						'updated_at',

@@ -168,7 +168,8 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                                                for="mallspu-weight"><?= $model->getAttributeLabel('weight') ?></label>
                                         <div class="col-sm-10 input-group m-b">
                                             <input type="text" id="mallspu-weight" class="form-control"
-                                                   name="MallSpu[weight]" aria-invalid="false">
+                                                   name="MallSpu[weight]" aria-invalid="false"
+                                                   value="<?= $model->weight ?>">
                                             <span class="input-group-addon"><?= Yii::t('mall', 'G') ?></span>
                                             <div class="help-block m-b-none"></div>
                                         </div>
@@ -182,35 +183,74 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                                         </label>
                                         <div class="col-sm-10">
                                             <div class="formInputSD">
-                                                <div onclick="selectDiv.selectClass()" class="selectDiv"
-                                                     data-url="<?= Url::to(['mall-spu/ajax-catalog']) ?>">
-                                                    <select name="MallSpu[cid3]" readonly="readonly"
-                                                            class="form-control"
-                                                            aria-required="true"
-                                                            style="margin-right: 0px;">
-                                                        <option selected="selected" value="0">请选择商品类别</option>
-                                                    </select>
-                                                    <div id="div_text"></div>
-                                                </div>
-                                                <div id="selectData" class="formInputDiv" style="display: none;">
-                                                    <ul id="selectData_1"></ul>
-                                                </div>
+                                                <?php if ($model->isNewRecord): ?>
+                                                    <div onclick="selectDiv.selectClass()" class="selectDiv"
+                                                         data-url="<?= Url::to(['mall-spu/ajax-catalog']) ?>">
+
+                                                        <select name="MallSpu[cid3]" readonly="readonly"
+                                                                class="form-control"
+                                                                aria-required="true"
+                                                                style="margin-right: 0px;">
+                                                            <option selected="selected" value="0">请选择商品类别</option>
+                                                        </select>
+                                                        <div id="div_text"></div>
+                                                    </div>
+                                                    <div id="selectData" class="formInputDiv" style="display: none;">
+                                                        <ul id="selectData_1"></ul>
+                                                    </div>
+                                                <?php else: ?>
+                                                    <div onclick="selectDiv.selectClass()" class="selectDiv"
+                                                         data-url="/mall/mall-spu/ajax-catalog">
+                                                        <select name="MallSpu[cid3]" readonly="readonly"
+                                                                class="form-control" aria-required="true"
+                                                                style="margin-right: 0px;">
+                                                            <option selected="selected"
+                                                                    value="<?= $model->cid3 ?>"></option>
+                                                        </select>
+                                                        <div id="div_text">
+                                                            <?php if ($model->catalog1): ?>
+                                                                <p class="selectItem" id="p1" tyid="<?= $model->cid1 ?>"
+                                                                   onclick="selectDiv.delSel(this,0, <?= $model->cid1 ?>)">
+                                                                    <?= $model->catalog1->name ?><span>&gt;</span></p>
+                                                            <?php endif; ?>
+                                                            <?php if ($model->catalog2): ?>
+                                                                <p class="selectItem" id="p2" tyid="<?= $model->cid2 ?>"
+                                                                   onclick="selectDiv.delSel(this,1, <?= $model->cid2 ?>)">
+                                                                    <?= $model->catalog2->name ?><span>&gt;</span></p>
+                                                            <?php endif; ?>
+                                                            <?php if ($model->catalog3): ?>
+                                                                <p class="selectItem" id="p3" tyid="<?= $model->cid3 ?>"
+                                                                   onclick="selectDiv.delSel(this, 2, <?= $model->cid3 ?>)">
+                                                                   <?= $model->catalog3->name ?>
+                                                                </p>
+                                                                <p class="selectItem del_sel" id="p4"
+                                                                   onclick="selectDiv.delSel(this)"></p>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
+                                                    <div id="selectData" class="formInputDiv" style="display: none;">
+                                                        <ul id="selectData_1"></ul>
+                                                    </div>
+                                                <?php endif; ?>
                                             </div>
                                             <div class="help-block m-b-none"></div>
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
-                                    <?= $form->field($model, 'brand_id')->dropDownList(['placeHolder' => Yii::t('mall', 'Please select {attribute}', [
-                                        'attribute' => Yii::t('mall', 'Brand')
-                                    ])]); ?>
+                                    <?= $form->field($model, 'brand_id')->dropDownList([]); ?>
                                     <div class="hr-line-dashed"></div>
 
                                     <?= $form->field($model, 'keyword')->textInput(['maxlength' => true, 'placeholder' => Yii::t('mall', 'Multiple keywords are separated by ","')]); ?>
 
                                     <div class="hr-line-dashed"></div>
-                                    <?= $form->field($model, 'image_ids')->widget(\common\widgets\fileUploadInput\FileUploadInputWidget::className(), [
+                                    <?= $form->field($model, 'dim')->textInput() ?>
+                                    <div class="hr-line-dashed"></div>
+                                    <?= $form->field($model, 'images')->widget(\common\widgets\fileUploadInput\FileUploadInputWidget::className(), [
                                         'type' => 'images',
-                                        'widgetOptions' => ['notes' => '（展示图最多上传五张，建议上传500px*500px的图片，主图未设置则默认第一张）']
+                                        'widgetOptions' => [
+                                            'pathFix' => 'mall',
+                                            'notes' => '（展示图最多上传五张，建议上传500px*500px的图片，主图未设置则默认第一张）'
+                                        ]
                                     ]); ?>
                                 </div>
                             </div>
@@ -224,6 +264,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                                             <span class="input-group-addon">¥</span>
                                             <input type="text" id="mallspu-cost_price" class="form-control"
                                                    name="MallSpu[cost_price]"
+                                                   value="<?= $model->cost_price ?>"
                                                    placeholder="<?= Yii::t('mall', 'Please set the default cost price of the commodity') ?>"
                                                    aria-invalid="false">
                                             <span class="input-group-addon">.00</span>
@@ -239,6 +280,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                                             <span class="input-group-addon">¥</span>
                                             <input type="text" id="mallspu-price" class="form-control"
                                                    name="MallSpu[price]"
+                                                   value="<?= $model->price ?>"
                                                    placeholder="<?= Yii::t('mall', 'Please set the default selling price of the goods') ?>"
                                                    aria-invalid="false">
                                             <span class="input-group-addon">.00</span>
@@ -260,6 +302,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                                                     id="addAttribute">
                                                 添加属性
                                             </button>
+                                            <input type="hidden" name="attrs[gids]">
                                             <span class="text-warning">多规格商品可添加属性，单规格商品可不用点击</span>
                                         </div>
                                     </div>
@@ -314,7 +357,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     <div class="form-group">
                         <?= Html::button(Yii::t('app', 'Previous Step'), ['class' => 'btn btn-primary ', 'id' => 'prevStep', 'data-prev' => 0, 'disabled' => true]) ?>
                         <?= Html::button(Yii::t('app', 'Next Step'), ['class' => 'btn btn-primary', 'id' => 'nextStep', 'data-next' => 1]) ?>
-                        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                        <?= Html::submitButton($model->getIsNewRecord() ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 
                         <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']); ?>
                     </div>
@@ -326,21 +369,10 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
     <!-- 表单操作 -->
 <?php JsBlock::begin(); ?>
     <script>
-        // function selectBrand() {
-        //     var class_str = $("[name=product_class]").val();
-        //     if (class_str == '' || class_str <= 0) {
-        //         layer.msg("请先选择商品类别！", {
-        //             time: 2000
-        //         });
-        //     }
-        // }
         var $table = $('#mall-sku-table');
         var locale = "<?= Yii::$app->language ?>";
-
-        function selectAttributes() {
-
-        }
-
+        var selectedAttrStr = '<?= $model->getSelectedAttrStr();?>';// 添加属性
+        var currentTabIndex = 0;// tab切换-标签页显示时触发,但是必须在某个标签页已经显示之后
         function operateFormatter(value, row, index) {
             return [
                 '<a class="remove" href="javascript:void(0)" title="Remove">',
@@ -349,15 +381,102 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
             ].join('')
         }
 
+        function createAttr(selectAttr, attributes, body) {
+            var columnList = [], data = [], shift = [], tmps = [], indexes = '';
+            for (var i = 0; i < selectAttr.length; i++) {
+                var pIndex = selectAttr[i];
+                var name = body.find("select#attributes").find("option[value='" + pIndex + "']").text();
+                var choseStr = '';
+                for (var k in attributes) {
+                    var attr = attributes[k];
+                    if (attr.gid !== pIndex) continue;
+                    if (!data[i])
+                        data[i] = [];
+                    data[i].push(attr);
+                }
+                columnList.push({
+                    field: 'gid' + pIndex,
+                    title: name,
+                    align: 'center',
+                    pIndex: pIndex
+                });
+            }
+            shift = data[0];
+            for (var p in shift) {
+                if (data.length - 1) {
+                    for (var i = 1; i < data.length; i++) {
+                        var da = data[i];
+                        for (var k in da) {
+                            var a = [
+                                {
+                                    gid: shift[p].gid,
+                                    attrId: shift[p].attrId,
+                                    attrName: shift[p].attrName
+                                },
+                                {
+                                    gid: da[k].gid,
+                                    attrId: da[k].attrId,
+                                    attrName: da[k].attrName
+                                }];
+                            tmps.push(a);
+                        }
+                    }
+                } else {
+                    tmps.push([
+                        {
+                            gid: shift[p].gid,
+                            attrId: shift[p].attrId,
+                            attrName: shift[p].attrName
+                        }
+                    ]);
+                }
+            }
+
+            var rows = [];
+            for (var k in tmps) {
+                var item = tmps[k];
+                var da = {
+                    cost_price: '',
+                    price: '',
+                    special_price: '',
+                    stock: '',
+                    weight: '',
+                    unit: '',
+                    bar_code: '',
+                    images: '',
+                    item: item
+                };
+                for (var j in item) {
+                    var val = item[j];
+                    da['gid' + val.gid] = val.attrName;
+                }
+
+                rows.push(da);
+            }
+            console.log('columnList:', columnList);
+            tmps = [];
+            console.log('rows:', rows);
+            creatAttrTable(columnList, rows);
+        }
+
         function creatAttrTable(columns, data) {
             data = data || [];
-            columns = $.extend([
+            var columns = columns || [];
+            var defaultColumn = [
                 {
                     field: 'cost_price',
                     title: '成本价',
                     align: 'center',
                     formatter: function (value, row, index) {
-                        return '<input class="form-control" name="attrs[cost_price][]" value="' + value + '" style="width:90px"/>'
+                        value = value || $("#mallspu-cost_price").val();
+                        var items = row.item;
+                        var html = '<input class="form-control" name="attrs[cost_price][]" value="' + value + '" style="width:90px"/>';
+                        for (var i = 0; i < items.length; i++) {
+                            //index + '_' + i + '#' +
+                            var val = items[i].gid + '_' + items[i].attrId + '_' + items[i].attrName;
+                            html += '<input type="hidden" name="attrs[gid' + items[i].gid + '][]" value="' + val + '" />'
+                        }
+                        return html;
                     }
                 },
                 {
@@ -365,6 +484,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     title: '销售价',
                     align: 'center',
                     formatter: function (value, row, index) {
+                        value = value || $("#mallspu-price").val();
                         return '<input class="form-control" name="attrs[price][]" value="' + value + '" style="width:90px"/>'
                     }
                 },
@@ -373,6 +493,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     title: '销售特价',
                     align: 'center',
                     formatter: function (value, row, index) {
+                        value = value || $("#mallspu-price").val();
                         return '<input class="form-control" name="attrs[special_price][]" value="' + value + '" style="width:90px"/>'
                     }
                 },
@@ -381,14 +502,16 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     title: '库存',
                     align: 'center',
                     formatter: function (value, row, index) {
+                        value = value || $("#mallspu-stock").val();
                         return '<input class="form-control" name="attrs[stock][]" value="' + value + '" min="1" style="width:90px"/>'
                     }
                 },
                 {
                     field: 'weight',
-                    title: '重量(单位：kg)',
+                    title: '重量(单位：g)',
                     align: 'center',
                     formatter: function (value, row, index) {
+                        value = value || $("#mallspu-weight").val();
                         return '<input class="form-control" name="attrs[weight][]" value="' + value + '" style="width:90px"/>'
                     }
                 },
@@ -397,6 +520,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     title: '单位',
                     align: 'center',
                     formatter: function (value, row, index) {
+                        value = value || $("#mallspu-unit").val();
                         return '<input class="form-control" name="attrs[unit][]" value="' + value + '" style="width:90px"/>'
                     }
                 },
@@ -405,7 +529,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     title: '条形码',
                     align: 'center',
                     formatter: function (value, row, index) {
-                        return '<input class="form-control" name="attrs[cost_price][]" value="' + value + '" />'
+                        return '<input class="form-control" name="attrs[bar_code][]" value="' + value + '" />'
                     }
                 },
                 {
@@ -416,21 +540,32 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                         var divId = 'attr-div' + index;
                         var fileId = 'attr-img-' + index;
                         var hideId = 'attr-img-url' + index;
+                        var files = [];
+                        if (row.images) {
+                            files = [
+                                {url: row.images, fullname: row.fullname, id: row.attachmentId, filetype: row.filetype}
+                            ];
+                        }
                         var options = JSON.stringify({
                             hiddenInputId: hideId,
-                            url: "/upload/image-upload?fileparam=" + fileId,
+                            url: "/upload/image-upload?fileparam=" + fileId + '&pathFix=mall',
                             deleteUrl: "<?= urlencode(Url::toRoute(['/upload/delete'])) ?>",
                             multiple: false,
                             maxNumberOfFiles: 1,
                             maxFileSize: null,
                             acceptFileTypes: "image/png, image/jpg, image/jpeg, image/gif, image/bmp",
                             many: false,
-                            files: [[]]
+                            files: files
                         });
+                        if (row.images) {
+                            return '<div><input type="hidden" name="attrs[images][]" value="" id="' + hideId + '"><div class="upload-kit-item done" style="float: left;"><span class="fa fa-trash remove" data-id="' + row.attachmentId + '" onclick="removeFile(this)" data-temp=" user-avatar" data-resid=" ' + divId + '"></span><img src="' + row.images + '"></div><div class="upload-kit-input" id="' + divId + '" style="display: none">' +
+                                '<input type="file" name="' + fileId + '" accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp" onchange="ajaxUpload(this,\'' + divId + '\')" data-options=\'' + options + '\'></div>';
+                        }
+
                         return '<div><input type="hidden" name="attrs[images][]" id="' + hideId + '">' +
                             '<div class="upload-kit-input" id="' + divId + '">' +
                             '<input type="file" name="' + fileId + '" accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp" onchange="ajaxUpload(this,\'' + divId + '\')" data-options=\'' + options + '\'>' +
-                        '</div>';
+                            '</div>';
                     }
                 },
                 {
@@ -441,7 +576,10 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     // events: window.operateEvents,
                     formatter: operateFormatter
                 }
-            ], columns);
+            ];
+            for (var key in defaultColumn) {
+                columns.push(defaultColumn[key]);
+            }
             var params = {
                 pagination: false,
                 search: false,
@@ -494,6 +632,40 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     that.selectDataDom.css('display', 'none');
                 }
             },
+            initCateBrand: function () {
+                var that = this;
+                var cid = parseInt('<?= $model->cid3 ?>');
+                var level = 1;
+                if (cid) {
+                    level = 3;
+                } else if (cid = parseInt('<?= $model->cid2 ?>')) {
+                    level = 2;
+                } else {
+                    cid = parseInt('<?= $model->cid1 ?>');
+                }
+                var brandId = parseInt('<?= $model->brand_id?>');
+                var url = that.selectDivDom.data('url');
+                if (cid) {
+                    that.selectDivDom.find('option').text('').attr('value', cid);
+                    $(this).addClass('active').siblings().removeClass('active');
+                    that.request(url, 'GET', {
+                        cid: cid,
+                        brandId: brandId
+                    }, function (response) {
+                        if (response.code === 10002) {
+                            that.brandDom.empty();
+                            that.selectDataOneDom.empty();
+                            var catalogList = response.catalogList;
+                            var brandList = response.brandList;
+                            that.createLiList(that.selectDataOneDom, catalogList, 'id', 'name');
+                            that.createOptions(that.brandDom, brandList, 'id', 'name', brandId, '请选择品牌');
+                        }
+                    }, function (XHR, TS) {
+                        that.choseClass = true;
+                    })
+                }
+
+            },
             createLiList: function (dom, data, key, vKey) {
                 key = key || 'id';
                 vKey = vKey || 'value';
@@ -512,6 +684,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                 }
             },
             createOptions: function (dom, data, key, vKey, selected, tips) {
+                $(dom).empty();
                 key = key || 'id';
                 vKey = vKey || 'value';
                 selected = selected || null;
@@ -520,8 +693,8 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                 if (tips) str = '<option value="">' + tips + '</option>';
                 for (var i = 0; i < data.length; i++) {
                     var da = data[i];
-                    var selectedStr = da[key] === selected ? 'selected' : '';
-                    str += "<option value='" + da[key] + "' '+selectedStr+'>" + da[vKey] + "</option>";
+                    var selectedStr = da[key] == selected ? 'selected' : '';
+                    str += "<option value='" + da[key] + "' " + selectedStr + ">" + da[vKey] + "</option>";
                 }
 
                 $(dom).append(str);
@@ -544,7 +717,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                 if (data.hasOwnProperty('level')) {
                     level = data['level'];
                 }
-                that.selectDivDom.find('option').text('').attr('val', cid);
+                that.selectDivDom.find('option').text('').attr('value', cid);
                 $(this).addClass('active').siblings().removeClass('active');
                 var brandId = that.brandDom.find('option:selected').val();
                 var num = that.selectDataOneDom.find('ul').length;
@@ -655,41 +828,10 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
             }
         }
 
-        // tab切换-标签页显示时触发,但是必须在某个标签页已经显示之后
-        var currentTabIndex = 0;
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            // 获取已激活的标签页的名称e.target
-            // 获取前一个激活的标签页的名称 e.relatedTarget
-            var href = $(e.target).attr('href');
-            var tabId = parseInt(href.replace('#tab-', ''));
-            if (tabId === 4) {
-                $("#nextStep").attr('disabled', true);
-                $("#prevStep").attr('disabled', false);
-            } else if (tabId > 1) {
-                $("#nextStep").attr('disabled', false);
-                $("#prevStep").attr('disabled', false);
-            } else {
-                $("#prevStep").attr('disabled', true);
-                $("#nextStep").attr('disabled', false);
-            }
 
-            currentTabIndex = tabId - 1;
-        });
+        // 初始化分类和品牌
+        selectDiv.initCateBrand();
 
-        // 上一步
-        $("#prevStep").on('click', function () {
-            currentTabIndex -= 1;
-            $('ul.nav-tabs li:eq(' + currentTabIndex + ') a').tab('show');
-        });
-
-        // 下一步
-        $("#nextStep").on('click', function () {
-            currentTabIndex += 1;
-            $('ul.nav-tabs li:eq(' + currentTabIndex + ') a').tab('show');
-        });
-
-        // 添加属性
-        var selectedAttrStr = '';
         $('#addAttribute').bind('click', function () {
             var url = $(this).data('url');
             if (selectedAttrStr) {
@@ -758,85 +900,65 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                         selectedAttrStr += gid + '_' + id + ',';
                     });
                     createAttr(selectAttr, attributes, body);
-                    layer.close(index)
+                    $("input[name='attrs[gids]']").val(selectAttr);
+                    layer.close(index);
                 },
                 end: function () { //此处用于演示
                 }
             });
         });
 
-        function createAttr(selectAttr, attributes, body) {
-            var columnList = [], data = [], shift = [], tmps = [];
-            for (var i = 0; i < selectAttr.length; i++) {
-                var name = body.find("select#attributes").find("option[value='" + selectAttr[i] + "']").text();
-                columnList.push({
-                    field: 'gid' + selectAttr[i],
-                    title: name,
-                    align: 'center',
-                });
-                for (var k in attributes) {
-                    var attr = attributes[k];
-                    if (attr.gid !== selectAttr[i]) continue;
-                    if (!data[i])
-                        data[i] = [];
-                    data[i].push(attr);
-                }
-            }
-            shift = data[0];
-            for (var p in shift) {
-                if (data.length - 1) {
-                    for (var i = 1; i < data.length; i++) {
-                        var da = data[i];
-                        for (var k in da) {
-                            var a = [
-                                {
-                                    gid: shift[p].gid,
-                                    attrId: shift[p].attrId,
-                                    attrName: shift[p].attrName
-                                },
-                                {
-                                    gid: da[k].gid,
-                                    attrId: da[k].attrId,
-                                    attrName: da[k].attrName
-                                }];
-                            tmps.push(a);
-                        }
+        // 步骤切换
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            // 获取已激活的标签页的名称e.target
+            // 获取前一个激活的标签页的名称 e.relatedTarget
+            var href = $(e.target).attr('href');
+            var tabId = parseInt(href.replace('#tab-', ''));
+            if (tabId === 4) {
+                $("#nextStep").attr('disabled', true);
+                $("#prevStep").attr('disabled', false);
+            } else if (tabId > 1) {
+                $("#nextStep").attr('disabled', false);
+                $("#prevStep").attr('disabled', false);
+                if (tabId === 2) {
+                    var columnList = [], data = [],
+                        selectAttr = ("<?= $model->specParams['selectAttr']; ?>").split(',');
+                    var attributes = JSON.parse('<?= \yii\helpers\Json::encode($model->specParams['attributes'])?>');
+                    for (var i = 0; i < selectAttr.length; i++) {
+                        var item = selectAttr[i].split('#');
+                        var pIndex = item[0], name = item[1];
+                        name = name || '';
+                        columnList.push({
+                            field: 'gid' + pIndex,
+                            title: name,
+                            align: 'center',
+                            pIndex: pIndex
+                        });
                     }
-                } else {
-                    tmps.push([
-                        {
-                            gid: shift[p].gid,
-                            attrId: shift[p].attrId,
-                            attrName: shift[p].attrName
-                        }
-                    ]);
+                    console.log('update columnList:', columnList);
+                    creatAttrTable(columnList, attributes);
+                    console.log('update attributes:', attributes);
                 }
+            } else {
+                $("#prevStep").attr('disabled', true);
+                $("#nextStep").attr('disabled', false);
             }
 
-            var rows = [];
-            for (var k in tmps) {
-                var item = tmps[k];
-                var da = {
-                    cost_price: '',
-                    price: '',
-                    special_price: '',
-                    stock: '',
-                    weight: '',
-                    unit: '',
-                    bar_code: '',
-                    images: '',
-                };
-                for (var j in item) {
-                    var val = item[j];
-                    da['gid' + val.gid] = val.attrName;
-                }
+            currentTabIndex = tabId - 1;
+        });
 
-                rows.push(da);
-            }
-            console.log('tmps:', tmps);
-            tmps = [];
-            console.log('rows:', rows);
-            creatAttrTable(columnList, rows);
-        }
+        // 上一步
+        $("#prevStep").on('click', function () {
+            currentTabIndex -= 1;
+            $('ul.nav-tabs li:eq(' + currentTabIndex + ') a').tab('show');
+        });
+
+        // 下一步
+        $("#nextStep").on('click', function () {
+            currentTabIndex += 1;
+            $('ul.nav-tabs li:eq(' + currentTabIndex + ') a').tab('show');
+        });
+
+
     </script>
 <?php JsBlock::end(); ?>

@@ -197,7 +197,7 @@ use common\widgets\JsBlock;
     <?php if($selectedAttrs): ?>
     <?php foreach ($selectedAttrs as $key => $attr): ?>
         console.log('<?= $key ?>'.replace('attr', ''));
-        createDiv($('.attributes').get(0), '<?= $key ?>'.replace('attr', ''), JSON.parse('<?= json_encode(array_filter($attr)) ?>'));
+        createDiv($('.attributes').get(0), '<?= $key ?>'.replace('attr', ''), JSON.parse('<?= json_encode($attr) ?>'));
     <?php endforeach;?>
     <?php endif ?>
     // if (selectedAttrs) {
@@ -252,7 +252,7 @@ use common\widgets\JsBlock;
         for (var i = 0; i < params.length; i++) {
             var param = params[i];
             var sid = idStr + '-' + param.index;
-            console.log(checkeds, param.index, checkeds.indexOf(param.index));
+            // console.log(checkeds, param.index, checkeds.indexOf(param.index));
             var checked = checkeds.indexOf(param.index.toString()) >= 0 ? 'checked' : '';
             str += '<div class="ra1">' +
                 '<input  id="' + sid + '" type="checkbox" value="' + param.name + '" title="' + attrName + '" class = "inputC attr" ' + checked + '> ' +

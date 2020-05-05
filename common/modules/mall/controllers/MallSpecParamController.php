@@ -63,7 +63,7 @@ class MallSpecParamController extends BackendController
     public function actionCreate()
     {
         $model = new MallSpecParam();
-        
+        $model->sort = 10;
         if (Yii::$app->request->isPost) {
             $params = Yii::$app->request->post();
             if ($model->submitData($params)) {

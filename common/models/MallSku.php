@@ -46,8 +46,8 @@ class MallSku extends \common\components\BaseModel
         return [
             [['spu_id', 'title', 'price'], 'required'],
             [['spu_id', 'stock', 'enable', 'sort', 'created_at', 'updated_at'], 'integer'],
-            [['cost_price', 'price', 'special_price', 'weight'], 'number'],
-            [['own_spec', 'bar_code'], 'string'],
+//            [['cost_price', 'price', 'special_price', 'weight'], 'number'],
+            [['own_spec', 'bar_code', 'cost_price', 'price', 'weight'], 'string'],
             [['sku_code'], 'string', 'max' => 16],
             [['title'], 'string', 'max' => 100],
             [['images'], 'string', 'max' => 500],

@@ -221,7 +221,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                                                             <?php if ($model->catalog3): ?>
                                                                 <p class="selectItem" id="p3" tyid="<?= $model->cid3 ?>"
                                                                    onclick="selectDiv.delSel(this, 2, <?= $model->cid3 ?>)">
-                                                                   <?= $model->catalog3->name ?>
+                                                                    <?= $model->catalog3->name ?>
                                                                 </p>
                                                                 <p class="selectItem del_sel" id="p4"
                                                                    onclick="selectDiv.delSel(this)"></p>
@@ -373,6 +373,17 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
         var locale = "<?= Yii::$app->language ?>";
         var selectedAttrStr = '<?= $model->getSelectedAttrStr();?>';// 添加属性
         var currentTabIndex = 0;// tab切换-标签页显示时触发,但是必须在某个标签页已经显示之后
+        var dataId = parseInt('<?= $model->id ?>');
+        var operateEvents = {
+            'click .remove': function (e, value, row, index) {
+                if ($table.bootstrapTable('getData').length <= 1) {
+                    layer.alert("最后一项无法删除");
+                    return false;
+                }
+                row['index'] = index;
+                $table.bootstrapTable('remove', {field: "index", values: [index]});
+            }
+        };
         function operateFormatter(value, row, index) {
             return [
                 '<a class="remove" href="javascript:void(0)" title="Remove">',
@@ -471,10 +482,14 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                         value = value || $("#mallspu-cost_price").val();
                         var items = row.item;
                         var html = '<input class="form-control" name="attrs[cost_price][]" value="' + value + '" style="width:90px"/>';
+                        if (row.id) {
+                            html += '<input name="attrs[sku_id][]" type="hidden" value="' + row.id + '"/>';
+                        }
+                        console.log('items:', items);
                         for (var i = 0; i < items.length; i++) {
                             //index + '_' + i + '#' +
                             var val = items[i].gid + '_' + items[i].attrId + '_' + items[i].attrName;
-                            html += '<input type="hidden" name="attrs[gid' + items[i].gid + '][]" value="' + val + '" />'
+                            html += '<input type="hidden" name="attrs[gid' + items[i].gid + '][]" value="' + val + '" />';
                         }
                         return html;
                     }
@@ -573,7 +588,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                     title: '<?= Yii::t('app', 'Action') ?>',
                     align: 'center',
                     clickToSelect: false,
-                    // events: window.operateEvents,
+                    events: operateEvents,
                     formatter: operateFormatter
                 }
             ];
@@ -588,6 +603,28 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                 data: data
             };
             $table.bootstrapTable('destroy').bootstrapTable(params)
+        }
+
+        function initUpdData() {
+            var columnList = [], data = [],
+                selectAttr = ("<?= $model->specParams['selectAttr']; ?>").split(','),
+                selectedGidStr = '<?= $model->getSelectGidStr() ?>';
+            var attributes = JSON.parse('<?= \yii\helpers\Json::encode($model->specParams['attributes'])?>');
+            for (var i = 0; i < selectAttr.length; i++) {
+                var item = selectAttr[i].split('#');
+                var pIndex = item[0], name = item[1];
+                name = name || '';
+                columnList.push({
+                    field: 'gid' + pIndex,
+                    title: name,
+                    align: 'center',
+                    pIndex: pIndex
+                });
+            }
+            console.log('update columnList:', columnList);
+            creatAttrTable(columnList, attributes);
+            $("input[name='attrs[gids]']").val(selectedGidStr);
+            console.log('update attributes:', attributes);
         }
 
         // 点击分类框
@@ -832,6 +869,8 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
         // 初始化分类和品牌
         selectDiv.initCateBrand();
 
+        if (dataId) initUpdData();
+
         $('#addAttribute').bind('click', function () {
             var url = $(this).data('url');
             if (selectedAttrStr) {
@@ -920,25 +959,6 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
             } else if (tabId > 1) {
                 $("#nextStep").attr('disabled', false);
                 $("#prevStep").attr('disabled', false);
-                if (tabId === 2) {
-                    var columnList = [], data = [],
-                        selectAttr = ("<?= $model->specParams['selectAttr']; ?>").split(',');
-                    var attributes = JSON.parse('<?= \yii\helpers\Json::encode($model->specParams['attributes'])?>');
-                    for (var i = 0; i < selectAttr.length; i++) {
-                        var item = selectAttr[i].split('#');
-                        var pIndex = item[0], name = item[1];
-                        name = name || '';
-                        columnList.push({
-                            field: 'gid' + pIndex,
-                            title: name,
-                            align: 'center',
-                            pIndex: pIndex
-                        });
-                    }
-                    console.log('update columnList:', columnList);
-                    creatAttrTable(columnList, attributes);
-                    console.log('update attributes:', attributes);
-                }
             } else {
                 $("#prevStep").attr('disabled', true);
                 $("#nextStep").attr('disabled', false);

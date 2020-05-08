@@ -54,6 +54,8 @@ class AdminLog extends \yii\base\BaseObject
                 if ($class::tableName() === '{{%article_content}}' && $name === 'content') continue;
                 $desc .= $event->sender->getAttributeLabel($name) . '(' . $name . ') : ' . $value . '=>' . $event->sender->oldAttributes[$name] . ',<br>';
             }
+            if (empty($class))
+                return;
             $desc = substr($desc, 0, -5);
             $model = new AdminLogModel();
             $id_des = '';
@@ -77,6 +79,8 @@ class AdminLog extends \yii\base\BaseObject
         if ($event->sender->className() !== AdminLogModel::className()) {
             $desc = '<br>';
             foreach ($event->sender->getAttributes() as $name => $value) {
+                if (is_array($value))
+                    $value = serialize($value);
                 $desc .= $event->sender->getAttributeLabel($name) . '(' . $name . ') => ' . $value . ',<br>';
             }
             $desc = substr($desc, 0, -5);

@@ -20,7 +20,6 @@ return [
 	'Image' => '图片',
 	'Url' => '地址',
 	'Is Display' => '是否显示',
-	'Status' => '状态',
 	'Type' => '类型',
 	'Icon' => '图标',
 	'Email' => '邮箱',
@@ -402,4 +401,6 @@ return [
     'Keyword' => '关键字',
     'Next Step' => '下一步',
     'Previous Step' => '上一步',
+    'Copy' => '复制',
+    'Clone' => '克隆'
 ];

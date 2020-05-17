@@ -10,6 +10,7 @@ namespace common\widgets;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\helpers\Url;
 
 class ActiveField extends \yii\widgets\ActiveField
 {
@@ -368,6 +369,32 @@ class ActiveField extends \yii\widgets\ActiveField
             $options['rows'] = 5;
         }
         return parent::textarea($options);
+    }
+
+    public function catalogDropDownList($data = [], $options = [])
+    {
+        $inputId = Html::getInputId($this->model, $this->attribute);
+        $inputName = Html::getInputName($this->model, $this->attribute);
+        $url = Url::to(['mall-spu/ajax-catalog']);
+        $tips = '请选择商品类别';
+        return <<<HTML
+            <div class="form-group">
+                    <div onclick="selectDiv.selectClass()" class="selectDiv"
+                    data-url="{$url}">
+                        <select name="{$inputName}" readonly="readonly"
+                        class="form-control"
+                        id="{$inputId}"
+                        aria-required="true"
+                        style="margin-right: 0px;">
+                            <option selected="selected" value="0">{$tips}</option>
+                        </select>
+                        <div id="div_text"></div>
+                    </div>
+                    <div id="selectData" class="formInputDiv" style="display: none;">
+                    <ul id="selectData_1"></ul>
+                </div>
+            </div>
+HTML;
     }
 
 }

@@ -53,79 +53,6 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
             height: 78px;
         }
 
-        /*selectDiv*/
-        .selectDiv {
-            position: relative;
-            width: 300px;
-            height: 36px;
-        }
-
-        .selectDiv > div {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            padding-left: 12px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding-right: 15px;
-        }
-
-        .selectDiv p {
-            margin-bottom: 0;
-            font-size: 14px;
-        }
-
-        .selectItem {
-            cursor: pointer;
-        }
-
-        .selectItem span {
-            margin: 0 5px;
-        }
-
-        .formInputDiv {
-            /*display: flex;*/
-            width: 300px;
-            border: 1px solid #D5DBE8;
-        }
-
-        .formInputDiv ul {
-            width: 300px;
-            margin: 0;
-            padding: 0;
-            max-height: 100px;
-            overflow-y: scroll;
-        }
-
-        .formInputDiv .active {
-            position: relative;
-            background: #0880FF;
-            color: #fff !important;
-        }
-
-        .formInputDiv li:hover {
-            color: #0880FF;
-        }
-
-        .formInputDiv li {
-            height: 30px;
-            line-height: 30px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #6A7076;
-            user-select: none;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            padding: 0 12px;
-        }
-
-        /*selectDiv*/
         .upload-kit-item img {
             width: 90px;
             height: 90px;
@@ -384,6 +311,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                 $table.bootstrapTable('remove', {field: "index", values: [index]});
             }
         };
+
         function operateFormatter(value, row, index) {
             return [
                 '<a class="remove" href="javascript:void(0)" title="Remove">',
@@ -678,7 +606,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/static/js/plugins/bootstra
                 } else if (cid = parseInt('<?= $model->cid2 ?>')) {
                     level = 2;
                 } else {
-                    cid = parseInt('<?= $model->cid1 ?>');
+                    pecParams = parseInt('<?= $model->cid1 ?>');
                 }
                 var brandId = parseInt('<?= $model->brand_id?>');
                 var url = that.selectDivDom.data('url');

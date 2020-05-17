@@ -121,6 +121,105 @@ class MallSpuController extends BackendController
         $attributes = $params['attrs'];
         $gids = explode(',', $attributes['gids']);
         unset($params['attrs']);
+        if (!($model->load($params) && $model->save())) {
+            throw new \Exception(implode('<br/>', $model->getErrorFormat()));
+        }
+        $stocks = 0;
+//        // TODO: 当无规格属性时，默认属性为产品的默认属性;修改时 暂时无法从多规格改成单规格，只能新增产品
+//        if (!empty($attributes) && !empty($attributes['special_price'])) {
+//            $specParams = MallSpecParam::find()
+//                ->select('id, name')
+//                ->filterWhere(['id' => $gids])
+//                ->asArray()
+//                ->all();
+//            $specParams = ArrayHelper::index($specParams, 'id');
+//            if (! $model->getIsNewRecord()){
+//                $oldData = array_values(MallSku::find()->select('id')->filterWhere(['spu_id' => $model->id])->column());
+//                $newData = isset($attributes['sku_id']) ? array_values($attributes['sku_id']) : [];
+//                $diffData = ArrayHelper::needAdd2Removes($newData, $oldData, 'remove');
+//                if ( !empty($diffData['needRemoves'])) {
+//                    // 删除
+//                    MallSku::deleteAll(['id' => $diffData['needRemoves']]);
+//                }
+//            }
+//
+//            foreach ($attributes['special_price'] as $sKey => $sPrice) {
+//                $indexes = '';
+//                $own_spec = [];
+//                foreach ($gids as $gid) {
+//                    if (empty($attributes['gid' . $gid][$sKey])) continue;
+//                    $gStr = $attributes['gid' . $gid][$sKey];
+//                    $gArr = explode('_', $gStr);
+//                    $indexes .= $gid[0] . '_' . $gArr[1] . ',';
+//                    $own_spec[] = [
+//                        'field' => 'gid' . $gid[0],
+//                        'gid' => $gid[0],
+//                        'attrId' => $gArr[1],
+//                        'attrName' => $gArr[2],
+//                        'attrGroupName' => isset($specParams[$gid[0]]) ? $specParams[$gid[0]]['name'] : ''
+//                    ];
+//                }
+//                if (empty($own_spec)) {
+////                        throw  new \Exception("提交的规格数据有误");
+//                    continue;
+//                }
+//                $indexes = rtrim($indexes, ',');
+//                $img = $attributes['images'][$sKey];
+//                if (isset($attributes['sku_id'][$sKey])) {
+//                    $mallSkuModel = MallSku::findOne($attributes['sku_id'][$sKey]);
+//                    if (empty($img))
+//                        $img = $mallSkuModel->images;
+//                } else {
+//                    $mallSkuModel = new MallSku();
+//                }
+//                $mallSkuModel->setAttributes([
+//                    'spu_id' => $model->id,
+//                    'title' => $model->title,
+//                    'bar_code' => $attributes['bar_code'][$sKey],
+//                    'cost_price' => $attributes['cost_price'][$sKey],// 成本价
+//                    'price' => $attributes['price'][$sKey],// 销售价
+//                    'special_price' => $attributes['special_price'][$sKey],// 销售特价
+//                    'stock' => $attributes['stock'][$sKey],// 库存
+//                    'weight' => $attributes['weight'][$sKey],// 重量
+//                    'images' => $img,// 图片
+//                    'sort' => $sKey,
+//                    'indexes' => $indexes,
+//                    'own_spec' => serialize($own_spec)
+//                ]);
+//                if (!$mallSkuModel->save()) {
+//                    throw new \Exception(implode('<br/>', $mallSkuModel->getErrorFormat()));
+//                }
+//                $stocks += $mallSkuModel->stock;
+//            }
+//            $model->stock = $stocks;
+//            $model->save(false, ['stock']);
+//        } else {
+//            $mallSkuModel = new MallSku();
+//            $mallSkuModel->setAttributes([
+//                'spu_id' => $model->id,
+//                'title' => $model->title,
+//                'bar_code' => '',
+//                'cost_price' => $model->cost_price,// 成本价
+//                'price' => $model->price,// 销售价
+//                'special_price' => $model->price,// 销售特价
+//                'stock' => $model->stock,// 库存
+//                'weight' => $model->weight,// 重量
+//                'images' => $model->images,// 图片
+//                'sort' => 0,
+//                'indexes' => '0_0',
+//                'own_spec' => serialize([
+//                    'field' => 'gid0',
+//                    'gid' => 0,
+//                    'attrId' => 0,
+//                    'attrName' => '默认',
+//                    'attrGroupName' => '规格/属性'
+//                ])
+//            ]);
+//            if (!$mallSkuModel->save()) {
+//                throw new \Exception(implode('<br/>', $mallSkuModel->getErrorFormat()));
+//            }
+//        }
+//        exit;
         $transaction = Yii::$app->db->beginTransaction();
         try {
             if (!($model->load($params) && $model->save())) {
@@ -128,6 +227,7 @@ class MallSpuController extends BackendController
             }
             $stocks = 0;
             // TODO: 当无规格属性时，默认属性为产品的默认属性;修改时 暂时无法从多规格改成单规格，只能新增产品
+            if (!$model->isNewRecord && $model->getIsSingleSpec()) $attributes = [];
             if (!empty($attributes) && !empty($attributes['special_price'])) {
                 $specParams = MallSpecParam::find()
                     ->select('id, name')
@@ -196,7 +296,8 @@ class MallSpuController extends BackendController
                 $model->stock = $stocks;
                 $model->save(false, ['stock']);
             } else {
-                $mallSkuModel = new MallSku();
+                $mallSkuModel = MallSku::findOne(['spu_id' => $model->id, 'indexes' => '0_0']);
+                $mallSkuModel === null && $mallSkuModel = new MallSku();
                 $mallSkuModel->setAttributes([
                     'spu_id' => $model->id,
                     'title' => $model->title,

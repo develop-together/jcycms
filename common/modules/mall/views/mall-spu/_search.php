@@ -10,7 +10,8 @@ use common\widgets\ActiveForm AS BAF;
 ?>
 <style>
     .selectDiv {
-        width: 150px;
+        min-width: 150px;
+        max-width: 250px;
         height: 44px;
     }
     .selectDiv select.form-control {

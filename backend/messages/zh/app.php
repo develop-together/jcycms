@@ -402,5 +402,6 @@ return [
     'Next Step' => '下一步',
     'Previous Step' => '上一步',
     'Copy' => '复制',
-    'Clone' => '克隆'
+    'Clone' => '克隆',
+    'Are you sure you want to copy this?' => '确认要复制它吗？'
 ];

@@ -38,7 +38,7 @@ use common\widgets\JsBlock;
                         'title',
                         [
                             'attribute' => 'cid3',
-                            'value' => function($searchModel) {
+                            'value' => function ($searchModel) {
                                 return $searchModel->cname;
                             },
                         ],
@@ -65,6 +65,9 @@ use common\widgets\JsBlock;
                                     return Html::a('<i class="fa fa-copy"></i> ' . Yii::t('app', 'Copy'), Url::toRoute(['mall-spu/copy', 'id' => $searchModel->id]), [
                                         'title' => Yii::t('app', 'Copy'),
                                         'class' => 'btn btn-white btn-sm',
+                                        'data-confirm' => Yii::t('app', 'Are you sure you want to copy this?'),
+                                        'data-method' => 'post',
+                                        'data-pjax' => '0',
                                     ]);
                                 }
                             ]
@@ -80,6 +83,7 @@ use common\widgets\JsBlock;
         left: 65px;
         margin-bottom: -15px;
     }
+
 </style>
 <?php JsBlock::begin(); ?>
 <script>
@@ -110,11 +114,14 @@ use common\widgets\JsBlock;
                     }, function (response) {
                         // console.log('response:', response);
                         if (response.code === 10002) {
-                            that.brandDom.empty();
-                            that.selectDataOneDom.empty();
                             var catalogList = response.catalogList;
                             var brandList = response.brandList;
-                            that.createLiList(that.selectDataOneDom, catalogList, 'id', 'name');
+                            if (catalogList && catalogList.length) {
+                                that.selectDataOneDom.empty();
+                                that.createLiList(that.selectDataOneDom, catalogList, 'id', 'name');
+                            }
+
+                            that.brandDom.empty();
                             that.createOptions(that.brandDom, brandList, 'id', 'name', null, '请选择品牌');
                         }
                     }, function (XHR, TS) {
@@ -128,21 +135,23 @@ use common\widgets\JsBlock;
         initCateBrand: function () {
             var that = this;
             var cid = parseInt('<?= $searchModel->cid3 ?>');
-            var brandId = parseInt('<?= $searchModel->brand_id?>');
+            var brandId = parseInt('<?= $searchModel->brand_id ?? 0 ?>');
             var url = that.selectDivDom.data('url');
             if (cid) {
-                that.selectDivDom.find('option').text('').attr('value', cid);
-                $(this).addClass('active').siblings().removeClass('active');
                 that.request(url, 'GET', {
                     cid: cid,
                     brandId: brandId
                 }, function (response) {
                     if (response.code === 10002) {
-                        that.brandDom.empty();
-                        that.selectDataOneDom.empty();
                         var catalogList = response.catalogList;
                         var brandList = response.brandList;
-                        that.createLiList(that.selectDataOneDom, catalogList, 'id', 'name');
+                        if (catalogList && catalogList.length) {
+                            that.selectDivDom.find('option').text('').attr('value', cid);
+                            $(this).addClass('active').siblings().removeClass('active');
+                            that.selectDataOneDom.empty();
+                            that.createLiList(that.selectDataOneDom, catalogList, 'id', 'name');
+                        }
+                        that.brandDom.empty();
                         that.createOptions(that.brandDom, brandList, 'id', 'name', brandId, '请选择品牌');
                     }
                 }, function (XHR, TS) {
@@ -214,12 +223,14 @@ use common\widgets\JsBlock;
                     brandId: brandId
                 }, function (response) {
                     if (response.code === 10002) {
-                        that.brandDom.empty();
-                        that.selectDataOneDom.empty();
                         var catalogList = response.catalogList;
                         var brandList = response.brandList;
                         var str = '';
                         var selectP = that.selectTextDom;
+                        if (catalogList && catalogList.length) {
+                            that.selectDataOneDom.empty();
+                            that.createLiList(that.selectDataOneDom, catalogList, 'id', 'name');
+                        }
                         if (type === '') {
                             if (txtNum - 2 == level) {// 当切换一级分类时，先取消之前的选择，在加载新的一级分类
                                 var txtNum1 = txtNum - 1;
@@ -233,8 +244,7 @@ use common\widgets\JsBlock;
                                 that.appendSelectText(catalogList.length, selectP, cid, level, text, txtNum);
                             }
                         }
-
-                        that.createLiList(that.selectDataOneDom, catalogList, 'id', 'name');
+                        that.brandDom.empty();
                         that.createOptions(that.brandDom, brandList, 'id', 'name', null, '请选择品牌');
                     }
                 }, function (XHR, TS) {

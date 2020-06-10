@@ -104,11 +104,11 @@ class MallSpu extends \common\components\BaseModel
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function generateSpuCode()
     {
-        return time();
+        return (string)time();
     }
 
     /**
@@ -267,11 +267,7 @@ class MallSpu extends \common\components\BaseModel
         ];
     }
 
-    /**
-     * @param bool $insert
-     * @return bool
-     */
-    public function beforeSave($insert)
+    public function computedCid()
     {
         if ($this->catalog3 && $this->catalog3->path) {
             $pathArr = explode(',', $this->catalog3->path);
@@ -283,7 +279,16 @@ class MallSpu extends \common\components\BaseModel
             $this->cid2 = $cid2;
             $this->cid3 = $cid3;
         }
+    }
 
+    /**
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert)
+    {
+
+        $this->computedCid();
         if ($this->images) {
             is_array($this->images) && $this->images = implode('、', $this->images);
             $this->images = rtrim($this->images, '、');

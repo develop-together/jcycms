@@ -14,8 +14,10 @@ use common\models\search\MallSpuSearch;
 use common\components\BackendController;
 use backend\actions\DeleteAction;
 use backend\helpers\ArrayHelper;
+use yii\db\Exception;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Url;
+use yii\web\Response;
 
 /**
  * MallSpuController implements the CRUD actions for MallSpu model.
@@ -106,6 +108,44 @@ class MallSpuController extends BackendController
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+
+    public function actionCopy($id)
+    {
+        Yii::$app->getResponse()->format = Response::FORMAT_JSON;
+        $model = $this->findModel($id);
+        //MallSku
+        $newModel = new MallSpu();
+        $oldAttributes = $model->attributes;
+        unset($oldAttributes['id'], $oldAttributes['spu_code'], $oldAttributes['created_at'], $oldAttributes['updated_at'], $oldAttributes['deleted_at']);
+        if (!empty($oldAttributes['images'])) {
+            $oldAttributes['images'] = implode('、', $oldAttributes['images']);
+        }
+        $newModel->setAttributes($oldAttributes);
+        $newModel->spu_code = $newModel->generateSpuCode();
+        $oldSpuList = $model->mallSku;
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if (!$newModel->save()) {
+                throw  new Exception(implode("<br>", $newModel->getErrorFormat()));
+            }
+            foreach ($oldSpuList as $sku) {
+                $skuModel = new MallSku();
+                $skuAttrs = $sku->attributes;
+                unset($skuAttrs['id'], $skuAttrs['sku_code'], $skuAttrs['spu_id'], $skuAttrs['created_at'], $skuAttrs['updated_at']);
+                $skuModel->setAttributes($skuAttrs);
+                $skuModel->spu_id = $newModel->id;
+                if (!$skuModel->save()) {
+                    throw  new Exception(implode("<br>", $skuModel->getErrorFormat()));
+                }
+            }
+
+            $transaction->commit();
+            return ['code' => 200, 'message' => Yii::t('app', 'Success')];
+        } catch (\Exception $e){
+            $transaction->rollBack();
+            return ['code' => 300, 'message' => $e->getMessage()];
+        }
     }
 
 

@@ -93,12 +93,16 @@ class MallSpuSearch extends MallSpu
             return $dataProvider;
         }
 
+        $this->computedCid();
+        $query->andFilterWhere(['=', 'cid1', $this->cid1])
+            ->orFilterWhere(['=', 'cid2', $this->cid2])
+            ->orFilterWhere(['=', 'cid3', $this->cid3]);
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'cid1' => $this->cid1,
-            'cid2' => $this->cid2,
-            'cid3' => $this->cid3,
+//            'cid1' => $this->cid1,
+//            'cid2' => $this->cid2,
+//            'cid3' => $this->cid3,
             'brand_id' => $this->brand_id,
             'weight' => $this->weight,
             'flag_saleable' => $this->flag_saleable,

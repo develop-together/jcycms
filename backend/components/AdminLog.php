@@ -17,14 +17,16 @@ class AdminLog extends \yii\base\BaseObject
         if ($event->sender->className() !== AdminLogModel::className()) {
             $desc = '<br>';
             $class = $event->sender->className();
+            $isSp = 0;
             foreach ($event->sender->getAttributes() as $name => $value) {
                 if ($class::tableName() === '{{%article_content}}' && $name === 'content') {
-                    $desc .= $event->sender->getAttributeLabel($name) . '(' . $name . ') => 私密';
+                    $desc = $event->sender->getAttributeLabel($name) . '(' . $name . ') => 私密';
+                    $isSp = 1;
                 } else {
                     $desc .= $event->sender->getAttributeLabel($name) . '(' . $name . ') => ' . $value . ',<br>';
                 }
             }
-            $desc = substr($desc, 0, -5);
+            $isSp == 0 && $desc = substr($desc, 0, -5);
             $model = new AdminLogModel();
             $id_des = '';
             if (isset($event->sender->id)) {

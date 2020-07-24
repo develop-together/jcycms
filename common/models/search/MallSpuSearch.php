@@ -12,6 +12,13 @@ use common\models\MallSpu;
  */
 class MallSpuSearch extends MallSpu
 {
+
+    /**
+     * 商品分类深度
+     * @var string
+     */
+    public $catalog_path = '';
+
     /**
      * @inheritdoc
      */
@@ -77,8 +84,8 @@ class MallSpuSearch extends MallSpu
                 'pageSize' => $pageSize,
                 'page' => $pageCurrent,
             ],
-            'sort' =>[
-                'defaultOrder' =>[
+            'sort' => [
+                'defaultOrder' => [
                     $field => $sort,
                 ],
             ],
@@ -94,15 +101,44 @@ class MallSpuSearch extends MallSpu
         }
 
         $this->computedCid();
-        $query->andFilterWhere(['=', 'cid1', $this->cid1])
-            ->orFilterWhere(['=', 'cid2', $this->cid2])
-            ->orFilterWhere(['=', 'cid3', $this->cid3]);
+//        $query->andFilterWhere(['=', 'cid1', $this->cid1])
+//            ->orFilterWhere(['=', 'cid2', $this->cid2])
+//            ->orFilterWhere(['=', 'cid3', $this->cid3]);
+//        if ($this->cid1) {
+//            $query->andWhere(['cid1' => $this->cid1]);
+//            if ($this->cid2) {
+//                $query->orWhere(['cid2' => $this->cid2]);
+//                if ($this->cid3) {
+//                    $query->orWhere(['cid3' => $this->cid3]);
+//                }
+//            }
+//        } elseif ($this->cid2) {
+//            $query->andWhere(['cid2' => $this->cid2]);
+//            if ($this->cid3) {
+//                $query->orWhere(['cid3' => $this->cid3]);
+//            }
+//        } elseif ($this->cid3) {
+//            $query->andWhere(['cid3' => $this->cid3]);
+//        }
+
+        if ($this->cid3) {
+            $this->cid1 = $this->cid2 = null;
+            $query->andWhere(['cid3' => $this->cid3]);
+        }
+
+        if ($this->cid2) {
+            $this->cid1 = null;
+            $query->andWhere(['cid2' => $this->cid2]);
+        }
+
+        if ($this->cid1) {
+            $query->andWhere(['cid1' => $this->cid1]);
+        }
+
+        $this->catalog_path = implode(',', array_filter([$this->cid1, $this->cid2, $this->cid3]));
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-//            'cid1' => $this->cid1,
-//            'cid2' => $this->cid2,
-//            'cid3' => $this->cid3,
             'brand_id' => $this->brand_id,
             'weight' => $this->weight,
             'flag_saleable' => $this->flag_saleable,
@@ -120,6 +156,8 @@ class MallSpuSearch extends MallSpu
             ->andFilterWhere(['like', 'dim', $this->dim])
             ->andFilterWhere(['like', 'images', $this->images]);
 
+//        echo $query->createCommand()->getRawSql();
+//        exit;
         return $dataProvider;
     }
 }

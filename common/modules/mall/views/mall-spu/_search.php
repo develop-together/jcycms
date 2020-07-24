@@ -26,7 +26,7 @@ use common\widgets\ActiveForm AS BAF;
     <?php $form = BAF::begin([
         'action' => ['index'],
         'method' => 'post',
-        'options' => ['class' => 'form-inline'],
+        'options' => ['class' => 'form-inline search-form'],
         'fieldConfig' => [
             'template' => "{label}\n{input}\n{error}\n{hint}",
             'labelOptions' => ['class' => 'control-label'],
@@ -34,6 +34,7 @@ use common\widgets\ActiveForm AS BAF;
     ]); ?>
 
     <?= $form->field($model, 'cid3')->catalogDropDownList() ?>
+    <?= $form->field($model, 'catalog_path')->label(false)->hiddenInput() ?>
     <?php echo $form->field($model, 'brand_id', ['template' => "{input}\n{error}\n{hint}"])->dropDownList([], ['prompt' => '请选择商品品牌']) ?>
     <?= $form->field($model, 'title') ?>
     <?php // echo $form->field($model, 'cid2') ?>

@@ -18,7 +18,7 @@ $categoryTree = Utils::reference_delivery_tree(Category::find()->asArray()->all(
         <?php $form = BAF::begin([
             'action' => ['index'],
             'method' => 'post',
-            'options' => ['class' => 'form-inline'],
+            'options' => ['class' => 'form-inline search-form'],
         ]); ?>
         <div class="col-sm-12">
             <?= $form->field($model, 'category_id')->dropDownList(Category::getDrowDownList($categoryTree), ['prompt' => '请选择', 'style' => 'width:200px']) ?>

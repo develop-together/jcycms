@@ -7,6 +7,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\Pjax;
 use backend\grid\GridView;
 use common\widgets\JsBlock;
 
@@ -20,6 +21,7 @@ use common\widgets\JsBlock;
                 <div class="mail-tools tooltip-demo m-t-md" style="padding-bottom: 10px;">
                     <?= (isset($searchModel)) ? $this->render('_search', ['model' => $searchModel]) : '' ?>
                 </div>
+                <?php Pjax::begin(['id' => 'mall-spu-pjax', 'enablePushState' => false, 'options' => ['class' => 'pjax-reload']]); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [
@@ -74,6 +76,7 @@ use common\widgets\JsBlock;
                         ],
                     ]
                 ]); ?>
+                <?php Pjax::end(); ?>
             </div>
         </div>
     </div>
@@ -136,6 +139,7 @@ use common\widgets\JsBlock;
             var that = this;
             var cid = parseInt('<?= $searchModel->cid3 ?>');
             var brandId = parseInt('<?= $searchModel->brand_id ?? 0 ?>');
+            if (isNaN(brandId)) brandId = 0;
             var url = that.selectDivDom.data('url');
             if (cid) {
                 that.request(url, 'GET', {

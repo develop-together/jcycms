@@ -36,10 +36,10 @@ class BackendController extends BaseController
 			return false;
 		}
 
-//		if (Yii::$app->user->isGuest) {
-//			exit('<script>window.top.location.href="' . Url::toRoute(['public/login']) . '"</script>');
-//			// return false;
-//		}
+		if (Yii::$app->user->isGuest) {
+			exit('<script>window.top.location.href="' . Url::toRoute(['public/login']) . '"</script>');
+			// return false;
+		}
 
         $user = Yii::$app->user->identity;
         if ((int)$user->userRole->role->id === AdminRoles::SUPER_ROLE_ID) {

@@ -22,7 +22,7 @@ use common\widgets\ActiveForm AS BAF;
     <?= "<?php " ?>$form = BAF::begin([
         'action' => ['index'],
         'method' => 'post',
-        'options' => ['class' => 'form-inline'],
+        'options' => ['class' => 'form-inline search-form'],
         'fieldConfig' => [
         'template' =>"{label}\n{input}\n{error}\n{hint}",
         'labelOptions' => ['class' => 'control-label'],

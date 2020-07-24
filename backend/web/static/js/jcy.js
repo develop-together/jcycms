@@ -520,6 +520,15 @@ $(document).ready(function () {
                 showPhotos(this);
             });
         });
+
+        //列表表单搜索
+        $(document).on('submit', 'form.search-form', function (event) {
+            $.pjax.submit(event, '.pjax-reload')
+        });
+
+        $(document).on('pjax:end', function () {
+            $('form.search-form').find("button[type='submit']").removeAttr('disabled');
+        });
     }
     $(".pjax-refresh").bind('click', function () {
         var currentHref = $(".pagination").find("li.active > a").attr('href');
@@ -529,6 +538,7 @@ $(document).ready(function () {
             $.pjax.reload('.pjax-reload');
         }
     });
+
     // 清空查询
     $('.clear-search').on('click', function () {
         // var csrfParam = $('meta[name="csrf-param"]').attr('content');

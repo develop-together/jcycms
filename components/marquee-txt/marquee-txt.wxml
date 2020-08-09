@@ -1,0 +1,15 @@
+<!--components/marquee-txt/marquee-txt.wxml-->
+<scroll-view class="marquee_container" wx:if="{{msg}}">
+	<view class="marquee_scrolltxt">
+		<view class="marquee_todo">
+			<weui-icon icon="volume-up" color="white" size="{{25}}"></weui-icon>
+		</view>
+		<view class="marquee_box">
+			   <view class="marquee_text" style="transform: translateX(-{{marqueeDistance}}px)">
+				    <text>{{text}}</text>
+				    <text style="margin-right:{{marquee_margin}}px;"></text>
+				    <text style="margin-right:{{marquee_margin}}px;">{{msg}}</text>   
+				   </view>
+		</view>
+	</view>
+</scroll-view>

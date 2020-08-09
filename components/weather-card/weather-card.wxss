@@ -1,0 +1,75 @@
+/* components/weather-card/weather-card.wxss */
+@import "../../assets/css/common.wxss";
+
+.weather-card {
+  padding: 15rpx 10rpx;
+  background: linear-gradient(45deg, #353F4E, #1C1D1F);
+}
+
+.weather-card .row {
+  margin-right: 10rpx;
+  margin-left: 10rpx;
+}
+.weather-card .row  text {
+    font-size: 14px;
+    color: #FFFFFF;
+}
+.weather-card .row text.addr {
+  font-size: 18px;
+  text-align: left;
+}
+.weather-card .row text.time {
+  text-align: center;
+  display: flex;
+  justify-content:flex-end;
+  font-size: 12px;
+}
+.weather-card .row .col-xs-4 text.tmp {
+  font-size: 40px;
+  display: block;
+  color: #FFFFFF;
+}
+.weather-card .row .air-container {
+  padding-left: 8rpx;
+}
+.weather-card .row .air-container .air-txt {
+  display: block;
+  margin: 16rpx 0 14rpx;
+
+}
+.weather-card .air-container .air-level {
+  font-size: 14px;
+  border: 1px solid transparent;
+  border-radius: 2rpx;
+  margin-top: 5rpx;
+  padding: 0 3rpx;
+}
+.weather-card .air-container .air-level.ari-level1 {
+  color: #95B359;
+  border-color: #95B359; 
+}
+.weather-card .air-container .air-level.ari-level2 {
+  color: #B9B53B;
+  border-color: #B9B53B; 
+}
+.weather-card .air-container .air-level.ari-level3 {
+  color: #E0991D;
+  border-color: #E0991D; 
+}
+.weather-card .air-container .air-level.ari-level4 {
+  color: #D96161;
+  border-color: #D96161; 
+}
+.weather-card .air-container .air-level.ari-level5 {
+  color: #AC80C7;
+  border-color: #AC80C7; 
+}
+.weather-card .air-container .air-level.ari-level6 {
+  color: #D94371;
+  border-color: #D94371; 
+}
+.weather-card .cond {
+  width: 60px;
+  height: 60px;
+  margin-top: 10rpx;
+}

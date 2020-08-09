@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "marquee-txt": "../../components/marquee-txt/marquee-txt",
+    "weather-card": "../../components/weather-card/weather-card"
+  }
+}

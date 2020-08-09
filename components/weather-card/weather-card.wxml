@@ -1,0 +1,28 @@
+<!--components/weather-card/weather-card.wxml-->
+<view class="weather-card">
+	<view class="row">
+		<view class="col-xs-6">
+			<text class="addr">{{location_text}}</text>
+		</view>
+		<view class="col-xs-6"><text class="time">{{today_date}}</text></view>
+	</view>
+	<view class="row">
+		<view class="col-xs-4">
+			<text class="tmp">{{temperature}}℃</text>
+		</view>
+		<view class="col-xs-4">
+			<view class="air-container">
+				<text class="air-txt">{{now_weather}}</text>
+				<text class="air-level ari-level1">体感 {{feelsLike}}℃</text>
+			</view>
+		</view>
+		<view class="col-xs-4 text-center">
+			<image src="/assets/images/cond-icon-heweather/{{cond}}.png" class="cond"></image>
+		</view>
+	</view>
+	<view class="row">
+		<view class="col-xs-4"><text>{{wind_direction}} {{wind_scale}} 级</text></view>
+		<view class="col-xs-4 text-left"><text class="uv">风速{{wind_speed}}km/h</text></view>
+		<view class="col-xs-4 text-center"><text>相对湿度{{humidity}}%</text></view>
+	</view>
+</view>

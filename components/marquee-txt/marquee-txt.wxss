@@ -1,0 +1,37 @@
+/* components/marquee-txt/marquee-txt.wxss */
+.marquee_container {
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  font-size: 14px; 
+  white-space: nowrap;
+}
+.marquee_scrolltxt{
+  background: #4F5B93;
+  height: 90rpx;
+  transform: translate3d(0,0,0);
+  display: flex;
+  line-height:90rpx;
+}
+.tab-text{
+  padding:0 5px;
+  text-align: center;
+}
+.marquee_todo {
+  width: 100rpx;
+}
+.marquee_box {
+  position:relative;
+  display:block;
+  overflow:hidden;
+  color: #fff;
+  width: 100%;
+  /* color:#fff;
+  height:90rpx; */
+} 
+.marquee_text {
+  white-space: nowrap;
+  position:absolute;
+  top:0;
+  font-size:12px;
+}

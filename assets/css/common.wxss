@@ -1,0 +1,124 @@
+/* page {
+  width: 100%;
+  overflow-x: hidden;
+  background: #e5e9f0
+} */
+page {
+  flex-direction: column;
+  /* font-family: '微软雅黑';  */
+  /* height: 100%; */
+  width: 100%;
+  display:flex;
+  background:#e5e9f0;
+}
+.page {
+  width: 100%;
+  height: 100%;
+}
+button::after {
+  border: none;
+}
+.jmb-left{
+  float: left;
+}
+.jmb-right{
+  float: right
+}
+.jmb-flex {
+  display: flex;
+}
+.jmb-flex1 {
+  flex: 1;
+}
+.jmb-color5 {
+  background-color: #16c2c2;
+}
+.jmb-color4 {
+  background-color: #8a90fa;
+}
+.jmb-color3 {
+  background-color: #4dc6ee;
+}
+.jmb-color2 {
+  background-color: #fed030;
+}
+.jmb-color1 {
+  background-color: #fd9d21;
+}
+/*none*/
+.allLoaded {
+  position: relative;
+  text-align: center;
+  font-size: 28rpx;
+  color: #ccc;
+  padding: 40rpx;
+}
+.allLoaded:before {
+  position: absolute;
+  left: 5%;
+  top: 60rpx;
+  width: 90%;
+  z-index: 1;
+  height: 2rpx;
+  content: '';
+  background: #ddd;
+}
+.line-word {
+  position: relative;
+  padding: 0 20rpx;
+  z-index: 2;
+  background: #e5e9f0;
+}
+.jmb-center {
+  text-align: center
+}
+.jmb-white {
+  background: #fff
+}
+.green-color {
+  font-size: 14px;
+  color: #1d8f59
+}
+.wxParse-wxxxcode-style{
+ white-space: pre;
+}
+/*copyright*/
+.jmb-copyRight{
+  padding: 40rpx;
+  text-align: center;
+  font-size: 20rpx;
+  color: #ccc;
+  line-height: 1.4
+}
+.kapo-name{
+  font-size: 24rpx;
+  color: #a8a8a8
+}
+.row::before, .row::after {
+  display: table;
+  content: " ";
+}
+.row::after {
+clear: both;
+}
+view[class*="col-xs" ] {
+  display: block;
+  float: left;
+  margin: 0;
+  padding: 0;
+}
+.col-xs-6 {
+  width: 50%;
+}
+.col-xs-4 {
+  width: 33.33333333%;
+}
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}

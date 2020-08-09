@@ -1,0 +1,59 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/lists/lists",
+    "pages/code/code"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#8892BF",
+    "navigationBarTitleText": "Jcy Mini Blog",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "color": "#fff",
+    "position": "bottom",
+    "backgroundColor": "#8892BF",
+    "selectedColor": "#fff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "assets/nav/home.png",
+        "selectedIconPath": "assets/nav/home_fill.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/lists/lists",
+        "iconPath": "assets/nav/project.png",
+        "selectedIconPath": "assets/nav/project_fill.png",
+        "text": "分类"
+      },
+      {
+        "pagePath": "pages/code/code",
+        "iconPath": "assets/nav/code.png",
+        "selectedIconPath": "assets/nav/code_fill.png",
+        "text": "源码"
+      },
+      {
+        "pagePath": "pages/logs/logs",
+        "iconPath": "assets/nav/user.png",
+        "selectedIconPath": "assets/nav/user_fill.png",
+        "text": "我"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序获取当前位置天气"
+    }
+  },
+  "usingComponents": {
+    "weui-dialog": "/miniprogram_npm/weui-miniprogram/dialog/dialog",
+    "weui-icon": "/miniprogram_npm/weui-miniprogram/icon/icon"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

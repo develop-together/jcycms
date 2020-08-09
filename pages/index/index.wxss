@@ -1,0 +1,4 @@
+/**index.wxss**/
+.tab {
+  position: relative;
+}

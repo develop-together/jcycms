@@ -1,3 +1,5 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "weui-vtabs": "@minprogram-compoents-plus/vtabs"
+  }
 }

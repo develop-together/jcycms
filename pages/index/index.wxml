@@ -3,8 +3,30 @@
 	<view class="tab">
 		<marquee-txt msg="{{sysToDoMsg}}"></marquee-txt>
 	</view>
-  <weather-card></weather-card>
+	<weather-card></weather-card>
 	<view class="body">
+		<view class="article-lists">
+			<view class="article-detail" wx:for="{{articleList}}" wx:key="index" data-id="{{item.id}}">
+				<view class="article-content">
+					<view class='article-imgitem'>
+						<image class='article-imgitem' mode="aspectFill" lazy-load="{{true}}" src="{{item.thumb==''? '/assets/images/name.png': item.thumb}}"></image>
+					</view>
+					<view class="article-title">{{item.title}}</view>
+					<view class="article-bottom">
+						<view class="article-icon">
+							<icon class="iconfont icon-shijian2"></icon> {{comm.formatDate(item.updated_at)}}
+						</view>
+						<view class="article-icon">
+							<icon class="iconfont icon-kanguo"></icon> {{item.id}}
+						</view>
+						<view class="article-icon">
+							<icon class="iconfont icon-pinglun"></icon> {{item.cnum}}
+						</view>
+					</view>
+					<view class="article-detail">{{item.description}}</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </view>
 <!-- <view class="userinfo">

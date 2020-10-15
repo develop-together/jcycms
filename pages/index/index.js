@@ -2,14 +2,35 @@
 //获取应用实例
 const app = getApp()
 import httpRequest from '../../utils/request';
-
+// {
+//   "id": "261",
+//   "catid": "13",
+//   "typeid": "0",
+//   "title": "37周的我",
+//   "style": "",
+//   "thumb": "https://www.zhmzjl.com\/uploadfile\/2019\/0410\/20190410110107376.jpg",
+//   "keywords": "生活",
+//   "description": "如果你遇到的是头猪，那你永远别和他谈理想，因为他关心的只有饲料。 不要期待，也别依赖。",
+//   "posids": "0",
+//   "url": "https://www.zhmzjl.com\/show-13-261-1.html",
+//   "listorder": "0",
+//   "status": "99",
+//   "sysadd": "1",
+//   "islink": "0",
+//   "username": "rose",
+//   "inputtime": "1585795537",
+//   "updatetime": "1585795719",
+//   "cnum": "1",
+//   "views": "208"
+// }
 Page({
   data: {
     sysToDoMsg: "",
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    page: 1
+    page: 1,
+    articleList: []
   },
   //事件处理函数
   bindViewTap: function() {
@@ -59,10 +80,14 @@ Page({
       page: this.data.page,
       'per-page': 10,
     };
-    httpRequest.get(httpRequest.apiConfig.article, params).then(ress => {
-
+    httpRequest.get(httpRequest.apiConfig.article, params).then(res => {
+      let response = res.data;
+      console.log('response:', response)
+      if (response.code === 1000) {
+        this.articleList = response.data.list;
+      }
     }).catch(error => {
-
+      debugger;
     });
   }
 })

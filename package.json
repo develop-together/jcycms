@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@miniprogram-component-plus/vtabs": "^1.0.0",
     "weui-miniprogram": "^1.0.5"
   }
 }
